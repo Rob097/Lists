@@ -27,7 +27,7 @@
         pst.setString(2, password);
         
         ResultSet rs = pst.executeQuery();
-        String Nominativo = null;
+        String Nominativo = null; String Email = null;
         String strCheckBoxValue = request.getParameter("standard");
         String not = request.getParameter("nonstandard");
         
@@ -35,11 +35,12 @@
         if(rs.next() && strCheckBoxValue != null){
             if(rs.getString("Tipo").equals("standard")){
                 %>
-                    <%= Nominativo = rs.getString("Nominativo") %>
+                    <%= Nominativo = rs.getString("Nominativo")%>
+                    <%=    Email = rs.getString("Email")%>
                 <%
                     
                     Cookie cookie = new Cookie("Nominativo", Nominativo); cookie.setMaxAge(60*60*24); response.addCookie(cookie);
-                    
+                    session.setAttribute("Nominativo", Nominativo); session.setAttribute("login", Email);
                     response.sendRedirect("Users/standardType.jsp");
             }else out.println("Attenzione che tu sei un utente NONStandard");
         }else

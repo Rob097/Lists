@@ -17,6 +17,10 @@ html{
 }
 
 body{
-    text-align: center;
+    /*text-align: center;*/
     background: lightblue;
+}
+
+.center{
+    text-align: center;
 }

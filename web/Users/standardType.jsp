@@ -36,8 +36,9 @@
                 out.println("<h2>No cookies founds</h2>");
             }
         %>
-        <h1>Utente standard</h1><br>
-        <p>HI <%= Nominativo %></p>
+        <a method="post" href="/Lists/LogoutAction" style="left: 0%;"><button>LogOut</button></a>
+        <h1 class="center">Utente standard</h1><br>
+        <p class="center">HI <%= Nominativo %></p>
         
     </body>
 </html>

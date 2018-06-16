@@ -22,7 +22,7 @@ and open the template in the editor.
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
         <!-- CSS personalizzati -->
-        <link rel="stylesheet" type="text/css" href="Users/css/Login.css">
+        <link rel="stylesheet" type="text/css" href="Users/css/Login.css">               
     </head>
     <body>
         
@@ -75,12 +75,15 @@ and open the template in the editor.
                             <div class="row">
                                 <div class="col-lg-12">
                                     <form id="login-form" action="LoginAction.jsp" method="post" role="form" style="display: block;">
+                                        
                                         <div class="form-group">
-                                            <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Email" value="">
+                                            <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Email" value="" required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
-                                        </div><div class="form-group text-center">
+                                            <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password" required>
+                                        </div>
+                                        
+                                        <div class="form-group text-center">
                                             <input type="checkbox" tabindex="3" class="" name="standard" id="standard">
                                             <label for="standard">Standard</label>
                                             <input type="checkbox" tabindex="3" class="" name="nonstandard" id="nonstandard">
@@ -107,18 +110,25 @@ and open the template in the editor.
                                             </div>
                                         </div>
                                     </form>
-                                    <form id="register-form" action="#" method="post" role="form" style="display: none;">
+                                    
+                                    
+                                    <!-- Registration Form -->
+                                    <form id="register-form" action="RegisterAction.jsp" method="post" role="form" style="display: none;">
+                                        
                                         <div class="form-group">
-                                            <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="">
+                                            <input type="email" name="username" id="username" tabindex="1" class="form-control" placeholder="Email" value="">
                                         </div>
                                         <div class="form-group">
-                                            <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" value="">
+                                            <input type="text" name="nominativo" id="nominativo" tabindex="1" class="form-control" placeholder="Nome" value="">
                                         </div>
                                         <div class="form-group">
                                             <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
                                         </div>
-                                        <div class="form-group">
-                                            <input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirm Password">
+                                        <div class="form-group text-center">
+                                            <input type="checkbox" tabindex="3" class="" name="standard" id="standard">
+                                            <label for="standard">Standard</label>
+                                            <input type="checkbox" tabindex="3" class="" name="nonstandard" id="nonstandard">
+                                            <label for="non-standard">non Standard</label>
                                         </div>
                                         <div class="form-group">
                                             <div class="row">
@@ -144,7 +154,7 @@ and open the template in the editor.
                         rs = stmt.executeQuery(query);
                         while (rs.next()) {
                 %>
-                 
+                <br><h5 style="color: red"><%=rs.getRow()%>° Record:</h5> 
                 <h6>Email: <%=rs.getString("Email")%><br>
                 Password: <%=rs.getString("Password")%><br>
                 Nominativo: <%=rs.getString("Nominativo")%><br>
