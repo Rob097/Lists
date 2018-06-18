@@ -34,14 +34,23 @@ public class LogoutAction extends HttpServlet {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if(cookie.getName().equals(request.getSession().getAttribute("login")) || cookie.getName().equals(request.getSession().getAttribute("Nominativo"))) {
-                    System.out.println(request.getSession().getAttribute("login") + cookie.getValue());
+                if( cookie.getName().equals(request.getSession().getAttribute("Nominativo")) 
+                    || cookie.getName().equals(request.getSession().getAttribute("Image"))
+                    || cookie.getName().equals(request.getSession().getAttribute("Email"))
+                    || cookie.getName().equals(request.getSession().getAttribute("Type"))){
+                        
+                        System.out.println(request.getSession().getAttribute("Nominativo") + cookie.getValue() + "\n");
+                        System.out.println(request.getSession().getAttribute("Image") + cookie.getValue() + "\n");
+                        System.out.println(request.getSession().getAttribute("Email") + cookie.getValue() + "\n");
+                        System.out.println(request.getSession().getAttribute("Type") + cookie.getValue() + "\n");
+                        
                 }
+                
             cookie.setMaxAge(0);
             response.addCookie(cookie);
             }
         }
-         response.sendRedirect("index.jsp");
+         response.sendRedirect("/Lists/homepage.jsp");
     }
 
     /**
