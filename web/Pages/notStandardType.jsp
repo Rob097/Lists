@@ -65,7 +65,7 @@
                         else{   if (cookie.getName().equals("Nominativo")) Nominativo += cookie.getValue();
                                 if (cookie.getName().equals("Email")) Email += cookie.getValue();
                                 if (cookie.getName().equals("Type")) Type += cookie.getValue();
-                                else Image += cookie.getValue();
+                                if (cookie.getName().equals("Image")) Image += cookie.getValue();
                         }
                 }
             } else {
@@ -96,7 +96,7 @@
                             </li>
                             <li>
                                 <a class="navbar-brand" style="cursor: pointer;" href="/Lists/LogoutAction" data-toggle="tooltip" data-placement="bottom" title="LogOut">
-                                    <i class="fa fa-sign-in"></i><%= Nominativo%> / <%= Type %>
+                                    <i class="fa fa-sign-in"></i><%= Nominativo%> / <%= Type %> / <img src="<%= Image %>" width="25px">
                                 </a>
                             </li>
                             <li>
