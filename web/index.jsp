@@ -17,7 +17,9 @@ and open the template in the editor.
         for (int i = 0; i < cookies.length; i++) {                       
             cookie = cookies[i];
             if(cookie.getName().equals("Type") && cookie.getValue().equals("standard")){ response.sendRedirect("Pages/standardType.jsp"); System.out.println("type standard\n");}
-            if(cookie.getName().equals("Type") && cookie.getValue().equals("nonStandard")){ response.sendRedirect("Pages/notStandardType.jsp"); System.out.println("type non standard \n");}
+            else if(cookie.getName().equals("Type") && cookie.getValue().equals("nonStandard")){ response.sendRedirect("Pages/notStandardType.jsp"); System.out.println("type non standard \n");}
+            else if((i == cookies.length - 1) && !cookie.getName().equals("Type")){response.sendRedirect("/Lists/homepage.jsp"); System.out.println("no type \n");}
+            else System.out.println("errore imprevisto");
         }
     }else { response.sendRedirect("/Lists/homepage.jsp"); System.out.println("no cookies");}
     
