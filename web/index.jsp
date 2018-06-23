@@ -26,7 +26,7 @@ and open the template in the editor.
                 } 
             }
         }
-        response.sendRedirect("Lists/homepage.jsp"); System.out.println("no cookies");
-    }else { response.sendRedirect("Lists/homepage.jsp"); System.out.println("no cookies");}
+        response.sendRedirect("/Lists/homepage.jsp"); System.out.println("no cookies");
+    }else { response.sendRedirect("/Lists/homepage.jsp"); System.out.println("no cookies");}
     
     %> 
