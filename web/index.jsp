@@ -8,7 +8,6 @@ and open the template in the editor.
 
 <% 
     Cookie cookie = null;
-    Cookie cookieOn = null;
     Cookie[] cookies = null;
             
             
@@ -17,16 +16,9 @@ and open the template in the editor.
     if( cookies != null ) {
         for (int i = 0; i < cookies.length; i++) {                       
             cookie = cookies[i];
-            if(cookie.getName().equals("Logged") && cookie.getValue().equals("on")){
-                for (int j = 0; j < cookies.length; j++) {
-                    cookieOn = cookies[j];
-                    if(cookieOn.getName().equals("Type") && cookieOn.getValue().equals("standard")){ response.sendRedirect("Pages/standardType.jsp"); System.out.println("type standard\n");}
-                    if(cookieOn.getName().equals("Type") && cookieOn.getValue().equals("nonStandard")){ response.sendRedirect("Pages/notStandardType.jsp"); System.out.println("type non standard \n");}
-                    
-                } 
-            }
+            if(cookie.getName().equals("Type") && cookie.getValue().equals("standard")){ response.sendRedirect("Pages/standardType.jsp"); System.out.println("type standard\n");}
+            if(cookie.getName().equals("Type") && cookie.getValue().equals("nonStandard")){ response.sendRedirect("Pages/notStandardType.jsp"); System.out.println("type non standard \n");}
         }
-        response.sendRedirect("/Lists/homepage.jsp"); System.out.println("no cookies");
     }else { response.sendRedirect("/Lists/homepage.jsp"); System.out.println("no cookies");}
     
     %> 
