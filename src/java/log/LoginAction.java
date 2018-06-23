@@ -7,6 +7,7 @@ package log;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.System.out;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -82,12 +83,12 @@ public class LoginAction extends HttpServlet {
                     
                     response.sendRedirect("Pages/standardType.jsp");
                 } else {
-                    System.out.println("Attenzione che tu sei un utente NONStandard");
+                    out.println("Attenzione che tu sei un utente NONStandard");
                 }
             } else //Guarda se i campoi sono corretti e se l'utente è NON standard
                 
             if (notstandard != null) {
-                if (rs.getString("Tipo").equals("nonStandard")) {
+                if (rs.getString("Tipo").equals("nonstandard")) {
 
                     Nominativo = rs.getString("Nominativo");
                     Type = rs.getString("Tipo");
@@ -112,15 +113,15 @@ public class LoginAction extends HttpServlet {
                     
                     response.sendRedirect("Pages/notStandardType.jsp");
                 } else {
-                    System.out.println("Attenzione che tu sei un utente Standard");
+                    out.println("Attenzione che tu sei un utente Standard");
                 }
             } else {
-                System.out.println("Invalid login credentials");
+                out.println("Invalid login credentials");
             }
             
         } catch (Exception e) {
-            System.out.println("Something went wrong !! Please try again");
-            System.out.println("Causa Chiusura ");
+            out.println("Something went wrong !! Please try again");
+            out.println("Causa Chiusura ");
             e.printStackTrace();
         }
 

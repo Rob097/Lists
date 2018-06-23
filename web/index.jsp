@@ -20,12 +20,14 @@ and open the template in the editor.
             if(cookie.getName().equals("Logged") && cookie.getValue().equals("on")){
                 for (int j = 0; j < cookies.length; j++) {
                     cookieOn = cookies[j];
-                    if(cookieOn.getName().equals("Type") && cookieOn.getValue().equals("standard")){ response.sendRedirect("Pages/standardType.jsp"); break;}
-                    else if(cookieOn.getName().equals("Type") && cookieOn.getValue().equals("nonStandard")){ response.sendRedirect("Pages/notStandardType.jsp"); break;}
-                    else if(j == cookies.length - 1 && ((cookieOn.getName().equals("Type") && (!cookieOn.getValue().equals("standard") && !cookieOn.getValue().equals("nonStandard"))) || !cookieOn.getName().equals("Type"))) { response.sendRedirect("/Lists/homepage.jsp"); }
+                    if(cookieOn.getName().equals("Type") && cookieOn.getValue().equals("standard")){ response.sendRedirect("Pages/standardType.jsp"); System.out.println("type standard\n");}
+                    if(cookieOn.getName().equals("Type") && cookieOn.getValue().equals("nonStandard")){ response.sendRedirect("Pages/notStandardType.jsp"); System.out.println("type non standard \n");}
+                    
                 } 
-            }else if ( i == (cookies.length - 1 ) && ((cookie.getName().equals("Logged") && !cookie.getValue().equals("on")) || !cookie.getName().equals("Logged"))){ response.sendRedirect("/Lists/homepage.jsp"); }
+            }else if ( i == (cookies.length - 1 )){ response.sendRedirect("/Lists/homepage.jsp"); System.out.println("no logged\n");
+            }
         }
-    }else { response.sendRedirect("/Lists/homepage.jsp");}
+    }else { response.sendRedirect("/Lists/homepage.jsp"); System.out.println("no cookies");
+    }
     
     %> 

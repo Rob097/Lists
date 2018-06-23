@@ -38,7 +38,7 @@
                 stmt = conn.createStatement();
                 
             }catch (Exception e) {
-                System.out.println("Causa Connessione: ");
+                out.println("Causa Connessione: ");
                 e.printStackTrace();
             }            
         %>
