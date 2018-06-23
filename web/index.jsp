@@ -22,9 +22,9 @@ and open the template in the editor.
                     cookieOn = cookies[j];
                     if(cookieOn.getName().equals("Type") && cookieOn.getValue().equals("standard")){ response.sendRedirect("Pages/standardType.jsp");}
                     else if(cookieOn.getName().equals("Type") && cookieOn.getValue().equals("nonStandard")){ response.sendRedirect("Pages/notStandardType.jsp");}
-                    
+                    else response.sendRedirect("/Lists/homepage.jsp");
                 } 
-            }
+            }else response.sendRedirect("/Lists/homepage.jsp");
         }
     }else { response.sendRedirect("/Lists/homepage.jsp");}
     
