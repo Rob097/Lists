@@ -24,10 +24,8 @@ and open the template in the editor.
                     if(cookieOn.getName().equals("Type") && cookieOn.getValue().equals("nonStandard")){ response.sendRedirect("Pages/notStandardType.jsp"); System.out.println("type non standard \n");}
                     
                 } 
-            }else if ( i == (cookies.length - 1 )){ response.sendRedirect("/Lists/homepage.jsp"); System.out.println("no logged\n");
-            }
+            }else if ( i == (cookies.length - 1 )){ response.sendRedirect("Lists/homepage.jsp"); System.out.println("no logged\n");}
         }
-    }else { response.sendRedirect("/Lists/homepage.jsp"); System.out.println("no cookies");
-    }
+    }else { response.sendRedirect("Lists/homepage.jsp"); System.out.println("no cookies");}
     
     %> 
