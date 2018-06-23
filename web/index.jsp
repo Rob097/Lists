@@ -20,11 +20,11 @@ and open the template in the editor.
             if(cookie.getName().equals("Logged") && cookie.getValue().equals("on")){
                 for (int j = 0; j < cookies.length; j++) {
                     cookieOn = cookies[j];
-                    if(cookieOn.getName().equals("Type") && cookieOn.getValue().equals("standard")){ response.sendRedirect("Pages/standardType.jsp"); break;}
-                    else if(cookieOn.getName().equals("Type") && cookieOn.getValue().equals("nonStandard")){ response.sendRedirect("Pages/notStandardType.jsp"); break;}
-                    else if((cookieOn.getName().equals("Type") && (!cookieOn.getValue().equals("standard") || !cookieOn.getValue().equals("nonStandard"))) || !cookieOn.getName().equals("Type")){ response.sendRedirect("/Lists/homepage.jsp");  break;}
+                    if(cookieOn.getName().equals("Type") && cookieOn.getValue().equals("standard")){ response.sendRedirect("Pages/standardType.jsp");}
+                    else if(cookieOn.getName().equals("Type") && cookieOn.getValue().equals("nonStandard")){ response.sendRedirect("Pages/notStandardType.jsp");}
+                    else if((cookieOn.getName().equals("Type") && (!cookieOn.getValue().equals("standard") || !cookieOn.getValue().equals("nonStandard"))) || !cookieOn.getName().equals("Type")){ response.sendRedirect("/Lists/homepage.jsp");}
                 } 
-            }else if((cookie.getName().equals("Logged") && !cookie.getValue().equals("on")) || !cookie.getName().equals("Logged")) {response.sendRedirect("/Lists/homepage.jsp");  break;}
+            }
         }
     }else { response.sendRedirect("/Lists/homepage.jsp");}
     
