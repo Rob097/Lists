@@ -4,6 +4,24 @@
     Author     : Roberto97
 --%>
 
+<%
+Cookie cookiecheck = null;
+    Cookie[] cookiescheck = null;     
+    boolean find = false; 
+    // Get an array of Cookies associated with the this domain
+    cookiescheck = request.getCookies();
+    if( cookiescheck != null ) {
+              
+        for (int i = 0; i < cookiescheck.length && find != true; i++) {                       
+            cookiecheck = cookiescheck[i];
+            if(cookiecheck.getName().equals("Type")){
+                if(cookiecheck.getValue().equals("standard")) find = true;
+            }
+        }
+    }
+    
+    if(find){
+%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.Connection"%>
@@ -1596,4 +1614,7 @@
 </body>
 </html>
 
-
+<%
+    }
+else response.sendRedirect("/Lists");
+%>

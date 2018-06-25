@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Roberto97
  */
 public class LoginAction extends HttpServlet {
-
+    String url = null;
     
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -80,9 +80,9 @@ public class LoginAction extends HttpServlet {
                     request.getSession().setAttribute("Email", Email);
                     request.getSession().setAttribute("Type", Type);
                     request.getSession().setAttribute("Logged", "on");
-                    
-                    response.sendRedirect("Pages/standardType.jsp");
+                    url = "Pages/standardType.jsp";
                 } else {
+                    url = null;
                     out.println("Attenzione che tu sei un utente NONStandard");
                 }
             } else //Guarda se i campoi sono corretti e se l'utente è NON standard
@@ -111,13 +111,20 @@ public class LoginAction extends HttpServlet {
                     request.getSession().setAttribute("Type", Type);
                     request.getSession().setAttribute("Logged", "on");
                     
-                    response.sendRedirect("Pages/notStandardType.jsp");
+                    url = "Pages/notStandardType.jsp";
                 } else {
+                    url = null;
                     out.println("Attenzione che tu sei un utente Standard");
                 }
             } else {
+                url = null;
                 out.println("Invalid login credentials");
             }
+            if(url != null){
+                response.sendRedirect(url);
+            }
+            else out.print("Errore Imprevisto");
+            
             
         } catch (Exception e) {
             out.println("Something went wrong !! Please try again");

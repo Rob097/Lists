@@ -9,18 +9,21 @@ and open the template in the editor.
 <% 
     Cookie cookie = null;
     Cookie[] cookies = null;
-            
-            
+    String url = "/Lists/homepage.jsp";       
+    boolean find = false; 
     // Get an array of Cookies associated with the this domain
     cookies = request.getCookies();
     if( cookies != null ) {
-        for (int i = 0; i < cookies.length; i++) {                       
+              
+        for (int i = 0; i < cookies.length && find != true; i++) {                       
             cookie = cookies[i];
-            if(cookie.getName().equals("Type") && cookie.getValue().equals("standard")){ response.sendRedirect("Pages/standardType.jsp"); System.out.println("type standard\n");}
-            else if(cookie.getName().equals("Type") && cookie.getValue().equals("nonStandard")){ response.sendRedirect("Pages/notStandardType.jsp"); System.out.println("type non standard \n");}
-            else if((i == cookies.length - 1) && !cookie.getName().equals("Type")){response.sendRedirect("/Lists/homepage.jsp"); System.out.println("no type \n");}
-            else { response.sendRedirect("/Lists/homepage.jsp"); System.out.println("errore imprevisto");}
+            if(cookies[i].getName().equals("Type")){
+                if(cookies[i].getValue().equals("standard")){ url = "Pages/standardType.jsp"; find = true;}
+                else if(cookies[i].getValue().equals("nonstandard")){ url = "Pages/notStandardType.jsp"; find = true;}
+            }
         }
-    }else { response.sendRedirect("/Lists/homepage.jsp"); System.out.println("no cookies");}
+        
+    }else {out.println("no cookies");}
+    response.sendRedirect(url);
     
     %> 
