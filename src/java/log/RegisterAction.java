@@ -36,8 +36,8 @@ public class RegisterAction extends HttpServlet {
         Connection conn = null;
             
             try{
-                Class.forName("com.mysql.cj.jdbc.Driver");  // MySQL database connection
-                String dburl = "jdbc:mysql://sql2.freemysqlhosting.net:3306/sql2243047?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&autoReconnect=true&useSSL=false";
+                Class.forName("com.mysql.jdbc.Driver");  // MySQL database connection
+                String dburl = "jdbc:mysql://sql2.freemysqlhosting.net:3306/sql2243047?zeroDateTimeBehavior=convertToNull";
                 String dbusername = "sql2243047";
                 String dbpassword = "mJ9*fQ4%";
                 conn = DriverManager.getConnection(dburl, dbusername, dbpassword);

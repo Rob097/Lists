@@ -1,0 +1,53 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package database.entities;
+
+/**
+ *
+ * @author Martin
+ */
+public class User {
+    
+    private String email;
+    private String password;
+    private String nominativo;
+    private String Tipo;
+    //Image...
+
+    public String getNominativo() {
+        return nominativo;
+    }
+
+    public String getTipo() {
+        return Tipo;
+    }
+
+    public void setNominativo(String nominativo) {
+        this.nominativo = nominativo;
+    }
+
+    public void setTipo(String Tipo) {
+        this.Tipo = Tipo;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    
+}
