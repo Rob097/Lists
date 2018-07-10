@@ -13,7 +13,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -21,6 +20,7 @@ import java.util.logging.Logger;
  * @author Martin
  */
 public class JDBCDAOFactory implements DAOFactory{
+    
     private final transient Connection CON;
     private final transient HashMap<Class, DAO> DAO_CACHE;
     private static JDBCDAOFactory instance;
@@ -50,7 +50,7 @@ public class JDBCDAOFactory implements DAOFactory{
         }
 
         try {
-            CON = DriverManager.getConnection(dbUrl);
+            CON = DriverManager.getConnection(dbUrl,"sql2243047","mJ9*fQ4%");
         } catch (SQLException sqle) {
             throw new DAOFactoryException("Cannot create connection", sqle);
         }
@@ -61,24 +61,24 @@ public class JDBCDAOFactory implements DAOFactory{
 
     @Override
     public void shutdown() {
-       try{
-           DriverManager.getConnection("jdbc:mysql:;shutdown=true;");
-       } catch (SQLException ex) {
-            Logger.getLogger(JDBCDAOFactory.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            DriverManager.getConnection("jdbc:derby:;shutdown=true");
+        } catch (SQLException sqle) {
+            Logger.getLogger(JDBCDAOFactory.class.getName()).info(sqle.getMessage());
         }
     }
 
     @Override
     public <DAO_CLASS extends DAO> DAO_CLASS getDAO(Class<DAO_CLASS> daoInterface) throws DAOFactoryException {
         DAO dao = DAO_CACHE.get(daoInterface);
-        if(dao!=null){
-            return (DAO_CLASS)dao;
+        if (dao != null) {
+            return (DAO_CLASS) dao;
         }
         
-        Package pkg =daoInterface.getPackage();
-        String prefix = pkg.getName()+"jdbc.JDBC";
+        Package pkg = daoInterface.getPackage();
+        String prefix = pkg.getName() + ".jdbc.JDBC";
         
-         try {
+        try {
             Class daoClass = Class.forName(prefix + daoInterface.getSimpleName());
             
             Constructor<DAO_CLASS> constructor = daoClass.getConstructor(Connection.class);
@@ -92,7 +92,6 @@ public class JDBCDAOFactory implements DAOFactory{
             throw new DAOFactoryException("Impossible to return the DAO", ex);
         }
     }
-    
     
     
 }

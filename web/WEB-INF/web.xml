@@ -4,6 +4,22 @@
         <param-name>dburl</param-name>
         <param-value>jdbc:mysql://sql2.freemysqlhosting.net:3306/sql2243047?zeroDateTimeBehavior=convertToNull</param-value>
     </context-param>
+    <filter>
+        <filter-name>AutenticationFilter</filter-name>
+        <filter-class>filters.AutenticationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AutenticationFilter</filter-name>
+        <url-pattern>/restricted/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+    <listener>
+        <description>ServletContextListener</description>
+        <listener-class>listeners.WebAppListener</listener-class>
+    </listener>
     <servlet>
         <servlet-name>LogoutAction</servlet-name>
         <servlet-class>log.LogoutAction</servlet-class>
