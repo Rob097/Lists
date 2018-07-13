@@ -5,8 +5,7 @@
  */
 package database.factories;
 
-import database.daos.DAO;
-import database.exceptions.DAOFactoryException;
+import java.sql.Connection;
 
 /**
  *
@@ -17,9 +16,7 @@ public interface DAOFactory {
     //shutdown the connection
     public void shutdown();
     
-    
-    //Returns the concrete {@link DAO dao} which type is the class passed as parameter
+    public Connection getConnection();
    
-    public <DAO_CLASS extends DAO> DAO_CLASS getDAO(Class<DAO_CLASS> daoInterface) throws DAOFactoryException;
     
 }

@@ -3,27 +3,42 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package log;
+package servlets.log;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import static java.lang.System.out;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import database.daos.UserDAO;
+import database.factories.DAOFactory;
+import database.entities.User;
+import database.jdbc.*;
+
+
+
 
 /**
  *
  * @author Roberto97
  */
 public class LoginAction extends HttpServlet {
+    private UserDAO userdao;
     String url = null;
+    
+     @Override
+    public void init() throws ServletException {
+        DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
+        if (daoFactory == null) {
+            throw new ServletException("Impossible to get dao factory for user storage system");
+        }
+        userdao = new JDBCUserDAO(daoFactory.getConnection());
+        
+    }
+    
+    
     
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -36,35 +51,36 @@ public class LoginAction extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
+        
             String username = request.getParameter("username");
             String password = request.getParameter("password");
-            Class.forName("com.mysql.cj.jdbc.Driver");  // MySQL database connection
-            String dburl = "jdbc:mysql://sql2.freemysqlhosting.net:3306/sql2243047?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&autoReconnect=true&useSSL=false";
-            String dbusername = "sql2243047";
-            String dbpassword = "mJ9*fQ4%";
-            Connection conn = DriverManager.getConnection(dburl, dbusername, dbpassword);
-            PreparedStatement pst = conn.prepareStatement("Select * from USER where Email=? and Password=?");
-            pst.setString(1, username);
-            pst.setString(2, password);
-
-            ResultSet rs = pst.executeQuery();
             String Nominativo = null;
             String Type = null;
             String image = null;
             String Email = null;
+            String Password = null;
             String standard = request.getParameter("standard");
             String notstandard = request.getParameter("nonStandard");
             String remember = request.getParameter("remember");
-
+          
+      
+            String contextPath = getServletContext().getContextPath();
+        if (!contextPath.endsWith("/")) {
+            contextPath += "/";
+        }
             //Guarda se i campoi sono corretti e se l'utente è standard
-            if (rs.next() && standard != null) {
-                if (rs.getString("Tipo").equals("standard")) {
+            try{
+                User user = userdao.getByEmailAndPassword(username, password);
+            
+            if (standard != null) {
+                if (user.getTipo().equals("standard")) {
 
-                    Nominativo = rs.getString("Nominativo");
-                    Type = rs.getString("Tipo");
-                    image = rs.getString("Image");
-                    Email = rs.getString("Email");
+                    Nominativo = user.getNominativo();
+                    Type = user.getTipo();
+                    image = user.getImage();
+                    Email = user.getEmail();
+                    Password = user.getPassword();
+
 
                     Cookie cookie = new Cookie("Nominativo", Nominativo);
                     Cookie typeCookie = new Cookie("Type", Type);
@@ -80,6 +96,7 @@ public class LoginAction extends HttpServlet {
                     request.getSession().setAttribute("Email", Email);
                     request.getSession().setAttribute("Type", Type);
                     request.getSession().setAttribute("Logged", "on");
+                    request.getSession().setAttribute("user", user);
                     url = "Pages/standardType.jsp";
                 } else {
                     url = null;
@@ -88,12 +105,12 @@ public class LoginAction extends HttpServlet {
             } else //Guarda se i campoi sono corretti e se l'utente è NON standard
                 
             if (notstandard != null) {
-                if (rs.getString("Tipo").equals("nonstandard")) {
+                if (user.getTipo().equals("nonstandard")) {
 
-                    Nominativo = rs.getString("Nominativo");
-                    Type = rs.getString("Tipo");
-                    image = rs.getString("Image");
-                    Email = rs.getString("Email");
+                    Nominativo = user.getNominativo();
+                    Type = user.getTipo();
+                    //image = user.getImage();
+                    Email = user.getEmail();
                     
                     Cookie cookie = new Cookie("Nominativo", Nominativo);
                     Cookie typeCookie = new Cookie("Type", Type);
@@ -110,6 +127,7 @@ public class LoginAction extends HttpServlet {
                     request.getSession().setAttribute("Email", Email);
                     request.getSession().setAttribute("Type", Type);
                     request.getSession().setAttribute("Logged", "on");
+                    request.getSession().setAttribute("user", user);
                     
                     url = "Pages/notStandardType.jsp";
                 } else {

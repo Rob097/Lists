@@ -15,7 +15,15 @@ public class User {
     private String password;
     private String nominativo;
     private String Tipo;
-    //Image...
+    private String Image;
+
+    public void setImage(String Image) {
+        this.Image = Image;
+    }
+
+    public String getImage() {
+        return Image;
+    }
 
     public String getNominativo() {
         return nominativo;

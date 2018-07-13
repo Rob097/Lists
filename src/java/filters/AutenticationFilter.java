@@ -12,9 +12,14 @@ import java.io.StringWriter;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import database.entities.User;
 
 /**
  *
@@ -38,9 +43,24 @@ public class AutenticationFilter implements Filter {
             log("AutenticationFilter:DoBeforeProcessing");
         }
         
-        //code 
-        //
-        //code
+        if(request instanceof HttpServletRequest){
+            ServletContext servletContext = ((HttpServletRequest) request).getServletContext();
+            HttpSession session = ((HttpServletRequest)request).getSession(false);
+            User user =null;
+            if(session != null){
+                user = (User) session.getAttribute("user");
+            }
+            if(user==null){
+                String contextPath = servletContext.getContextPath();
+                if(!contextPath.endsWith("/")){
+                    contextPath += "/";
+                }
+                ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "homepage.jsp"));
+                return;
+            }
+            
+            
+        }
     }    
     
     private void doAfterProcessing(ServletRequest request, ServletResponse response)

@@ -10,7 +10,6 @@ import javax.servlet.ServletContextListener;
 import database.factories.JDBCDAOFactory;
 import database.factories.DAOFactory;
 import database.exceptions.DAOFactoryException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
         
 
@@ -22,10 +21,8 @@ import java.util.logging.Logger;
 public class WebAppListener implements ServletContextListener {
 
     @Override
-    public void contextInitialized(ServletContextEvent sce) {
-       String dburl = sce.getServletContext().getInitParameter("dburl");
+    public void contextInitialized(ServletContextEvent sce) {       
        try{
-           JDBCDAOFactory.configure(dburl);
            DAOFactory daoFactory = JDBCDAOFactory.getInstance();
            sce.getServletContext().setAttribute("daoFactory", daoFactory);
        } catch (DAOFactoryException ex) {
@@ -41,6 +38,6 @@ public class WebAppListener implements ServletContextListener {
        if(daoFactory != null){
            daoFactory.shutdown();
        }
-       daoFactory=null;
+       daoFactory = null;
     }
 }

@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
-    <context-param>
-        <param-name>dburl</param-name>
-        <param-value>jdbc:mysql://sql2.freemysqlhosting.net:3306/sql2243047?zeroDateTimeBehavior=convertToNull</param-value>
-    </context-param>
     <filter>
         <filter-name>AutenticationFilter</filter-name>
         <filter-class>filters.AutenticationFilter</filter-class>
@@ -22,15 +18,15 @@
     </listener>
     <servlet>
         <servlet-name>LogoutAction</servlet-name>
-        <servlet-class>log.LogoutAction</servlet-class>
+        <servlet-class>servlets.log.LogoutAction</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LoginAction</servlet-name>
-        <servlet-class>log.LoginAction</servlet-class>
+        <servlet-class>servlets.log.LoginAction</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RegisterAction</servlet-name>
-        <servlet-class>log.RegisterAction</servlet-class>
+        <servlet-class>servlets.log.RegisterAction</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
