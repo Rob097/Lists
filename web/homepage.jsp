@@ -1544,6 +1544,10 @@
                         <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
                     </div>
                     <!--end form-group-->
+                    <div class="form-group">
+                        <input type="file" name="image" accept="image/*">
+                    </div>
+                    <!--end form-group-->
                     <div class="d-flex justify-content-between align-items-baseline">
                         <div class="form-group text-center">
                             <input type="checkbox" tabindex="3" class="" name="standard" id="standard">

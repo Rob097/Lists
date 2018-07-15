@@ -54,8 +54,13 @@ public class RegisterAction extends HttpServlet {
                 password=request.getParameter("password"); //txt_password
                 Tipostandard=request.getParameter("standard"); //txt_standard
                 TipononStandard=request.getParameter("nonStandard"); //txt_nonSstandard
-                photo="ciao";
-                
+                photo= request.getParameter("image");
+                System.out.println(photo);
+                if(photo.contains(".jpg") || photo.contains(".jpeg") || photo.contains(".png")){
+                    
+                }else{
+                    System.out.println("Attenzione serve un immagine! (jpg, jpeg, png)");
+                }
                 
             try{
                 PreparedStatement pstmt=null; //create statement     
