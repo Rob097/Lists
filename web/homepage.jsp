@@ -1528,7 +1528,7 @@
           </div>
             <div class="modal-body">
                     <!-- Form per il login -->
-                <form class="form clearfix" id="login-form" action="/Lists/RegisterAction" method="post" role="form" enctype="multipart/form-data">
+                <form class="form clearfix" id="login-form" action="/Lists/RegisterAction" method="post" role="form">
                     <div class="form-group">
                         <label for="email" class="col-form-label required">Email</label>
                         <input type="email" name="username" id="username" tabindex="1" class="form-control" placeholder="Email" value="">

@@ -4,8 +4,6 @@
     Author     : Roberto97
 --%>
 
-<%@page import="java.sql.PreparedStatement"%>
-<%@page import="java.sql.Blob"%>
 <%
 Cookie cookiecheck = null;
     Cookie[] cookiescheck = null;     
@@ -75,18 +73,15 @@ Cookie cookiecheck = null;
             String Nominativo = "";
             String Email = "";
             String Type = "";
-            
-            //String Image = "";
+            String Image = "";
              if( cookies != null ) {
                 for (int i = 0; i < cookies.length; i++) {                       
                         cookie = cookies[i];
                         if(cookie.getName().equals("JSESSIONID"));
                         else{   if (cookie.getName().equals("Nominativo")) Nominativo += cookie.getValue();
                                 if (cookie.getName().equals("Email")) Email += cookie.getValue();
-                                PreparedStatement statement1 = conn.prepareStatement("SELECT Image FROM User WHERE Email = ?");
-                                statement1.setString(1, Email);
                                 if (cookie.getName().equals("Type")) Type += cookie.getValue();
-                                //if (cookie.getName().equals("Image")) statement1.setString(1, Image);
+                                if (cookie.getName().equals("Image")) Image += cookie.getValue();
                         }
                 }
             } else {
@@ -117,7 +112,7 @@ Cookie cookiecheck = null;
                             </li>
                             <li>
                                 <a class="navbar-brand" style="cursor: pointer;" href="/Lists/LogoutAction" data-toggle="tooltip" data-placement="bottom" title="LogOut">
-                                    <i class="fa fa-sign-in"></i><%= Nominativo%> / <%= Type %> / <img src= "../DisplayImage?Email=foo@foo.foo" width="25px">
+                                    <i class="fa fa-sign-in"></i><%= Nominativo%> / <%= Type %> / <img src="<%= Image %>" width="25px">
                                 </a>
                             </li>
                             <li>

@@ -8,7 +8,6 @@ package log;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.System.out;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -50,10 +49,10 @@ public class LoginAction extends HttpServlet {
             pst.setString(2, password);
 
             ResultSet rs = pst.executeQuery();
-            String Nominativo;
-            String Type;
-            Blob image;
-            String Email;
+            String Nominativo = null;
+            String Type = null;
+            String image = null;
+            String Email = null;
             String standard = request.getParameter("standard");
             String notstandard = request.getParameter("nonStandard");
             String remember = request.getParameter("remember");
@@ -64,21 +63,20 @@ public class LoginAction extends HttpServlet {
 
                     Nominativo = rs.getString("Nominativo");
                     Type = rs.getString("Tipo");
+                    image = rs.getString("Image");
                     Email = rs.getString("Email");
-                    //image = rs.getBlob("Email");
-                    
 
                     Cookie cookie = new Cookie("Nominativo", Nominativo);
                     Cookie typeCookie = new Cookie("Type", Type);
-                    //Cookie imageCookie = new Cookie("Image", image.toString());
+                    Cookie imageCookie = new Cookie("Image", image);
                     Cookie emailCookie = new Cookie("Email", Email);
                     Cookie logged = new Cookie("Logged", "on");
                     
-                    if(remember != null) {cookie.setMaxAge(30 * 24 * 60 * 60); /*imageCookie.setMaxAge(30 * 24 * 60 * 60);*/ typeCookie.setMaxAge(30 * 24 * 60 * 60); emailCookie.setMaxAge(30 * 24 * 60 * 60); logged.setMaxAge(30 * 24 * 60 * 60);}
-                    response.addCookie(cookie); /*response.addCookie(imageCookie);*/ response.addCookie(typeCookie); response.addCookie(emailCookie); response.addCookie(logged);
+                    if(remember != null) {cookie.setMaxAge(30 * 24 * 60 * 60); imageCookie.setMaxAge(30 * 24 * 60 * 60); typeCookie.setMaxAge(30 * 24 * 60 * 60); emailCookie.setMaxAge(30 * 24 * 60 * 60); logged.setMaxAge(30 * 24 * 60 * 60);}
+                    response.addCookie(cookie); response.addCookie(imageCookie); response.addCookie(typeCookie); response.addCookie(emailCookie); response.addCookie(logged);
                     
                     request.getSession().setAttribute("Nominativo", Nominativo);
-                    //request.getSession().setAttribute("Image", image);
+                    request.getSession().setAttribute("Image", image);
                     request.getSession().setAttribute("Email", Email);
                     request.getSession().setAttribute("Type", Type);
                     request.getSession().setAttribute("Logged", "on");
@@ -94,22 +92,21 @@ public class LoginAction extends HttpServlet {
 
                     Nominativo = rs.getString("Nominativo");
                     Type = rs.getString("Tipo");
+                    image = rs.getString("Image");
                     Email = rs.getString("Email");
-                    //image = rs.getBlob(Email);
-                    
                     
                     Cookie cookie = new Cookie("Nominativo", Nominativo);
                     Cookie typeCookie = new Cookie("Type", Type);
-                    //Cookie imageCookie = new Cookie("Image", image.toString());
+                    Cookie imageCookie = new Cookie("Image", image);
                     Cookie emailCookie = new Cookie("Email", Email);
                     Cookie logged = new Cookie("Logged", "on");
                     
-                    if(remember != null) {cookie.setMaxAge(30 * 24 * 60 * 60); /*imageCookie.setMaxAge(30 * 24 * 60 * 60);*/ typeCookie.setMaxAge(30 * 24 * 60 * 60); emailCookie.setMaxAge(30 * 24 * 60 * 60); logged.setMaxAge(30 * 24 * 60 * 60);}
-                    response.addCookie(cookie); /*response.addCookie(imageCookie);*/ response.addCookie(typeCookie); response.addCookie(emailCookie); response.addCookie(logged);
+                    if(remember != null) {cookie.setMaxAge(30 * 24 * 60 * 60); imageCookie.setMaxAge(30 * 24 * 60 * 60); typeCookie.setMaxAge(30 * 24 * 60 * 60); emailCookie.setMaxAge(30 * 24 * 60 * 60); logged.setMaxAge(30 * 24 * 60 * 60);}
+                    response.addCookie(cookie); response.addCookie(imageCookie); response.addCookie(typeCookie); response.addCookie(emailCookie); response.addCookie(logged);
                     
                     
                     request.getSession().setAttribute("Nominativo", Nominativo);
-                    //request.getSession().setAttribute("Image", image);
+                    request.getSession().setAttribute("Image", image);
                     request.getSession().setAttribute("Email", Email);
                     request.getSession().setAttribute("Type", Type);
                     request.getSession().setAttribute("Logged", "on");

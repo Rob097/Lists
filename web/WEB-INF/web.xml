@@ -12,10 +12,6 @@
         <servlet-name>RegisterAction</servlet-name>
         <servlet-class>log.RegisterAction</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>DisplayImage</servlet-name>
-        <servlet-class>log.DisplayImage</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/LogoutAction</url-pattern>
@@ -27,10 +23,6 @@
     <servlet-mapping>
         <servlet-name>RegisterAction</servlet-name>
         <url-pattern>/RegisterAction</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DisplayImage</servlet-name>
-        <url-pattern>/DisplayImage</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
