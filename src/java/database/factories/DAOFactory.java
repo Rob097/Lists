@@ -16,6 +16,7 @@ public interface DAOFactory {
     //shutdown the connection
     public void shutdown();
     
+    //ritorna la connection creata nel ContextListener/JDBCDAOFactoy
     public Connection getConnection();
    
     

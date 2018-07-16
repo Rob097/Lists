@@ -20,10 +20,14 @@ import java.util.logging.Logger;
  */
 public class WebAppListener implements ServletContextListener {
 
+    //Ascolta, se viene fatto una richiesta al sito crea una connessione con mysql
     @Override
     public void contextInitialized(ServletContextEvent sce) {       
        try{
+           //Crea una daoFactory e la inizializza con un istanza di JDBCDAOFactoy(db driver e db connection)
            DAOFactory daoFactory = JDBCDAOFactory.getInstance();
+           
+           //l`evento sce mette nella Servlet-Context un attributo daoFactory ad accedere da ogni servlet
            sce.getServletContext().setAttribute("daoFactory", daoFactory);
        } catch (DAOFactoryException ex) {
             Logger.getLogger(getClass().getName()).severe(ex.toString());
@@ -31,10 +35,14 @@ public class WebAppListener implements ServletContextListener {
         }
 
     }
-
+    
+        //Quando il browser viene chiuso anche la connessione viene chiuso
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
+        //crea un oggetto daoFactory inizzializzato col attributo daoFactory (inizzializzato sopra)
        DAOFactory daoFactory =(DAOFactory) sce.getServletContext().getAttribute("daoFactory");
+       
+       //chiude la connessione 
        if(daoFactory != null){
            daoFactory.shutdown();
        }

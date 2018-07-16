@@ -6,7 +6,7 @@
 package database.entities;
 
 /**
- *
+ *Classe Bean che salva i dati preso dal database nelle variabili della classe User
  * @author Martin
  */
 public class User {

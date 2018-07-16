@@ -20,10 +20,12 @@ import java.sql.SQLException;
  */
 public class JDBCUserDAO extends JDBCDAO implements UserDAO{
 
+    //costruttore per avere disponibile la connessione
     public JDBCUserDAO(Connection con) {
         super(con);
     }
-
+    
+    //implementa metodo di Userdao, ritorna le informazioni dell`utente con i dati login
     @Override
     public User getByEmailAndPassword(String email, String password) throws DAOException {
        if(email==null || password == null){
@@ -58,7 +60,8 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
             throw new DAOException("Impossible to get the list of users", ex);
         }
     }
-
+    
+    //implementa il metodo update di Userdao che aggiunge un nuovo utente nel database
     @Override
     public User update(User user) throws DAOException {
        if (user == null) {

@@ -9,10 +9,11 @@ import database.entities.User;
 import database.exceptions.DAOException;
 
 /**
- *
+ * 
  * @author Martin
  */
-public interface UserDAO /*extends DAO<User, Integer>*/{
+//intefaccia di JDBCUserDAO 
+public interface UserDAO{
     
     //returns the user with the given email and password
     public User getByEmailAndPassword(String email, String password) throws DAOException;

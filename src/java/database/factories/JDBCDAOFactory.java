@@ -15,6 +15,7 @@ import java.util.logging.Logger;
  *
  * @author Martin
  */
+//implementa i metodi di DAOFactory shutdown e getConnection e crea la connessione
 public class JDBCDAOFactory implements DAOFactory{
     private final  String DRIVER = "com.mysql.jdbc.Driver";
     private static final String DBURL = "jdbc:mysql://sql2.freemysqlhosting.net:3306/sql2243047?zeroDateTimeBehavior=convertToNull";
@@ -23,9 +24,10 @@ public class JDBCDAOFactory implements DAOFactory{
     private final transient Connection CON;
     private static JDBCDAOFactory instance;
     
-    
+    //ritorna un istanza di questa Classe
      public static JDBCDAOFactory getInstance() throws DAOFactoryException {
         if (instance == null) {
+            //crea un istanza di questa classe e la inizializza con il costruttore. 
             instance = new JDBCDAOFactory(DBURL);
         } else {
             throw new DAOFactoryException("DAOFactory already configured. You can call configure only one time");
@@ -35,29 +37,32 @@ public class JDBCDAOFactory implements DAOFactory{
         }
         return instance;
     }
-    
+    //Costruttore
     private JDBCDAOFactory(String dbUrl) throws DAOFactoryException {
         super();
 
         try {
+            // dynamically loading the appropriate driver class with a call to Class.forName()
             Class.forName(DRIVER);
         } catch (ClassNotFoundException cnfe) {
             throw new RuntimeException(cnfe.getMessage(), cnfe.getCause());
         }
 
         try {
+            //assegna la connessione
             CON = DriverManager.getConnection(dbUrl,USERNAME,PASSWORD);
         } catch (SQLException sqle) {
             throw new DAOFactoryException("Cannot create connection", sqle);
         }
         
     }
+    //ritorna una connessione
     @Override
     public Connection getConnection(){
         return CON;
     }
     
-
+    //Chiude la connessione
     @Override
     public void shutdown() {
         try {
