@@ -1,16 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <filter>
+        <filter-name>AutenticationFilter</filter-name>
+        <filter-class>filters.AutenticationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AutenticationFilter</filter-name>
+        <url-pattern>/restricted/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+    <listener>
+        <description>ServletContextListener</description>
+        <listener-class>listeners.WebAppListener</listener-class>
+    </listener>
     <servlet>
         <servlet-name>LogoutAction</servlet-name>
-        <servlet-class>log.LogoutAction</servlet-class>
+        <servlet-class>servlets.log.LogoutAction</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LoginAction</servlet-name>
-        <servlet-class>log.LoginAction</servlet-class>
+        <servlet-class>servlets.log.LoginAction</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RegisterAction</servlet-name>
-        <servlet-class>log.RegisterAction</servlet-class>
+        <servlet-class>servlets.log.RegisterAction</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DisplayImage</servlet-name>
