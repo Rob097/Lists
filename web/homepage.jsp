@@ -1528,7 +1528,7 @@
           </div>
             <div class="modal-body">
                     <!-- Form per il login -->
-                <form class="form clearfix" id="login-form" action="/Lists/RegisterAction" method="post" role="form" enctype="multipart/form-data">
+                <form class="form clearfix" id="login-form" action="/Lists/RegisterAction" method="post">
                     <div class="form-group">
                         <label for="email" class="col-form-label required">Email</label>
                         <input type="email" name="username" id="username" tabindex="1" class="form-control" placeholder="Email" value="">
@@ -1543,7 +1543,9 @@
                         <label for="password" class="col-form-label required">Password</label>
                         <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
                     </div>
+                    </form>
                     <!--end form-group-->
+                      <form class="form clearfix" id="login-form" action="/Lists/RegisterAction" method="post" role="form" enctype="multipart/form-data">
                     <div class="form-group">
                         <input type="file" name="image" accept="image/*">
                     </div>

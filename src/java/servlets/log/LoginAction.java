@@ -77,7 +77,7 @@ public class LoginAction extends HttpServlet {
 
                     Nominativo = user.getNominativo();
                     Type = user.getTipo();
-                    image = user.getImage();
+        //            image = user.getImage();
                     Email = user.getEmail();
                     Password = user.getPassword();
 

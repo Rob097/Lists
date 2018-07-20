@@ -11,7 +11,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -25,19 +24,33 @@ import javax.servlet.http.Part;
  *
  * @author Roberto97
  */
+
+
 @MultipartConfig(maxFileSize = 16177215)	// upload file's size up to 16MB
 public class RegisterAction extends HttpServlet {
 
-   
-	
+   /*@Override
+    public void init() throws ServletException {
+         //carica la Connessione inizializzata in JDBCDAOFactory
+        DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
+        if (daoFactory == null) {
+            throw new ServletException("Impossible to get dao factory for user storage system");
+        }
+            assegna a userdao la connessione(costruttore)
+        userdao = new JDBCUserDAO(daoFactory.getConnection());
+        
+    }
+*/
+             //-->UserDAO userdao = null;             
 	// database connection settings
-	private String dbURL = "jdbc:mysql://sql2.freemysqlhosting.net:3306/sql2243047?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&autoReconnect=true&useSSL=false";
-	private String dbUser = "sql2243047";
-	private String dbPass = "mJ9*fQ4%";
+	private String dbURL = "jdbc:mysql://ourlists.ddns.net:3306/ourlists?zeroDateTimeBehavior=convertToNull";
+	private String dbUser = "user";
+	private String dbPass = "the_password";
 	
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// gets values of text fields
+		//User user = new User();
+                    // gets values of text fields
 		String username=null, nome=null, password=null, Tipostandard=null, TipononStandard=null, photo=null, standard="standard", nonStandard="nonStandard";
 		username=request.getParameter("username"); //txt_username
         nome=request.getParameter("nominativo"); //txt_name
@@ -63,9 +76,11 @@ public class RegisterAction extends HttpServlet {
 		
 		try{
 			// connects to the database
-			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 			conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
-
+                        
+                        
+                            //-->userdao.update(user);
 			// constructs SQL statement
 			String sql = "insert into USER(Email,Password,Nominativo,Tipo,Image) values(?,?,?,?,?)";
 			PreparedStatement statement = conn.prepareStatement(sql);

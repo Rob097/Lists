@@ -9,12 +9,21 @@ import database.factories.DAOFactory;
 import database.jdbc.JDBCUserDAO;
 import database.daos.UserDAO;
 import database.entities.User;
+import database.exceptions.DAOException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 /**
  *
@@ -46,54 +55,44 @@ public class RegisterAction extends HttpServlet {
             throws ServletException, IOException {
 
         User user = new User();
-            
-           String Tipostandard=null, TipononStandard=null, photo=null;    
-                user.setEmail(request.getParameter("username")); //txt_username
-                user.setNominativo(request.getParameter("nominativo")); //txt_name
-                user.setPassword(request.getParameter("password"));//txt_password
-                Tipostandard=request.getParameter("standard"); //txt_standard
-                TipononStandard=request.getParameter("nonStandard"); //txt_nonSstandard
-                user.setImage(photo="ciao");
-                if(Tipostandard!=null){
-                    user.setTipo(Tipostandard);
+           //User user = new User();
+                    // gets values of text fields
+		String username=null, nome=null, password=null, Tipostandard=null, TipononStandard=null, photo=null, standard="standard", nonStandard="nonStandard";
+		username=request.getParameter("username"); //txt_username
+        nome=request.getParameter("nominativo"); //txt_name
+        password=request.getParameter("password"); //txt_password
+        Tipostandard=request.getParameter("standard"); //txt_standard
+        TipononStandard=request.getParameter("nonStandard"); //txt_nonSstandard
+        InputStream inputStream = null;	// input stream of the upload file
+		
+		// obtains the upload file part in this multipart request
+		Part filePart = request.getPart("image");
+		if (filePart != null) {
+			// prints out some information for debugging
+			System.out.println(filePart.getName());
+			System.out.println(filePart.getSize());
+			System.out.println(filePart.getContentType());
+			
+			// obtains input stream of the upload file
+			inputStream = filePart.getInputStream();
+		}
+		user.setEmail(username);
+                user.setNominativo(nome);
+                user.setPassword(password);
+                user.setTipo(Tipostandard);
+                try {
+                   user= userdao.update(user);
+                } catch (DAOException ex) {
+                    Logger.getLogger(RegisterAction.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                if(TipononStandard!=null){
-                    user.setTipo(TipononStandard);
-                }
-                
-                
-            try{
-                user = userdao.update(user);
-                Cookie cookie = new Cookie("Nominativo", user.getNominativo());
-                Cookie emailCookie = new Cookie("Email", user.getEmail());
-                Cookie imageCookie = new Cookie("Image", user.getImage());
-                Cookie typeCookie = null;   if(Tipostandard != null){
-                                                typeCookie = new Cookie("Type", Tipostandard);
-                                            }
-                                            else if(TipononStandard != null){
-                                                typeCookie = new Cookie("Type", TipononStandard);
-                                            }
-                Cookie logged = new Cookie("Logged", "on");
-                cookie.setMaxAge(60*60*24); imageCookie.setMaxAge(60*60*24); typeCookie.setMaxAge(60*60*24); emailCookie.setMaxAge(60*60*24); logged.setMaxAge(60*60*24);
-                response.addCookie(cookie); response.addCookie(imageCookie); response.addCookie(typeCookie); response.addCookie(emailCookie); response.addCookie(logged);
-                
-                request.getSession().setAttribute("user", user);
-                request.getSession().setAttribute("Nominativo", user.getNominativo());
-                request.getSession().setAttribute("Email", user.getEmail());
-                request.getSession().setAttribute("Image", user.getImage());
-                request.getSession().setAttribute("Type", typeCookie);
-                request.getSession().setAttribute("Logged", "on");
-                
-                
-                //request.setAttribute("successMsg","Register Successfully...! Please login"); //register success messeage
-                if(Tipostandard != null) response.sendRedirect("Pages/standardType.jsp");
-                else if(TipononStandard != null) response.sendRedirect("Pages/notStandardType.jsp");
-        
-                
-            }catch(Exception e){
-                System.out.println("Errore database RegisterAction");
-                System.out.println(e);
-            }
+
+			// sets the message in request scope
+			response.sendRedirect("homepage.jsp");
+			
+			// forwards to the message page
+			//getServletContext().getRequestDispatcher("/Message.jsp").forward(request, response);
+		
+	
     }
 
     /**

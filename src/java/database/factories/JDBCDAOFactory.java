@@ -18,9 +18,9 @@ import java.util.logging.Logger;
 //implementa i metodi di DAOFactory shutdown e getConnection e crea la connessione
 public class JDBCDAOFactory implements DAOFactory{
     private final  String DRIVER = "com.mysql.jdbc.Driver";
-    private static final String DBURL = "jdbc:mysql://sql2.freemysqlhosting.net:3306/sql2243047?zeroDateTimeBehavior=convertToNull";
-    private final  String USERNAME = "sql2243047";
-    private final String PASSWORD ="mJ9*fQ4%";
+    private static final String DBURL = "jdbc:mysql://ourlists.ddns.net:3306/ourlists?zeroDateTimeBehavior=convertToNull";
+    private final  String USERNAME = "user";
+    private final String PASSWORD ="the_password";
     private final transient Connection CON;
     private static JDBCDAOFactory instance;
     

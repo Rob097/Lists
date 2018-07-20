@@ -31,7 +31,7 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
        if(email==null || password == null){
           throw new DAOException("Email and password are mandatory fields", new NullPointerException("email or password are null"));
        }
-       try (PreparedStatement stm = CON.prepareStatement("Select * from USER where Email=? and Password=?")) {
+       try (PreparedStatement stm = CON.prepareStatement("Select * from Utente where email=? and password=?")) {
             stm.setString(1, email);
             stm.setString(2, password);
             try (ResultSet rs = stm.executeQuery()) {
@@ -48,7 +48,7 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
                     user.setPassword(rs.getString("Password"));
                     user.setNominativo(rs.getString("Nominativo"));
                     user.setTipo(rs.getString("Tipo"));
-                    user.setImage(rs.getString("Image"));
+                    //user.setImage(rs.getString("Image"));
 
             
 
@@ -67,19 +67,20 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
        if (user == null) {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed user is null"));
         }
-       try (PreparedStatement std = CON.prepareStatement("insert into USER(Email,Password,Nominativo,Tipo,Image) values(?,?,?,?,?)")) {
+       try (PreparedStatement std = CON.prepareStatement("INSERT INTO User(email,password,nominativo,tipo) VALUES(?,?,?,?)")) {
             std.setString(1, user.getEmail());
             std.setString(2, user.getPassword());
             std.setString(3, user.getNominativo());
             std.setString(4, user.getTipo());
-            std.setString(5, user.getImage());
+            //std.setBlob(5, inputStream);
             if (std.executeUpdate() == 1) {
                 return user;
             } else {
-                throw new DAOException("Impossible to update the user");
+                throw new DAOException("Impossible to update the User");
             }
         } catch (SQLException ex) {
-            throw new DAOException("Impossible to update the user", ex);
+            throw new DAOException(ex);
+            
         }
     }
     
