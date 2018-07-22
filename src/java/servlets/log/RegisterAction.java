@@ -57,7 +57,7 @@ public class RegisterAction extends HttpServlet {
         User user = new User();
            //User user = new User();
                     // gets values of text fields
-                    Part email = request.getPart("username");
+                    Part email = request.getPart("email");
                     Part password = request.getPart("password");
                     Part nome = request.getPart("nominativo");
                     Part tipo =request.getPart("standard");
@@ -75,7 +75,7 @@ public class RegisterAction extends HttpServlet {
         InputStream inputStreamN =nome.getInputStream();
 		
 		// obtains the upload file part in this multipart request
-		Part filePart = request.getPart("image");
+		Part filePart = request.getPart("immagine");
 		if (filePart != null) {
 			// prints out some information for debugging
 			System.out.println(filePart.getName());

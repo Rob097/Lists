@@ -50,10 +50,10 @@ Cookie cookiecheck = null;
             Connection conn = null;
             Statement stmt = null;
             try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                String url = "jdbc:mysql://sql2.freemysqlhosting.net:3306/sql2243047?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&autoReconnect=true&useSSL=false";
-                String username = "sql2243047";
-                String password = "mJ9*fQ4%";
+                Class.forName("com.mysql.jdbc.Driver");
+                String url = "jdbc:mysql://ourlists.ddns.net:3306/ourlists?zeroDateTimeBehavior=convertToNull";
+                String username = "user";
+                String password = "the_password";
                 conn = DriverManager.getConnection(url, username, password);
                 stmt = conn.createStatement();
                 
@@ -83,7 +83,7 @@ Cookie cookiecheck = null;
                         if(cookie.getName().equals("JSESSIONID"));
                         else{   if (cookie.getName().equals("Nominativo")) Nominativo += cookie.getValue();
                                 if (cookie.getName().equals("Email")) Email += cookie.getValue();
-                                PreparedStatement statement1 = conn.prepareStatement("SELECT Image FROM User WHERE Email = ?");
+                                PreparedStatement statement1 = conn.prepareStatement("SELECT immagine FROM User WHERE email = ?");
                                 statement1.setString(1, Email);
                                 if (cookie.getName().equals("Type")) Type += cookie.getValue();
                                 //if (cookie.getName().equals("Image")) statement1.setString(1, Image);

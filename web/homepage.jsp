@@ -1512,40 +1512,40 @@
     <!--######################################################-->
     
     <!-- Register Modal -->
-    <div class="modal fade" id="RegisterModal" tabindex="-1" role="dialog" aria-labelledby="RegisterModal" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <div class="page-title">
-                <div class="container">
-                    <h1>Register</h1>
+    <div class="modal fade" id="RegisterModal" tabindex="-1" role="dialog" aria-labelledby="RegisterModal" aria-hidden="true" enctype="multipart/form-data">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="page-title">
+                        <div class="container">
+                            <h1>Register</h1>
+                        </div>
+                        <!--end container-->
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                    <!--end container-->
-            </div>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-            <div class="modal-body">
+                <div class="modal-body">
                     <!-- Form per il login -->
-                <form class="form clearfix" id="login-form" action="/Lists/RegisterAction" method="post">
-                    <div class="form-group">
-                        <label for="email" class="col-form-label required">Email</label>
-                        <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" value="">
-                    </div>
+                    <form class="form clearfix" id="login-form" action="/Lists/RegisterAction" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="email" class="col-form-label required">Email</label>
+                            <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" value="">
+                        </div>
+                        <!--end form-group-->
+                        <div class="form-group">
+                            <label for="nominativo" class="col-form-label required">Nome</label>
+                            <input type="text" name="nominativo" id="nominativo" tabindex="1" class="form-control" placeholder="Nome" value="">
+                        </div>
+                        <!--end form-group-->
+                        <div class="form-group">
+                            <label for="password" class="col-form-label required">Password</label>
+                            <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
+                        </div>
+                    
                     <!--end form-group-->
-                    <div class="form-group">
-                        <label for="nominativo" class="col-form-label required">Nome</label>
-                        <input type="text" name="nominativo" id="nominativo" tabindex="1" class="form-control" placeholder="Nome" value="">
-                    </div>
-                    <!--end form-group-->
-                    <div class="form-group">
-                        <label for="password" class="col-form-label required">Password</label>
-                        <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
-                    </div>
-                    </form>
-                    <!--end form-group-->
-                      <form class="form clearfix" id="login-form" action="/Lists/RegisterAction" method="post" role="form" enctype="multipart/form-data">
+
                     <div class="form-group">
                         <input type="file" name="immagine" accept="image/*">
                     </div>
@@ -1559,17 +1559,17 @@
                         </div>
                         <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Register Now</button>
                     </div>
-                </form>
+                    </form>
                     <hr>
                     <p>
                         By clicking "Register Now" button, you agree with our <a href="#" class="link">Terms & Conditions.</a>
                     </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
             </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
         </div>
-      </div>
     </div>
     <!--######################################################-->
 

@@ -18,11 +18,11 @@
     </listener>
     <servlet>
         <servlet-name>LogoutAction</servlet-name>
-        <servlet-class>servlets.log.LogoutAction</servlet-class>
+        <servlet-class>log.LogoutAction</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LoginAction</servlet-name>
-        <servlet-class>servlets.log.LoginAction</servlet-class>
+        <servlet-class>log.LoginAction</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RegisterAction</servlet-name>
@@ -54,6 +54,6 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>/homepage.jsp</welcome-file>
+        <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
 </web-app>

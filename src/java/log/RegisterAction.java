@@ -51,14 +51,15 @@ public class RegisterAction extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		//User user = new User();
                     // gets values of text fields
-                    System.out.println("NEW#########");
-		String email, nominativo, password, Tipostandard, TipononStandard, photo, standard="standard", nonStandard="nonStandard";
-		email=request.getParameter("email"); //txt_username
-                nominativo=request.getParameter("nominativo"); //txt_name
-                password=request.getParameter("password"); //txt_password
-                Tipostandard=request.getParameter("standard"); //txt_standard
-                TipononStandard=request.getParameter("nonStandard"); //txt_nonSstandard
-                InputStream inputStream = null;	// input stream of the upload file
+                    
+                    String email, nominativo, password, Tipostandard, TipononStandard, photo, standard="standard", nonStandard="nonStandard";
+                    email=request.getParameter("email"); //txt_username
+                    System.out.println(email);
+                    nominativo=request.getParameter("nominativo"); //txt_name
+                    password=request.getParameter("password"); //txt_password
+                    Tipostandard=request.getParameter("standard"); //txt_standard
+                    TipononStandard=request.getParameter("nonStandard"); //txt_nonSstandard
+                    InputStream inputStream = null;	// input stream of the upload file
 		
 		// obtains the upload file part in this multipart request
 		Part filePart = request.getPart("immagine");
@@ -74,7 +75,7 @@ public class RegisterAction extends HttpServlet {
 		
 		Connection conn = null;	// connection to the database
 		String message;	// message will be sent back to client
-		
+		          
 		try{
 			// connects to the database
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
@@ -94,7 +95,7 @@ public class RegisterAction extends HttpServlet {
                         // fetches input stream of the upload file for the blob column
                             statement.setBlob(5, inputStream);
                         }   
-
+                        
 			// sends the statement to the database server
 			int row = statement.executeUpdate();
 			if (row > 0) {
@@ -109,7 +110,7 @@ public class RegisterAction extends HttpServlet {
 				try {
 					conn.close();
 				} catch (SQLException ex) {
-					                               System.out.println("ERRORNEW: ");ex.printStackTrace();
+                                    System.out.println("ERRORNEW: ");ex.printStackTrace();
 				}
 			}
 			// sets the message in request scope
