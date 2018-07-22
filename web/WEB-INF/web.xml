@@ -26,7 +26,7 @@
     </servlet>
     <servlet>
         <servlet-name>RegisterAction</servlet-name>
-        <servlet-class>servlets.log.RegisterAction</servlet-class>
+        <servlet-class>log.RegisterAction</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DisplayImage</servlet-name>

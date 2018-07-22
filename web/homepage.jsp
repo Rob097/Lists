@@ -34,9 +34,9 @@
             Statement stmt = null;
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                String url = "jdbc:mysql://sql2.freemysqlhosting.net:3306/sql2243047?zeroDateTimeBehavior=convertToNull";
-                String username = "sql2243047";
-                String password = "mJ9*fQ4%";
+                String url = "jdbc:mysql://ourlists.ddns.net:3306/ourlists?zeroDateTimeBehavior=convertToNull";
+                String username = "user";
+                String password = "the_password";
                 conn = DriverManager.getConnection(url, username, password);
                 stmt = conn.createStatement();
                 
@@ -337,17 +337,17 @@
                             <%
                                 ResultSet users = null;
                                 try {
-                                    String query = "select * from USER";
+                                    String query = "select * from User";
                                     users = stmt.executeQuery(query);
                                     while (users.next()) {
                             %>
                             <div class="col-xl col-lg col-md col-sm col"
 
                                  <br><h5 style="color: red"><%=users.getRow()%>° Record:</h5> 
-                                <h6>Email: <%=users.getString("Email")%><br>
-                                    Password: <%=users.getString("Password")%><br>
-                                    Nominativo: <%=users.getString("Nominativo")%><br>
-                                    Tipo: <%=users.getString("Tipo")%><br></h6>
+                                <h6>Email: <%=users.getString("email")%><br>
+                                    Password: <%=users.getString("password")%><br>
+                                    Nominativo: <%=users.getString("nominativo")%><br>
+                                    Tipo: <%=users.getString("tipo")%><br></h6>
                             </div>
                  
 
@@ -1476,7 +1476,7 @@
                 <form class="form clearfix" id="login-form" action="/Lists/LoginAction" method="post" role="form">
                     <div class="form-group">
                         <label for="email" class="col-form-label required">Email</label>
-                        <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Email" value="" required>
+                        <input type="text" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" value="" required>
                     </div>
                     <!--end form-group-->
                     <div class="form-group">
@@ -1531,7 +1531,7 @@
                 <form class="form clearfix" id="login-form" action="/Lists/RegisterAction" method="post">
                     <div class="form-group">
                         <label for="email" class="col-form-label required">Email</label>
-                        <input type="email" name="username" id="username" tabindex="1" class="form-control" placeholder="Email" value="">
+                        <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" value="">
                     </div>
                     <!--end form-group-->
                     <div class="form-group">
@@ -1547,7 +1547,7 @@
                     <!--end form-group-->
                       <form class="form clearfix" id="login-form" action="/Lists/RegisterAction" method="post" role="form" enctype="multipart/form-data">
                     <div class="form-group">
-                        <input type="file" name="image" accept="image/*">
+                        <input type="file" name="immagine" accept="image/*">
                     </div>
                     <!--end form-group-->
                     <div class="d-flex justify-content-between align-items-baseline">
