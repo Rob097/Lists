@@ -1,4 +1,4 @@
-/*
+/**
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -57,13 +57,22 @@ public class RegisterAction extends HttpServlet {
         User user = new User();
            //User user = new User();
                     // gets values of text fields
-		String username=null, nome=null, password=null, Tipostandard=null, TipononStandard=null, photo=null, standard="standard", nonStandard="nonStandard";
+                    Part email = request.getPart("username");
+                    Part password = request.getPart("password");
+                    Part nome = request.getPart("nominativo");
+                    Part tipo =request.getPart("standard");
+                    
+		/*String username=null, nome=null, password=null, Tipostandard=null, TipononStandard=null, photo=null, standard="standard", nonStandard="nonStandard";
 		username=request.getParameter("username"); //txt_username
         nome=request.getParameter("nominativo"); //txt_name
         password=request.getParameter("password"); //txt_password
         Tipostandard=request.getParameter("standard"); //txt_standard
         TipononStandard=request.getParameter("nonStandard"); //txt_nonSstandard
-        InputStream inputStream = null;	// input stream of the upload file
+                    */
+        InputStream inputStreamE = null;	// input stream of the upload file
+        inputStreamE = email.getInputStream();
+        InputStream inputStreamP =password.getInputStream();
+        InputStream inputStreamN =nome.getInputStream();
 		
 		// obtains the upload file part in this multipart request
 		Part filePart = request.getPart("image");
@@ -74,12 +83,13 @@ public class RegisterAction extends HttpServlet {
 			System.out.println(filePart.getContentType());
 			
 			// obtains input stream of the upload file
-			inputStream = filePart.getInputStream();
+			InputStream inputStream = filePart.getInputStream();
 		}
-		user.setEmail(username);
-                user.setNominativo(nome);
-                user.setPassword(password);
-                user.setTipo(Tipostandard);
+              
+		user.setEmail(email.toString());
+                user.setNominativo(nome.toString());
+                user.setPassword(password.toString());
+                user.setTipo("standard");
                 try {
                    user= userdao.update(user);
                 } catch (DAOException ex) {
@@ -106,3 +116,5 @@ public class RegisterAction extends HttpServlet {
     }// </editor-fold>
 
 }
+
+

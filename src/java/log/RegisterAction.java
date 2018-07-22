@@ -76,7 +76,7 @@ public class RegisterAction extends HttpServlet {
 		
 		try{
 			// connects to the database
-			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 			conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
                         
                         

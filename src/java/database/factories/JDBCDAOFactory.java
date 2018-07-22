@@ -30,10 +30,10 @@ public class JDBCDAOFactory implements DAOFactory{
             //crea un istanza di questa classe e la inizializza con il costruttore. 
             instance = new JDBCDAOFactory(DBURL);
         } else {
-            throw new DAOFactoryException("DAOFactory already configured. You can call configure only one time");
+            throw new DAOFactoryException("DAOFactory already configured");
         }
          if (instance == null) {
-            throw new DAOFactoryException("DAOFactory not yet configured. Call DAOFactory.configure(String dbUrl) before use the class");
+            throw new DAOFactoryException("DAOFactory not yet configured. Call DAOFactory.getInstnce() before use the class");
         }
         return instance;
     }

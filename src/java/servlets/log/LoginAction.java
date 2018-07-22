@@ -68,6 +68,7 @@ public class LoginAction extends HttpServlet {
         if (!contextPath.endsWith("/")) {
             contextPath += "/";
         }
+      
             //Guarda se i campoi sono corretti e se l'utente è standard
             try{
                 User user = userdao.getByEmailAndPassword(username, password);

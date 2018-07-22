@@ -31,7 +31,7 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
        if(email==null || password == null){
           throw new DAOException("Email and password are mandatory fields", new NullPointerException("email or password are null"));
        }
-       try (PreparedStatement stm = CON.prepareStatement("Select * from Utente where email=? and password=?")) {
+       try (PreparedStatement stm = CON.prepareStatement("Select * from User where email=? and password=?")) {
             stm.setString(1, email);
             stm.setString(2, password);
             try (ResultSet rs = stm.executeQuery()) {
@@ -44,10 +44,10 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
                         throw new DAOException("Unique constraint violated! There are more than one user with the same email! WHY???");
                     }
                     User user = new User();
-                    user.setEmail(rs.getString("Email"));
-                    user.setPassword(rs.getString("Password"));
-                    user.setNominativo(rs.getString("Nominativo"));
-                    user.setTipo(rs.getString("Tipo"));
+                    user.setEmail(rs.getString("email"));
+                    user.setPassword(rs.getString("password"));
+                    user.setNominativo(rs.getString("nominativo"));
+                    user.setTipo(rs.getString("tipo"));
                     //user.setImage(rs.getString("Image"));
 
             
