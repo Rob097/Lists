@@ -344,13 +344,24 @@
                             <div class="col-xl col-lg col-md col-sm col"
 
                                  <br><h5 style="color: red"><%=users.getRow()%>° Record:</h5> 
+                                
+                                <%
+                                     ServletContext context = request.getServletContext();
+                                     String appPath = context.getRealPath("");
+                                     
+                                
+                                %>
+                                
+                                <img src="<%=users.getString("immagine")%>" style="width:50%; height:65%;"/>
                                 <h6>Email: <%=users.getString("email")%><br>
                                     Password: <%=users.getString("password")%><br>
                                     Nominativo: <%=users.getString("nominativo")%><br>
                                     Tipo: <%=users.getString("tipo")%><br></h6>
                             </div>
                  
+                            
 
+                            
                 <%
                         }//while
                     } catch (Exception e) {
@@ -361,6 +372,7 @@
                     </div>
                     <!--end container-->
                 </div>
+
                 <!--============ End Page Title =====================================================================-->
                 <!--============ Hero Form ==========================================================================-->
                 <form class="hero-form form">
@@ -1547,7 +1559,7 @@
                     <!--end form-group-->
 
                     <div class="form-group">
-                        <input type="file" name="immagine" accept="image/*">
+                        <input type="file" name="file1">
                     </div>
                     <!--end form-group-->
                     <div class="d-flex justify-content-between align-items-baseline">
