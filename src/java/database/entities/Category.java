@@ -9,12 +9,10 @@ package database.entities;
  *
  * @author Martin
  */
-public class List {
+public class Category {
     private String nome;
     private String descrizione;
-    //private String immagine;
-    private String creator;
-    private String categoria;
+    private String admin;
 
     public String getNome() {
         return nome;
@@ -32,22 +30,13 @@ public class List {
         this.descrizione = descrizione;
     }
 
-    public String getCreator() {
-        return creator;
+    public String getAdmin() {
+        return admin;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator;
+    public void setAdmin(String admin) {
+        this.admin = admin;
     }
-
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-    
     
     
 }
