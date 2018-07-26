@@ -55,7 +55,8 @@ public class RegisterAction extends HttpServlet {
         //User user = new User();
         // gets values of text fields
         
-        String avatarsFolder = getServletContext().getInitParameter("avatarsFolder");
+        String avatarsFolder ="/Image/AvatarImg";
+        String rp ="/Image/AvatarImg";
         if (avatarsFolder == null) {
             throw new ServletException("Avatars folder not configured");
         }
@@ -89,7 +90,8 @@ public class RegisterAction extends HttpServlet {
             }
         }
 
-        photo = avatarsFolder + "/" + filename1;
+        photo = rp + "/" + filename1;
+        photo = photo.replaceFirst("/", "");
 
         Connection conn = null;	// connection to the database
         String message;	// message will be sent back to client
