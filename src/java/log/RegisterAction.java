@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import static jdk.nashorn.internal.objects.NativeString.substring;
 
 /**
  *
@@ -52,13 +54,15 @@ public class RegisterAction extends HttpServlet {
             HttpServletResponse response) throws ServletException, IOException {
         //User user = new User();
         // gets values of text fields
-
-        ServletContext context = request.getServletContext();
-        String appPath = context.getRealPath("");
-        String rpath = "WEB-INF/AvatarImg";
-
-        String uploadDir = appPath + rpath;
-        System.out.println("__________________________________________" + uploadDir);
+        
+        String avatarsFolder = getServletContext().getInitParameter("avatarsFolder");
+        if (avatarsFolder == null) {
+            throw new ServletException("Avatars folder not configured");
+        }
+        
+        avatarsFolder = getServletContext().getRealPath(avatarsFolder);
+        
+        
 
         String email, nominativo, password, Tipostandard, TipononStandard, photo, standard = "standard", nonStandard = "nonStandard";
         email = request.getParameter("email"); //txt_username
@@ -70,23 +74,21 @@ public class RegisterAction extends HttpServlet {
         InputStream inputStream = null;	// input stream of the upload file
 
         // obtains the upload file part in this multipart request
-        File uploadDirFile = new File(uploadDir);
+        File uploadDirFile = new File(avatarsFolder);
 
-        int count = 1;
+        String filename1 = "";
         Part filePart1 = request.getPart("file1");
-        System.out.println("=========================================================== : " + filePart1);
         if ((filePart1 != null) && (filePart1.getSize() > 0)) {
-            String filename1 = Paths.get(filePart1.getSubmittedFileName()).getFileName().toString();//MSIE  fix.
-            System.out.println("=========================================================== file name : " + filename1);
-            File file1 = new File(uploadDirFile, filename1);
+            String extension = Paths.get(filePart1.getSubmittedFileName()).getFileName().toString().split(Pattern.quote("."))[1];;
+            filename1 = email + "." + extension;
+            File file1 = new File(avatarsFolder, filename1);
 
-            System.out.println("=========================================================== upload dir: " + uploadDirFile);
             try (InputStream fileContent = filePart1.getInputStream()) {
-                System.out.println("=========================================================== : " + fileContent);
-
                 Files.copy(fileContent, file1.toPath());
             }
         }
+
+        photo = avatarsFolder + "/" + filename1;
 
         Connection conn = null;	// connection to the database
         String message;	// message will be sent back to client
@@ -110,10 +112,8 @@ public class RegisterAction extends HttpServlet {
                 TipononStandard = "Nonstandard";
                 statement.setString(4, nonStandard);
             }
-            if (inputStream != null) {
-                // fetches input stream of the upload file for the blob column
-                statement.setBlob(5, inputStream);
-            }
+            
+            statement.setString(5, photo);
 
             // sends the statement to the database server
             int row = statement.executeUpdate();
@@ -140,4 +140,5 @@ public class RegisterAction extends HttpServlet {
             //getServletContext().getRequestDispatcher("/Message.jsp").forward(request, response);
         }
     }
+
 }

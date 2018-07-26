@@ -4,6 +4,13 @@
         <filter-name>AutenticationFilter</filter-name>
         <filter-class>filters.AutenticationFilter</filter-class>
     </filter>
+    
+    <context-param>
+        <description>The path where the user avatar images are stored.</description>
+        <param-name>avatarsFolder</param-name>
+        <param-value>/Image/AvatarImg</param-value>
+    </context-param>
+    
     <filter-mapping>
         <filter-name>AutenticationFilter</filter-name>
         <url-pattern>/restricted/*</url-pattern>
