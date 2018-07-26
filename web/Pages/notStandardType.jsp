@@ -15,7 +15,7 @@ Cookie cookiecheck = null;
         for (int i = 0; i < cookiescheck.length && find != true; i++) {                       
             cookiecheck = cookiescheck[i];
             if(cookiecheck.getName().equals("Type")){
-                if(cookiecheck.getValue().equals("nonstandard")) find = true;
+                if(cookiecheck.getValue().equals("nonStandard")) find = true;
             }
         }
     }
@@ -49,15 +49,15 @@ Cookie cookiecheck = null;
             Connection conn = null;
             Statement stmt = null;
             try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                String url = "jdbc:mysql://sql2.freemysqlhosting.net:3306/sql2243047?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&autoReconnect=true&useSSL=false";
-                String username = "sql2243047";
-                String password = "mJ9*fQ4%";
+                Class.forName("com.mysql.jdbc.Driver");
+                String url = "jdbc:mysql://ourlists.ddns.net:3306/ourlists?zeroDateTimeBehavior=convertToNull";
+                String username = "user";
+                String password = "the_password";
                 conn = DriverManager.getConnection(url, username, password);
                 stmt = conn.createStatement();
                 
             }catch (Exception e) {
-                out.println("Causa Connessione: ");
+                System.out.println("Causa Connessione: ");
                 e.printStackTrace();
             }            
         %>

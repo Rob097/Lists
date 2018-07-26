@@ -1498,17 +1498,14 @@
                     <!--end form-group-->
                     <div class="d-flex justify-content-between align-items-baseline">
                         <div class="form-group text-center">
-                            <input type="checkbox" tabindex="3" class="" name="standard" id="standard">
-                            <label for="standard">Standard</label>
-                            <input type="checkbox" tabindex="3" class="" name="nonStandard" id="nonStandard">
-                            <label for="nonStandard">non Standard</label>
+                            <label>
+                                <input type="checkbox" name="remember" value="1">
+                                Remember Me
+                            </label>
                         </div>
                         <button type="submit" class="btn btn-primary">Sign In</button>
                     </div>
-                    <label>
-                        <input type="checkbox" name="remember" value="1">
-                        Remember Me
-                    </label>
+                    
                 </form>
                 <hr>
                 <p>
