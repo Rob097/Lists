@@ -15,7 +15,7 @@ Cookie cookiecheck = null;
         for (int i = 0; i < cookiescheck.length && find != true; i++) {                       
             cookiecheck = cookiescheck[i];
             if(cookiecheck.getName().equals("Type")){
-                if(cookiecheck.getValue().equals("nonstandard")) find = true;
+                if(cookiecheck.getValue().equals("nonStandard")) find = true;
             }
         }
     }
@@ -57,7 +57,7 @@ Cookie cookiecheck = null;
                 stmt = conn.createStatement();
                 
             }catch (Exception e) {
-                out.println("Causa Connessione: ");
+                System.out.println("Causa Connessione: ");
                 e.printStackTrace();
             }            
         %>
