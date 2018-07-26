@@ -66,13 +66,13 @@ public class RegisterAction extends HttpServlet {
         avatarsFolder = avatarsFolder.replace("\\build", "");
         System.out.println("==========================" + avatarsFolder);
 
-        String email, nominativo, password, Tipostandard, TipononStandard, photo, standard = "standard", nonStandard = "nonStandard";
+        String email, nominativo, password, Tipostandard, TipoAmministratore, photo, standard = "standard", amministratore = "amministratore";
         email = request.getParameter("email"); //txt_username
         System.out.println(email);
         nominativo = request.getParameter("nominativo"); //txt_name
         password = request.getParameter("password"); //txt_password
         Tipostandard = request.getParameter("standard"); //txt_standard
-        TipononStandard = request.getParameter("nonStandard"); //txt_nonSstandard
+        TipoAmministratore = request.getParameter("amministratore"); //txt_amministratore
         InputStream inputStream = null;	// input stream of the upload file
 
         // obtains the upload file part in this multipart request
@@ -111,9 +111,9 @@ public class RegisterAction extends HttpServlet {
             if (Tipostandard != null) {
                 Tipostandard = "standard";
                 statement.setString(4, standard);
-            } else if (TipononStandard != null) {
-                TipononStandard = "Nonstandard";
-                statement.setString(4, nonStandard);
+            } else if (TipoAmministratore != null) {
+                TipoAmministratore = "amministratore";
+                statement.setString(4, amministratore);
             }
             
             statement.setString(5, photo);

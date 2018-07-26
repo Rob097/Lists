@@ -52,10 +52,10 @@ public class LoginAction extends HttpServlet {
             ResultSet rs = pst.executeQuery();
             String Nominativo;
             String Type;
-            Blob image;
+            String image;
             String Email;
             String standard = request.getParameter("standard");
-            String notstandard = request.getParameter("nonStandard");
+            String notstandard = request.getParameter("amministratore");
             String remember = request.getParameter("remember");
 
             //Guarda se i campoi sono corretti e se l'utente è standard
@@ -64,27 +64,27 @@ public class LoginAction extends HttpServlet {
                     Nominativo = rs.getString("nominativo");
                     Type = rs.getString("tipo");
                     Email = rs.getString("email");
-                    //image = rs.getBlob("immagine");
+                    image = rs.getString("immagine");
                     
 
                     Cookie cookie = new Cookie("Nominativo", Nominativo);
                     Cookie typeCookie = new Cookie("Type", Type);
-                    //Cookie imageCookie = new Cookie("Image", image.toString());
+                    Cookie imageCookie = new Cookie("Image", image);
                     Cookie emailCookie = new Cookie("Email", Email);
                     Cookie logged = new Cookie("Logged", "on");
                     
-                    if(remember != null) {cookie.setMaxAge(30 * 24 * 60 * 60); /*imageCookie.setMaxAge(30 * 24 * 60 * 60);*/ typeCookie.setMaxAge(30 * 24 * 60 * 60); emailCookie.setMaxAge(30 * 24 * 60 * 60); logged.setMaxAge(30 * 24 * 60 * 60);}
-                    response.addCookie(cookie); /*response.addCookie(imageCookie);*/ response.addCookie(typeCookie); response.addCookie(emailCookie); response.addCookie(logged);
+                    if(remember != null) {cookie.setMaxAge(30 * 24 * 60 * 60); imageCookie.setMaxAge(30 * 24 * 60 * 60); typeCookie.setMaxAge(30 * 24 * 60 * 60); emailCookie.setMaxAge(30 * 24 * 60 * 60); logged.setMaxAge(30 * 24 * 60 * 60);}
+                    response.addCookie(cookie); response.addCookie(imageCookie); response.addCookie(typeCookie); response.addCookie(emailCookie); response.addCookie(logged);
                     
                     request.getSession().setAttribute("Nominativo", Nominativo);
-                    //request.getSession().setAttribute("Image", image);
+                    request.getSession().setAttribute("Image", image);
                     request.getSession().setAttribute("Email", Email);
                     request.getSession().setAttribute("Type", Type);
                     request.getSession().setAttribute("Logged", "on");
                 if (rs.getString("tipo").equals("standard")) {
-                    url = "Pages/standardType.jsp";
-                } else if (rs.getString("tipo").equals("nonStandard")) {
-                    url = "Pages/notStandardType.jsp";
+                    url = "Pages/standard/standardType.jsp";
+                } else if (rs.getString("tipo").equals("amministratore")) {
+                    url = "Pages/amministratore/amministratore.jsp";
                 } else {
                     url = null;
                     out.println("Errore di tipo utente");

@@ -352,7 +352,7 @@
                                 
                                 %>
                                 
-                                <img src="<%=users.getString("immagine")%>" style="width:50%; height:65%;"/>
+                                <img src="<%=users.getString("immagine")%>" width= "70px" height="70px" style="border-radius: 100%;">
                                 <h6>Email: <%=users.getString("email")%><br>
                                     Password: <%=users.getString("password")%><br>
                                     Nominativo: <%=users.getString("nominativo")%><br>
@@ -1563,8 +1563,8 @@
                         <div class="form-group text-center">
                             <input type="checkbox" tabindex="3" class="" name="standard" id="standard">
                             <label for="standard">Standard</label>
-                            <input type="checkbox" tabindex="3" class="" name="nonStandard" id="nonStandard">
-                            <label for="nonStandard">non Standard</label>
+                            <input type="checkbox" tabindex="3" class="" name="amministratore" id="amministratore">
+                            <label for="amministratore">Amministratore</label>
                         </div>
                         <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Register Now</button>
                     </div>

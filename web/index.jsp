@@ -18,8 +18,8 @@ and open the template in the editor.
         for (int i = 0; i < cookies.length && find != true; i++) {                       
             cookie = cookies[i];
             if(cookies[i].getName().equals("Type")){
-                if(cookies[i].getValue().equals("standard")){ url = "Pages/standardType.jsp"; find = true;}
-                else if(cookies[i].getValue().equals("nonstandard")){ url = "Pages/notStandardType.jsp"; find = true;}
+                if(cookies[i].getValue().equals("standard")){ url = "Pages/standard/standardType.jsp"; find = true;}
+                else if(cookies[i].getValue().equals("amministratore")){ url = "Pages/amministratore/amministratore.jsp"; find = true;}
             }
         }
         
