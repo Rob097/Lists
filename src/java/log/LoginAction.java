@@ -5,14 +5,15 @@
  */
 package log;
 
+import database.daos.UserDAO;
+import database.entities.User;
+import database.exceptions.DAOException;
+import database.factories.DAOFactory;
+import database.jdbc.JDBCUserDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import static java.lang.System.out;
-import java.sql.Blob;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -25,6 +26,18 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class LoginAction extends HttpServlet {
     String url = null;
+    UserDAO userdao = null;
+    
+    @Override
+    public void init() throws ServletException{
+          //carica la Connessione inizializzata in JDBCDAOFactory, quindi ritorna il Class.for() e la connessione
+           DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
+            if (daoFactory == null) {
+            throw new ServletException("Impossible to get dao factory for user storage system");
+        }
+        //assegna a userdao la connessione(costruttore) e salva la connessione in una variabile tipo Connection
+        userdao = new JDBCUserDAO(daoFactory.getConnection());
+    }
     
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -37,9 +50,16 @@ public class LoginAction extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
+        User user = new User();
+        
+         try {
             String username = request.getParameter("email");
             String password = request.getParameter("password");
+            String remember = request.getParameter("remember");
+            
+            //ritorna i dati dell`utente con email e password inserito
+            user = userdao.getByEmailAndPassword(username, password);
+            /*
             Class.forName("com.mysql.jdbc.Driver");  // MySQL database connection
             String dburl = "jdbc:mysql://ourlists.ddns.net:3306/ourlists?zeroDateTimeBehavior=convertToNull";
             String dbusername = "user";
@@ -50,6 +70,8 @@ public class LoginAction extends HttpServlet {
             pst.setString(2, password);
 
             ResultSet rs = pst.executeQuery();
+            */
+            /*
             String Nominativo;
             String Type;
             String image;
@@ -66,44 +88,46 @@ public class LoginAction extends HttpServlet {
                     Email = rs.getString("email");
                     image = rs.getString("immagine");
                     
-
-                    Cookie cookie = new Cookie("Nominativo", Nominativo);
-                    Cookie typeCookie = new Cookie("Type", Type);
-                    Cookie imageCookie = new Cookie("Image", image);
-                    Cookie emailCookie = new Cookie("Email", Email);
-                    Cookie logged = new Cookie("Logged", "on");
+            */
+                if(user != null){
+                        String nominativo = user.getNominativo();
+                        String tipo=user.getTipo();
+                        String image=user.getImage();
+                        String email=user.getEmail();
+                        Cookie cookie = new Cookie("Nominativo", nominativo);
+                        Cookie typeCookie = new Cookie("Type", tipo);
+                        Cookie imageCookie = new Cookie("Image", image);
+                        Cookie emailCookie = new Cookie("Email", email);
+                        Cookie logged = new Cookie("Logged", "on");
                     
-                    if(remember != null) {cookie.setMaxAge(30 * 24 * 60 * 60); imageCookie.setMaxAge(30 * 24 * 60 * 60); typeCookie.setMaxAge(30 * 24 * 60 * 60); emailCookie.setMaxAge(30 * 24 * 60 * 60); logged.setMaxAge(30 * 24 * 60 * 60);}
-                    response.addCookie(cookie); response.addCookie(imageCookie); response.addCookie(typeCookie); response.addCookie(emailCookie); response.addCookie(logged);
+                        if(remember != null) {cookie.setMaxAge(30 * 24 * 60 * 60); imageCookie.setMaxAge(30 * 24 * 60 * 60); typeCookie.setMaxAge(30 * 24 * 60 * 60); emailCookie.setMaxAge(30 * 24 * 60 * 60); logged.setMaxAge(30 * 24 * 60 * 60);}
+                        response.addCookie(cookie); response.addCookie(imageCookie); response.addCookie(typeCookie); response.addCookie(emailCookie); response.addCookie(logged);
                     
-                    request.getSession().setAttribute("Nominativo", Nominativo);
-                    request.getSession().setAttribute("Image", image);
-                    request.getSession().setAttribute("Email", Email);
-                    request.getSession().setAttribute("Type", Type);
-                    request.getSession().setAttribute("Logged", "on");
-                if (rs.getString("tipo").equals("standard")) {
-                    url = "Pages/standard/standardType.jsp";
-                } else if (rs.getString("tipo").equals("amministratore")) {
-                    url = "Pages/amministratore/amministratore.jsp";
-                } else {
-                    url = null;
-                    out.println("Errore di tipo utente");
-                }
+                        request.getSession().setAttribute("Nominativo", nominativo);
+                        request.getSession().setAttribute("Image", image);
+                        request.getSession().setAttribute("Email", email);
+                        request.getSession().setAttribute("Type", tipo);
+                        request.getSession().setAttribute("Logged", "on");
+                    if ("standard".equals(user.getTipo())) {
+                        url = "Pages/standard/standardType.jsp";
+                    } else if ("amministratore".equals(user.getTipo())) {
+                        url = "Pages/amministratore/amministratore.jsp";
+                    } else {
+                        url = "homepage.jsp";
+                        out.println("Errore di tipo utente");
+                    }
+                }else {System.out.println("user=null");}
             
-            }else System.out.println("Errore next");
+            } catch (DAOException ex) {
+            Logger.getLogger(LoginAction.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            //System.out.println("Errore next");
             if(url != null){
                 response.sendRedirect(url);
             }
             else out.print("Errore Imprevisto");
-            
-            
-        } catch (Exception e) {
-            out.println("Something went wrong !! Please try again");
-            out.println("Causa Chiusura ");
-            e.printStackTrace();
-        }
-
-    }
+  
+        } 
 
     /**
      * Returns a short description of the servlet.

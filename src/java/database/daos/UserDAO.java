@@ -20,4 +20,7 @@ public interface UserDAO{
     
     //update the user passed as parameter and returns it
     public User update(User user) throws DAOException;
+    
+    //returns user with the given email
+    public User getByEmail(String email) throws DAOException;
 }

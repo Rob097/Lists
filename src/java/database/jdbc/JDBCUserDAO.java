@@ -14,6 +14,7 @@ import java.sql.SQLException;
 
 
 
+
 /**
  *
  * @author Martin
@@ -35,7 +36,6 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
             stm.setString(1, email);
             stm.setString(2, password);
             try (ResultSet rs = stm.executeQuery()) {
-               
 
                 int count = 0;
                 while (rs.next()) {
@@ -44,13 +44,12 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
                         throw new DAOException("Unique constraint violated! There are more than one user with the same email! WHY???");
                     }
                     User user = new User();
+                   
                     user.setEmail(rs.getString("email"));
                     user.setPassword(rs.getString("password"));
                     user.setNominativo(rs.getString("nominativo"));
                     user.setTipo(rs.getString("tipo"));
-                    //user.setImage(rs.getString("Image"));
-
-            
+                    user.setImage(rs.getString("immagine"));
 
                     return user;
                 }
@@ -85,5 +84,41 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
             
         }
     }
+
+    @Override
+    public User getByEmail(String email) throws DAOException {
+       if(email==null){
+           throw new DAOException("Email is a mandatory fields", new NullPointerException("email is null"));
+       }
+       
+       try(PreparedStatement statement = CON.prepareStatement("Select * from User where email=?")){
+           statement.setString(1, email);
+            try (ResultSet rs = statement.executeQuery()) {
+
+                int count = 0;
+                
+                while (rs.next()) {
+                    count++;
+                    if (count > 1) {
+                        throw new DAOException("Unique constraint violated! There are more than one user with the same email! WHY???");
+                    }
+                    User user = new User();
+                   
+                    user.setEmail(rs.getString("email"));
+                    user.setPassword(rs.getString("password"));
+                    user.setNominativo(rs.getString("nominativo"));
+                    user.setTipo(rs.getString("tipo"));
+                    user.setImage(rs.getString("immagine"));
+
+                    return user;
+                }
+                return null;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of users", ex);
+        }
+    }
+    
+
     
 }
