@@ -34,10 +34,6 @@
         <servlet-class>log.RegisterAction</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>DisplayImage</servlet-name>
-        <servlet-class>log.DisplayImage</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>deleteUser</servlet-name>
         <servlet-class>users.deleteUser</servlet-class>
     </servlet>
@@ -52,10 +48,6 @@
     <servlet-mapping>
         <servlet-name>RegisterAction</servlet-name>
         <url-pattern>/RegisterAction</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DisplayImage</servlet-name>
-        <url-pattern>/DisplayImage</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>deleteUser</servlet-name>
