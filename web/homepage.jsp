@@ -345,12 +345,7 @@
 
                                  <br><h5 style="color: red"><%=users.getRow()%>° Record:</h5> 
                                 
-                                <%
-                                     ServletContext context = request.getServletContext();
-                                     String appPath = context.getRealPath("");
-                                     
-                                
-                                %>
+
                                 
                                 <img src="<%=users.getString("immagine")%>" width= "70px" height="70px" style="border-radius: 100%;">
                                 <h6>Email: <%=users.getString("email")%><br>
