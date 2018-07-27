@@ -14,15 +14,15 @@ public class User {
     private String email;
     private String password;
     private String nominativo;
-    private String Tipo;
-    private String Image;
+    private String tipo;
+    private String image;
 
-    public void setImage(String Image) {
-        this.Image = Image;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getImage() {
-        return Image;
+        return image;
     }
         
     public String getNominativo() {
@@ -30,15 +30,15 @@ public class User {
     }
 
     public String getTipo() {
-        return Tipo;
+        return tipo;
     }
 
     public void setNominativo(String nominativo) {
         this.nominativo = nominativo;
     }
 
-    public void setTipo(String Tipo) {
-        this.Tipo = Tipo;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public String getEmail() {
