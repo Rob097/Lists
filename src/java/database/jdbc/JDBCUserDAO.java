@@ -64,16 +64,18 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
     //implementa il metodo update di Userdao che aggiunge un nuovo utente nel database
     @Override
     public User update(User user) throws DAOException {
-       if (user == null) {
+     
+        if (user == null) {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed user is null"));
         }
-       try (PreparedStatement std = CON.prepareStatement("INSERT INTO User(email,password,nominativo,tipo) VALUES(?,?,?,?)")) {
-            std.setString(1, user.getEmail());
-            std.setString(2, user.getPassword());
-            std.setString(3, user.getNominativo());
-            std.setString(4, user.getTipo());
-            //std.setBlob(5, inputStream);
-            if (std.executeUpdate() == 1) {
+       try (PreparedStatement statement = CON.prepareStatement("insert into User(email,password,nominativo,tipo,immagine) values(?,?,?,?,?)")) {
+            statement.setString(1, user.getEmail());
+            statement.setString(2, user.getPassword());
+            statement.setString(3, user.getNominativo());
+            statement.setString(4, user.getTipo());
+            statement.setString(5, user.getImage());
+            
+            if (statement.executeUpdate() == 1) {
                 return user;
             } else {
                 throw new DAOException("Impossible to update the User");
