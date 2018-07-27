@@ -21,8 +21,9 @@
     <link rel="stylesheet" href="Pages/css/selectize.css" type="text/css">
     <link rel="stylesheet" href="Pages/css/style.css">
     <link rel="stylesheet" href="Pages/css/user.css">
-
-	<title>Craigs - Easy Buy & Sell Listing HTML Template</title>
+        
+    <link rel="icon" href="Pages/img/favicon.png" sizes="16x16" type="image/png">
+    <title>Lists</title>
 
 </head>
 <body>

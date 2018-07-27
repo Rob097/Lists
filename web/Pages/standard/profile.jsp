@@ -35,7 +35,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <link rel="icon" href="../img/favicon.png" sizes="16x16" type="image/png">
+        <title>Lists</title>
 
         <!-- CSS personalizzati -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
@@ -90,19 +91,20 @@
                         if (cookie.getName().equals("Email")) {
                             Email += cookie.getValue();
                         }
-                        
-                        
+
                         if (cookie.getName().equals("Type")) {
                             Type += cookie.getValue();
                         }
-                        if (cookie.getName().equals("Image")) image += cookie.getValue();
+                        if (cookie.getName().equals("Image")) {
+                            image += cookie.getValue();
+                        }
 
                     }
                 }
             } else {
                 System.out.println("<h2>No cookies founds</h2>");
             }
-            
+
 
         %>
 
@@ -605,6 +607,9 @@
                                             <section class="clearfix">
                                                 <button type="submit" class="btn btn-primary float-right">Save Changes</button>
                                             </section>
+                                            <section class="clearfix">
+                                                <button type="button" class="btn btn-primary float-right" id="delete" data-toggle="modal" data-target="#delete-modal">Delete profile</button>
+                                            </section>
                                         </div>
                                         <!--end col-md-8-->
                                         <div class="col-md-4">
@@ -725,18 +730,52 @@
             <!--end footer-->
         </div>
         <!--end page-->
+
+
+
+        <!--#########################################################
+                                MODAL
+        ##########################################################-->
+
+        <!-- Delete Modal -->
+        <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1>Delete user</h1>
+                            </div>
+                            <!--end container-->
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>Sei sicuro di voler eliminare questo utente?<br> Non potrai annullare la modifica.</h3>
+                        <form class="clearfix" action="/Lists/deleteUser" method="POST">
+                            <button type="submit" class="btn btn-primary" id="delete">Delete</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete-btn-no">Cancel</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!--######################################################-->
 
         <script src="../js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="../js/popper.min.js"></script>
-    <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
-    <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
-    <script src="../js/selectize.min.js"></script>
-    <script src="../js/masonry.pkgd.min.js"></script>
-    <script src="../js/icheck.min.js"></script>
-    <script src="../js/jquery.validate.min.js"></script>
-    <script src="../js/custom.js"></script>
+        <script type="text/javascript" src="../js/popper.min.js"></script>
+        <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
+        <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
+        <script src="../js/selectize.min.js"></script>
+        <script src="../js/masonry.pkgd.min.js"></script>
+        <script src="../js/icheck.min.js"></script>
+        <script src="../js/jquery.validate.min.js"></script>
+        <script src="../js/custom.js"></script>
 
 
         <!--###############################################################################################################################

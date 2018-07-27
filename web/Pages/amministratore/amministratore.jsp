@@ -32,7 +32,8 @@ Cookie cookiecheck = null;
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <link rel="icon" href="../img/favicon.png" sizes="16x16" type="image/png">
+        <title>Lists</title>
         
         <!-- CSS personalizzati -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
