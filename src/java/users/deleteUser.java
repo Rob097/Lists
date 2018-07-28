@@ -55,6 +55,7 @@ public class deleteUser extends HttpServlet {
 
         Cookie cookie = null;
         Cookie[] cookies = null;
+        String Image = "";
 
         // Get an array of Cookies associated with the this domain
         cookies = request.getCookies();
@@ -68,9 +69,9 @@ public class deleteUser extends HttpServlet {
                         if (cookie.getName().equals("Email")) {
                             Email += cookie.getValue();
                         }
-                        /*if (cookie.getName().equals("Image")) {
+                        if (cookie.getName().equals("Image")) {
                             Image += cookie.getValue();
-                        }*/
+                        }
                         PreparedStatement statement1 = conn.prepareStatement("DELETE FROM User WHERE email= ?");
                         statement1.setString(1, Email);
                         statement1.executeUpdate();
@@ -86,21 +87,23 @@ public class deleteUser extends HttpServlet {
 
         //Eliminazione dell'immagine dell'utente
         try {
-            String avatarsFolder = "/Image/AvatarImg";
+            String filename1 = "/" + Image;
+            System.out.println("==================== dal db:        " + filename1);
+            String avatarsFolder = getServletContext().getRealPath(filename1);
+            System.out.println("==================== get rela path" + avatarsFolder);
+            avatarsFolder = avatarsFolder.replace("\\build", "");
+            System.out.println("==================== senza build" + avatarsFolder);
             File file = new File(avatarsFolder);
-            String filename1 = "";
-            Part filePart1 = request.getPart("file1");
-            if ((filePart1 != null) && (filePart1.getSize() > 0)) {
-                String extension = Paths.get(filePart1.getSubmittedFileName()).getFileName().toString().split(Pattern.quote("."))[1];;
-                filename1 = Email + "." + extension;
-                File file1 = new File(avatarsFolder, filename1);
+            
+            
+            System.out.println("==================== path completo" + avatarsFolder);
 
-                if (file.delete()) {
-                    System.out.println(file.getName() + " is deleted!");
-                } else {
-                    System.out.println(file.getAbsoluteFile() + "Delete operation is failed.");
-                }
+            if (file.delete()) {
+                System.out.println(file.getName() + " is deleted!");
+            } else {
+                System.out.println(file.getAbsoluteFile() + "Delete operation is failed.");
             }
+
         } catch (Exception ex1) {
             System.out.println("Causa Errore: ");
             ex1.printStackTrace();
