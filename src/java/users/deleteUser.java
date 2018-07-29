@@ -99,7 +99,7 @@ public class deleteUser extends HttpServlet {
             }
         }
 
-        response.sendRedirect("/Lists/homepage.jsp");
+        response.setHeader("Refresh", "0; URL=/Lists/homepage.jsp");
     }
 
     /**

@@ -49,7 +49,8 @@ public class LogoutAction extends HttpServlet {
             response.addCookie(cookie);
             }
         }
-         response.sendRedirect("/Lists/homepage.jsp");
+        response.setHeader("Refresh", "0; URL=/Lists/homepage.jsp");
+         
     }
 
     /**

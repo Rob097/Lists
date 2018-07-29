@@ -1533,26 +1533,27 @@
                 </div>
                 <div class="modal-body">
                     <!-- Form per il login -->
-                    <form class="form clearfix" id="login-form" action="/Lists/RegisterAction" method="post" enctype="multipart/form-data">
+                    <form class="form clearfix" id="login-form" action="/Lists/RegisterAction" method="post" enctype="multipart/form-data" onsubmit="return checkCheckBoxes(this);">
                         <div class="form-group">
-                            <label for="email" class="col-form-label required">Email</label>
-                            <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" value="">
+                            <label for="email" class="col-form-label">Email</label>
+                            <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" value="" required>
                         </div>
                         <!--end form-group-->
                         <div class="form-group">
-                            <label for="nominativo" class="col-form-label required">Nome</label>
-                            <input type="text" name="nominativo" id="nominativo" tabindex="1" class="form-control" placeholder="Nome" value="">
+                            <label for="nominativo" class="col-form-label">Nome</label>
+                            <input type="text" name="nominativo" id="nominativo" tabindex="1" class="form-control" placeholder="Nome" value="" required>
                         </div>
                         <!--end form-group-->
                         <div class="form-group">
-                            <label for="password" class="col-form-label required">Password</label>
-                            <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
+                            <label for="password" class="col-form-label">Password</label>
+                            <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password" required>
                         </div>
                     
                     <!--end form-group-->
 
                     <div class="form-group">
-                        <input type="file" name="file1">
+                        <label for="image" class="col-form-label required">Avatar</label>
+                        <input type="file" name="file1" required>
                     </div>
                     <!--end form-group-->
                     <div class="d-flex justify-content-between align-items-baseline">
@@ -1576,6 +1577,8 @@
             </div>
         </div>
     </div>
+
+
     <!--######################################################-->
 
 	<script src="Pages/js/jquery-3.3.1.min.js"></script>
@@ -1588,6 +1591,7 @@
 	<script src="Pages/js/icheck.min.js"></script>
 	<script src="Pages/js/jquery.validate.min.js"></script>
 	<script src="Pages/js/custom.js"></script>
+        <script src="Pages/js/vari.js"></script>
         
         
         
