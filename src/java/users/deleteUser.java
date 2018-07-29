@@ -7,18 +7,22 @@ package users;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+import database.factories.DAOFactory;
+import database.jdbc.JDBCUserDAO;
+import database.daos.UserDAO;
+import database.entities.User;
+import database.exceptions.DAOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -26,7 +30,18 @@ import javax.servlet.http.Part;
  */
 public class deleteUser extends HttpServlet {
 
-    /**
+    UserDAO userdao;
+   
+    @Override
+    public void init() throws ServletException{
+        DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
+         if (daoFactory == null) {
+            throw new ServletException("Impossible to get dao factory for user storage system");
+         }
+         userdao = new JDBCUserDAO(daoFactory.getConnection());
+    }
+    
+     /**
      * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
@@ -37,52 +52,17 @@ public class deleteUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        User user =(User) request.getSession().getAttribute("user");
         System.out.println("DeleteUser opening####################");
-        Connection conn = null;
-        Statement stmt = null;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            String url = "jdbc:mysql://ourlists.ddns.net:3306/ourlists?zeroDateTimeBehavior=convertToNull";
-            String username = "user";
-            String password = "the_password";
-            conn = DriverManager.getConnection(url, username, password);
-            stmt = conn.createStatement();
-
-        } catch (Exception e) {
-            System.out.println("Causa Connessione: ");
-            e.printStackTrace();
-        }
-
-        Cookie cookie = null;
+        
         Cookie[] cookies = null;
         String Image = "";
-
-        // Get an array of Cookies associated with the this domain
-        cookies = request.getCookies();
-        String Email = "";
+        Image = user.getImage();
+        
         try {
-            //String Image = "";
-            if (cookies != null) {
-                for (int i = 0; i < cookies.length; i++) {
-                    cookie = cookies[i];
-                    if (cookie.getName().equals("JSESSIONID")); else {
-                        if (cookie.getName().equals("Email")) {
-                            Email += cookie.getValue();
-                        }
-                        if (cookie.getName().equals("Image")) {
-                            Image += cookie.getValue();
-                        }
-                        PreparedStatement statement1 = conn.prepareStatement("DELETE FROM User WHERE email= ?");
-                        statement1.setString(1, Email);
-                        statement1.executeUpdate();
-                    }
-                }
-            } else {
-                System.out.println("<h2>Erroe eliminazione utente</h2>");
-            }
-        } catch (Exception ex) {
-            System.out.println("Causa Errore: ");
-            ex.printStackTrace();
+            userdao.deleteUser(user);
+        } catch (DAOException ex) {
+            Logger.getLogger(deleteUser.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         //Eliminazione dell'immagine dell'utente
@@ -107,6 +87,16 @@ public class deleteUser extends HttpServlet {
         } catch (Exception ex1) {
             System.out.println("Causa Errore: ");
             ex1.printStackTrace();
+        }
+        
+         // Get an array of Cookies associated with the this domain
+        cookies = request.getCookies();
+        //delete Cookies
+        if (cookies != null){
+            for (Cookie cookie : cookies) {
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+            }
         }
 
         response.sendRedirect("/Lists/homepage.jsp");

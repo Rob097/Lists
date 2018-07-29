@@ -23,4 +23,6 @@ public interface UserDAO{
     
     //returns user with the given email
     public User getByEmail(String email) throws DAOException;
+    
+    public void deleteUser(User user) throws DAOException;
 }

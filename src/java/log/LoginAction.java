@@ -99,6 +99,7 @@ public class LoginAction extends HttpServlet {
                         Cookie imageCookie = new Cookie("Image", image);
                         Cookie emailCookie = new Cookie("Email", email);
                         Cookie logged = new Cookie("Logged", "on");
+                        
                     
                         if(remember != null) {cookie.setMaxAge(30 * 24 * 60 * 60); imageCookie.setMaxAge(30 * 24 * 60 * 60); typeCookie.setMaxAge(30 * 24 * 60 * 60); emailCookie.setMaxAge(30 * 24 * 60 * 60); logged.setMaxAge(30 * 24 * 60 * 60);}
                         response.addCookie(cookie); response.addCookie(imageCookie); response.addCookie(typeCookie); response.addCookie(emailCookie); response.addCookie(logged);
@@ -108,6 +109,7 @@ public class LoginAction extends HttpServlet {
                         request.getSession().setAttribute("Email", email);
                         request.getSession().setAttribute("Type", tipo);
                         request.getSession().setAttribute("Logged", "on");
+                        request.getSession().setAttribute("user", user);
                     if ("standard".equals(user.getTipo())) {
                         url = "Pages/standard/standardType.jsp";
                     } else if ("amministratore".equals(user.getTipo())) {

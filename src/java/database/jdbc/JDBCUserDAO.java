@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 
@@ -116,6 +118,22 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
             }
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of users", ex);
+        }
+    }
+
+    @Override
+    public void deleteUser(User user) throws DAOException {
+       if (user == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed user is null"));
+        }
+       
+       try (PreparedStatement statement = CON.prepareStatement("DELETE FROM User WHERE email= ?")){
+        statement.setString(1, user.getEmail());
+        statement.executeUpdate(); 
+       
+        }catch (SQLException ex) {
+            Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Errore eliminazione utente");
         }
     }
     
