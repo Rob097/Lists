@@ -12,6 +12,7 @@ import database.factories.DAOFactory;
 import database.jdbc.JDBCUserDAO;
 import java.io.IOException;
 import static java.lang.System.out;
+import java.net.URLEncoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -94,7 +95,7 @@ public class LoginAction extends HttpServlet {
                         String tipo=user.getTipo();
                         String image=user.getImage();
                         String email=user.getEmail();
-                        Cookie cookie = new Cookie("Nominativo", nominativo);
+                        Cookie cookie = new Cookie("Nominativo", URLEncoder.encode(nominativo, "UTF-8"));                  
                         Cookie typeCookie = new Cookie("Type", tipo);
                         Cookie imageCookie = new Cookie("Image", image);
                         Cookie emailCookie = new Cookie("Email", email);

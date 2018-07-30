@@ -4,6 +4,7 @@
     Author     : Roberto97
 --%>
 
+<%@page import="java.net.URLDecoder"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Blob"%>
@@ -86,7 +87,7 @@
                     cookie = cookies[i];
                     if (cookie.getName().equals("JSESSIONID")); else {
                         if (cookie.getName().equals("Nominativo")) {
-                            Nominativo += cookie.getValue();
+                            Nominativo += URLDecoder.decode(cookie.getValue(), "UTF-8");
                         }
                         if (cookie.getName().equals("Email")) {
                             Email += cookie.getValue();

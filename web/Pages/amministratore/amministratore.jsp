@@ -4,6 +4,7 @@
     Author     : Roberto97
 --%>
 
+<%@page import="java.net.URLDecoder"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Blob"%>
 <%
@@ -83,7 +84,7 @@ Cookie cookiecheck = null;
                 for (int i = 0; i < cookies.length; i++) {                       
                         cookie = cookies[i];
                         if(cookie.getName().equals("JSESSIONID"));
-                        else{   if (cookie.getName().equals("Nominativo")) Nominativo += cookie.getValue();
+                        else{   if (cookie.getName().equals("Nominativo")) Nominativo += URLDecoder.decode(cookie.getValue(), "UTF-8");
                                 if (cookie.getName().equals("Email")) Email += cookie.getValue();
                                 PreparedStatement statement1 = conn.prepareStatement("SELECT immagine FROM User WHERE email = ?");
                                 statement1.setString(1, Email);
