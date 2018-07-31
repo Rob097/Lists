@@ -7,6 +7,7 @@
 <%@page import="java.net.URLDecoder"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Blob"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 Cookie cookiecheck = null;
     Cookie[] cookiescheck = null;     
@@ -120,7 +121,7 @@ Cookie cookiecheck = null;
                             </li>
                             <li>
                                 <a class="navbar-brand" style="cursor: pointer;" href="/Lists/LogoutAction" data-toggle="tooltip" data-placement="bottom" title="LogOut">
-                                    <i class="fa fa-sign-in"></i><%= Nominativo%> / <%= Type %> / <img src= "<%= image %>" width="25px" height="25px" style="border-radius: 100%;">
+                                    <i class="fa fa-sign-in"></i><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> / <img src= "../../${user.image}" width="25px" height="25px" style="border-radius: 100%;">
                                 </a>
                             </li>
                             <li>

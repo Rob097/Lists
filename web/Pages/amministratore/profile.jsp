@@ -32,6 +32,7 @@
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.Connection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -51,7 +52,7 @@
         <!--###############################################################################################################################
                             CONNESSIONE DATABASE
         ###############################################################################################################################-->    
-        <%
+        <%/*
             Connection conn = null;
             Statement stmt = null;
             try {
@@ -66,7 +67,7 @@
                 System.out.println("Causa Connessione: ");
                 e.printStackTrace();
             }
-        %>
+       */ %>
         <!--###############################################################################################################################-->
 
 
@@ -132,12 +133,7 @@
                                 </li>
                                 <li>
                                     <a class="navbar-brand" style="cursor: pointer;" href="/Lists/LogoutAction" data-toggle="tooltip" data-placement="bottom" title="LogOut">
-                                        <i class="fa fa-sign-in"></i><%= Nominativo%> / <%= Type%> / <img src="<%=image%>" width="25px" height="25px" style="border-radius: 100%;">
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="navbar-brand" style="cursor: pointer;" href="profile.jsp">
-                                        <i class="fa fa-user"></i>Il mio profilo
+                                        <i class="fa fa-sign-in"></i><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> / <img src="../../${user.image}" width="25px" height="25px" style="border-radius: 100%;">
                                     </a>
                                 </li>
                             </ul>
@@ -538,95 +534,50 @@
                             </div>
                             <!--end col-md-3-->
                             <div class="col-md-9">
-                                <form class="form">
+                                <form class="form clearfix" id="login-form" action="/Lists/updateUser" method="post" <!--enctype="multipart/form-data" onsubmit="return checkCheckBoxes(this);"-->>
                                     <div class="row">
                                         <div class="col-md-8">
                                             <h2>Personal Information</h2>
                                             <section>
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label for="title" class="col-form-label">Title</label>
-                                                            <select name="title" id="title" data-placeholder="Title">
-                                                                <option value="">Title</option>
-                                                                <option value="1" selected>Mrs</option>
-                                                                <option value="2">Mr</option>
-                                                            </select>
-                                                        </div>
-                                                        <!--end form-group-->
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="form-group">
-                                                            <label for="name" class="col-form-label required">Your Name</label>
-                                                            <input name="name" type="text" class="form-control" id="name" placeholder="Your Name" value="Jane Doe" required>
-                                                        </div>
-                                                        <!--end form-group-->
-                                                    </div>
-                                                    <!--end col-md-8-->
-                                                </div>
-                                                <!--end row-->
-                                                <div class="form-group">
-                                                    <label for="location" class="col-form-label required">Your Location</label>
-                                                    <input name="location" type="text" class="form-control" id="input-location2" placeholder="Your Location" value="Manhattan, NY" required>
-                                                </div>
-                                                <!--end form-group-->
-                                                <div class="form-group">
-                                                    <label for="about" class="col-form-label">More About You</label>
-                                                    <textarea name="about" id="about" class="form-control" rows="4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut nec tincidunt arcu, sit amet fermentum sem. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</textarea>
-                                                </div>
-                                                <!--end form-group-->
-                                            </section>
-
-                                            <section>
-                                                <h2>Contact</h2>
-                                                <div class="form-group">
-                                                    <label for="phone" class="col-form-label">Phone</label>
-                                                    <input name="phone" type="text" class="form-control" id="phone" placeholder="Your Phone" value="312-238-3329">
-                                                </div>
-                                                <!--end form-group-->
                                                 <div class="form-group">
                                                     <label for="email" class="col-form-label">Email</label>
-                                                    <input name="email" type="email" class="form-control" id="email" placeholder="Your Email" value="jane.doe@example.com">
+                                                    <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" value="${user.email}" >
                                                 </div>
-                                                <!--end form-group-->
-                                            </section>
-
-                                            <section>
-                                                <h2>Social</h2>
                                                 <div class="form-group">
-                                                    <label for="twitter" class="col-form-label">Twitter</label>
-                                                    <input name="twitter" type="text" class="form-control" id="twitter" placeholder="http://" value="http://www.twitter.com/jane.doe">
+                                                    <label for="password" class="col-form-label">Password</label>
+                                                    <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password"  value="${user.password}">
                                                 </div>
-                                                <!--end form-group-->
                                                 <div class="form-group">
-                                                    <label for="facebook" class="col-form-label">Facebook</label>
-                                                    <input name="facebook" type="text" class="form-control" id="facebook" placeholder="http://" value="http://www.facebook.com/jane.doe">
+                                                    <label for="nominativo" class="col-form-label">Nome</label>
+                                                    <input type="text" name="nominativo" id="nominativo" tabindex="1" class="form-control" placeholder="Nome" value="${user.nominativo}" >
                                                 </div>
+ 
                                                 <!--end form-group-->
+                                                
                                             </section>
-
                                             <section class="clearfix">
-                                                <button type="submit" class="btn btn-primary float-right">Save Changes</button>
+                                                <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Save Changes</button>
                                             </section>
                                             <section class="clearfix">
                                                 <button type="button" class="btn btn-primary float-right" id="delete" data-toggle="modal" data-target="#delete-modal">Delete profile</button>
                                             </section>
                                         </div>
-                                        <!--end col-md-8-->
+                                        <!--end col-md-8--> 
                                         <div class="col-md-4">
                                             <div class="profile-image">
                                                 <div class="image background-image">
-                                                    <img src="<%=image%>" alt="">
+                                                    <img src="../../${user.image}" alt="">
                                                 </div>
-                                                <div class="single-file-input">
-                                                    <input type="file" id="user_image" name="user_image">
+                                            <!--<div class="single-file-input">
+                                                    <input type="file" name="file1" >
                                                     <div class="btn btn-framed btn-primary small">Upload a picture</div>
-                                                </div>
+                                                </div>-->
                                             </div>
                                         </div>
                                         <!--end col-md-3-->
                                     </div>
-                                </form>
+                               </form>
+                                
                             </div>
                         </div>
                         <!--end row-->
@@ -780,7 +731,7 @@
         <!--###############################################################################################################################
                             CHIUSURA DATABASE
         ###############################################################################################################################-->            
-        <%
+        <%/*
             try {
                 stmt.close();
                 conn.close();
@@ -788,7 +739,7 @@
                 System.out.println("Causa Chiusura ");
                 e.printStackTrace();
             }
-        %>    
+       */ %>    
         <!--###############################################################################################################################-->
 
     </body>

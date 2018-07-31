@@ -136,6 +136,77 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
             System.out.println("Errore eliminazione utente");
         }
     }
+
+    @Override
+    public User changeUser(User newUser, User oldUser) throws DAOException {
+        if (newUser == null || oldUser==null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed old or new user is null"));
+        }
+        User finalUser = new User();
+        finalUser = oldUser;
+
+        if(newUser.getPassword() != null && newUser.getPassword() != "" && newUser.getPassword() != oldUser.getPassword()){
+            try (PreparedStatement statement = CON.prepareStatement("UPDATE User SET password=? WHERE email=? ")){
+            statement.setString(1, newUser.getPassword());
+            statement.setString(2, oldUser.getEmail());
+            statement.executeUpdate(); 
+            finalUser.setPassword(newUser.getPassword());
+            } catch (SQLException ex) {
+             Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
+             System.out.println("errore update password");
+            }   
+        }
+        
+        if(newUser.getNominativo() != null && newUser.getNominativo()!= "" && newUser.getNominativo() != oldUser.getNominativo()){
+            try (PreparedStatement statement = CON.prepareStatement("UPDATE User SET nominativo=? WHERE email=? ")){
+            statement.setString(1, newUser.getNominativo());
+            statement.setString(2, oldUser.getEmail());
+            statement.executeUpdate(); 
+            finalUser.setNominativo(newUser.getNominativo());
+            } catch (SQLException ex) {
+             Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
+             System.out.println("errore update nominativo");
+            }   
+        }
+        
+        if(newUser.getImage() != null && newUser.getImage()!= "" && newUser.getImage() != oldUser.getImage()){
+            try (PreparedStatement statement = CON.prepareStatement("UPDATE User SET immagine=? WHERE email=? ")){
+            statement.setString(1, newUser.getImage());
+            statement.setString(2, oldUser.getEmail());
+            statement.executeUpdate();
+            finalUser.setImage(newUser.getImage());
+            } catch (SQLException ex) {
+             Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
+             System.out.println("errore update image");
+            }   
+        }
+        
+        if(newUser.getTipo() != null && newUser.getTipo() != "" && newUser.getTipo() != oldUser.getTipo()){
+            try (PreparedStatement statement = CON.prepareStatement("UPDATE User SET tipo=? WHERE email=? ")){
+            statement.setString(1, newUser.getTipo());
+            statement.setString(2, oldUser.getEmail());
+            statement.executeUpdate();
+            finalUser.setEmail(newUser.getTipo());
+            } catch (SQLException ex) {
+             Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
+             System.out.println("errore update email");
+            }   
+        }
+        
+        if(newUser.getEmail() != null && newUser.getEmail() != "" && newUser.getEmail() != oldUser.getEmail()){
+            try (PreparedStatement statement = CON.prepareStatement("UPDATE User SET email=? WHERE email=? ")){
+            statement.setString(1, newUser.getEmail());
+            statement.setString(2, oldUser.getEmail());
+            statement.executeUpdate();
+            finalUser.setEmail(newUser.getEmail());
+            } catch (SQLException ex) {
+             Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
+             System.out.println("errore update email");
+            }   
+        }
+                
+            return finalUser;
+    }
     
 
     

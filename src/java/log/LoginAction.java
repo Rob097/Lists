@@ -95,7 +95,11 @@ public class LoginAction extends HttpServlet {
                         String tipo=user.getTipo();
                         String image=user.getImage();
                         String email=user.getEmail();
-                        Cookie cookie = new Cookie("Nominativo", URLEncoder.encode(nominativo, "UTF-8"));                  
+                        
+                        Cookie cookie = null;
+                        if(nominativo != null){
+                         cookie = new Cookie("Nominativo", URLEncoder.encode(nominativo, "UTF-8"));  
+                        }
                         Cookie typeCookie = new Cookie("Type", tipo);
                         Cookie imageCookie = new Cookie("Image", image);
                         Cookie emailCookie = new Cookie("Email", email);
@@ -103,7 +107,7 @@ public class LoginAction extends HttpServlet {
                         
                     
                         if(remember != null) {cookie.setMaxAge(30 * 24 * 60 * 60); imageCookie.setMaxAge(30 * 24 * 60 * 60); typeCookie.setMaxAge(30 * 24 * 60 * 60); emailCookie.setMaxAge(30 * 24 * 60 * 60); logged.setMaxAge(30 * 24 * 60 * 60);}
-                        response.addCookie(cookie); response.addCookie(imageCookie); response.addCookie(typeCookie); response.addCookie(emailCookie); response.addCookie(logged);
+                        if(nominativo != null){response.addCookie(cookie);} response.addCookie(imageCookie); response.addCookie(typeCookie); response.addCookie(emailCookie); response.addCookie(logged);
                     
                         request.getSession().setAttribute("Nominativo", nominativo);
                         request.getSession().setAttribute("Image", image);

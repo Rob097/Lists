@@ -25,4 +25,6 @@ public interface UserDAO{
     public User getByEmail(String email) throws DAOException;
     
     public void deleteUser(User user) throws DAOException;
+    
+    public User changeUser(User newUser, User oldUser) throws DAOException;
 }
