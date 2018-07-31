@@ -556,7 +556,7 @@
                                                 
                                             </section>
                                             <section class="clearfix">
-                                                <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Save Changes</button>
+                                                <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary float-right">Save Changes</button>
                                             </section>
                                             <section class="clearfix">
                                                 <button type="button" class="btn btn-primary float-right" id="delete" data-toggle="modal" data-target="#delete-modal">Delete profile</button>
