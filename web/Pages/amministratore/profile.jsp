@@ -534,7 +534,7 @@
                             </div>
                             <!--end col-md-3-->
                             <div class="col-md-9">
-                                <form class="form clearfix" id="login-form" action="/Lists/updateUser" method="post" <!--enctype="multipart/form-data" onsubmit="return checkCheckBoxes(this);"-->>
+                                <form class="form clearfix" id="login-form" action="/Lists/updateUser" method="post" enctype="multipart/form-data">
                                     <div class="row">
                                         <div class="col-md-8">
                                             <h2>Personal Information</h2>
@@ -568,10 +568,10 @@
                                                 <div class="image background-image">
                                                     <img src="../../${user.image}" alt="">
                                                 </div>
-                                            <!--<div class="single-file-input">
+                                                <div class="single-file-input">
                                                     <input type="file" name="file1" >
                                                     <div class="btn btn-framed btn-primary small">Upload a picture</div>
-                                                </div>-->
+                                                </div>
                                             </div>
                                         </div>
                                         <!--end col-md-3-->
