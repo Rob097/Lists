@@ -45,28 +45,7 @@ Cookie cookiecheck = null;
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="../css/user.css">
     </head>
-    <body>
-        <!--###############################################################################################################################
-                            CONNESSIONE DATABASE
-        ###############################################################################################################################-->    
-        <%
-            Connection conn = null;
-            Statement stmt = null;
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-                String url = "jdbc:mysql://ourlists.ddns.net:3306/ourlists?zeroDateTimeBehavior=convertToNull";
-                String username = "user";
-                String password = "the_password";
-                conn = DriverManager.getConnection(url, username, password);
-                stmt = conn.createStatement();
-                
-            }catch (Exception e) {
-                System.out.println("Causa Connessione: ");
-                e.printStackTrace();
-            }            
-        %>
-        <!--###############################################################################################################################-->
-        
+    <body>        
         
         <%
             Cookie cookie = null;
@@ -87,8 +66,8 @@ Cookie cookiecheck = null;
                         if(cookie.getName().equals("JSESSIONID"));
                         else{   if (cookie.getName().equals("Nominativo")) Nominativo += URLDecoder.decode(cookie.getValue(), "UTF-8");
                                 if (cookie.getName().equals("Email")) Email += cookie.getValue();
-                                PreparedStatement statement1 = conn.prepareStatement("SELECT immagine FROM User WHERE email = ?");
-                                statement1.setString(1, Email);
+                               // PreparedStatement statement1 = conn.prepareStatement("SELECT immagine FROM User WHERE email = ?");
+                                //statement1.setString(1, Email);
                                 if (cookie.getName().equals("Type")) Type += cookie.getValue();
                                 if (cookie.getName().equals("Image")) image += cookie.getValue();
                         }
@@ -860,21 +839,6 @@ Cookie cookiecheck = null;
     <script src="../js/icheck.min.js"></script>
     <script src="../js/jquery.validate.min.js"></script>
     <script src="../js/custom.js"></script>
-
-
-    <!--###############################################################################################################################
-                        CHIUSURA DATABASE
-    ###############################################################################################################################-->            
-    <%
-        try {
-            stmt.close();
-            conn.close();
-        } catch (Exception e) {
-            System.out.println("Causa Chiusura ");
-            e.printStackTrace();
-        }
-    %>    
-    <!--###############################################################################################################################-->
 
     </body>
 </html>

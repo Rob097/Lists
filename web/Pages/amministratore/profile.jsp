@@ -49,26 +49,6 @@
         <link rel="stylesheet" href="../css/user.css">
     </head>
     <body>
-        <!--###############################################################################################################################
-                            CONNESSIONE DATABASE
-        ###############################################################################################################################-->    
-        <%/*
-            Connection conn = null;
-            Statement stmt = null;
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-                String url = "jdbc:mysql://ourlists.ddns.net:3306/ourlists?zeroDateTimeBehavior=convertToNull";
-                String username = "user";
-                String password = "the_password";
-                conn = DriverManager.getConnection(url, username, password);
-                stmt = conn.createStatement();
-
-            } catch (Exception e) {
-                System.out.println("Causa Connessione: ");
-                e.printStackTrace();
-            }
-       */ %>
-        <!--###############################################################################################################################-->
 
 
         <%
@@ -728,19 +708,6 @@
         <script src="../js/jquery.validate.min.js"></script>
         <script src="../js/custom.js"></script>
 
-        <!--###############################################################################################################################
-                            CHIUSURA DATABASE
-        ###############################################################################################################################-->            
-        <%/*
-            try {
-                stmt.close();
-                conn.close();
-            } catch (Exception e) {
-                System.out.println("Causa Chiusura ");
-                e.printStackTrace();
-            }
-       */ %>    
-        <!--###############################################################################################################################-->
 
     </body>
 </html>

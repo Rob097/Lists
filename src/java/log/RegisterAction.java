@@ -46,12 +46,6 @@ public class RegisterAction extends HttpServlet {
 
     }
 
-    /*
-    // database connection settings -->fatti in init()
-    private String dbURL = "jdbc:mysql://ourlists.ddns.net:3306/ourlists?zeroDateTimeBehavior=convertToNull";
-    private String dbUser = "user";
-    private String dbPass = "the_password";
-     */
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
 
@@ -63,10 +57,10 @@ public class RegisterAction extends HttpServlet {
         avatarsFolder = getServletContext().getRealPath(avatarsFolder);
         avatarsFolder = avatarsFolder.replace("\\build", "");
         
-        user.setEmail(request.getParameter("email")); //email = request.getParameter("email"); //txt_username
+        user.setEmail(request.getParameter("email")); 
         System.out.println(user.getEmail());
-        user.setNominativo(request.getParameter("nominativo")); //nominativo = request.getParameter("nominativo"); //txt_name
-        user.setPassword(request.getParameter("password")); //password = request.getParameter("password"); //txt_password
+        user.setNominativo(request.getParameter("nominativo")); 
+        user.setPassword(request.getParameter("password")); 
         Tipostandard = request.getParameter("standard"); //txt_standard
         TipoAmministratore = request.getParameter("amministratore"); //txt_amministratore
 
@@ -94,58 +88,13 @@ public class RegisterAction extends HttpServlet {
             user.setTipo(amministratore);
         }
 
-        /*
-            //-->adesso nella classe JDBCUserDAO
-            Connection conn = null;	// connection to the database
-            String message;	// message will be sent back to client
-         */
         try {
-            /*
-            // connects to the database-->fatto gia con il WebContextListener(quindi fa solo una volta)
-            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-            conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
-             */
-
             //manda i dati del user, il metodo upate fa la parte statement 
             userdao.update(user);
 
-            /*-->adesso nella classe JDBCUserDAO nel metodo update
-            // constructs SQL statement
-            String sql = "insert into User(email,password,nominativo,tipo,immagine) values(?,?,?,?,?)";
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, email);
-            statement.setString(2, password);
-            statement.setString(3, nominativo);
-            if (Tipostandard != null) {
-            Tipostandard = "standard";
-            statement.setString(4, standard);
-            } else if (TipoAmministratore != null) {
-            TipoAmministratore = "amministratore";
-            statement.setString(4, amministratore);
-            }
-            
-            statement.setString(5, photo);
-
-            // sends the statement to the database server
-            int row = statement.executeUpdate();
-            if (row > 0) {
-            message = "File uploaded and saved into database";
-            }
-             */
         } catch (DAOException ex) {
             Logger.getLogger(RegisterAction.class.getName()).log(Level.SEVERE, null, ex);
         }
-        /*finally { //-->connection close nella classe WebContextListener(chiude quando viene chiuso il sito)
-        if (conn != null) {
-        // closes the database connection
-        try {
-        conn.close();
-        } catch (SQLException ex) {
-        System.out.println("ERRORNEW: ");
-        ex.printStackTrace();
-        }
-        }
-         */
 
         response.sendRedirect("homepage.jsp");
         // sets the message in request scope

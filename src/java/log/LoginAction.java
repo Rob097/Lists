@@ -60,36 +60,7 @@ public class LoginAction extends HttpServlet {
             
             //ritorna i dati dell`utente con email e password inserito
             user = userdao.getByEmailAndPassword(username, password);
-            /*
-            Class.forName("com.mysql.jdbc.Driver");  // MySQL database connection
-            String dburl = "jdbc:mysql://ourlists.ddns.net:3306/ourlists?zeroDateTimeBehavior=convertToNull";
-            String dbusername = "user";
-            String dbpassword = "the_password";
-            Connection conn = DriverManager.getConnection(dburl, dbusername, dbpassword);
-            PreparedStatement pst = conn.prepareStatement("Select * from User where email=? and password=?");
-            pst.setString(1, username);
-            pst.setString(2, password);
-
-            ResultSet rs = pst.executeQuery();
-            */
-            /*
-            String Nominativo;
-            String Type;
-            String image;
-            String Email;
-            String standard = request.getParameter("standard");
-            String notstandard = request.getParameter("amministratore");
-            String remember = request.getParameter("remember");
-
-            //Guarda se i campoi sono corretti e se l'utente è standard
-            if (rs.next()) {
-
-                    Nominativo = rs.getString("nominativo");
-                    Type = rs.getString("tipo");
-                    Email = rs.getString("email");
-                    image = rs.getString("immagine");
-                    
-            */
+       
                 if(user != null){
                         String nominativo = user.getNominativo();
                         String tipo=user.getTipo();
@@ -115,6 +86,7 @@ public class LoginAction extends HttpServlet {
                         request.getSession().setAttribute("Type", tipo);
                         request.getSession().setAttribute("Logged", "on");
                         request.getSession().setAttribute("user", user);
+                        
                     if ("standard".equals(user.getTipo())) {
                         url = "Pages/standard/standardType.jsp";
                     } else if ("amministratore".equals(user.getTipo())) {
