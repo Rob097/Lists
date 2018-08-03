@@ -52,6 +52,7 @@ public class LoginAction extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         User user = new User();
+        Boolean loginResult = true;
         
          try {
             String username = request.getParameter("email");
@@ -62,6 +63,7 @@ public class LoginAction extends HttpServlet {
             user = userdao.getByEmailAndPassword(username, password);
        
                 if(user != null){
+                    loginResult = true;
                         String nominativo = user.getNominativo();
                         String tipo=user.getTipo();
                         String image=user.getImage();
@@ -95,12 +97,18 @@ public class LoginAction extends HttpServlet {
                         url = "homepage.jsp";
                         out.println("Errore di tipo utente");
                     }
-                }else {System.out.println("user=null");}
+                }else {
+                    System.out.println("user=null");
+                    url = "homepage.jsp";
+                    loginResult = false;
+                }
             
             } catch (DAOException ex) {
             Logger.getLogger(LoginAction.class.getName()).log(Level.SEVERE, null, ex);
         }
-            //System.out.println("Errore next");
+         //gestisce un login non valido
+         request.getSession().setAttribute("loginResult", loginResult);
+         
             if(url != null){
                 response.sendRedirect(url);
             }

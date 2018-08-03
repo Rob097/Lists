@@ -81,7 +81,6 @@ public class updateUser extends HttpServlet {
         cgeUser.setNominativo(nominativo);
         cgeUser.setPassword(password);
 
-        System.out.println(cgeUser.getNominativo() + " " + cgeUser.getEmail() + " " + cgeUser.getPassword());
         System.out.println(request.getPart("file1"));
         //Eliminazione dell'immagine dell'utente
         if ((request.getPart("file1") != null) && (request.getPart("file1").getSize() > 0)) {

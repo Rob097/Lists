@@ -8,6 +8,8 @@
 <%@ page import="java.sql.Connection" %>
 <%@ page import="java.sql.DriverManager" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -20,11 +22,23 @@
     <link rel="stylesheet" href="Pages/fonts/font-awesome.css" type="text/css">
     <link rel="stylesheet" href="Pages/css/selectize.css" type="text/css">
     <link rel="stylesheet" href="Pages/css/style.css">
-    <link rel="stylesheet" href="Pages/css/user.css">
-        
+    <link rel="stylesheet" href="Pages/css/user.css">  
     <link rel="icon" href="Pages/img/favicon.png" sizes="16x16" type="image/png">
+    <script src="Pages/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="Pages/js/popper.min.js"></script>
+    <script type="text/javascript" src="Pages/bootstrap/js/bootstrap.min.js"></script>
+        
     <title>Lists</title>
-
+    
+    <!--apre subito il LoginModal se i dati inseriti non sono essistenti nel database-->
+    <c:if test="${loginResult==false}">
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#LoginModal").modal('show');
+            });
+        </script>
+    </c:if>
+    
 </head>
 <body>
     <!--###############################################################################################################################
@@ -1469,17 +1483,26 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <div class="page-title">
-                <div class="container">
-                    <h1>Sign In</h1>
-                </div>
+              
+                <div class="page-title">
+                    <div class="container">
+                        <h1>Sign In</h1>
+                    </div>
                     <!--end container-->
-            </div>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>            
+
           </div>
             <div class="modal-body">
+                <c:if test="${loginResult==false}">
+                    <div class="alert alert-danger">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Login Failed!</strong> <br> Please try again or <a data-toggle="modal" href="#RegisterModal" class="alert-link"><u>Sign up!</u></a>
+                        
+                    </div>
+                </c:if>
                     <!-- Form per il login -->
                 <form class="form clearfix" id="login-form" action="/Lists/LoginAction" method="post" role="form">
                     <div class="form-group">
@@ -1505,7 +1528,7 @@
                 </form>
                 <hr>
                 <p>
-                    Troubles with signing? <a href="#" class="link">Click here.</a>
+                    Troubles with signing? <a href="#RegisterModal" data-toggle="modal" class="link">Click here.</a>
                 </p>
             </div>
           <div class="modal-footer">
@@ -1581,9 +1604,7 @@
 
     <!--######################################################-->
 
-	<script src="Pages/js/jquery-3.3.1.min.js"></script>
-        <script type="text/javascript" src="Pages/js/popper.min.js"></script>
-	<script type="text/javascript" src="Pages/bootstrap/js/bootstrap.min.js"></script>
+	
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
     <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
 	<script src="Pages/js/selectize.min.js"></script>
