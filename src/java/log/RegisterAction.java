@@ -50,6 +50,7 @@ public class RegisterAction extends HttpServlet {
             HttpServletResponse response) throws ServletException, IOException {
 
         User user = new User();
+        Boolean regResult = false;
         // gets values of text fields
         String avatarsFolder = "/Image/AvatarImg";
         String rp = "/Image/AvatarImg";
@@ -90,10 +91,14 @@ public class RegisterAction extends HttpServlet {
 
         try {
             //manda i dati del user, il metodo upate fa la parte statement 
-            userdao.update(user);
+            user = userdao.update(user);
 
         } catch (DAOException ex) {
             Logger.getLogger(RegisterAction.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(user != null){
+            regResult = true;
+            request.getSession().setAttribute("regResult", regResult);
         }
 
         response.sendRedirect("homepage.jsp");

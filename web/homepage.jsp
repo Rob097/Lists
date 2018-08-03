@@ -102,6 +102,12 @@
                 
                 <!--============ End Secondary Navigation ===========================================================-->
                 <!--============ Main Navigation ====================================================================-->
+                <c:if test="${regResult==true}">
+                <div class="alert alert-success">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Successful Registration!</strong> You can now log in in your account.
+                </div>
+                </c:if> 
                 <div class="main-navigation">
                     <div class="container">
                         <nav class="navbar navbar-expand-lg navbar-light justify-content-between">

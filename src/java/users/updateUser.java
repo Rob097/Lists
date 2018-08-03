@@ -57,6 +57,7 @@ public class updateUser extends HttpServlet {
             throws ServletException, IOException {
 
         User user = new User();
+        Boolean updateResult = false;
         User cgeUser = new User();
         user = (User) request.getSession().getAttribute("user");
 
@@ -144,13 +145,15 @@ public class updateUser extends HttpServlet {
         }
 
         if (user != null) {
+            updateResult = true;
             request.getSession().setAttribute("user", user);
+            request.getSession().setAttribute("updateResult", updateResult);
         }
 
         if ("standard".equals(user.getTipo())) {
-            url = "Pages/standard/standardType.jsp";
+            url = "Pages/standard/profile.jsp";
         } else if ("amministratore".equals(user.getTipo())) {
-            url = "Pages/amministratore/amministratore.jsp";
+            url = "Pages/amministratore/profile.jsp";
         } else {
             url = "homepage.jsp";
             out.println("Errore di tipo utente");

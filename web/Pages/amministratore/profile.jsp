@@ -123,6 +123,13 @@
                     </div>
 
                     <!--============ End Secondary Navigation ===========================================================-->
+                    <c:if test="${updateResult==true}">
+                        <div class="alert alert-success">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>Successful Modification!</strong> Your account is actualized.
+                        </div>
+                        <% request.getSession().setAttribute("updateResult", false); %>
+                    </c:if> 
                     <!--============ Main Navigation ====================================================================-->
                     <div class="main-navigation">
                         <div class="container">
