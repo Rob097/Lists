@@ -4,29 +4,21 @@
     Author     : Roberto97
 --%>
 
+<%@page import="database.entities.User"%>
 <%@page import="java.net.URLDecoder"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Blob"%>
 <%
-    Cookie cookiecheck = null;
-    Cookie[] cookiescheck = null;
+    HttpSession s = request.getSession();
+    User u = null;
     boolean find = false;
-    // Get an array of Cookies associated with the this domain
-    cookiescheck = request.getCookies();
-    if (cookiescheck != null) {
 
-        for (int i = 0; i < cookiescheck.length && find != true; i++) {
-            cookiecheck = cookiescheck[i];
-            if (cookiecheck.getName().equals("Type")) {
-                if (cookiecheck.getValue().equals("amministratore")) {
-                    find = true;
-                }
-            }
-        }
+    u = (User) s.getAttribute("user");
+    if (u.getTipo() == "amministratore") {
+        find = true;
     }
-
-    if (find) {
+    if (true) {
 %>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.Statement"%>
@@ -52,44 +44,21 @@
 
 
         <%
-            Cookie cookie = null;
-            Cookie[] cookies = null;
-
-            // Get an array of Cookies associated with the this domain
-            cookies = request.getCookies();
             String Nominativo = "";
             String Email = "";
             String Type = "";
             String image = "../../";
 
             //String Image = "";
-            if (cookies != null) {
-                for (int i = 0; i < cookies.length; i++) {
-                    cookie = cookies[i];
-                    if (cookie.getName().equals("JSESSIONID")); else {
-                        if (cookie.getName().equals("Nominativo")) {
-                            Nominativo += URLDecoder.decode(cookie.getValue(), "UTF-8");
-                        }
-                        if (cookie.getName().equals("Email")) {
-                            Email += cookie.getValue();
-                        }
-
-                        if (cookie.getName().equals("Type")) {
-                            Type += cookie.getValue();
-                        }
-                        if (cookie.getName().equals("Image")) {
-                            image += cookie.getValue();
-                        }
-
-                    }
-                }
-            } else {
-                System.out.println("<h2>No cookies founds</h2>");
-            }
+            Nominativo = u.getNominativo();
+            Email = u.getEmail();
+            Type = u.getTipo();
+            image = u.getImage();
 
 
         %>
-
+        
+        <h1><%=Nominativo%></h1>
         <div class="page home-page">
             <header class="hero">
                 <div class="hero-wrapper">
@@ -538,9 +507,9 @@
                                                     <label for="nominativo" class="col-form-label">Nome</label>
                                                     <input type="text" name="nominativo" id="nominativo" tabindex="1" class="form-control" placeholder="Nome" value="${user.nominativo}" >
                                                 </div>
- 
+
                                                 <!--end form-group-->
-                                                
+
                                             </section>
                                             <section class="clearfix">
                                                 <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary float-right">Save Changes</button>
@@ -563,8 +532,8 @@
                                         </div>
                                         <!--end col-md-3-->
                                     </div>
-                               </form>
-                                
+                                </form>
+
                             </div>
                         </div>
                         <!--end row-->

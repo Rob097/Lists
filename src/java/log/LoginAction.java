@@ -26,20 +26,21 @@ import javax.servlet.http.HttpServletResponse;
  * @author Roberto97
  */
 public class LoginAction extends HttpServlet {
+
     String url = null;
     UserDAO userdao = null;
-    
+
     @Override
-    public void init() throws ServletException{
-          //carica la Connessione inizializzata in JDBCDAOFactory, quindi ritorna il Class.for() e la connessione
-           DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
-            if (daoFactory == null) {
+    public void init() throws ServletException {
+        //carica la Connessione inizializzata in JDBCDAOFactory, quindi ritorna il Class.for() e la connessione
+        DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
+        if (daoFactory == null) {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         //assegna a userdao la connessione(costruttore) e salva la connessione in una variabile tipo Connection
         userdao = new JDBCUserDAO(daoFactory.getConnection());
     }
-    
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -53,75 +54,59 @@ public class LoginAction extends HttpServlet {
             throws ServletException, IOException {
         User user = new User();
         Boolean loginResult = true;
-        
-         try {
+
+        try {
             String username = request.getParameter("email");
             String password = request.getParameter("password");
             String remember = request.getParameter("remember");
-            
+
             //ritorna i dati dell`utente con email e password inserito
             user = userdao.getByEmailAndPassword(username, password);
-       
-                if(user != null){
-                    loginResult = true;
-                        String nominativo = user.getNominativo();
-                        String tipo=user.getTipo();
-                        String image=user.getImage();
-                        String email=user.getEmail();
-                        
-                        user.setEmail(email);
-                        user.setImage(image);
-                        user.setNominativo(nominativo);
-                        user.setPassword(password);
-                        user.setTipo(tipo);
-                        
-                        
-                        Cookie cookie = null;
-                        if(nominativo != null){
-                         cookie = new Cookie("Nominativo", URLEncoder.encode(nominativo, "UTF-8"));  
-                        }
-                        Cookie typeCookie = new Cookie("Type", tipo);
-                        Cookie imageCookie = new Cookie("Image", image);
-                        Cookie emailCookie = new Cookie("Email", email);
-                        Cookie logged = new Cookie("Logged", "on");
-                        
-                    
-                        if(remember != null) {cookie.setMaxAge(30 * 24 * 60 * 60); imageCookie.setMaxAge(30 * 24 * 60 * 60); typeCookie.setMaxAge(30 * 24 * 60 * 60); emailCookie.setMaxAge(30 * 24 * 60 * 60); logged.setMaxAge(30 * 24 * 60 * 60);}
-                        if(nominativo != null){response.addCookie(cookie);} response.addCookie(imageCookie); response.addCookie(typeCookie); response.addCookie(emailCookie); response.addCookie(logged);
-                    
-                        request.getSession().setAttribute("Nominativo", nominativo);
-                        request.getSession().setAttribute("Image", image);
-                        request.getSession().setAttribute("Email", email);
-                        request.getSession().setAttribute("Type", tipo);
-                        request.getSession().setAttribute("Logged", "on");
-                        request.getSession().setAttribute("user", user);
-                        
-                    if ("standard".equals(user.getTipo())) {
-                        url = "Pages/standard/standardType.jsp";
-                    } else if ("amministratore".equals(user.getTipo())) {
-                        url = "Pages/amministratore/amministratore.jsp";
-                    } else {
-                        url = "homepage.jsp";
-                        out.println("Errore di tipo utente");
-                    }
-                }else {
-                    System.out.println("user=null");
+
+            if (user != null) {
+                loginResult = true;
+                
+                String nominativo = user.getNominativo();
+                String tipo = user.getTipo();
+                String image = user.getImage();
+                String email = user.getEmail();
+
+                user.setEmail(email);
+                user.setImage(image);
+                user.setNominativo(nominativo);
+                user.setPassword(password);
+                user.setTipo(tipo);
+
+                request.getSession().setAttribute("Logged", "on");
+                request.getSession().setAttribute("user", user);
+
+                if ("standard".equals(user.getTipo())) {
+                    url = "Pages/standard/standardType.jsp";
+                } else if ("amministratore".equals(user.getTipo())) {
+                    url = "Pages/amministratore/amministratore.jsp";
+                } else {
                     url = "homepage.jsp";
-                    loginResult = false;
+                    out.println("Errore di tipo utente");
                 }
-            
-            } catch (DAOException ex) {
+            } else {
+                System.out.println("user=null");
+                url = "homepage.jsp";
+                loginResult = false;
+            }
+
+        } catch (DAOException ex) {
             Logger.getLogger(LoginAction.class.getName()).log(Level.SEVERE, null, ex);
         }
-         //gestisce un login non valido
-         request.getSession().setAttribute("loginResult", loginResult);
-         
-            if(url != null){
-                response.sendRedirect(url);
-            }
-            else out.print("Errore Imprevisto");
-  
-        } 
+        //gestisce un login non valido
+        request.getSession().setAttribute("loginResult", loginResult);
+
+        if (url != null) {
+            response.sendRedirect(url);
+        } else {
+            out.print("Errore Imprevisto");
+        }
+
+    }
 
     /**
      * Returns a short description of the servlet.

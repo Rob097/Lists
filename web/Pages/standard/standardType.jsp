@@ -4,26 +4,27 @@
     Author     : Roberto97
 --%>
 
+<%@page import="database.entities.User"%>
 <%@page import="java.net.URLDecoder"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Blob"%>
 <%
-Cookie cookiecheck = null;
-    Cookie[] cookiescheck = null;     
-    boolean find = false; 
-    // Get an array of Cookies associated with the this domain
-    cookiescheck = request.getCookies();
-    if( cookiescheck != null ) {
-              
-        for (int i = 0; i < cookiescheck.length && find != true; i++) {                       
-            cookiecheck = cookiescheck[i];
-            if(cookiecheck.getName().equals("Type")){
-                if(cookiecheck.getValue().equals("standard")) find = true;
+HttpSession s = (HttpSession)request.getSession();
+    User u = null;
+    boolean find = false;
+ 
+        
+            u = (User)s.getAttribute("user");
+            System.out.println("=================================" + u.getNominativo());
+            System.out.println("=================================" + u.getTipo());
+            if (u.getTipo().equals("standard")) {
+                find = true;
             }
-        }
-    }
-    
-    if(find){
+            
+            System.out.println("000" + find);
+
+
+    if (find) {
 %>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.Statement"%>
@@ -48,33 +49,17 @@ Cookie cookiecheck = null;
     <body>        
         
         <%
-            Cookie cookie = null;
-            Cookie[] cookies = null;
-            
-            
-            // Get an array of Cookies associated with the this domain
-            cookies = request.getCookies();           
             String Nominativo = "";
             String Email = "";
             String Type = "";
             String image = "../../";
-            
+
             //String Image = "";
-             if( cookies != null ) {
-                for (int i = 0; i < cookies.length; i++) {                       
-                        cookie = cookies[i];
-                        if(cookie.getName().equals("JSESSIONID"));
-                        else{   if (cookie.getName().equals("Nominativo")) Nominativo += URLDecoder.decode(cookie.getValue(), "UTF-8");
-                                if (cookie.getName().equals("Email")) Email += cookie.getValue();
-                               // PreparedStatement statement1 = conn.prepareStatement("SELECT immagine FROM User WHERE email = ?");
-                                //statement1.setString(1, Email);
-                                if (cookie.getName().equals("Type")) Type += cookie.getValue();
-                                if (cookie.getName().equals("Image")) image += cookie.getValue();
-                        }
-                }
-            } else {
-                System.out.println("<h2>No cookies founds</h2>");
-            }
+            
+            Nominativo = u.getNominativo();
+            Email = u.getEmail();
+            Type = u.getTipo();
+            image = u.getImage();
         %>
 
         <div class="page home-page">
