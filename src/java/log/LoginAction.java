@@ -69,6 +69,13 @@ public class LoginAction extends HttpServlet {
                         String image=user.getImage();
                         String email=user.getEmail();
                         
+                        user.setEmail(email);
+                        user.setImage(image);
+                        user.setNominativo(nominativo);
+                        user.setPassword(password);
+                        user.setTipo(tipo);
+                        
+                        
                         Cookie cookie = null;
                         if(nominativo != null){
                          cookie = new Cookie("Nominativo", URLEncoder.encode(nominativo, "UTF-8"));  

@@ -70,8 +70,11 @@ public class RegisterAction extends HttpServlet {
         String filename1 = "";
         Part filePart1 = request.getPart("file1");
         if ((filePart1 != null) && (filePart1.getSize() > 0)) {
+            
             String extension = Paths.get(filePart1.getSubmittedFileName()).getFileName().toString().split(Pattern.quote("."))[1];;
-            filename1 = user.getEmail() + "." + extension;
+            String email = user.getEmail();
+            
+            filename1 = SetImgName(email, extension);
             File file1 = new File(uploadDirFile, filename1);
             try (InputStream fileContent = filePart1.getInputStream()) {
                 Files.copy(fileContent, file1.toPath());
@@ -127,6 +130,19 @@ public class RegisterAction extends HttpServlet {
         }      
         return (rp + "/" + filename1).replaceFirst("/", "");
     }
-
-
+    
+    public String SetImgName(String name, String extension){
+        
+        String s;
+        s = name;
+        s = s.trim();
+        s = s.replace("@", "");
+        s = s.replace(".", "");
+       
+        return s + "." + extension;
+    }
+    
+    public String GetImgFolderPath(){
+        return "";
+    }
 }
