@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -125,7 +126,7 @@ public class JDBCListDAO extends JDBCDAO implements ListDAO {
             //TODO: Thinking to return an error instead of null.
             return null;
         }
-        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO shopping_lists (name, description) VALUES (?,?)", Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO List (name, description) VALUES (?,?)", Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, shoppingList.getNome());
             ps.setString(2, shoppingList.getDescrizione());
@@ -206,16 +207,16 @@ public class JDBCListDAO extends JDBCDAO implements ListDAO {
      * @author Stefano Chirico
      * @since 1.0.180421
      */
-    /*@Override
-    public boolean linkShoppingListToUser(ShoppingList shoppingList, User user) throws DAOException {
+    @Override
+    public boolean linkShoppingListToUser(ShopList shoppingList, User user) throws DAOException {
         if ((shoppingList == null) || (user == null)) {
             throw new DAOException("Shopping_list and user are mandatory fields", new NullPointerException("shopping_list or user are null"));
         }
         
-        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO users_shopping_lists (id_user, id_shopping_list) VALUES (?, ?)")) {
+        try (PreparedStatement ps = CON.prepareStatement("INSERT INTO User_List (id_user, id_shopping_list) VALUES (?, ?)")) {
 
-            ps.setInt(1, user.getId());
-            ps.setInt(2, shoppingList.getId());
+            ps.setString(1, user.getEmail());
+            ps.setString(2, shoppingList.getNome());
 
             return ps.executeUpdate() == 1;
         } catch (SQLException ex) {
@@ -225,7 +226,7 @@ public class JDBCListDAO extends JDBCDAO implements ListDAO {
             }
             throw new DAOException("Impossible to link the passed shopping_list with the passed user", ex);
         }
-    }*/
+    }
 
     /**
      * Returns the list of {@link ShoppingList shopping-lists} with the
@@ -242,23 +243,23 @@ public class JDBCListDAO extends JDBCDAO implements ListDAO {
      * @author Stefano Chirico
      * @since 1.0.180421
      */
-    /*@Override
-    public List<ShoppingList> getByUserId(Integer userId) throws DAOException {
-        if (userId == null) {
+    @Override
+    public List<ShopList> getAllListByUserEmail(User user) throws DAOException {
+        if (user.getEmail() == null) {
             throw new DAOException("userId is mandatory field", new NullPointerException("userId is null"));
         }
         
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM shopping_lists WHERE id IN (SELECT id_shopping_list FROM users_shopping_lists WHERE id_user = ?) ORDER BY name")) {
-            List<ShoppingList> shoppingLists = new ArrayList<>();
-            stm.setInt(1, userId);
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM List WHERE Nome IN (SELECT Nome FROM User_List WHERE user = ?) ORDER BY name")) {
+            List<ShopList> shoppingLists = new ArrayList<>();
+            stm.setString(1, user.getEmail());
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    ShoppingList shoppingList = new ShoppingList();
-                    shoppingList.setId(rs.getInt("id"));
-                    shoppingList.setName(rs.getString("name"));
-                    shoppingList.setDescription(rs.getString("description"));
+                    ShopList sL = new ShopList();
+                    sL.setNome(rs.getString("nome"));
+                    sL.setDescrizione(rs.getString("descrizione"));
+                    sL.setCategoria("categoria");
 
-                    shoppingLists.add(shoppingList);
+                    shoppingLists.add(sL);
                 }
 
                 return shoppingLists;
@@ -266,7 +267,7 @@ public class JDBCListDAO extends JDBCDAO implements ListDAO {
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of users", ex);
         }
-    }*/
+    }
 
    /* @Override
     public User update(database.entities.List list) throws DAOException {
@@ -287,5 +288,8 @@ public class JDBCListDAO extends JDBCDAO implements ListDAO {
     public User changeList(database.entities.List newList, database.entities.List oldList) throws DAOException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }*/
+    
 
+    
+    
 }
