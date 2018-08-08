@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author Martin
  */
-public class List {
+public class ShopList {
     private String nome;
     private String descrizione;
     //private String immagine;
@@ -19,7 +19,13 @@ public class List {
     private String categoria;
     private ArrayList<Product> products;
 
-    public List(String nome, String descrizione, String creator, String categoria, ArrayList<Product> products) {
+    public ShopList() {
+    }
+    
+    
+    
+    
+    public ShopList(String nome, String descrizione, String creator, String categoria, ArrayList<Product> products) {
         this.nome = nome;
         this.descrizione = descrizione;
         this.creator = creator;
