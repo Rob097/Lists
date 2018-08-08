@@ -244,13 +244,21 @@ public class JDBCListDAO extends JDBCDAO implements ListDAO {
      * @since 1.0.180421
      */
     @Override
-    public List<ShopList> getAllListByUserEmail(User user) throws DAOException {
+    public ArrayList<ShopList> getAllListByUserEmail(User user) throws DAOException {
+        
+        System.out.println("SONO NELLAAA GET ALL LIST BY USERRRRRRRRRRRRRR");
+        
         if (user.getEmail() == null) {
             throw new DAOException("userId is mandatory field", new NullPointerException("userId is null"));
         }
         
+        System.out.println("sono quaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
+        
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM List WHERE Nome IN (SELECT Nome FROM User_List WHERE user = ?) ORDER BY name")) {
-            List<ShopList> shoppingLists = new ArrayList<>();
+            ArrayList<ShopList> shoppingLists = new ArrayList<>();
+            
+                        
             stm.setString(1, user.getEmail());
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
@@ -288,8 +296,5 @@ public class JDBCListDAO extends JDBCDAO implements ListDAO {
     public User changeList(database.entities.List newList, database.entities.List oldList) throws DAOException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }*/
-    
-
-    
     
 }
