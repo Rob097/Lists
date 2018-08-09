@@ -4,6 +4,7 @@
     Author     : Roberto97
 --%>
 
+<%@page import="database.jdbc.JDBCShopListDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="database.entities.ShopList"%>
 <%@page import="database.daos.ListDAO"%>
@@ -16,7 +17,14 @@
 <%@page import="java.sql.Blob"%>
 
 <%
-   
+
+    DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
+    if (daoFactory == null) {
+        throw new ServletException("Impossible to get dao factory for user storage system");
+    }
+    UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
+    ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
+
     HttpSession s = (HttpSession) request.getSession();
     User u = null;
     boolean find = false;
@@ -28,7 +36,8 @@
     }
 
     if (find) {
-       
+        ArrayList<ShopList> li = listdao.getByEmail(u.getEmail());
+
 %>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.Statement"%>
@@ -52,8 +61,7 @@
     </head>
     <body>        
 
-        <%
-            String Nominativo = "";
+        <%            String Nominativo = "";
             String Email = "";
             String Type = "";
             String image = "../../";
@@ -63,7 +71,7 @@
             Email = u.getEmail();
             Type = u.getTipo();
             image = u.getImage();
-            
+
         %>
 
         <div class="page home-page">
@@ -352,6 +360,35 @@
                             <h1 class="opacity-60 center">
                                 Your own<a href="#"> Lists</a>
                             </h1>
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Nome</th>
+                                        <th scope="col">Descrizione</th>
+                                        <th scope="col">Creator</th>
+                                        <th scope="col">Categoria</th>
+                                    </tr>
+                                </thead>
+                                
+                                
+                                
+                                <tbody>
+                                <%
+                                    for(ShopList l: li){
+                                %>
+                                    <tr>
+                                        <th>1</th>
+                                        <td> <%=l.getNome()%> </td>
+                                        <td><%=l.getDescrizione()%></td>
+                                        <td><%=l.getCreator()%></td>
+                                        <td><%=l.getCategoria()%></td>
+                                    </tr>
+                                <%}%>
+                                </tbody>
+                            </table>
+
                         </div>
                         <!--end container-->
                     </div>
@@ -833,7 +870,6 @@
     </body>
 </html>
 
-<%
-    } else
+<%    } else
         response.sendRedirect("/Lists");
 %>
