@@ -404,6 +404,56 @@
 
                         </div>
                         <!--end container-->
+                        <br><br>
+                        <div class="container">
+                            <h1 class="opacity-60 center">
+                                Lists you can looking for</a>
+                            </h1>
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Nome</th>
+                                        <th scope="col">Descrizione</th>
+                                        <th scope="col">Creator</th>
+                                        <th scope="col">Categoria</th>
+                                        <th scope="col">Shared With</th>
+                                    </tr>
+                                </thead>
+                                
+                                
+                                
+                                <tbody>
+                                <%
+                                    ArrayList<ShopList> sl = listdao.getListOfShopListsThatUserLookFor(u.getEmail());
+                                    for(ShopList l: sl){
+                                %>
+                                    <tr>
+                                        <th>1</th>
+                                        <td> <%=l.getNome()%> </td>
+                                        <td><%=l.getDescrizione()%></td>
+                                        <td><%=l.getCreator()%></td>
+                                        <td><%=l.getCategoria()%></td>
+                                        
+                                        <td>
+                                        <ul>
+                                            <%
+                                                ArrayList<User> aru = listdao.getUsersWithWhoTheListIsShared(l);
+                                                for(User sharedUsers:aru){
+                                            %>
+                                            <li><%=sharedUsers.getEmail()%></li>
+                                            <%}%>
+                                        </ul>
+                                        
+                                        </td>
+                                    </tr>
+                                <%}%>
+                                </tbody>
+                            </table>
+
+                        </div>
+                        
                     </div>
                     <!--============ End Page Title =====================================================================-->
                     <!--============ Hero Form ==========================================================================-->
