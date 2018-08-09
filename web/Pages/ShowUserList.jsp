@@ -4,6 +4,7 @@
     Author     : Roberto97
 --%>
 
+<%@page import="database.entities.Product"%>
 <%@page import="database.jdbc.JDBCShopListDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="database.entities.ShopList"%>
@@ -39,7 +40,7 @@
     }
 
     if (find) {
-        ArrayList<ShopList> li = listdao.getByEmail(u.getEmail());
+        ArrayList<Product> li = listdao.getAllProductsOfShopList(shoplistName);
 
 %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -408,14 +409,17 @@
                                 </div>
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
+                                    
+                                    <%for(Product p: li){%>
+                                    
                                     <div class="item">
                                         
                                         <!--end ribbon-->
                                         <div class="wrapper">
                                             <div class="image">
                                                 <h3>
-                                                    <a href="#" class="tag category">Home & Decor</a>
-                                                    <a href="single-listing-1.html" class="title">Furniture for sale</a>
+                                                    <a href="#" class="tag category"><%=p.getCategoria_prodotto()%></a>
+                                                    <a href="single-listing-1.html" class="title"><%=p.getNome()%></a>
                                                     <span class="tag">Offer</span>
                                                 </h3>
                                                 <a href="single-listing-1.html" class="image-wrapper background-image">
@@ -424,7 +428,7 @@
                                             </div>
                                             <!--end image-->
                                             <h4 class="location">
-                                                <a href="#">Manhattan, NY</a>
+                                                <a href="#"><%=p.getPid()%></a>
                                             </h4>
                                             <div class="price">$80</div>
                                             <div class="admin-controls">
@@ -440,12 +444,13 @@
                                             </div>
                                             <!--end admin-controls-->
                                             <div class="description">
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam venenatis lobortis</p>
+                                                <p><%=p.getNote()%></p>
                                             </div>
                                             <!--end description-->
                                             <a href="single-listing-1.html" class="detail text-caps underline">Detail</a>
                                         </div>
                                     </div>
+                                     <%}%>
                                     <!--end item-->
                                     
                                     <!--end item-->

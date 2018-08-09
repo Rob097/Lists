@@ -16,6 +16,9 @@ public class Product {
     private String categoria_prodotto;
     //private String immagine;
 
+    public Product() {
+    }
+
     public int getPid() {
         return pid;
     }

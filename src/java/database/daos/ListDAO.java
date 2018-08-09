@@ -5,6 +5,7 @@
  */
 package database.daos;
 
+import database.entities.Product;
 import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
@@ -21,4 +22,5 @@ public interface ListDAO {
     public ArrayList<User> getUsersWithWhoTheListIsShared(ShopList l) throws DAOException;
     public ShopList Insert(ShopList l) throws DAOException;
     public ArrayList<ShopList> getListOfShopListsThatUserLookFor(String email) throws DAOException;
+    public ArrayList<Product> getAllProductsOfShopList(String name)throws DAOException;
 }

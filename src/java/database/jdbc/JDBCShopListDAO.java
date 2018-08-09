@@ -7,6 +7,7 @@ package database.jdbc;
 
 import database.daos.ListDAO;
 import database.daos.UserDAO;
+import database.entities.Product;
 import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
@@ -123,6 +124,41 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                 }
 
                 return shoppingLists;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of users", ex);
+        }
+    }
+    
+    @Override
+    public ArrayList<Product> getAllProductsOfShopList(String name)throws DAOException{
+        
+        try (PreparedStatement stm = CON.prepareStatement("select * from Product where PID in (select prodotto from List_Prod where lista = ?)")) {
+            ArrayList<Product> productLists = new ArrayList<>();
+            System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL" + name);
+            stm.setString(1, name);
+            try (ResultSet rs = stm.executeQuery()) {
+                System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY" + name);
+                while (rs.next()) {
+                    
+                    Product sL = new Product();
+                    System.out.println("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW" + name);
+                    String n = rs.getString("nome");
+                    System.out.println(n);
+                    sL.setNome(n);
+                    System.out.println("NNNNNNNNNNNNNNNNNNNNNNNNOME" + name);
+                    sL.setCategoria_prodotto(rs.getString("categoria_prod"));
+                    System.out.println("CCCCCCCCCCCCCCCCCCCCCCATEGORIA" + name);
+                    sL.setPid(rs.getInt("PID"));
+                    System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPID" + name);
+                    sL.setNote(rs.getString("note"));
+                    System.out.println("NTTTTTTTTTTTTTEEEEEE" + name);
+
+                    productLists.add(sL);
+                }
+                
+                System.out.println("ENNNNDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD" + name);
+                return productLists;
             }
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of users", ex);
