@@ -397,6 +397,9 @@
                                             <%}%>
                                         </ul>
                                         </td>
+                                        
+                                        <td><a href="/Lists/ShareShopListServlet?nome=<%=l.getNome()%>">Share list</a></td>
+                                        
                                     </tr>
                                 <%}%>
                                 </tbody>
