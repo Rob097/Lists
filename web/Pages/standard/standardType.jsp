@@ -342,7 +342,7 @@
                                             <a class="nav-link" href="contact.html">Contact</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="submit.html" class="btn btn-primary text-caps btn-rounded">Submit Ad</a>
+                                            <a data-toggle="modal" data-target="#CreateListModal" style="cursor: pointer;" class="btn btn-primary text-caps btn-rounded">CREA UNA LISTA</a>
                                         </li>
                                     </ul>
                                     <!--Main navigation list-->
@@ -369,6 +369,7 @@
                                         <th scope="col">Descrizione</th>
                                         <th scope="col">Creator</th>
                                         <th scope="col">Categoria</th>
+                                        <th scope="col">Shared With</th>
                                     </tr>
                                 </thead>
                                 
@@ -384,6 +385,18 @@
                                         <td><%=l.getDescrizione()%></td>
                                         <td><%=l.getCreator()%></td>
                                         <td><%=l.getCategoria()%></td>
+                                        
+                                        <td>
+                                        
+                                        <ul>
+                                            <%
+                                                ArrayList<User> aru = listdao.getUsersWithWhoTheListIsShared(l);
+                                                for(User sharedUsers:aru){
+                                            %>
+                                            <li><%=sharedUsers.getEmail()%></li>
+                                            <%}%>
+                                        </ul>
+                                        </td>
                                     </tr>
                                 <%}%>
                                 </tbody>
@@ -855,7 +868,6 @@
         <!--end page-->
 
         <!--######################################################-->
-
         <script src="../js/jquery-3.3.1.min.js"></script>
         <script type="text/javascript" src="../js/popper.min.js"></script>
         <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
@@ -866,6 +878,61 @@
         <script src="../js/icheck.min.js"></script>
         <script src="../js/jquery.validate.min.js"></script>
         <script src="../js/custom.js"></script>
+        
+        <!--########################## moooddaaalllll ############################-->
+        
+        <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="page-title">
+                        <div class="container">
+                            <h1 style="text-align: center;">Create list</h1>
+                        </div>
+                        <!--end container-->
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form per il login -->
+                    <form class="form clearfix" id="CreateShopListform" action="/Lists/CreateShopList"  method="post" role="form">
+                        <div class="form-group">
+                            <label for="Nome" class="col-form-label">Nome della lista</label>
+                            <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
+                        </div>
+                        <!--end form-group-->
+                        <div class="form-group">
+                            <label for="Descrizione" class="col-form-label">Descrizione</label>
+                            <input type="text" name="Descrizione" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
+                        </div>
+                        <!--end form-group-->
+                        <div class="form-group">
+                            <label for="Categoria" class="col-form-label">Categoria</label>
+                            <input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>
+                        </div>
+                    
+                    <!--end form-group-->
+
+                    <div class="form-group">
+                        <label for="Immagine" class="col-form-label required">Immagine</label>
+                        <input type="file" name="file1" required>
+                    </div>
+                    <!--end form-group-->
+                    <div class="d-flex justify-content-between align-items-baseline">
+                        
+                        <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
+                    </div>
+                    </form>
+                    <hr>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+        
 
     </body>
 </html>

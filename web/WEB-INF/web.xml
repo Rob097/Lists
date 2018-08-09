@@ -41,6 +41,10 @@
         <servlet-name>updateUser</servlet-name>
         <servlet-class>users.updateUser</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateShopList</servlet-name>
+        <servlet-class>ShopList.CreateShopList</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/LogoutAction</url-pattern>
@@ -60,6 +64,10 @@
     <servlet-mapping>
         <servlet-name>updateUser</servlet-name>
         <url-pattern>/updateUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateShopList</servlet-name>
+        <url-pattern>/CreateShopList</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

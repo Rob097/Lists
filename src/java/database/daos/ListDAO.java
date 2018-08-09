@@ -18,4 +18,6 @@ import java.util.ArrayList;
 public interface ListDAO {
 
     public ArrayList<ShopList> getByEmail(String email) throws DAOException;
+    public ArrayList<User> getUsersWithWhoTheListIsShared(ShopList l) throws DAOException;
+    public ShopList Insert(ShopList l) throws DAOException;
 }

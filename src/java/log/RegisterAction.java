@@ -58,7 +58,7 @@ public class RegisterAction extends HttpServlet {
         avatarsFolder = getServletContext().getRealPath(avatarsFolder);
         avatarsFolder = avatarsFolder.replace("\\build", "");
         
-        user.setEmail(request.getParameter("email")); 
+        user.setEmail(request.getParameter("email"));
         System.out.println(user.getEmail());
         user.setNominativo(request.getParameter("nominativo")); 
         user.setPassword(request.getParameter("password")); 
