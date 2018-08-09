@@ -49,6 +49,10 @@
         <servlet-name>ShareShopListServlet</servlet-name>
         <servlet-class>ShopList.ShareShopListServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ShowShopList</servlet-name>
+        <servlet-class>ShopList.ShowShopList</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/LogoutAction</url-pattern>
@@ -76,6 +80,10 @@
     <servlet-mapping>
         <servlet-name>ShareShopListServlet</servlet-name>
         <url-pattern>/ShareShopListServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowShopList</servlet-name>
+        <url-pattern>/ShowShopList</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

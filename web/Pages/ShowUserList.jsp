@@ -24,8 +24,11 @@
     }
     UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
     ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
+    
+    
 
     HttpSession s = (HttpSession) request.getSession();
+    String shoplistName = (String)s.getAttribute("shopListName");
     User u = null;
     boolean find = false;
 
@@ -39,41 +42,38 @@
         ArrayList<ShopList> li = listdao.getByEmail(u.getEmail());
 
 %>
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.Connection"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="icon" href="../img/favicon.png" sizes="16x16" type="image/png">
-        <title>Lists</title>
+        <link rel="icon" href="img/favicon.png" sizes="16x16" type="image/png">
+        <title><%=shoplistName%></title>
 
         <!-- CSS personalizzati -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
-        <link rel="stylesheet" href="../bootstrap/css/bootstrap.css" type="text/css">
-        <link rel="stylesheet" href="../fonts/font-awesome.css" type="text/css">
-        <link rel="stylesheet" href="../css/selectize.css" type="text/css">
-        <link rel="stylesheet" href="../css/style.css">
-        <link rel="stylesheet" href="../css/user.css">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css">
+        <link rel="stylesheet" href="fonts/font-awesome.css" type="text/css">
+        <link rel="stylesheet" href="css/selectize.css" type="text/css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/user.css">
     </head>
     <body>        
 
-        <%            String Nominativo = "";
+        <%
+            String Nominativo = "";
             String Email = "";
             String Type = "";
-            String image = "../../";
+            String image = "";
 
             //String Image = "";
             Nominativo = u.getNominativo();
             Email = u.getEmail();
             Type = u.getTipo();
             image = u.getImage();
-
         %>
 
+        
         <div class="page home-page">
             <header class="hero">
                 <div class="hero-wrapper">
@@ -97,7 +97,7 @@
                                 </li>
                                 <li>
                                     <a class="navbar-brand" style="cursor: pointer;" href="/Lists/LogoutAction" data-toggle="tooltip" data-placement="bottom" title="LogOut">
-                                        <i class="fa fa-sign-in"></i><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> / <img src= "../../${user.image}" width="25px" height="25px" style="border-radius: 100%;">
+                                        <i class="fa fa-sign-in"></i><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> / <img src= "../${user.image}" width="25px" height="25px" style="border-radius: 100%;">
                                     </a>
                                 </li>
                                 <li>
@@ -342,7 +342,7 @@
                                             <a class="nav-link" href="contact.html">Contact</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a data-toggle="modal" data-target="#CreateListModal" style="cursor: pointer;" class="btn btn-primary text-caps btn-rounded">CREA UNA LISTA</a>
+                                            <a href="submit.html" class="btn btn-primary text-caps btn-rounded">Submit Ad</a>
                                         </li>
                                     </ul>
                                     <!--Main navigation list-->
@@ -358,215 +358,17 @@
                     <div class="page-title">
                         <div class="container">
                             <h1 class="opacity-60 center">
-                                Your own<a href="#"> Lists</a>
+                                You are looking for <%=shoplistName%> list
                             </h1>
-
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Nome</th>
-                                        <th scope="col">Descrizione</th>
-                                        <th scope="col">Creator</th>
-                                        <th scope="col">Categoria</th>
-                                        <th scope="col">Shared With</th>
-                                    </tr>
-                                </thead>
-                                
-                                
-                                
-                                <tbody>
-                                <%
-                                    for(ShopList l: li){
-                                %>
-                                    <tr>
-                                        <th>1</th>
-                                        <td> <%=l.getNome()%> </td>
-                                        <td><%=l.getDescrizione()%></td>
-                                        <td><%=l.getCreator()%></td>
-                                        <td><%=l.getCategoria()%></td>
-                                        
-                                        <td>
-                                        
-                                        <ul>
-                                            <%
-                                                ArrayList<User> aru = listdao.getUsersWithWhoTheListIsShared(l);
-                                                for(User sharedUsers:aru){
-                                            %>
-                                            <li><%=sharedUsers.getEmail()%></li>
-                                            <%}%>
-                                        </ul>
-                                        </td>
-                                        
-                                        <td><a href="/Lists/ShowShopList?nome=<%=l.getNome()%>">Show list</a></td>
-                                        
-                                        
-                                    </tr>
-                                <%}%>
-                                </tbody>
-                            </table>
-
                         </div>
                         <!--end container-->
-                        <br><br>
-                        <div class="container">
-                            <h1 class="opacity-60 center">
-                                Lists you can looking for</a>
-                            </h1>
-
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Nome</th>
-                                        <th scope="col">Descrizione</th>
-                                        <th scope="col">Creator</th>
-                                        <th scope="col">Categoria</th>
-                                        <th scope="col">Shared With</th>
-                                    </tr>
-                                </thead>
-                                
-                                
-                                
-                                <tbody>
-                                <%
-                                    ArrayList<ShopList> sl = listdao.getListOfShopListsThatUserLookFor(u.getEmail());
-                                    for(ShopList l: sl){
-                                %>
-                                    <tr>
-                                        <th>1</th>
-                                        <td> <%=l.getNome()%> </td>
-                                        <td><%=l.getDescrizione()%></td>
-                                        <td><%=l.getCreator()%></td>
-                                        <td><%=l.getCategoria()%></td>
-                                        
-                                        <td>
-                                        <ul>
-                                            <%
-                                                ArrayList<User> aru = listdao.getUsersWithWhoTheListIsShared(l);
-                                                for(User sharedUsers:aru){
-                                            %>
-                                            <li><%=sharedUsers.getEmail()%></li>
-                                            <%}%>
-                                        </ul>
-                                        
-                                        </td>
-                                    </tr>
-                                <%}%>
-                                </tbody>
-                            </table>
-
-                        </div>
-                        
                     </div>
                     <!--============ End Page Title =====================================================================-->
                     <!--============ Hero Form ==========================================================================-->
-                    <form class="hero-form form">
-                        <div class="container">
-                            <!--Main Form-->
-                            <div class="main-search-form">
-                                <div class="form-row">
-                                    <div class="col-md-9 col-sm-9">
-                                        <div class="form-group">
-                                            <label for="what" class="col-form-label">What Are You Looking For?</label>
-                                            <input name="keyword" type="text" class="form-control" id="what" placeholder="Enter Anything">
-                                        </div>
-                                        <!--end form-group-->
-                                    </div>
-                                    <!--end col-md-3-->
-                                    <div class="col-md-3 col-sm-3">
-                                        <button type="submit" class="btn btn-primary width-100">Search</button>
-                                    </div>
-                                    <!--end col-md-3-->
-                                </div>
-                                <!--end form-row-->
-                            </div>
-                            <!--end main-search-form-->
-                            <!--Alternative Form-->
-                            <div class="alternative-search-form">
-                                <a href="#collapseAlternativeSearchForm" class="icon" data-toggle="collapse"  aria-expanded="false" aria-controls="collapseAlternativeSearchForm"><i class="fa fa-plus"></i>More Options</a>
-                                <div class="collapse" id="collapseAlternativeSearchForm">
-                                    <div class="wrapper">
-                                        <div class="form-row">
-                                            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 d-xs-grid d-flex align-items-center justify-content-between">
-                                                <label>
-                                                    <input type="checkbox" name="new">
-                                                    New
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" name="used">
-                                                    Used
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" name="with_photo">
-                                                    With Photo
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" name="featured">
-                                                    Featured
-                                                </label>
-                                            </div>
-                                            <!--end col-xl-6-->
-                                            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
-                                                <div class="form-row">
-                                                    <div class="col-md-4 col-sm-4">
-                                                        <div class="form-group">
-                                                            <input name="min_price" type="text" class="form-control small" id="min-price" placeholder="Minimal Price">
-                                                            <span class="input-group-addon small">$</span>
-                                                        </div>
-                                                        <!--end form-group-->
-                                                    </div>
-                                                    <!--end col-md-4-->
-                                                    <div class="col-md-4 col-sm-4">
-                                                        <div class="form-group">
-                                                            <input name="max_price" type="text" class="form-control small" id="max-price" placeholder="Maximal Price">
-                                                            <span class="input-group-addon small">$</span>
-                                                        </div>
-                                                        <!--end form-group-->
-                                                    </div>
-                                                    <!--end col-md-4-->
-                                                    <div class="col-md-4 col-sm-4">
-                                                        <div class="form-group">
-                                                            <select name="distance" id="distance" class="small" data-placeholder="Distance" >
-                                                                <option value="">Distance</option>
-                                                                <option value="1">1km</option>
-                                                                <option value="2">5km</option>
-                                                                <option value="3">10km</option>
-                                                                <option value="4">50km</option>
-                                                                <option value="5">100km</option>
-                                                            </select>
-                                                        </div>
-                                                        <!--end form-group-->
-                                                    </div>
-                                                    <!--end col-md-3-->
-                                                </div>
-                                                <!--end form-row-->
-                                            </div>
-                                            <!--end col-xl-6-->
-                                        </div>
-                                        <!--end row-->
-                                    </div>
-                                    <!--end wrapper-->
-                                </div>
-                                <!--end collapse-->
-                            </div>
-                            <!--end alternative-search-form-->
-                        </div>
-                        <!--end container-->
-                    </form>
+                    
                     <!--============ End Hero Form ======================================================================-->
-                    <div class="page-title">
-                        <div class="container">
-                            <h1>Le mie liste</h1>
-                        </div>
-                        <!--end container-->
-                    </div>
-                    <div class="background">
-                        <div class="background-image">
-                            <img src="../img/hero-background-image-02.jpg" alt="">
-                        </div>
-                        <!--end background-image-->
-                    </div>
+                    
+                    
                     <!--end background-->
                 </div>
                 <!--end hero-wrapper-->
@@ -580,24 +382,9 @@
                 <section class="block">
                     <div class="container">
                         <div class="row">
-                            <div class="col-md-3">
-                                <nav class="nav flex-column side-nav">
-                                    <a class="nav-link icon" href="profile.jsp">
-                                        <i class="fa fa-user"></i>Il mio profilo
-                                    </a>
-                                    <a class="nav-link active icon" href="standardType.jsp">
-                                        <i class="fa fa-heart"></i>Le mie liste
-                                    </a>
-                                    <a class="nav-link icon" href="change-password.html">
-                                        <i class="fa fa-recycle"></i>Cambia Password
-                                    </a>
-                                    <a class="nav-link icon" href="sold-items.html">
-                                        <i class="fa fa-check"></i>Articoli in offerta
-                                    </a>
-                                </nav>
-                            </div>
+                            
                             <!--end col-md-3-->
-                            <div class="col-md-9">
+                            <div class="col-md-12">
                                 <!--============ Section Title===================================================================-->
                                 <div class="section-title clearfix">
                                     <div class="float-left float-xs-none">
@@ -606,7 +393,7 @@
                                             <option value="">Ultime aggiunte</option>
                                             <option value="1">Prime aggiunte</option>
                                             <option value="2">Costo piu basso</option>
-                                            <option value="3">Costo piÃ¹ alto</option>
+                                            <option value="3">Costo più alto</option>
                                         </select>
 
                                     </div>
@@ -622,7 +409,7 @@
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
                                     <div class="item">
-                                        <div class="ribbon-featured">Featured</div>
+                                        
                                         <!--end ribbon-->
                                         <div class="wrapper">
                                             <div class="image">
@@ -632,7 +419,7 @@
                                                     <span class="tag">Offer</span>
                                                 </h3>
                                                 <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                    <img src="../img/image-01.jpg" alt="">
+                                                    <img src="img/image-01.jpg" alt="">
                                                 </a>
                                             </div>
                                             <!--end image-->
@@ -660,157 +447,10 @@
                                         </div>
                                     </div>
                                     <!--end item-->
-
-                                    <div class="item">
-                                        <div class="wrapper">
-                                            <div class="image">
-                                                <h3>
-                                                    <a href="#" class="tag category">Education</a>
-                                                    <a href="single-listing-1.html" class="title">Creative Course</a>
-                                                    <span class="tag">Offer</span>
-                                                </h3>
-                                                <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                    <img src="../img/image-02.jpg" alt="">
-                                                </a>
-                                            </div>
-                                            <!--end image-->
-                                            <h4 class="location">
-                                                <a href="#">Nashville, TN</a>
-                                            </h4>
-                                            <div class="price">$125</div>
-                                            <div class="admin-controls">
-                                                <a href="edit-ad.html">
-                                                    <i class="fa fa-pencil"></i>Edit
-                                                </a>
-                                                <a href="#" class="ad-hide">
-                                                    <i class="fa fa-eye-slash"></i>Hide
-                                                </a>
-                                                <a href="#" class="ad-remove">
-                                                    <i class="fa fa-trash"></i>Remove
-                                                </a>
-                                            </div>
-                                            <!--end admin-controls-->
-                                            <div class="description">
-                                                <p>Proin at tortor eros. Phasellus porta nec elit non lacinia. Nam bibendum erat at leo faucibus vehicula. Ut laoreet porttitor risus, eget suscipit tellus tincidunt sit amet. </p>
-                                            </div>
-                                            <!--end description-->
-                                            <div class="additional-info">
-                                                <ul>
-                                                    <li>
-                                                        <figure>Start Date</figure>
-                                                        <aside>25.06.2017 09:00</aside>
-                                                    </li>
-                                                    <li>
-                                                        <figure>Length</figure>
-                                                        <aside>2 months</aside>
-                                                    </li>
-                                                    <li>
-                                                        <figure>Bedrooms</figure>
-                                                        <aside>3</aside>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <!--end addition-info-->
-                                            <a href="single-listing-1.html" class="detail text-caps underline">Detail</a>
-                                        </div>
-                                    </div>
+                                    
                                     <!--end item-->
 
-                                    <div class="item">
-                                        <div class="wrapper">
-                                            <div class="image">
-                                                <h3>
-                                                    <a href="#" class="tag category">Adventure</a>
-                                                    <a href="single-listing-1.html" class="title">Into The Wild</a>
-                                                    <span class="tag">Ad</span>
-                                                </h3>
-                                                <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                    <img src="../img/image-03.jpg" alt="">
-                                                </a>
-                                            </div>
-                                            <!--end image-->
-                                            <h4 class="location">
-                                                <a href="#">Seattle, WA</a>
-                                            </h4>
-                                            <div class="price">$1,560</div>
-                                            <div class="admin-controls">
-                                                <a href="edit-ad.html">
-                                                    <i class="fa fa-pencil"></i>Edit
-                                                </a>
-                                                <a href="#" class="ad-hide">
-                                                    <i class="fa fa-eye-slash"></i>Hide
-                                                </a>
-                                                <a href="#" class="ad-remove">
-                                                    <i class="fa fa-trash"></i>Remove
-                                                </a>
-                                            </div>
-                                            <!--end admin-controls-->
-                                            <div class="description">
-                                                <p>Nam eget ullamcorper massa. Morbi fringilla lectus nec lorem tristique gravida</p>
-                                            </div>
-                                            <!--end description-->
-                                            <a href="single-listing-1.html" class="detail text-caps underline">Detail</a>
-                                        </div>
-                                    </div>
-                                    <!--end item-->
-
-                                    <div class="item">
-                                        <div class="wrapper">
-                                            <div class="image">
-                                                <h3>
-                                                    <a href="#" class="tag category">Real Estate</a>
-                                                    <a href="single-listing-1.html" class="title">Luxury Apartment</a>
-                                                    <span class="tag">Offer</span>
-                                                </h3>
-                                                <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                    <img src="../img/image-04.jpg" alt="">
-                                                </a>
-                                            </div>
-                                            <!--end image-->
-                                            <h4 class="location">
-                                                <a href="#">Greeley, CO</a>
-                                            </h4>
-                                            <div class="price">$75,000</div>
-                                            <div class="admin-controls">
-                                                <a href="edit-ad.html">
-                                                    <i class="fa fa-pencil"></i>Edit
-                                                </a>
-                                                <a href="#" class="ad-hide">
-                                                    <i class="fa fa-eye-slash"></i>Hide
-                                                </a>
-                                                <a href="#" class="remove">
-                                                    <i class="fa fa-trash"></i>Remove
-                                                </a>
-                                            </div>
-                                            <!--end admin-controls-->
-                                            <div class="description">
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam venenatis lobortis</p>
-                                            </div>
-                                            <!--end description-->
-                                            <div class="additional-info">
-                                                <ul>
-                                                    <li>
-                                                        <figure>Area</figure>
-                                                        <aside>368m<sup>2</sup></aside>
-                                                    </li>
-                                                    <li>
-                                                        <figure>Bathrooms</figure>
-                                                        <aside>2</aside>
-                                                    </li>
-                                                    <li>
-                                                        <figure>Bedrooms</figure>
-                                                        <aside>3</aside>
-                                                    </li>
-                                                    <li>
-                                                        <figure>Garage</figure>
-                                                        <aside>1</aside>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <!--end addition-info-->
-                                            <a href="single-listing-1.html" class="detail text-caps underline">Detail</a>
-                                        </div>
-                                    </div>
+                                    
                                     <!--end item-->
 
                                 </div>
@@ -835,7 +475,7 @@
                         <div class="row">
                             <div class="col-md-5">
                                 <a href="#" class="brand">
-                                    <img src="../img/logo.png" alt="">
+                                    <img src="img/logo.png" alt="">
                                 </a>
                                 <p>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut nec tincidunt arcu, sit amet
@@ -910,7 +550,7 @@
                     </div>
                     <div class="background">
                         <div class="background-image original-size">
-                            <img src="../img/footer-background-icons.jpg" alt="">
+                            <img src="img/footer-background-icons.jpg" alt="">
                         </div>
                         <!--end background-image-->
                     </div>
@@ -922,75 +562,22 @@
         <!--end page-->
 
         <!--######################################################-->
-        <script src="../js/jquery-3.3.1.min.js"></script>
-        <script type="text/javascript" src="../js/popper.min.js"></script>
-        <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="js/popper.min.js"></script>
+        <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
         <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
-        <script src="../js/selectize.min.js"></script>
-        <script src="../js/masonry.pkgd.min.js"></script>
-        <script src="../js/icheck.min.js"></script>
-        <script src="../js/jquery.validate.min.js"></script>
-        <script src="../js/custom.js"></script>
-        
-        <!--########################## moooddaaalllll ############################-->
-        
-        <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="page-title">
-                        <div class="container">
-                            <h1 style="text-align: center;">Create list</h1>
-                        </div>
-                        <!--end container-->
-                    </div>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- Form per il login -->
-                    <form class="form clearfix" id="CreateShopListform" action="/Lists/CreateShopList"  method="post" role="form">
-                        <div class="form-group">
-                            <label for="Nome" class="col-form-label">Nome della lista</label>
-                            <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
-                        </div>
-                        <!--end form-group-->
-                        <div class="form-group">
-                            <label for="Descrizione" class="col-form-label">Descrizione</label>
-                            <input type="text" name="Descrizione" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
-                        </div>
-                        <!--end form-group-->
-                        <div class="form-group">
-                            <label for="Categoria" class="col-form-label">Categoria</label>
-                            <input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>
-                        </div>
-                    
-                    <!--end form-group-->
-
-                    <div class="form-group">
-                        <label for="Immagine" class="col-form-label required">Immagine</label>
-                        <input type="file" name="file1" required>
-                    </div>
-                    <!--end form-group-->
-                    <div class="d-flex justify-content-between align-items-baseline">
-                        
-                        <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
-                    </div>
-                    </form>
-                    <hr>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-        
+        <script src="js/selectize.min.js"></script>
+        <script src="js/masonry.pkgd.min.js"></script>
+        <script src="js/icheck.min.js"></script>
+        <script src="js/jquery.validate.min.js"></script>
+        <script src="js/custom.js"></script>
 
     </body>
 </html>
 
-<%    } else
+<%
+    } else
         response.sendRedirect("/Lists");
 %>
