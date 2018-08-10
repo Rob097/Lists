@@ -74,7 +74,7 @@ public class CreateShopList extends HttpServlet {
         categoria = request.getParameter("Categoria");
         System.out.println("NO111111meeeeeeeeee" + categoria);
         
-        User temp = (User)request.getSession(false).getAttribute("user");
+        User temp = (User)request.getSession().getAttribute("user");
         creator = temp.getEmail();
         
         nuovaLista.setCategoria(categoria);
@@ -95,7 +95,7 @@ public class CreateShopList extends HttpServlet {
             request.getSession().setAttribute("regResult", regResult);
         }
 
-        response.sendRedirect("Lists/Pages/standard/standardType.jsp");
+        response.sendRedirect("Pages/standard/standardType.jsp");
 
     }
 

@@ -92,7 +92,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             statement.setString(1, l.getNome());
             statement.setString(2, l.getDescrizione());
             statement.setString(3, "default");
-            statement.setString(4, "tdimatuccillo@gmail.com");
+            statement.setString(4, l.getCreator());
             statement.setString(5, l.getCategoria());
 
             if (statement.executeUpdate() == 1) {
