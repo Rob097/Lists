@@ -34,7 +34,7 @@
     boolean find = false;
 
     u = (User) s.getAttribute("user");
-
+    
     if (u.getTipo().equals("standard")) {
         find = true;
     }
