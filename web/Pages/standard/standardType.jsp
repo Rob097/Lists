@@ -339,8 +339,9 @@
                                             </ul>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="contact.html">Contact</a>
-                                        </li>
+                                            <a class="nav-link" href="../ShowProducts.jsp">Show all products</a>
+                                        </li>                                       
+                                        
                                         <li class="nav-item">
                                             <a data-toggle="modal" data-target="#CreateListModal" style="cursor: pointer;" class="btn btn-primary text-caps btn-rounded">CREA UNA LISTA</a>
                                         </li>

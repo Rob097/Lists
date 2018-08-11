@@ -423,7 +423,7 @@
                                                     <span class="tag">Offer</span>
                                                 </h3>
                                                 <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                    <img src="img/image-01.jpg" alt="">
+                                                    <img src="../<%=p.getImmagine()%>" alt="">
                                                 </a>
                                             </div>
                                             <!--end image-->

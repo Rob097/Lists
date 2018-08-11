@@ -4,6 +4,8 @@
     Author     : Roberto97
 --%>
 
+<%@page import="database.jdbc.JDBCProductDAO"%>
+<%@page import="database.daos.ProductDAO"%>
 <%@page import="database.entities.Product"%>
 <%@page import="database.jdbc.JDBCShopListDAO"%>
 <%@page import="java.util.ArrayList"%>
@@ -25,6 +27,7 @@
     }
     UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
     ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
+    ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
     
     
 
@@ -40,7 +43,7 @@
     }
 
     if (find) {
-        ArrayList<Product> li = listdao.getAllProductsOfShopList(shoplistName);
+        ArrayList<Product> li = productdao.getAllProducts();
 
 %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -49,7 +52,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="icon" href="img/favicon.png" sizes="16x16" type="image/png">
-        <title><%=shoplistName%></title>
+        <title>Products</title>
 
         <!-- CSS personalizzati -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
@@ -340,7 +343,7 @@
                                             </ul>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="contact.html">Contact</a>
+                                            <a class="nav-link" href="ShowProducts.jsp">show all products</a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="submit.html" class="btn btn-primary text-caps btn-rounded">Submit Ad</a>
@@ -359,7 +362,7 @@
                     <div class="page-title">
                         <div class="container">
                             <h1 class="opacity-60 center">
-                                You are looking for <%=shoplistName%> list
+                                You are looking for all products list
                             </h1>
                         </div>
                         <!--end container-->
@@ -423,7 +426,7 @@
                                                     <span class="tag">Offer</span>
                                                 </h3>
                                                 <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                    <img src="img/image-01.jpg" alt="">
+                                                    <img src="../<%=p.getImmagine()%>" alt="">
                                                 </a>
                                             </div>
                                             <!--end image-->

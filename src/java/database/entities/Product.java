@@ -14,7 +14,15 @@ public class Product {
     private String nome;
     private String note;
     private String categoria_prodotto;
-    //private String immagine;
+    private String immagine;
+
+    public String getImmagine() {
+        return immagine;
+    }
+
+    public void setImmagine(String immagine) {
+        this.immagine = immagine;
+    }
 
     public Product() {
     }

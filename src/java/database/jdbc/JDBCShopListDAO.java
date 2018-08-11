@@ -152,6 +152,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                     sL.setPid(rs.getInt("PID"));
                     System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPID" + name);
                     sL.setNote(rs.getString("note"));
+                    sL.setImmagine(rs.getString("immagine"));
                     System.out.println("NTTTTTTTTTTTTTEEEEEE" + name);
 
                     productLists.add(sL);
