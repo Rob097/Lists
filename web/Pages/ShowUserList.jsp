@@ -58,6 +58,36 @@
         <link rel="stylesheet" href="css/selectize.css" type="text/css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/user.css">
+        
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<style>
+
+.icon-bar {
+    width: 100%;
+    background-color: #f2f2f2;
+    overflow: auto;
+        margin-bottom: 4%;
+}
+
+.icon-bar a {
+    float: left;
+    width: 25%;
+    text-align: center;
+    padding: 12px 0;
+    transition: all 0.3s ease;
+    color: black;
+    font-size: 36px;
+}
+
+.icon-bar a:hover {
+    background-color: red;
+}
+
+.active {
+    background-color: black;
+}
+</style>
+        
     </head>
     <body>        
 
@@ -383,6 +413,9 @@
                 <!--end hero-wrapper-->
             </header>
             <!--end hero-->
+            
+            
+
 
             <!--*********************************************************************************************************-->
             <!--************ CONTENT ************************************************************************************-->
@@ -390,7 +423,12 @@
             <section class="content">
                 <section class="block">
                     <div class="container">
-                        
+                        <div class="icon-bar">
+  <a href="#"><i class="fas fa-plus"></i></a> 
+  <a href="#"><i class="fas fa-users"></i></a> 
+  <a href="#"><i class="fa fa-globe"></i></a>
+  <a href="#"><i class="fa fa-trash"></i></a> 
+</div>
                         <div class="row">
                             
                             <!--end col-md-3-->
