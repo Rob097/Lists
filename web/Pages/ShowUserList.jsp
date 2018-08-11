@@ -113,7 +113,7 @@
                     </div>
 
                     <!--============ End Secondary Navigation ===========================================================-->
-
+                    
                     <!--============ Main Navigation ====================================================================-->
                     <div class="main-navigation">
                         <div class="container">
@@ -351,13 +351,21 @@
                                 <!--end navbar-collapse-->
                             </nav>
                             <!--end navbar-->
+                            
+                            
                         </div>
                         <!--end container-->
                     </div>
                     <!--============ End Main Navigation ================================================================-->
+                    
+                    
+                    
                     <!--============ Page Title =========================================================================-->
                     <div class="page-title">
+                        
                         <div class="container">
+                            
+                            
                             <h1 class="opacity-60 center">
                                 You are looking for <%=shoplistName%> list
                             </h1>
@@ -382,6 +390,7 @@
             <section class="content">
                 <section class="block">
                     <div class="container">
+                        
                         <div class="row">
                             
                             <!--end col-md-3-->
