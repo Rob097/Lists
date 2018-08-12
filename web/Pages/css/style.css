@@ -306,6 +306,11 @@ Headers:		'Varela Round', sans-serif;
 .categories-list li h3 {
     margin-bottom: .5rem;
 }
+.categories-list li .sub-categories{
+    width: 198px;
+    height: 20px;
+    overflow: hidden;
+}
 .categories-list li .sub-categories a {
     font-size: 1.3rem;
     margin-right: .3rem;

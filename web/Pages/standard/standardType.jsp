@@ -343,7 +343,7 @@
                                         </li>                                       
                                         
                                         <li class="nav-item">
-                                            <a data-toggle="modal" data-target="#CreateListModal" style="cursor: pointer;" class="btn btn-primary text-caps btn-rounded">CREA UNA LISTA</a>
+                                            <a data-toggle="modal" data-target="#CreateListModal" style="cursor: pointer; color: white; font-weight: normal;" class="btn btn-primary text-caps btn-rounded">CREA UNA LISTA</a>
                                         </li>
                                     </ul>
                                     <!--Main navigation list-->
@@ -622,27 +622,28 @@
                                 </div>
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
+                                    <!--##############-->
+                                    
+                                    <%
+                                        for (ShopList l : li) {
+                                        
+                                    %>                                                                  
                                     <div class="item">
-                                        <div class="ribbon-featured">Featured</div>
                                         <!--end ribbon-->
                                         <div class="wrapper">
                                             <div class="image">
                                                 <h3>
-                                                    <a href="#" class="tag category">Home & Decor</a>
-                                                    <a href="single-listing-1.html" class="title">Furniture for sale</a>
-                                                    <span class="tag">Offer</span>
+                                                    <a href="#" class="tag category"><%=l.getCategoria()%></a>
+                                                    <a href="single-listing-1.html" class="title"><%=l.getNome()%></a>
                                                 </h3>
                                                 <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                    <img src="../img/image-01.jpg" alt="">
+                                                    <img src="../../<%=l.getImmagine() %>" alt="">
                                                 </a>
                                             </div>
                                             <!--end image-->
-                                            <h4 class="location">
-                                                <a href="#">Manhattan, NY</a>
-                                            </h4>
                                             <div class="price">$80</div>
                                             <div class="admin-controls">
-                                                <a href="edit-ad.html">
+                                                <a href="/Lists/ShowShopList?nome=<%=l.getNome()%>">
                                                     <i class="fa fa-pencil"></i>Edit
                                                 </a>
                                                 <a href="#" class="ad-hide">
@@ -654,166 +655,14 @@
                                             </div>
                                             <!--end admin-controls-->
                                             <div class="description">
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam venenatis lobortis</p>
+                                                <p><%=l.getDescrizione() %></p>
                                             </div>
                                             <!--end description-->
                                             <a href="single-listing-1.html" class="detail text-caps underline">Detail</a>
                                         </div>
                                     </div>
                                     <!--end item-->
-
-                                    <div class="item">
-                                        <div class="wrapper">
-                                            <div class="image">
-                                                <h3>
-                                                    <a href="#" class="tag category">Education</a>
-                                                    <a href="single-listing-1.html" class="title">Creative Course</a>
-                                                    <span class="tag">Offer</span>
-                                                </h3>
-                                                <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                    <img src="../img/image-02.jpg" alt="">
-                                                </a>
-                                            </div>
-                                            <!--end image-->
-                                            <h4 class="location">
-                                                <a href="#">Nashville, TN</a>
-                                            </h4>
-                                            <div class="price">$125</div>
-                                            <div class="admin-controls">
-                                                <a href="edit-ad.html">
-                                                    <i class="fa fa-pencil"></i>Edit
-                                                </a>
-                                                <a href="#" class="ad-hide">
-                                                    <i class="fa fa-eye-slash"></i>Hide
-                                                </a>
-                                                <a href="#" class="ad-remove">
-                                                    <i class="fa fa-trash"></i>Remove
-                                                </a>
-                                            </div>
-                                            <!--end admin-controls-->
-                                            <div class="description">
-                                                <p>Proin at tortor eros. Phasellus porta nec elit non lacinia. Nam bibendum erat at leo faucibus vehicula. Ut laoreet porttitor risus, eget suscipit tellus tincidunt sit amet. </p>
-                                            </div>
-                                            <!--end description-->
-                                            <div class="additional-info">
-                                                <ul>
-                                                    <li>
-                                                        <figure>Start Date</figure>
-                                                        <aside>25.06.2017 09:00</aside>
-                                                    </li>
-                                                    <li>
-                                                        <figure>Length</figure>
-                                                        <aside>2 months</aside>
-                                                    </li>
-                                                    <li>
-                                                        <figure>Bedrooms</figure>
-                                                        <aside>3</aside>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <!--end addition-info-->
-                                            <a href="single-listing-1.html" class="detail text-caps underline">Detail</a>
-                                        </div>
-                                    </div>
-                                    <!--end item-->
-
-                                    <div class="item">
-                                        <div class="wrapper">
-                                            <div class="image">
-                                                <h3>
-                                                    <a href="#" class="tag category">Adventure</a>
-                                                    <a href="single-listing-1.html" class="title">Into The Wild</a>
-                                                    <span class="tag">Ad</span>
-                                                </h3>
-                                                <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                    <img src="../img/image-03.jpg" alt="">
-                                                </a>
-                                            </div>
-                                            <!--end image-->
-                                            <h4 class="location">
-                                                <a href="#">Seattle, WA</a>
-                                            </h4>
-                                            <div class="price">$1,560</div>
-                                            <div class="admin-controls">
-                                                <a href="edit-ad.html">
-                                                    <i class="fa fa-pencil"></i>Edit
-                                                </a>
-                                                <a href="#" class="ad-hide">
-                                                    <i class="fa fa-eye-slash"></i>Hide
-                                                </a>
-                                                <a href="#" class="ad-remove">
-                                                    <i class="fa fa-trash"></i>Remove
-                                                </a>
-                                            </div>
-                                            <!--end admin-controls-->
-                                            <div class="description">
-                                                <p>Nam eget ullamcorper massa. Morbi fringilla lectus nec lorem tristique gravida</p>
-                                            </div>
-                                            <!--end description-->
-                                            <a href="single-listing-1.html" class="detail text-caps underline">Detail</a>
-                                        </div>
-                                    </div>
-                                    <!--end item-->
-
-                                    <div class="item">
-                                        <div class="wrapper">
-                                            <div class="image">
-                                                <h3>
-                                                    <a href="#" class="tag category">Real Estate</a>
-                                                    <a href="single-listing-1.html" class="title">Luxury Apartment</a>
-                                                    <span class="tag">Offer</span>
-                                                </h3>
-                                                <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                    <img src="../img/image-04.jpg" alt="">
-                                                </a>
-                                            </div>
-                                            <!--end image-->
-                                            <h4 class="location">
-                                                <a href="#">Greeley, CO</a>
-                                            </h4>
-                                            <div class="price">$75,000</div>
-                                            <div class="admin-controls">
-                                                <a href="edit-ad.html">
-                                                    <i class="fa fa-pencil"></i>Edit
-                                                </a>
-                                                <a href="#" class="ad-hide">
-                                                    <i class="fa fa-eye-slash"></i>Hide
-                                                </a>
-                                                <a href="#" class="remove">
-                                                    <i class="fa fa-trash"></i>Remove
-                                                </a>
-                                            </div>
-                                            <!--end admin-controls-->
-                                            <div class="description">
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam venenatis lobortis</p>
-                                            </div>
-                                            <!--end description-->
-                                            <div class="additional-info">
-                                                <ul>
-                                                    <li>
-                                                        <figure>Area</figure>
-                                                        <aside>368m<sup>2</sup></aside>
-                                                    </li>
-                                                    <li>
-                                                        <figure>Bathrooms</figure>
-                                                        <aside>2</aside>
-                                                    </li>
-                                                    <li>
-                                                        <figure>Bedrooms</figure>
-                                                        <aside>3</aside>
-                                                    </li>
-                                                    <li>
-                                                        <figure>Garage</figure>
-                                                        <aside>1</aside>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <!--end addition-info-->
-                                            <a href="single-listing-1.html" class="detail text-caps underline">Detail</a>
-                                        </div>
-                                    </div>
-                                    <!--end item-->
-
+                                    <%}%>
                                 </div>
                                 <!--end items-->
                             </div>
@@ -952,7 +801,7 @@
                 </div>
                 <div class="modal-body">
                     <!-- Form per il login -->
-                    <form class="form clearfix" id="CreateShopListform" action="/Lists/CreateShopList"  method="post" role="form">
+                    <form class="form clearfix" id="CreateShopListform" action="/Lists/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="Nome" class="col-form-label">Nome della lista</label>
                             <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>

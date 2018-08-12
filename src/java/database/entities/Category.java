@@ -13,6 +13,15 @@ public class Category {
     private String nome;
     private String descrizione;
     private String admin;
+    private String immagine;
+
+    public String getImmagine() {
+        return immagine;
+    }
+
+    public void setImmagine(String immagine) {
+        this.immagine = immagine;
+    }
 
     public String getNome() {
         return nome;

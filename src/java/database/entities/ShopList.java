@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class ShopList {
     private String nome;
     private String descrizione;
-    //private String immagine;
+    private String immagine;
     private String creator;
     private String categoria;
     private ArrayList<Product> products;
@@ -25,9 +25,10 @@ public class ShopList {
     
     
     
-    public ShopList(String nome, String descrizione, String creator, String categoria, ArrayList<Product> products) {
+    public ShopList(String nome, String descrizione, String immagine, String creator, String categoria, ArrayList<Product> products) {
         this.nome = nome;
         this.descrizione = descrizione;
+        this.immagine = immagine;
         this.creator = creator;
         this.categoria = categoria;
         this.products = products;
@@ -59,6 +60,14 @@ public class ShopList {
         this.descrizione = descrizione;
     }
 
+    public String getImmagine() {
+        return immagine;
+    }
+
+    public void setImmagine(String immagine) {
+        this.immagine = immagine;
+    }
+    
     public String getCreator() {
         return creator;
     }

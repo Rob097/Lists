@@ -45,6 +45,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO{
                     p.setPid(rs.getInt("PID"));
                     p.setNome(rs.getString("nome"));
                     p.setNote(rs.getString("note"));
+                    p.setCategoria_prodotto(rs.getString("categoria_prod"));
                     p.setImmagine(rs.getString("immagine"));
                     productLists.add(p);
                 }
@@ -75,6 +76,30 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO{
             }
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of users", ex);
+        }
+    }
+
+    @Override
+    public ArrayList<Product> getByCategory(String category) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM Product WHERE categoria_prod = ?")) {
+            ArrayList<Product> productLists = new ArrayList<>();
+
+            stm.setString(1, category);
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    Product p = new Product();
+                    p.setPid(rs.getInt("PID"));
+                    p.setNome(rs.getString("nome"));
+                    p.setNote(rs.getString("note"));
+                    p.setCategoria_prodotto(rs.getString("categoria_prod"));
+                    p.setImmagine(rs.getString("immagine"));
+                    productLists.add(p);
+                }
+
+                return productLists;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get bt category", ex);
         }
     }
     

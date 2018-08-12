@@ -41,8 +41,9 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                     ShopList sL = new ShopList();
                     sL.setNome(rs.getString("nome"));
                     sL.setDescrizione(rs.getString("descrizione"));
+                    sL.setImmagine(rs.getString("immagine"));
                     sL.setCreator(rs.getString("creator"));
-                    sL.setCategoria("categoria");
+                    sL.setCategoria(rs.getString("categoria"));
 
                     shoppingLists.add(sL);
                 }
@@ -91,7 +92,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
         try (PreparedStatement statement = CON.prepareStatement(qry)) {
             statement.setString(1, l.getNome());
             statement.setString(2, l.getDescrizione());
-            statement.setString(3, "default");
+            statement.setString(3, l.getImmagine());
             statement.setString(4, l.getCreator());
             statement.setString(5, l.getCategoria());
 
@@ -117,6 +118,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                     ShopList sL = new ShopList();
                     sL.setNome(rs.getString("nome"));
                     sL.setDescrizione(rs.getString("descrizione"));
+                    sL.setImmagine(rs.getString("immagine"));
                     sL.setCreator(rs.getString("creator"));
                     sL.setCategoria("categoria");
 

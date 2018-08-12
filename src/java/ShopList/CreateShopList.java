@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +34,7 @@ import log.RegisterAction;
  *
  * @author Dmytr
  */
+@MultipartConfig(maxFileSize = 16177215)
 public class CreateShopList extends HttpServlet {
 
     ListDAO listdao = null;
@@ -53,19 +55,12 @@ public class CreateShopList extends HttpServlet {
             throws ServletException, IOException {
 
         ShopList nuovaLista = new ShopList();
-        Boolean regResult = false;
-        // gets values of text fields
-        String avatarsFolder = "/Image/AvatarImg";
-        String rp = "/Image/AvatarImg";
-        
-        String nome = null;
-        String descrizione = null;
-        String immagine = null;
-        String creator = null;
-        String categoria = null;
-        
-        avatarsFolder = getServletContext().getRealPath(avatarsFolder);
-        avatarsFolder = avatarsFolder.replace("\\build", "");
+        Boolean regResult = false;        
+        String nome;
+        String descrizione;
+        String immagine;
+        String creator;
+        String categoria;
         
         nome = request.getParameter("Nome");
         System.out.println("NOm22222222eeeeeeeeee" + nome);
@@ -77,11 +72,40 @@ public class CreateShopList extends HttpServlet {
         User temp = (User)request.getSession().getAttribute("user");
         creator = temp.getEmail();
         
+        // IMMAGINE
+        String listsFolder = "/Image/ListsImg";
+        String rp = "/Image/ListsImg";
+        listsFolder = getServletContext().getRealPath(listsFolder);
+        listsFolder = listsFolder.replace("\\build", "");
+        File uploadDirFile = new File(listsFolder);
+        String filename1 = "";
+        Part filePart1 = request.getPart("file1");
+        if ((filePart1 != null) && (filePart1.getSize() > 0)) {
+            
+            String extension = Paths.get(filePart1.getSubmittedFileName()).getFileName().toString().split(Pattern.quote("."))[1];;
+            String nomeIMG = creator + "-" + nome;
+            
+            filename1 = nomeIMG + "." + extension;
+            filename1 = filename1.replaceAll("\\s+","");
+            File file1 = new File(uploadDirFile, filename1);
+            try (InputStream fileContent = filePart1.getInputStream()) {
+                Files.copy(fileContent, file1.toPath());
+            }
+        }
+        immagine = rp + "/" + filename1;
+        immagine = immagine.replaceFirst("/", ""); 
+        immagine = immagine.replaceAll("\\s+","");
+        //FINE IMMAGINE
+        
+        
+        nuovaLista.setImmagine(immagine);
         nuovaLista.setCategoria(categoria);
         nuovaLista.setCreator(creator);
+        nuovaLista.setImmagine(immagine);
         nuovaLista.setDescrizione(descrizione);
         nuovaLista.setNome(nome);
 
+        System.out.println(nuovaLista.getImmagine());
 
         try {
             //manda i dati del user, il metodo upate fa la parte statement 
@@ -97,6 +121,17 @@ public class CreateShopList extends HttpServlet {
 
         response.sendRedirect("Pages/standard/standardType.jsp");
 
+    }
+    
+    public String SetImgName(String name, String extension){
+        
+        String s;
+        s = name;
+        s = s.trim();
+        s = s.replace("@", "");
+        s = s.replace(".", "");
+       
+        return s + "." + extension;
     }
 
     /**

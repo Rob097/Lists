@@ -3,6 +3,20 @@
     Created on : 16-giu-2018, 18.28.06
     Author     : Roberto97
 --%>
+<%@page import="database.entities.Category"%>
+<%@page import="database.jdbc.JDBCCategoryDAO"%>
+<%@page import="database.daos.CategoryDAO"%>
+<%@page import="database.entities.Product"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="database.entities.User"%>
+<%@page import="database.jdbc.JDBCUserDAO"%>
+<%@page import="database.jdbc.JDBCShopListDAO"%>
+<%@page import="database.jdbc.JDBCProductDAO"%>
+<%@page import="database.daos.ProductDAO"%>
+<%@page import="database.daos.ListDAO"%>
+<%@page import="database.daos.UserDAO"%>
+<%@page import="database.factories.DAOFactory"%>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="java.sql.Statement" %>
 <%@ page import="java.sql.Connection" %>
@@ -59,6 +73,22 @@
                 System.out.println("Causa Connessione: ");
                 e.printStackTrace();
             }            
+        %>
+        
+        <%
+            DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
+            if (daoFactory == null) {
+                throw new ServletException("Impossible to get dao factory for user storage system");
+            }
+            ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
+            ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
+            CategoryDAO categorydao = new JDBCCategoryDAO(daoFactory.getConnection());
+
+            HttpSession s = (HttpSession) request.getSession();
+            
+           ArrayList<Category> li = categorydao.getAllCategories();
+           ArrayList<Product> prod;
+           
         %>
         <!--###############################################################################################################################-->
        
@@ -504,149 +534,26 @@
             <!--============ Categories =============================================================================-->
             <section class="block">
                 <div class="container">
-                    <h2>Categories</h2>
+                    <h2>Categorie</h2>
+                    
                     <ul class="categories-list clearfix">
+                        <%for(Category p: li){%>
                         <li>
-                            <i class="category-icon">
-                                <img src="Pages/icons/category-furniture-b.png" alt="">
-                            </i>
-                            <h3><a href="#">Furniture</a></h3>
+                            <img src="<%= p.getImmagine()%>" alt="">
+                            
+                            <h3><a href="#"><%= p.getNome()%></a></h3>
                             <div class="sub-categories">
-                                <a href="#">Beds</a>
-                                <a href="#">Sofas</a>
-                                <a href="#">Garden</a>
+                                <%
+                                    prod = productdao.getByCategory(p.getNome());
+                                    Product prodotto;
+                                    for(int i = 1; i <= 3; i++){
+                                        prodotto = prod.get(i);
+                                %>
+                                <a href="#"><%= prodotto.getNome() %></a>
+                                <%}%>
                             </div>
                         </li>
-                        <!--end category item-->
-                        <li>
-                            <i class="category-icon">
-                                <img src="Pages/icons/category-pets-b.png" alt="">
-                            </i>
-                            <h3><a href="#">Pets</a></h3>
-                            <div class="sub-categories">
-                                <a href="#">Dogs</a>
-                                <a href="#">Cats</a>
-                                <a href="#">Exotic</a>
-                            </div>
-                        </li>
-                        <!--end category item-->
-                        <li>
-                            <i class="category-icon">
-                                <img src="Pages/icons/category-real-estate-b.png" alt="">
-                            </i>
-                            <h3><a href="#">Real Estate</a></h3>
-                            <div class="sub-categories">
-                                <a href="#">Houses</a>
-                                <a href="#">Apartments</a>
-                            </div>
-                        </li>
-                        <!--end category item-->
-                        <li>
-                            <i class="category-icon">
-                                <img src="Pages/icons/category-jobs-b.png" alt="">
-                            </i>
-                            <h3><a href="#">Jobs</a></h3>
-                            <div class="sub-categories">
-                                <a href="#">Find Job</a>
-                                <a href="#">Offer Job</a>
-                            </div>
-                        </li>
-                        <!--end category item-->
-
-                        <li>
-                            <i class="category-icon">
-                                <img src="Pages/icons/category-cars-b.png" alt="">
-                            </i>
-                            <h3><a href="#">Car</a></h3>
-                            <div class="sub-categories">
-                                <a href="#">New</a>
-                                <a href="#">Used</a>
-                                <a href="#">Rent</a>
-                            </div>
-                        </li>
-                        <!--end category item-->
-                        <li>
-                            <i class="category-icon">
-                                <img src="Pages/icons/category-mobile-b.png" alt="">
-                            </i>
-                            <h3><a href="#">Mobile</a></h3>
-                            <div class="sub-categories">
-                                <a href="#">Apple</a>
-                                <a href="#">Samsung</a>
-                            </div>
-                        </li>
-                        <!--end category item-->
-                        <li>
-                            <i class="category-icon">
-                                <img src="Pages/icons/category-cameras-b.png" alt="">
-                            </i>
-                            <h3><a href="#">Cameras</a></h3>
-                            <div class="sub-categories">
-                                <a href="#">Photo</a>
-                                <a href="#">Video</a>
-                                <a href="#">Lenses</a>
-                            </div>
-                        </li>
-                        <!--end category item-->
-                        <li>
-                            <i class="category-icon">
-                                <img src="Pages/icons/category-sport-b.png" alt="">
-                            </i>
-                            <h3><a href="#">Sport</a></h3>
-                            <div class="sub-categories">
-                                <a href="#">Ski</a>
-                                <a href="#">Bike</a>
-                                <a href="#">Hockey</a>
-                            </div>
-                        </li>
-                        <!--end category item-->
-
-                        <li>
-                            <i class="category-icon">
-                                <img src="Pages/icons/category-electro-b.png" alt="">
-                            </i>
-                            <h3><a href="#">Electro</a></h3>
-                            <div class="sub-categories">
-                                <a href="#">TV</a>
-                                <a href="#">Radio</a>
-                                <a href="#">PC</a>
-                            </div>
-                        </li>
-                        <!--end category item-->
-                        <li>
-                            <i class="category-icon">
-                                <img src="Pages/icons/category-clothing-b.png" alt="">
-                            </i>
-                            <h3><a href="#">Clothing</a></h3>
-                            <div class="sub-categories">
-                                <a href="#">Shirts</a>
-                                <a href="#">Trousers</a>
-                            </div>
-                        </li>
-                        <!--end category item-->
-                        <li>
-                            <i class="category-icon">
-                                <img src="Pages/icons/category-books-b.png" alt="">
-                            </i>
-                            <h3><a href="#">Books</a></h3>
-                            <div class="sub-categories">
-                                <a href="#">Fantasy</a>
-                                <a href="#">History</a>
-                                <a href="#">Sci-Fi</a>
-                            </div>
-                        </li>
-                        <!--end category item-->
-                        <li>
-                            <i class="category-icon">
-                                <img src="Pages/icons/category-music-b.png" alt="">
-                            </i>
-                            <h3><a href="#">Music</a></h3>
-                            <div class="sub-categories">
-                                <a href="#">Rock</a>
-                                <a href="#">Techno</a>
-                                <a href="#">Folk</a>
-                            </div>
-                        </li>
+                        <%}%>
                         <!--end category item-->
                     </ul>
                     <!--end categories-list-->
@@ -658,7 +565,7 @@
             <!--============ Featured Ads ===========================================================================-->
             <section class="block">
                 <div class="container">
-                    <h2>Featured Ads</h2>
+                    <h2>I più visti</h2>
                     <div class="items grid grid-xl-3-items grid-lg-3-items grid-md-2-items">
                         <div class="item">
                             <div class="wrapper">
@@ -798,7 +705,7 @@
             <section class="block has-dark-background">
                 <div class="container">
                     <div class="block">
-                        <h2>Selling With Us Is Easy</h2>
+                        <h2>Crea le tue liste della spesa</h2>
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="feature-box">
@@ -806,8 +713,8 @@
                                         <img src="Pages/icons/feature-user.png" alt="">
                                         <span>1</span>
                                     </figure>
-                                    <h3>Create an Account</h3>
-                                    <p>Etiam molestie viverra dui vitae mattis. Ut velit est</p>
+                                    <h3>Crea un Account</h3>
+                                    <p>Scegli che tipo di utente vuoi essere</p>
                                 </div>
                                 <!--end feature-box-->
                             </div>
@@ -818,8 +725,8 @@
                                         <img src="Pages/icons/feature-upload.png" alt="">
                                         <span>2</span>
                                     </figure>
-                                    <h3>Submit Your Ad</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                    <h3>Crea una lista</h3>
+                                    <p>Crea la tua lista personalizzata</p>
                                 </div>
                                 <!--end feature-box-->
                             </div>
@@ -830,8 +737,8 @@
                                         <img src="Pages/icons/feature-like.png" alt="">
                                         <span>3</span>
                                     </figure>
-                                    <h3>Make a Deal</h3>
-                                    <p>Nunc ultrices eu urna quis cursus. Sed viverra ullamcorper</p>
+                                    <h3>Salva i prodotti</h3>
+                                    <p>Salva i prodotti che usi piu spesso</p>
                                 </div>
                                 <!--end feature-box-->
                             </div>
@@ -842,8 +749,8 @@
                                         <img src="Pages/icons/feature-wallet.png" alt="">
                                         <span>4</span>
                                     </figure>
-                                    <h3>Enjoy the Money!</h3>
-                                    <p>Integer nisl ipsum, sodales sed scelerisque nec, aliquet sit</p>
+                                    <h3>Vai ad acquistare quello che ti serve</h3>
+                                    <p>Ricevi delle notifiche quando sei nei pressi di un negozio!</p>
                                 </div>
                                 <!--end feature-box-->
                             </div>
