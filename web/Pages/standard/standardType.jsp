@@ -90,19 +90,19 @@
                             </ul>
                             <!--end left-->
                             <ul class="right">
-                                <li>
-                                    <a class="navbar-brand" href="standardType.jsp" style="cursor: pointer;">
+                                <!--<li>
+                                    <a class="navbar-brand" href="ShowUserList.jsp" style="cursor: pointer;">
                                         <i class="fa fa-heart"></i>Le mie Liste
+                                    </a>
+                                </li>-->
+                                <li>
+                                    <a class="navbar-brand" style="cursor: pointer;" href="profile.jsp">
+                                        <i class="fa fa-user"></i>Il mio profilo
                                     </a>
                                 </li>
                                 <li>
                                     <a class="navbar-brand" style="cursor: pointer;" href="/Lists/LogoutAction" data-toggle="tooltip" data-placement="bottom" title="LogOut">
                                         <i class="fa fa-sign-in"></i><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> / <img src= "../../${user.image}" width="25px" height="25px" style="border-radius: 100%;">
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="navbar-brand" style="cursor: pointer;" href="profile.jsp">
-                                        <i class="fa fa-user"></i>Il mio profilo
                                     </a>
                                 </li>
                             </ul>
@@ -362,7 +362,7 @@
                                 Your own<a href="#"> Lists</a>
                             </h1>
 
-                            <table class="table">
+                            <table class="table" id="tableId">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
@@ -634,7 +634,7 @@
                                             <div class="image">
                                                 <h3>
                                                     <a href="#" class="tag category"><%=l.getCategoria()%></a>
-                                                    <a href="single-listing-1.html" class="title"><%=l.getNome()%></a>
+                                                    <a href="/Lists/ShowShopList?nome=<%=l.getNome()%>" class="title"><%=l.getNome()%></a>
                                                 </h3>
                                                 <a href="single-listing-1.html" class="image-wrapper background-image">
                                                     <img src="../../<%=l.getImmagine() %>" alt="">
