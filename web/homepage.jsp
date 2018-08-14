@@ -3,9 +3,9 @@
     Created on : 16-giu-2018, 18.28.06
     Author     : Roberto97
 --%>
-<%@page import="database.entities.Category"%>
-<%@page import="database.jdbc.JDBCCategoryDAO"%>
-<%@page import="database.daos.CategoryDAO"%>
+<%@page import="database.entities.Category_Product"%>
+<%@page import="database.jdbc.JDBCCategory_ProductDAO"%>
+<%@page import="database.daos.Category_ProductDAO"%>
 <%@page import="database.entities.Product"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.ArrayList"%>
@@ -82,11 +82,11 @@
             }
             ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
             ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
-            CategoryDAO categorydao = new JDBCCategoryDAO(daoFactory.getConnection());
+            Category_ProductDAO category_productdao = new JDBCCategory_ProductDAO(daoFactory.getConnection());
 
             HttpSession s = (HttpSession) request.getSession();
             
-           ArrayList<Category> li = categorydao.getAllCategories();
+           ArrayList<Category_Product> li = category_productdao.getAllCategories();
            ArrayList<Product> prod;
            
         %>
@@ -537,7 +537,7 @@
                     <h2>Categorie</h2>
                     
                     <ul class="categories-list clearfix">
-                        <%for(Category p: li){%>
+                        <%for(Category_Product p: li){%>
                         <li>
                             <img src="<%= p.getImmagine()%>" alt="">
                             

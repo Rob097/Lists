@@ -814,7 +814,12 @@
                         <!--end form-group-->
                         <div class="form-group">
                             <label for="Categoria" class="col-form-label">Categoria</label>
-                            <input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>
+                            <select name="Categoria" id="Categoria" tabindex="1" >
+                                <c:forEach items="${categorie}" var="categoria">
+                                    <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
+                                </c:forEach>
+                            </select><!--<input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>-->
+
                         </div>
                     
                     <!--end form-group-->

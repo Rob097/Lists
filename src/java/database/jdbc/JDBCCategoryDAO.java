@@ -5,20 +5,14 @@
  */
 package database.jdbc;
 import database.daos.CategoryDAO;
-import database.daos.ProductDAO;
-import database.daos.UserDAO;
 import database.entities.Category;
-import database.entities.Product;
-import database.entities.ShopList;
-import database.entities.User;
 import database.exceptions.DAOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+;
 
 
 
@@ -36,7 +30,7 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
     
     @Override
     public ArrayList<Category> getByNOME(String nome) throws DAOException {
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM Category_Product WHERE nome = ?")) {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM Category WHERE nome = ?")) {
             ArrayList<Category> categorie = new ArrayList<>();
 
             stm.setString(1, nome.toString());
@@ -46,7 +40,6 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
                     p.setNome(rs.getString("nome"));
                     p.setDescrizione(rs.getString("descrizione"));
                     p.setAdmin(rs.getString("admin"));
-                    p.setImmagine(rs.getString("immagine"));
                     categorie.add(p);
                 }
 
@@ -59,7 +52,7 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
 
     @Override
     public ArrayList<Category> getAllCategories() throws DAOException {
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM Category_Product")) {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM Category")) {
             ArrayList<Category> categorie = new ArrayList<>();
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -68,7 +61,6 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
                     p.setNome(rs.getString("nome"));
                     p.setDescrizione(rs.getString("descrizione"));
                     p.setAdmin(rs.getString("admin"));
-                    p.setImmagine(rs.getString("immagine"));
                     categorie.add(p);
                 }
 

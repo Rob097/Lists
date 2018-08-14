@@ -9,10 +9,11 @@ package database.entities;
  *
  * @author Martin
  */
-public class Category {
-    private String nome;
-    private String descrizione;
-    private String admin;
+public class Category_Product {
+   private String nome;
+   private String descrizione;
+   private String admin;
+   private String immagine;
 
     public String getNome() {
         return nome;
@@ -37,6 +38,16 @@ public class Category {
     public void setAdmin(String admin) {
         this.admin = admin;
     }
-    
-    
+
+    public String getImmagine() {
+        return immagine;
+    }
+
+    public void setImmagine(String immagine) {
+        this.immagine = immagine;
+    }
+   
+   
+   
+   
 }

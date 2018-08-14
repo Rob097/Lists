@@ -6,17 +6,19 @@
 package log;
 
 import database.daos.UserDAO;
+import database.daos.CategoryDAO;
+import database.jdbc.JDBCCategoryDAO;
+import database.entities.Category;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCUserDAO;
 import java.io.IOException;
 import static java.lang.System.out;
-import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +31,7 @@ public class LoginAction extends HttpServlet {
 
     String url = null;
     UserDAO userdao = null;
+    CategoryDAO categorydao = null;
 
     @Override
     public void init() throws ServletException {
@@ -39,6 +42,7 @@ public class LoginAction extends HttpServlet {
         }
         //assegna a userdao la connessione(costruttore) e salva la connessione in una variabile tipo Connection
         userdao = new JDBCUserDAO(daoFactory.getConnection());
+        categorydao = new JDBCCategoryDAO(daoFactory.getConnection());
     }
 
     /**
@@ -53,6 +57,7 @@ public class LoginAction extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         User user = new User();
+        ArrayList<Category> categorie = new ArrayList();
         Boolean loginResult = true;
 
         try {
@@ -62,6 +67,7 @@ public class LoginAction extends HttpServlet {
 
             //ritorna i dati dell`utente con email e password inserito
             user = userdao.getByEmailAndPassword(username, password);
+            categorie = categorydao.getAllCategories();
 
             if (user != null) {
                 loginResult = true;
@@ -79,6 +85,7 @@ public class LoginAction extends HttpServlet {
 
                 request.getSession().setAttribute("Logged", "on");
                 request.getSession().setAttribute("user", user);
+                request.getSession().setAttribute("categorie", categorie);
 
                 if ("standard".equals(user.getTipo())) {
                     url = "Pages/standard/standardType.jsp";
