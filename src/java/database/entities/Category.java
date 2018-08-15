@@ -13,6 +13,7 @@ public class Category {
     private String nome;
     private String descrizione;
     private String admin;
+    public String immagine;
 
     public String getNome() {
         return nome;
@@ -36,6 +37,14 @@ public class Category {
 
     public void setAdmin(String admin) {
         this.admin = admin;
+    }
+    
+    public String getImmagine() {
+        return immagine;
+    }
+
+    public void setImmagine(String immagine) {
+        this.immagine = immagine;
     }
     
     

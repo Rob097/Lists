@@ -3,6 +3,10 @@
     Created on : 16-giu-2018, 18.28.06
     Author     : Roberto97
 --%>
+
+<%@page import="database.jdbc.JDBCCategoryDAO"%>
+<%@page import="database.daos.CategoryDAO"%>
+<%@page import="database.entities.Category"%>
 <%@page import="database.entities.Category_Product"%>
 <%@page import="database.jdbc.JDBCCategory_ProductDAO"%>
 <%@page import="database.daos.Category_ProductDAO"%>
@@ -83,11 +87,12 @@
             ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
             ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
             Category_ProductDAO category_productdao = new JDBCCategory_ProductDAO(daoFactory.getConnection());
-
+            CategoryDAO categorydao = new JDBCCategoryDAO(daoFactory.getConnection());
+            
             HttpSession s = (HttpSession) request.getSession();
             
-           ArrayList<Category_Product> li = category_productdao.getAllCategories();
-           ArrayList<Product> prod;
+           ArrayList<Category> li = categorydao.getAllCategories();
+           ArrayList<Product> prod = productdao.getAllProducts();
            
         %>
         <!--###############################################################################################################################-->
@@ -537,20 +542,11 @@
                     <h2>Categorie</h2>
                     
                     <ul class="categories-list clearfix">
-                        <%for(Category_Product p: li){%>
+                        <%for(Category p: li){%>
                         <li>
-                            <img src="<%= p.getImmagine()%>" alt="">
-                            
+                            <img src="<%= p.getImmagine() %>" alt="">
                             <h3><a href="#"><%= p.getNome()%></a></h3>
                             <div class="sub-categories">
-                                <%
-                                    prod = productdao.getByCategory(p.getNome());
-                                    Product prodotto;
-                                    for(int i = 1; i <= 3; i++){
-                                        prodotto = prod.get(i);
-                                %>
-                                <a href="#"><%= prodotto.getNome() %></a>
-                                <%}%>
                             </div>
                         </li>
                         <%}%>
@@ -567,22 +563,23 @@
                 <div class="container">
                     <h2>I più visti</h2>
                     <div class="items grid grid-xl-3-items grid-lg-3-items grid-md-2-items">
+                    <%
+                    for(Product p: prod){
+                        if(p.getPid() == 1 || p.getPid() == 2|| p.getPid() == 3){
+                    %>    
+                        
                         <div class="item">
                             <div class="wrapper">
                                 <div class="image">
                                     <h3>
-                                        <a href="#" class="tag category">Home & Decor</a>
-                                        <a href="single-listing-1.html" class="title">Furniture for sale</a>
-                                        <span class="tag">Offer</span>
+                                        <a href="#" class="tag category"><%= p.getCategoria_prodotto() %></a>
+                                        <a href="single-listing-1.html" class="title"><%= p.getNome() %> </a>
                                     </h3>
                                     <a href="single-listing-1.html" class="image-wrapper background-image">
-                                        <img src="Pages/img/image-01.jpg" alt="">
+                                        <img src="<%= p.getImmagine() %>" alt="">
                                     </a>
                                 </div>
                                 <!--end image-->
-                                <h4 class="location">
-                                    <a href="#">Manhattan, NY</a>
-                                </h4>
                                 <div class="price">$80</div>
                                 <div class="meta">
                                     <figure>
@@ -596,104 +593,17 @@
                                 </div>
                                 <!--end meta-->
                                 <div class="description">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam venenatis lobortis</p>
+                                    <p><%= p.getNote() %></p>
                                 </div>
                                 <!--end description-->
                                 <a href="single-listing-1.html" class="detail text-caps underline">Detail</a>
                             </div>
                         </div>
                         <!--end item-->
-
-                        <div class="item">
-                            <div class="wrapper">
-                                <div class="image">
-                                    <h3>
-                                        <a href="#" class="tag category">Education</a>
-                                        <a href="single-listing-1.html" class="title">Creative Course</a>
-                                        <span class="tag">Offer</span>
-                                    </h3>
-                                    <a href="single-listing-1.html" class="image-wrapper background-image">
-                                        <img src="Pages/img/image-02.jpg" alt="">
-                                    </a>
-                                </div>
-                                <!--end image-->
-                                <h4 class="location">
-                                    <a href="#">Nashville, TN</a>
-                                </h4>
-                                <div class="price">$125</div>
-                                <div class="meta">
-                                    <figure>
-                                        <i class="fa fa-calendar-o"></i>28.04.2017
-                                    </figure>
-                                    <figure>
-                                        <a href="#">
-                                            <i class="fa fa-user"></i>Peter Browner
-                                        </a>
-                                    </figure>
-                                </div>
-                                <!--end meta-->
-                                <div class="description">
-                                    <p>Proin at tortor eros. Phasellus porta nec elit non lacinia. Nam bibendum erat at leo faucibus vehicula. Ut laoreet porttitor risus, eget suscipit tellus tincidunt sit amet. </p>
-                                </div>
-                                <!--end description-->
-                                <div class="additional-info">
-                                    <ul>
-                                        <li>
-                                            <figure>Start Date</figure>
-                                            <aside>25.06.2017 09:00</aside>
-                                        </li>
-                                        <li>
-                                            <figure>Length</figure>
-                                            <aside>2 months</aside>
-                                        </li>
-                                        <li>
-                                            <figure>Bedrooms</figure>
-                                            <aside>3</aside>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!--end addition-info-->
-                                <a href="single-listing-1.html" class="detail text-caps underline">Detail</a>
-                            </div>
-                        </div>
-                        <!--end item-->
-
-                        <div class="item">
-                            <div class="wrapper">
-                                <div class="image">
-                                    <h3>
-                                        <a href="#" class="tag category">Adventure</a>
-                                        <a href="single-listing-1.html" class="title">Into The Wild</a>
-                                        <span class="tag">Ad</span>
-                                    </h3>
-                                    <a href="single-listing-1.html" class="image-wrapper background-image">
-                                        <img src="Pages/img/image-03.jpg" alt="">
-                                    </a>
-                                </div>
-                                <!--end image-->
-                                <h4 class="location">
-                                    <a href="#">Seattle, WA</a>
-                                </h4>
-                                <div class="price">$1,560</div>
-                                <div class="meta">
-                                    <figure>
-                                        <i class="fa fa-calendar-o"></i>21.04.2017
-                                    </figure>
-                                    <figure>
-                                        <a href="#">
-                                            <i class="fa fa-user"></i>Peak Agency
-                                        </a>
-                                    </figure>
-                                </div>
-                                <!--end meta-->
-                                <div class="description">
-                                    <p>Nam eget ullamcorper massa. Morbi fringilla lectus nec lorem tristique gravida</p>
-                                </div>
-                                <!--end description-->
-                                <a href="single-listing-1.html" class="detail text-caps underline">Detail</a>
-                            </div>
-                        </div>
-                        <!--end item-->
+                        <%
+                            }
+                        }
+                        %>
 
                     </div>
                 </div>
@@ -1218,12 +1128,11 @@
                                             <div class="form-group">
                                                 <label for="newsletter-category" class="col-form-label">Category?</label>
                                                 <select name="newsletter-category" id="newsletter-category" data-placeholder="Select Category" >
-                                                    <option value="">Select Category</option>
-                                                    <option value="1">Computers</option>
-                                                    <option value="2">Real Estate</option>
-                                                    <option value="3">Cars & Motorcycles</option>
-                                                    <option value="4">Furniture</option>
-                                                    <option value="5">Pets & Animals</option>
+                                                    <% Category c;
+                                                    for(int i = 3; i < 4; i++){
+                                                            c = li.get(i); %>
+                                                            <option value=""><%= c.getNome() %></option>
+                                                    <%}%>
                                                 </select>
                                             </div>
                                             <!--end form-group-->
