@@ -53,6 +53,10 @@
         <servlet-name>ShowShopList</servlet-name>
         <servlet-class>ShopList.ShowShopList</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>chat</servlet-name>
+        <servlet-class>ShopList.chat</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/LogoutAction</url-pattern>
@@ -84,6 +88,10 @@
     <servlet-mapping>
         <servlet-name>ShowShopList</servlet-name>
         <url-pattern>/ShowShopList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>chat</servlet-name>
+        <url-pattern>/chat</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
