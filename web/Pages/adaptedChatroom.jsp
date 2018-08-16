@@ -142,7 +142,7 @@
                 border-radius: 50%;
                 padding: 3px;
                 border: 2px solid #e74c3c;
-                height: auto;
+                height: 50px;
                 float: left;
                 cursor: pointer;
                 -moz-transition: 0.3s border ease;
@@ -452,6 +452,7 @@
             }
             #frame #sidepanel #contacts ul li.contact .wrap img {
                 width: 40px;
+                height: 40px;
                 border-radius: 50%;
                 float: left;
                 margin-right: 10px;
@@ -737,12 +738,16 @@
         <script type="text/javascript">
             function loadDoc(url, cFunction) {
                 var xhttp;
+                var message;
                 xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
                         cFunction(this);
                     }
                 };
+                var message =  "messaggio="+document.getElementById("messaggioDaInviare").value;
+                var user = document.getElementById("Sender").innerHTML;
+                url = url + message + "&Sender="+user;
                 xhttp.open("GET", url, true);
                 xhttp.send();
             }
@@ -751,13 +756,25 @@
                 document.getElementById("ricevente").innerHTML =
                 xhttp.responseText;
             }
+            
+            var x = 0;
+            function prova() {
+                x++;
+                document.getElementById("ricevente").innerHTML = "troia" + x;
+            }
+            
+            function loadChatFile(){
+                
+                
+            }
 
         </script>
 
     </head>
     <body>        
 
-        <%            String Nominativo = "";
+        <%            
+            String Nominativo = "";
             String Email = "";
             String Type = "";
             String image = "";
@@ -864,10 +881,12 @@
 
                             <div id="frame">
                                 <div id="sidepanel">
+                                    
+                                    
                                     <div id="profile">
                                         <div class="wrap">
-                                            <img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" class="online" alt="" />
-                                            <p>Mike Ross</p>
+                                            <img id="profile-img" src="../${user.image}" class="online" alt="" />
+                                            <p id="Sender"><%=Nominativo%></p>
                                             <i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
                                             <div id="status-options">
                                                 <ul>
@@ -902,7 +921,7 @@
                                                     <img src="../<%=utente.getImage()%>" alt="" />
                                                     <div class="meta">
                                                         <a onclick="loadDoc('/Lists/chat?ricevente=<%=utente.getEmail()%>',myFunction)"><p class="name"><%=utente.getNominativo()%></p></a>
-                                                        <p class="preview">You just got LITT up, Mike.</p>
+                                                        
                                                     </div>
                                                 </div>
                                             </li>
@@ -964,9 +983,16 @@
                                     </div>
                                     <div class="message-input">
                                         <div class="wrap">
-                                            <input type="text" placeholder="Write your message..." />
-                                            <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
-                                            <button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                                            
+                                            
+                                            
+                                                <input type="text" id="messaggioDaInviare" placeholder="Write your message..." />
+                                                <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+
+                                                <button class="submit" onclick="loadDoc('/Lists/chat?',myFunction)"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                                            
+                                            
+                                        
                                         </div>
                                     </div>
                                 </div>
