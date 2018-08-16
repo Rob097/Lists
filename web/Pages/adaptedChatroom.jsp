@@ -735,6 +735,9 @@
             }
         </style>
 
+
+
+
         <script type="text/javascript">
             function loadDoc(url, cFunction) {
                 var xhttp;
@@ -745,28 +748,53 @@
                         cFunction(this);
                     }
                 };
-                var message =  "messaggio="+document.getElementById("messaggioDaInviare").value;
+                var message = "messaggio=" + document.getElementById("messaggioDaInviare").value;
                 var user = document.getElementById("Sender").innerHTML;
-                url = url + message + "&Sender="+user;
+                url = url + message + "&Sender=" + user;
                 xhttp.open("GET", url, true);
                 xhttp.send();
             }
 
             function myFunction(xhttp) {
                 document.getElementById("ricevente").innerHTML =
-                xhttp.responseText;
+                        xhttp.responseText;
             }
-            
+
             var x = 0;
             function prova() {
                 x++;
                 document.getElementById("ricevente").innerHTML = "troia" + x;
             }
-            
-            function loadChatFile(){
+
+            function loadChatFile() {
+                var req;
+                req = new XMLHttpRequest();
                 
-                
+                req.open('GET', 'chat/Lemacchine.json');
+                req.onreadystatechange = function(){
+                    if((req.readyState === 4)&&(req.status===200)){
+                        var items = JSON.parse(req.responseText);
+                        console.log(items);
+                        var user = document.getElementById("Sender").innerHTML;
+                        var output = '<ul>';
+                        for(var key in items){
+                            console.log(items[key].message);
+                            if(items[key].name == user){
+                                output+= '<li class="sent">';
+                            }else{
+                                output+= '<li class="replies">';
+                            }
+                            output+='<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
+                            output+='<p>'+items[key].message+'</p>';
+                            output+= '</li>';
+                        }
+                        output+='</ul>';
+                        document.getElementById('messages').innerHTML = output;
+                    }
+                }
+                req.send();
             }
+            setInterval(loadChatFile, 100);
 
         </script>
 
@@ -881,8 +909,8 @@
 
                             <div id="frame">
                                 <div id="sidepanel">
-                                    
-                                    
+
+
                                     <div id="profile">
                                         <div class="wrap">
                                             <img id="profile-img" src="../${user.image}" class="online" alt="" />
@@ -920,8 +948,8 @@
                                                     <span class="contact-status online"></span>
                                                     <img src="../<%=utente.getImage()%>" alt="" />
                                                     <div class="meta">
-                                                        <a onclick="loadDoc('/Lists/chat?ricevente=<%=utente.getEmail()%>',myFunction)"><p class="name"><%=utente.getNominativo()%></p></a>
-                                                        
+                                                        <a onclick="loadDoc('/Lists/chat?ricevente=<%=utente.getEmail()%>', myFunction)"><p class="name"><%=utente.getNominativo()%></p></a>
+
                                                     </div>
                                                 </div>
                                             </li>
@@ -945,7 +973,7 @@
                                             <i class="fa fa-instagram" aria-hidden="true"></i>
                                         </div>
                                     </div>
-                                    <div class="messages">
+                                    <div class="messages" id="messages">
                                         <ul>
                                             <li class="sent">
                                                 <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
@@ -983,16 +1011,16 @@
                                     </div>
                                     <div class="message-input">
                                         <div class="wrap">
-                                            
-                                            
-                                            
-                                                <input type="text" id="messaggioDaInviare" placeholder="Write your message..." />
-                                                <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
 
-                                                <button class="submit" onclick="loadDoc('/Lists/chat?',myFunction)"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
-                                            
-                                            
-                                        
+
+
+                                            <input type="text" id="messaggioDaInviare" placeholder="Write your message..." />
+                                            <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+
+                                            <button class="submit" onclick="loadDoc('/Lists/chat?', myFunction)"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -1027,62 +1055,62 @@
         <script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script><script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
         <script >$(".messages").animate({scrollTop: $(document).height()}, "fast");
 
-                                                            $("#profile-img").click(function () {
-                                                                $("#status-options").toggleClass("active");
-                                                            });
+                                                    $("#profile-img").click(function () {
+                                                        $("#status-options").toggleClass("active");
+                                                    });
 
-                                                            $(".expand-button").click(function () {
-                                                                $("#profile").toggleClass("expanded");
-                                                                $("#contacts").toggleClass("expanded");
-                                                            });
+                                                    $(".expand-button").click(function () {
+                                                        $("#profile").toggleClass("expanded");
+                                                        $("#contacts").toggleClass("expanded");
+                                                    });
 
-                                                            $("#status-options ul li").click(function () {
-                                                                $("#profile-img").removeClass();
-                                                                $("#status-online").removeClass("active");
-                                                                $("#status-away").removeClass("active");
-                                                                $("#status-busy").removeClass("active");
-                                                                $("#status-offline").removeClass("active");
-                                                                $(this).addClass("active");
+                                                    $("#status-options ul li").click(function () {
+                                                        $("#profile-img").removeClass();
+                                                        $("#status-online").removeClass("active");
+                                                        $("#status-away").removeClass("active");
+                                                        $("#status-busy").removeClass("active");
+                                                        $("#status-offline").removeClass("active");
+                                                        $(this).addClass("active");
 
-                                                                if ($("#status-online").hasClass("active")) {
-                                                                    $("#profile-img").addClass("online");
-                                                                } else if ($("#status-away").hasClass("active")) {
-                                                                    $("#profile-img").addClass("away");
-                                                                } else if ($("#status-busy").hasClass("active")) {
-                                                                    $("#profile-img").addClass("busy");
-                                                                } else if ($("#status-offline").hasClass("active")) {
-                                                                    $("#profile-img").addClass("offline");
-                                                                } else {
-                                                                    $("#profile-img").removeClass();
-                                                                }
-                                                                ;
+                                                        if ($("#status-online").hasClass("active")) {
+                                                            $("#profile-img").addClass("online");
+                                                        } else if ($("#status-away").hasClass("active")) {
+                                                            $("#profile-img").addClass("away");
+                                                        } else if ($("#status-busy").hasClass("active")) {
+                                                            $("#profile-img").addClass("busy");
+                                                        } else if ($("#status-offline").hasClass("active")) {
+                                                            $("#profile-img").addClass("offline");
+                                                        } else {
+                                                            $("#profile-img").removeClass();
+                                                        }
+                                                        ;
 
-                                                                $("#status-options").removeClass("active");
-                                                            });
+                                                        $("#status-options").removeClass("active");
+                                                    });
 
-                                                            function newMessage() {
-                                                                message = $(".message-input input").val();
-                                                                if ($.trim(message) == '') {
-                                                                    return false;
-                                                                }
-                                                                $('<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + message + '</p></li>').appendTo($('.messages ul'));
-                                                                $('.message-input input').val(null);
-                                                                $('.contact.active .preview').html('<span>You: </span>' + message);
-                                                                $(".messages").animate({scrollTop: $(document).height()}, "fast");
-                                                            }
-                                                            ;
+                                                    function newMessage() {
+                                                        message = $(".message-input input").val();
+                                                        if ($.trim(message) == '') {
+                                                            return false;
+                                                        }
+                                                        $('<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + message + '</p></li>').appendTo($('.messages ul'));
+                                                        $('.message-input input').val(null);
+                                                        $('.contact.active .preview').html('<span>You: </span>' + message);
+                                                        $(".messages").animate({scrollTop: $(document).height()}, "fast");
+                                                    }
+                                                    ;
 
-                                                            $('.submit').click(function () {
-                                                                newMessage();
-                                                            });
+                                                    $('.submit').click(function () {
+                                                        newMessage();
+                                                    });
 
-                                                            $(window).on('keydown', function (e) {
-                                                                if (e.which == 13) {
-                                                                    newMessage();
-                                                                    return false;
-                                                                }
-                                                            });
-                                                            //# sourceURL=pen.js
+                                                    $(window).on('keydown', function (e) {
+                                                        if (e.which == 13) {
+                                                            newMessage();
+                                                            return false;
+                                                        }
+                                                    });
+                                                    //# sourceURL=pen.js
         </script>
 
     </body>

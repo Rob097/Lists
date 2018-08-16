@@ -452,6 +452,9 @@
                                         </ul>
                                         
                                         </td>
+                                        
+                                        <td><a href="/Lists/ShowShopList?nome=<%=l.getNome()%>">Show list</a></td>
+                                        
                                     </tr>
                                 <%}%>
                                 </tbody>
