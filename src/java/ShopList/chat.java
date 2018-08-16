@@ -29,7 +29,7 @@ public class chat extends HttpServlet {
         
         reciver = (String)request.getParameter("ricevente");
         request.getSession().setAttribute("reciver", reciver);
-        response.getWriter().write("proca" + reciver);
+        response.getWriter().write(reciver);
     }
 
     public void SaveAllMessagesOnTheFile(ArrayList<String> allMessages){
