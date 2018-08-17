@@ -53,14 +53,13 @@ public class chat extends HttpServlet {
     }
 
     public void SaveMessage(ArrayList<String> m, String listname) throws IOException {
-        for (String s : m) {   
+        for (String s : m) {
             try {
                 JsonFileAppend(listname, s.split(":")[0], s.split(":")[1]);
             } catch (Exception e) {
-                
+
             }
         }
-        
 
     }
 
@@ -101,46 +100,48 @@ public class chat extends HttpServlet {
             }
         }
     }
-    
-    public void appendToCheckbook (String fname, String name, String message, boolean last) {
 
-      BufferedWriter bw = null;
+    public void appendToCheckbook(String fname, String name, String message, boolean last) {
 
-      try {
-         // APPEND MODE SET HERE
-         bw = new BufferedWriter(new FileWriter(fname, true));
-	 bw.write("[");
-	 bw.newLine();
-         bw.write("{");
-         bw.newLine();
-         bw.write("\"name\""+": "+name+",");
-         bw.newLine();
-         bw.write("\"message\""+": "+message);
-         bw.newLine();
-         if(last)
-             bw.write("},");
-         else
-             bw.write("}]");
-	 bw.flush();
-      } catch (IOException ioe) {
-	 ioe.printStackTrace();
-      } finally {                       // always close the file
-	 if (bw != null) try {
-	    bw.close();
-	 } catch (IOException ioe2) {
-	    // just ignore it
-	 }
-      } // end try/catch/finally
+        BufferedWriter bw = null;
 
-   } // end test()
-    
-    public void CreateJSONfile(String fname, String message, String name){
+        try {
+            // APPEND MODE SET HERE
+            bw = new BufferedWriter(new FileWriter(fname, true));
+            bw.write("[");
+            bw.newLine();
+            bw.write("{");
+            bw.newLine();
+            bw.write("\"name\"" + ": " + name + ",");
+            bw.newLine();
+            bw.write("\"message\"" + ": " + message);
+            bw.newLine();
+            if (last) {
+                bw.write("},");
+            } else {
+                bw.write("}]");
+            }
+            bw.flush();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } finally {                       // always close the file
+            if (bw != null) {
+                try {
+                    bw.close();
+                } catch (IOException ioe2) {
+                    // just ignore it
+                }
+            }
+        } // end try/catch/finally
+
+    } // end test()
+
+    public void CreateJSONfile(String fname, String message, String name) {
         JSONObject obj = new JSONObject();
         obj.put("name", name);
-        obj.put("message",message);
-        
+        obj.put("message", message);
 
-        try (FileWriter file = new FileWriter(fname,true)) {
+        try (FileWriter file = new FileWriter(fname, true)) {
 
             file.write(obj.toJSONString());
             file.flush();
@@ -151,14 +152,22 @@ public class chat extends HttpServlet {
 
         System.out.print(obj);
     }
-    
-    public void JsonFileAppend(String fname, String name, String message) throws org.json.simple.parser.ParseException{
-        
+
+    public void JsonFileAppend(String fname, String name, String message) throws org.json.simple.parser.ParseException {
+
         JSONParser js = new JSONParser();
         try {
+
+            File file = new File(fname);
+
+            // if file doesnt exists, then create it
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
             Object obj;
             obj = js.parse(new FileReader(fname));
-            JSONArray jsonArray = (JSONArray)obj;
+            JSONArray jsonArray = (JSONArray) obj;
 
             System.out.println(jsonArray);
 
@@ -170,10 +179,10 @@ public class chat extends HttpServlet {
 
             System.out.println(jsonArray);
 
-            FileWriter file = new FileWriter(fname);
-            file.write(jsonArray.toJSONString());
-            file.flush();
-            file.close();
+            FileWriter fw = new FileWriter(fname);
+            fw.write(jsonArray.toJSONString());
+            fw.flush();
+            fw.close();
 
         } catch (IOException e) {
             e.printStackTrace();
