@@ -58,6 +58,12 @@
         <link rel="stylesheet" href="../css/selectize.css" type="text/css">
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="../css/user.css">
+         <link rel="stylesheet" href="../css/datatables.css" type="text/css"> 
+         
+        
+         
+
+        
     </head>
     <body>        
 
@@ -73,6 +79,7 @@
             image = u.getImage();
 
         %>
+        
 
         <div class="page home-page">
             <header class="hero">
@@ -361,11 +368,11 @@
                             <h1 class="opacity-60 center">
                                 Your own<a href="#"> Lists</a>
                             </h1>
-
-                            <table class="table" id="tableId">
+                            <div class="table-responsive">
+                                <table id="mytable" class="datatable display">
                                 <thead>
                                     <tr>
-                                        <th scope="col">#</th>
+                                        <th>#</th>
                                         <th scope="col">Nome</th>
                                         <th scope="col">Descrizione</th>
                                         <th scope="col">Creator</th>
@@ -373,9 +380,7 @@
                                         <th scope="col">Shared With</th>
                                     </tr>
                                 </thead>
-                                
-                                
-                                
+ 
                                 <tbody>
                                 <%
                                     for(ShopList l: li){
@@ -405,7 +410,9 @@
                                     </tr>
                                 <%}%>
                                 </tbody>
-                            </table>
+                            </table> 
+                            </div>
+                            
 
                         </div>
                         <!--end container-->
@@ -414,8 +421,8 @@
                             <h1 class="opacity-60 center">
                                 Lists you can looking for</a>
                             </h1>
-
-                            <table class="table">
+                            <div class="table-responsive">
+                            <table id="mytable" class="datatable display" width="100%">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
@@ -459,6 +466,8 @@
                                 <%}%>
                                 </tbody>
                             </table>
+                            </div>
+                            
 
                         </div>
                         
@@ -776,6 +785,7 @@
 
         <!--######################################################-->
         <script src="../js/jquery-3.3.1.min.js"></script>
+         
         <script type="text/javascript" src="../js/popper.min.js"></script>
         <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
@@ -784,7 +794,15 @@
         <script src="../js/masonry.pkgd.min.js"></script>
         <script src="../js/icheck.min.js"></script>
         <script src="../js/jquery.validate.min.js"></script>
-        <script src="../js/custom.js"></script>
+        <script src="../js/custom.js"></script>        
+         <script type="text/javascript" src="../js/datatables.js" ></script>
+        <script>
+            $(function () {
+                $("#mytable").dataTable();
+            });
+        </script>    
+
+       
         
         <!--########################## moooddaaalllll ############################-->
         
