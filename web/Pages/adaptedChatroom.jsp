@@ -769,8 +769,9 @@
             function loadChatFile() {
                 var req;
                 req = new XMLHttpRequest();
-                
-                req.open('GET', 'chat/Lemacchine.json');
+                var slname = document.getElementById("shoplistName").innerHTML;
+                console.log(slname);
+                req.open('GET', 'chat/' + slname +'.json');
                 req.onreadystatechange = function(){
                     if((req.readyState === 4)&&(req.status===200)){
                         var items = JSON.parse(req.responseText);
@@ -794,7 +795,7 @@
                 }
                 req.send();
             }
-            setInterval(loadChatFile, 100);
+            setInterval(loadChatFile, 5000);
 
         </script>
 
@@ -966,7 +967,7 @@
                                 <div class="content">
                                     <div class="contact-profile">
                                         <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-                                        <p id="ricevente">Harvey Specter</p>
+                                        <p id="shoplistName"><%=shoplistName%></p>
                                         <div class="social-media">
                                             <i class="fa fa-facebook" aria-hidden="true"></i>
                                             <i class="fa fa-twitter" aria-hidden="true"></i>

@@ -25,16 +25,14 @@
     }
     UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
     ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
-    
-    
 
     HttpSession s = (HttpSession) request.getSession();
-    String shoplistName = (String)s.getAttribute("shopListName");
+    String shoplistName = (String) s.getAttribute("shopListName");
     User u = null;
     boolean find = false;
 
     u = (User) s.getAttribute("user");
-    
+
     if (u.getTipo().equals("standard")) {
         find = true;
     }
@@ -58,36 +56,36 @@
         <link rel="stylesheet" href="css/selectize.css" type="text/css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/user.css">
-        
+
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-<style>
+        <style>
 
-.icon-bar {
-    width: 100%;
-    background-color: #f2f2f2;
-    overflow: auto;
-        margin-bottom: 4%;
-}
+            .icon-bar {
+                width: 100%;
+                background-color: #f2f2f2;
+                overflow: auto;
+                margin-bottom: 4%;
+            }
 
-.icon-bar a {
-    float: left;
-    width: 25%;
-    text-align: center;
-    padding: 12px 0;
-    transition: all 0.3s ease;
-    color: black;
-    font-size: 36px;
-}
+            .icon-bar a {
+                float: left;
+                width: 25%;
+                text-align: center;
+                padding: 12px 0;
+                transition: all 0.3s ease;
+                color: black;
+                font-size: 36px;
+            }
 
-.icon-bar a:hover {
-    background-color: red;
-}
+            .icon-bar a:hover {
+                background-color: red;
+            }
 
-.active {
-    background-color: black;
-}
-</style>
-        
+            .active {
+                background-color: black;
+            }
+        </style>
+
     </head>
     <body>        
 
@@ -104,7 +102,7 @@
             image = u.getImage();
         %>
 
-        
+
         <div class="page home-page">
             <header class="hero">
                 <div class="hero-wrapper">
@@ -143,7 +141,7 @@
                     </div>
 
                     <!--============ End Secondary Navigation ===========================================================-->
-                    
+
                     <!--============ Main Navigation ====================================================================-->
                     <div class="main-navigation">
                         <div class="container">
@@ -381,21 +379,21 @@
                                 <!--end navbar-collapse-->
                             </nav>
                             <!--end navbar-->
-                            
-                            
+
+
                         </div>
                         <!--end container-->
                     </div>
                     <!--============ End Main Navigation ================================================================-->
-                    
-                    
-                    
+
+
+
                     <!--============ Page Title =========================================================================-->
                     <div class="page-title">
-                        
+
                         <div class="container">
-                            
-                            
+
+
                             <h1 class="opacity-60 center">
                                 You are looking for <%=shoplistName%> list
                             </h1>
@@ -404,17 +402,17 @@
                     </div>
                     <!--============ End Page Title =====================================================================-->
                     <!--============ Hero Form ==========================================================================-->
-                    
+
                     <!--============ End Hero Form ======================================================================-->
-                    
-                    
+
+
                     <!--end background-->
                 </div>
                 <!--end hero-wrapper-->
             </header>
             <!--end hero-->
-            
-            
+
+
 
 
             <!--*********************************************************************************************************-->
@@ -424,13 +422,13 @@
                 <section class="block">
                     <div class="container">
                         <div class="icon-bar">
-  <a href="#"><i class="fas fa-plus"></i></a> 
-  <a href="#"><i class="fas fa-users"></i></a> 
-  <a href="#"><i class="fa fa-globe"></i></a>
-  <a href="#"><i class="fa fa-trash"></i></a> 
-</div>
+                            <a href="#"><i class="fas fa-plus"></i></a> 
+                            <a href="adaptedChatroom.jsp"><i class="fas fa-users"></i></a> 
+                            <a href="#"><i class="fa fa-globe"></i></a>
+                            <a href="#"><i class="fa fa-trash"></i></a> 
+                        </div>
                         <div class="row">
-                            
+
                             <!--end col-md-3-->
                             <div class="col-md-12">
                                 <!--============ Section Title===================================================================-->
@@ -456,11 +454,11 @@
                                 </div>
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
-                                    
-                                    <%for(Product p: li){%>
-                                    
+
+                                    <%for (Product p : li) {%>
+
                                     <div class="item">
-                                        
+
                                         <!--end ribbon-->
                                         <div class="wrapper">
                                             <div class="image">
@@ -497,12 +495,12 @@
                                             <a href="single-listing-1.html" class="detail text-caps underline">Detail</a>
                                         </div>
                                     </div>
-                                     <%}%>
-                                    <!--end item-->
-                                    
+                                    <%}%>
                                     <!--end item-->
 
-                                    
+                                    <!--end item-->
+
+
                                     <!--end item-->
 
                                 </div>

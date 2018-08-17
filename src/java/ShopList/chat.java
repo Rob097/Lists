@@ -8,16 +8,20 @@ package ShopList;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.catalina.connector.CoyoteWriter;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 /**
  *
@@ -49,14 +53,12 @@ public class chat extends HttpServlet {
     }
 
     public void SaveMessage(ArrayList<String> m, String listname) throws IOException {
-        boolean last = false;
-        for (String s : m) {
-            if(m.indexOf(m) == m.size())
-                last = true;
-            else
-                last = false;
-            
-            appendToCheckbook(listname, s.split(":")[0], s.split(":")[1], last);
+        for (String s : m) {   
+            try {
+                JsonFileAppend(listname, s.split(":")[0], s.split(":")[1]);
+            } catch (Exception e) {
+                
+            }
         }
         
 
@@ -136,6 +138,7 @@ public class chat extends HttpServlet {
         JSONObject obj = new JSONObject();
         obj.put("name", name);
         obj.put("message",message);
+        
 
         try (FileWriter file = new FileWriter(fname,true)) {
 
@@ -147,6 +150,34 @@ public class chat extends HttpServlet {
         }
 
         System.out.print(obj);
+    }
+    
+    public void JsonFileAppend(String fname, String name, String message) throws org.json.simple.parser.ParseException{
+        
+        JSONParser js = new JSONParser();
+        try {
+            Object obj;
+            obj = js.parse(new FileReader(fname));
+            JSONArray jsonArray = (JSONArray)obj;
+
+            System.out.println(jsonArray);
+
+            JSONObject student1 = new JSONObject();
+            student1.put("name", name);
+            student1.put("message", message);
+
+            jsonArray.add(student1);
+
+            System.out.println(jsonArray);
+
+            FileWriter file = new FileWriter(fname);
+            file.write(jsonArray.toJSONString());
+            file.flush();
+            file.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
