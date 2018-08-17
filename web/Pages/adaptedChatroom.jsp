@@ -756,8 +756,7 @@
             }
 
             function myFunction(xhttp) {
-                document.getElementById("ricevente").innerHTML =
-                        xhttp.responseText;
+                document.getElementById("ricevente").innerHTML = xhttp.responseText;
             }
 
             var x = 0;
@@ -795,7 +794,7 @@
                 }
                 req.send();
             }
-            setInterval(loadChatFile, 5000);
+            setInterval(loadChatFile, 1000);
 
         </script>
 

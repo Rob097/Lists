@@ -163,6 +163,10 @@ public class chat extends HttpServlet {
             // if file doesnt exists, then create it
             if (!file.exists()) {
                 file.createNewFile();
+                FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
+                BufferedWriter bw = new BufferedWriter(fw);
+
+                bw.write("[{\"nome\":\"user\", \"message\":\"init\"}]");
             }
 
             Object obj;
