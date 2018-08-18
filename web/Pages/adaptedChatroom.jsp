@@ -736,73 +736,78 @@
         </style>
 
 
-
-
         <script type="text/javascript">
-            function loadDoc(url, cFunction) {
-                var xhttp;
-                var message;
-                xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        cFunction(this);
-                    }
-                };
-                var message = "messaggio=" + document.getElementById("messaggioDaInviare").value;
-                var user = document.getElementById("Sender").innerHTML;
-                url = url + message + "&Sender=" + user;
-                xhttp.open("GET", url, true);
-                xhttp.send();
+            var webSocket = new WebSocket("ws://localhost:8084/ProvaWebSocket/ServerEndpointex");
+            var slname = document.getElementById("shoplistName");
+            var messaggioDaInviare = document.getElementById("messaggioDaInviare");
+            var user = document.getElementById("Sender");
+            //var messages = document.getElementById('messages');
+
+            webSocket.onopen = function (message) {
+                processOpen(message);
+            };
+            webSocket.onmessage = function (message) {
+                processMessage(message);
+            };
+            webSocket.onclose = function (message) {
+                processClose(message);
+            };
+            webSocket.onerror = function (message) {
+                processError(message);
+            };
+
+            function processOpen(message) {
+                document.getElementById('messages').innerHTML = "Server Connect..." + "\n";
             }
 
-            function myFunction(xhttp) {
-                document.getElementById("ricevente").innerHTML = xhttp.responseText;
+            function processClose(message) {
+                webSocket.send("client disconnected...");
+                document.getElementById("messages").innerHTML += "Server Disonnect..." + "\n";
             }
 
-            var x = 0;
-            function prova() {
-                x++;
-                document.getElementById("ricevente").innerHTML = "troia" + x;
-            }
+            function processMessage(message) {
+                //list:user:message
 
-            function loadChatFile() {
-                var req;
-                req = new XMLHttpRequest();
-                var slname = document.getElementById("shoplistName").innerHTML;
-                console.log(slname);
-                req.open('GET', 'chat/' + slname +'.json');
-                req.onreadystatechange = function(){
-                    if((req.readyState === 4)&&(req.status===200)){
-                        var items = JSON.parse(req.responseText);
-                        console.log(items);
-                        var user = document.getElementById("Sender").innerHTML;
-                        var output = '<ul>';
-                        for(var key in items){
-                            console.log(items[key].message);
-                            if(items[key].name == user){
-                                output+= '<li class="sent">';
-                            }else{
-                                output+= '<li class="replies">';
-                            }
-                            output+='<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
-                            output+='<p>'+items[key].message+'</p>';
-                            output+= '</li>';
-                        }
-                        output+='</ul>';
-                        document.getElementById('messages').innerHTML = output;
-                    }
+                if (message.data.split(":")[0] != user) {
+
+                    var output = '<ul>';
+                    output += '<li class="replies">';
+                    output += '<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
+                    output += '<p>' + message.data + '</p>';
+                    output += '</li>';
+                    output += '</ul>';
+                    document.getElementById("messages").innerHTML += output;
                 }
-                req.send();
             }
-            setInterval(loadChatFile, 1000);
 
+
+            function sendMessage() {
+                if (messaggioDaInviare.value != "close") {
+                    webSocket.send(slname.innerHTML + ":" + user.innerHTML + ":" + messaggioDaInviare.value);
+                    
+                    var output = '<ul>';
+                    output += '<li class="sent">';
+                    output += '<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
+                    output += '<p>' + message.data + '</p>';
+                    output += '</li>';
+                    output += '</ul>';
+                    document.getElementById("messages").innerHTML += output;
+                    messaggioDaInviare.value = "";
+                }
+            }
+
+            function processError(message) {
+                document.getElementById("messages").innerHTML += "error..." + "\n";
+            }
         </script>
+
+
+        
 
     </head>
     <body>        
 
-        <%            
-            String Nominativo = "";
+        <%            String Nominativo = "";
             String Email = "";
             String Type = "";
             String image = "";
@@ -948,7 +953,7 @@
                                                     <span class="contact-status online"></span>
                                                     <img src="../<%=utente.getImage()%>" alt="" />
                                                     <div class="meta">
-                                                        <a onclick="loadDoc('/Lists/chat?ricevente=<%=utente.getEmail()%>', myFunction)"><p class="name"><%=utente.getNominativo()%></p></a>
+                                                        <a><p class="name"><%=utente.getNominativo()%></p></a>
 
                                                     </div>
                                                 </div>
@@ -1017,7 +1022,7 @@
                                             <input type="text" id="messaggioDaInviare" placeholder="Write your message..." />
                                             <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
 
-                                            <button class="submit" onclick="loadDoc('/Lists/chat?', myFunction)"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                                            <button class="submit" onclick="sendMessage()"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
 
 
 
@@ -1055,62 +1060,127 @@
         <script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script><script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
         <script >$(".messages").animate({scrollTop: $(document).height()}, "fast");
 
-                                                    $("#profile-img").click(function () {
-                                                        $("#status-options").toggleClass("active");
-                                                    });
+                                                $("#profile-img").click(function () {
+                                                    $("#status-options").toggleClass("active");
+                                                });
 
-                                                    $(".expand-button").click(function () {
-                                                        $("#profile").toggleClass("expanded");
-                                                        $("#contacts").toggleClass("expanded");
-                                                    });
+                                                $(".expand-button").click(function () {
+                                                    $("#profile").toggleClass("expanded");
+                                                    $("#contacts").toggleClass("expanded");
+                                                });
 
-                                                    $("#status-options ul li").click(function () {
+                                                $("#status-options ul li").click(function () {
+                                                    $("#profile-img").removeClass();
+                                                    $("#status-online").removeClass("active");
+                                                    $("#status-away").removeClass("active");
+                                                    $("#status-busy").removeClass("active");
+                                                    $("#status-offline").removeClass("active");
+                                                    $(this).addClass("active");
+
+                                                    if ($("#status-online").hasClass("active")) {
+                                                        $("#profile-img").addClass("online");
+                                                    } else if ($("#status-away").hasClass("active")) {
+                                                        $("#profile-img").addClass("away");
+                                                    } else if ($("#status-busy").hasClass("active")) {
+                                                        $("#profile-img").addClass("busy");
+                                                    } else if ($("#status-offline").hasClass("active")) {
+                                                        $("#profile-img").addClass("offline");
+                                                    } else {
                                                         $("#profile-img").removeClass();
-                                                        $("#status-online").removeClass("active");
-                                                        $("#status-away").removeClass("active");
-                                                        $("#status-busy").removeClass("active");
-                                                        $("#status-offline").removeClass("active");
-                                                        $(this).addClass("active");
-
-                                                        if ($("#status-online").hasClass("active")) {
-                                                            $("#profile-img").addClass("online");
-                                                        } else if ($("#status-away").hasClass("active")) {
-                                                            $("#profile-img").addClass("away");
-                                                        } else if ($("#status-busy").hasClass("active")) {
-                                                            $("#profile-img").addClass("busy");
-                                                        } else if ($("#status-offline").hasClass("active")) {
-                                                            $("#profile-img").addClass("offline");
-                                                        } else {
-                                                            $("#profile-img").removeClass();
-                                                        }
-                                                        ;
-
-                                                        $("#status-options").removeClass("active");
-                                                    });
-
-                                                    function newMessage() {
-                                                        message = $(".message-input input").val();
-                                                        if ($.trim(message) == '') {
-                                                            return false;
-                                                        }
-                                                        $('<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + message + '</p></li>').appendTo($('.messages ul'));
-                                                        $('.message-input input').val(null);
-                                                        $('.contact.active .preview').html('<span>You: </span>' + message);
-                                                        $(".messages").animate({scrollTop: $(document).height()}, "fast");
                                                     }
                                                     ;
 
-                                                    $('.submit').click(function () {
-                                                        newMessage();
-                                                    });
+                                                    $("#status-options").removeClass("active");
+                                                });
 
-                                                    $(window).on('keydown', function (e) {
-                                                        if (e.which == 13) {
-                                                            newMessage();
-                                                            return false;
-                                                        }
-                                                    });
-                                                    //# sourceURL=pen.js
+                                                function newMessage() {
+                                                    message = $(".message-input input").val();
+                                                    if ($.trim(message) == '') {
+                                                        return false;
+                                                    }
+                                                    $('<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + message + '</p></li>').appendTo($('.messages ul'));
+                                                    $('.message-input input').val(null);
+                                                    $('.contact.active .preview').html('<span>You: </span>' + message);
+                                                    $(".messages").animate({scrollTop: $(document).height()}, "fast");
+                                                }
+                                                ;
+
+                                                
+
+                                                $(window).on('keydown', function (e) {
+                                                    if (e.which == 13) {
+                                                        sendMessage();
+                                                        return false;
+                                                    }
+                                                });
+                                                //# sourceURL=pen.js
+        </script>
+        
+        <script type="text/javascript">
+            var webSocket = new WebSocket("ws://localhost:8084/Lists/wsServer");
+            var slname = document.getElementById("shoplistName");
+            var messaggioDaInviare = document.getElementById("messaggioDaInviare");
+            var user = document.getElementById("Sender");
+            //var messages = document.getElementById('messages');
+
+            webSocket.onopen = function (message) {
+                processOpen(message);
+            };
+            webSocket.onmessage = function (message) {
+                processMessage(message);
+            };
+            webSocket.onclose = function (message) {
+                processClose(message);
+            };
+            webSocket.onerror = function (message) {
+                processError(message);
+            };
+
+            function processOpen(message) {
+                document.getElementById('messages').innerHTML = "Server Connect..." + "\n";
+            }
+
+            function processClose(message) {
+                webSocket.send("client disconnected...");
+                document.getElementById("messages").innerHTML += "Server Disonnect..." + "\n";
+            }
+
+            function processMessage(message) {
+                //list:user:message
+                
+                console.log(message.data);
+                if(message.data.split(":")[1] != user.innerHTML){
+                    console.log(message.data.split(":")[1]);
+                    console.log(user);
+                    var output = '<ul>';
+                    output += '<li class="replies">';
+                    output += '<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
+                    output += '<p>' + message.data.split(":")[2] + '</p>';
+                    output += '</li>';
+                    output += '</ul>';
+                    document.getElementById("messages").innerHTML += output;
+                }
+            }
+
+
+            function sendMessage() {
+                if (messaggioDaInviare.value != "close") {
+                    webSocket.send(slname.innerHTML + ":" + user.innerHTML + ":" + messaggioDaInviare.value);
+                    
+                    var output = '<ul>';
+                    output += '<li class="sent">';
+                    output += '<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
+                    output += '<p>' + messaggioDaInviare.value + '</p>';
+                    output += '</li>';
+                    output += '</ul>';
+                    document.getElementById("messages").innerHTML += output;
+                    messaggioDaInviare.value = "";
+                }
+            }
+
+            function processError(message) {
+                document.getElementById("messages").innerHTML += "error..." + "\n";
+            }
         </script>
 
     </body>
