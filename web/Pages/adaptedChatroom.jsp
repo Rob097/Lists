@@ -736,77 +736,12 @@
         </style>
 
 
-        <script type="text/javascript">
-            var webSocket = new WebSocket("ws://localhost:8084/ProvaWebSocket/ServerEndpointex");
-            var slname = document.getElementById("shoplistName");
-            var messaggioDaInviare = document.getElementById("messaggioDaInviare");
-            var user = document.getElementById("Sender");
-            //var messages = document.getElementById('messages');
-
-            webSocket.onopen = function (message) {
-                processOpen(message);
-            };
-            webSocket.onmessage = function (message) {
-                processMessage(message);
-            };
-            webSocket.onclose = function (message) {
-                processClose(message);
-                
-            };
-            webSocket.onerror = function (message) {
-                processError(message);
-            };
-
-            function processOpen(message) {
-                document.getElementById('messages').innerHTML = "Server Connect..." + "\n";
-            }
-
-            function processClose(message) {
-                webSocket.send("client disconnected...");
-                document.getElementById("messages").innerHTML += "Server Disonnect..." + "\n";
-            }
-
-            function processMessage(message) {
-                //list:user:message
-
-                if (message.data.split(":")[0] != user) {
-
-                    var output = '<ul>';
-                    output += '<li class="replies">';
-                    output += '<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
-                    output += '<p>' + message.data + '</p>';
-                    output += '</li>';
-                    output += '</ul>';
-                    document.getElementById("messages").innerHTML += output;
-                }
-            }
-
-
-            function sendMessage() {
-                if (messaggioDaInviare.value != "close") {
-                    webSocket.send(slname.innerHTML + ":" + user.innerHTML + ":" + messaggioDaInviare.value);
-                    
-                    var output = '<ul>';
-                    output += '<li class="sent">';
-                    output += '<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
-                    output += '<p>' + message.data + '</p>';
-                    output += '</li>';
-                    output += '</ul>';
-                    document.getElementById("messages").innerHTML += output;
-                    messaggioDaInviare.value = "";
-                }
-            }
-
-            function processError(message) {
-                document.getElementById("messages").innerHTML += "error..." + "\n";
-            }
-        </script>
 
 
         
 
     </head>
-    <body>        
+    <body onload="loadChatFile()">        
 
         <%            String Nominativo = "";
             String Email = "";
@@ -1182,6 +1117,38 @@
             function processError(message) {
                 document.getElementById("messages").innerHTML += "error..." + "\n";
             }
+            
+            
+            function loadChatFile() {
+                var req;
+                req = new XMLHttpRequest();
+                var slname = document.getElementById("shoplistName").innerHTML;
+                console.log(slname);
+                req.open('GET', 'chat/' + slname + '.json');
+                req.onreadystatechange = function () {
+                    if ((req.readyState === 4) && (req.status === 200)) {
+                        var items = JSON.parse(req.responseText);
+                        console.log(items);
+                        var user = document.getElementById("Sender").innerHTML;
+                        var output = '<ul>';
+                        for (var key in items) {
+                            console.log(items[key].message);
+                            if (items[key].name == user) {
+                                output += '<li class="sent">';
+                            } else {
+                                output += '<li class="replies">';
+                            }
+                            output += '<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
+                            output += '<p>' + items[key].message + '</p>';
+                            output += '</li>';
+                        }
+                        output += '</ul>';
+                        document.getElementById('messages').innerHTML = output;
+                    }
+                }
+                req.send();
+            }
+            
         </script>
 
     </body>
