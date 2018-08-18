@@ -751,6 +751,7 @@
             };
             webSocket.onclose = function (message) {
                 processClose(message);
+                
             };
             webSocket.onerror = function (message) {
                 processError(message);
