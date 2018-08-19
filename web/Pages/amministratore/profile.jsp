@@ -113,7 +113,7 @@
                                     <!--Main navigation list-->
                                     <ul class="navbar-nav">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="homepage.jsp">home</a>
+                                            <a class="nav-link" href="/Lists/index.jsp">home</a>
                                         </li>
                                         <li class="nav-item has-child">
                                             <a class="nav-link" href="#">Listing</a>

@@ -773,7 +773,7 @@
                             <!--end left-->
                             <ul class="right">
                                 <li>
-                                    <a class="navbar-brand" href="standardType.jsp" style="cursor: pointer;">
+                                    <a class="navbar-brand" href="standard/standardType.jsp" style="cursor: pointer;">
                                         <i class="fa fa-heart"></i>Le mie Liste
                                     </a>
                                 </li>
@@ -783,7 +783,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="navbar-brand" style="cursor: pointer;" href="profile.jsp">
+                                    <a class="navbar-brand" style="cursor: pointer;" href="standard/profile.jsp">
                                         <i class="fa fa-user"></i>Il mio profilo
                                     </a>
                                 </li>
@@ -809,7 +809,7 @@
                                     <!--Main navigation list-->
                                     <ul class="navbar-nav">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="../../index.jsp">home</a>
+                                            <a class="nav-link" href="/Lists/index.jsp">home</a>
                                         </li>
                                         <li class="nav-item has-child">
                                             <a class="nav-link" href="#">Listing</a>
@@ -867,11 +867,11 @@
                                             </div>
                                             <div id="expanded">
                                                 <label for="twitter"><i class="fa fa-facebook fa-fw" aria-hidden="true"></i></label>
-                                                <input name="twitter" type="text" value="mikeross" />
+                                                <input name="twitter" type="text" value="<%=Nominativo%>" />
                                                 <label for="twitter"><i class="fa fa-twitter fa-fw" aria-hidden="true"></i></label>
-                                                <input name="twitter" type="text" value="ross81" />
+                                                <input name="twitter" type="text" value="<%=Nominativo%>" />
                                                 <label for="twitter"><i class="fa fa-instagram fa-fw" aria-hidden="true"></i></label>
-                                                <input name="twitter" type="text" value="mike.ross" />
+                                                <input name="twitter" type="text" value="<%=Nominativo%>" />
                                             </div>
                                         </div>
                                     </div>
@@ -1034,7 +1034,7 @@
                                                     if ($.trim(message) == '') {
                                                         return false;
                                                     }
-                                                    $('<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + message + '</p></li>').appendTo($('.messages ul'));
+                                                    $('<li class="sent"><img src="../${user.image}" alt="" /><p>' + message + '</p></li>').appendTo($('.messages ul'));
                                                     $('.message-input input').val(null);
                                                     $('.contact.active .preview').html('<span>You: </span>' + message);
                                                     $(".messages").animate({scrollTop: $(document).height()}, "fast");
@@ -1053,7 +1053,7 @@
         </script>
 
         <script type="text/javascript">
-            var webSocket = new WebSocket("ws://localhost:8084/Lists/wsServer");
+            var webSocket = new WebSocket("ws://localhost:8080/Lists/wsServer");
             var slname = document.getElementById("shoplistName");
             var messaggioDaInviare = document.getElementById("messaggioDaInviare");
             var user = document.getElementById("Sender");
@@ -1090,7 +1090,7 @@
                     console.log(user);
                     var output = '<ul>';
                     output += '<li class="replies">';
-                    output += '<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
+                    output += '<img src="../${user.image}" alt="" />';
                     output += '<p>' + message.data.split(":")[2] + '</p>';
                     output += '</li>';
                     output += '</ul>';
@@ -1106,7 +1106,7 @@
 
                     var output = '<ul>';
                     output += '<li class="sent">';
-                    output += '<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
+                    output += '<img src="../${user.image}" alt="" />';
                     output += '<p>' + messaggioDaInviare.value + '</p>';
                     output += '</li>';
                     output += '</ul>';
@@ -1140,7 +1140,10 @@
                             } else {
                                 output += '<li class="replies">';
                             }
-                            output += '<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
+                            if(items[key].name == "<%=Nominativo%>")
+                                output += '<img src="../${user.image}" alt="" />';
+                            else
+                                output += '<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
                             output += '<p>' + items[key].message + '</p>';
                             output += '</li>';  
                         }

@@ -134,7 +134,7 @@
                                     <!--Main navigation list-->
                                     <ul class="navbar-nav">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="../../index.jsp">home</a>
+                                            <a class="nav-link" href="/Lists/index.jsp">home</a>
                                         </li>
                                         <li class="nav-item has-child">
                                             <a class="nav-link" href="#">Listing</a>
@@ -601,12 +601,12 @@
                                     <a class="nav-link active icon" href="standardType.jsp">
                                         <i class="fa fa-heart"></i>Le mie liste
                                     </a>
-                                    <a class="nav-link icon" href="change-password.html">
+                                    <!--<a class="nav-link icon" href="change-password.html">
                                         <i class="fa fa-recycle"></i>Cambia Password
                                     </a>
                                     <a class="nav-link icon" href="sold-items.html">
                                         <i class="fa fa-check"></i>Articoli in offerta
-                                    </a>
+                                    </a>-->
                                 </nav>
                             </div>
                             <!--end col-md-3-->

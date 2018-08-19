@@ -81,7 +81,7 @@
                             <!--end left-->
                             <ul class="right">
                                 <li>
-                                    <a class="navbar-brand" href="standardType.jsp" style="cursor: pointer;">
+                                    <a class="navbar-brand" href="standard/standardType.jsp" style="cursor: pointer;">
                                         <i class="fa fa-heart"></i>Le mie Liste
                                     </a>
                                 </li>
@@ -118,7 +118,7 @@
                                     <!--Main navigation list-->
                                     <ul class="navbar-nav">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="homepage.jsp">home</a>
+                                            <a class="nav-link" href="/Lists/index.jsp">home</a>
                                         </li>
                                         <li class="nav-item has-child">
                                             <a class="nav-link" href="#">Listing</a>
@@ -477,20 +477,17 @@
                             <div class="col-md-3">
                                 <nav class="nav flex-column side-nav">
                                     <a class="nav-link active icon" href="profile.jsp">
-                                        <i class="fa fa-user"></i>My Profile
+                                        <i class="fa fa-user"></i>Il mio profilo
                                     </a>
                                     <a class="nav-link icon" href="standardType.jsp">
-                                        <i class="fa fa-heart"></i>My Ads Listing
+                                        <i class="fa fa-heart"></i>Le mie liste
                                     </a>
-                                    <a class="nav-link icon" href="bookmarks.html">
-                                        <i class="fa fa-star"></i>Bookmarks
-                                    </a>
-                                    <a class="nav-link icon" href="change-password.html">
-                                        <i class="fa fa-recycle"></i>Change Password
+                                    <!--<a class="nav-link icon" href="change-password.html">
+                                        <i class="fa fa-recycle"></i>Cambia Password
                                     </a>
                                     <a class="nav-link icon" href="sold-items.html">
-                                        <i class="fa fa-check"></i>Sold Items
-                                    </a>
+                                        <i class="fa fa-check"></i>Articoli in offerta
+                                    </a>-->
                                 </nav>
                             </div>
                             <!--end col-md-3-->

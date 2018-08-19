@@ -95,7 +95,7 @@
                             <!--end left-->
                             <ul class="right">
                                 <li>
-                                    <a class="navbar-brand" href="standardType.jsp" style="cursor: pointer;">
+                                    <a class="navbar-brand" href="standard/standardType.jsp" style="cursor: pointer;">
                                         <i class="fa fa-heart"></i>Le mie Liste
                                     </a>
                                 </li>
@@ -105,7 +105,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="navbar-brand" style="cursor: pointer;" href="profile.jsp">
+                                    <a class="navbar-brand" style="cursor: pointer;" href="standard/profile.jsp">
                                         <i class="fa fa-user"></i>Il mio profilo
                                     </a>
                                 </li>
@@ -131,7 +131,7 @@
                                     <!--Main navigation list-->
                                     <ul class="navbar-nav">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="../../index.jsp">home</a>
+                                            <a class="nav-link" href="/Lists/index.jsp">home</a>
                                         </li>
                                         <li class="nav-item has-child">
                                             <a class="nav-link" href="#">Listing</a>
