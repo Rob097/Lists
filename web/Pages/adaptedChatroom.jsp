@@ -738,7 +738,7 @@
 
 
 
-        
+
 
     </head>
     <body onload="loadChatFile()">        
@@ -1041,7 +1041,7 @@
                                                 }
                                                 ;
 
-                                                
+
 
                                                 $(window).on('keydown', function (e) {
                                                     if (e.which == 13) {
@@ -1051,7 +1051,7 @@
                                                 });
                                                 //# sourceURL=pen.js
         </script>
-        
+
         <script type="text/javascript">
             var webSocket = new WebSocket("ws://localhost:8084/Lists/wsServer");
             var slname = document.getElementById("shoplistName");
@@ -1083,9 +1083,9 @@
 
             function processMessage(message) {
                 //list:user:message
-                
+
                 console.log(message.data);
-                if(message.data.split(":")[1] != user.innerHTML){
+                if ((message.data.split(":")[1] != user.innerHTML) && (message.data.split(":")[0] === slname.innerHTML)) {
                     console.log(message.data.split(":")[1]);
                     console.log(user);
                     var output = '<ul>';
@@ -1095,6 +1095,7 @@
                     output += '</li>';
                     output += '</ul>';
                     document.getElementById("messages").innerHTML += output;
+                    $(".messages").animate({scrollTop: $(document).height()}, 1000);
                 }
             }
 
@@ -1102,7 +1103,7 @@
             function sendMessage() {
                 if (messaggioDaInviare.value != "close") {
                     webSocket.send(slname.innerHTML + ":" + user.innerHTML + ":" + messaggioDaInviare.value);
-                    
+
                     var output = '<ul>';
                     output += '<li class="sent">';
                     output += '<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
@@ -1111,14 +1112,15 @@
                     output += '</ul>';
                     document.getElementById("messages").innerHTML += output;
                     messaggioDaInviare.value = "";
+                    $(".messages").animate({scrollTop: $(document).height()}, 1000);
                 }
             }
 
             function processError(message) {
                 document.getElementById("messages").innerHTML += "error..." + "\n";
             }
-            
-            
+
+
             function loadChatFile() {
                 var req;
                 req = new XMLHttpRequest();
@@ -1140,15 +1142,16 @@
                             }
                             output += '<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
                             output += '<p>' + items[key].message + '</p>';
-                            output += '</li>';
+                            output += '</li>';  
                         }
                         output += '</ul>';
                         document.getElementById('messages').innerHTML = output;
+                        $(".messages").animate({scrollTop: $(document).height()}, 1000);
                     }
                 }
                 req.send();
             }
-            
+
         </script>
 
     </body>

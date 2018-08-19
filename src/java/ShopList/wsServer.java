@@ -38,7 +38,7 @@ public class wsServer {
     }
 
     @OnClose
-    public void handleClose() throws UnsupportedEncodingException {
+    public void handleClose(Session session) throws UnsupportedEncodingException, IOException {
         System.out.println("client is now disconnected...");
         MessagesFromListToFile();
     }
@@ -50,15 +50,17 @@ public class wsServer {
         String replyMessage = message;
         liste.add(replyMessage);
         System.out.println("send to client: " + replyMessage);
-        
+
         for (Session sess : allSessions) {
 
-            System.out.println("SONO UNA SESSIONEEEEE");
+            if (sess.isOpen()) {
+                System.out.println("SONO UNA SESSIONEEEEE");
 
-            try {
-                sess.getBasicRemote().sendText(replyMessage);
-            } catch (IOException ioe) {
-                System.out.println(ioe.getMessage());
+                try {
+                    sess.getAsyncRemote().sendText(replyMessage);
+                } catch (Exception ioe) {
+                    System.out.println(ioe.getMessage());
+                }
             }
         }
     }
@@ -159,13 +161,14 @@ public class wsServer {
 
     //@list lista che si è disconessa
     public void MessagesFromListToFile() throws UnsupportedEncodingException {
-        for (String s : liste) {
-            System.out.println(s);
-            Append(s.split(":")[0], s.split(":")[1], s.split(":")[2]);
+        if (!liste.isEmpty()) {
+            for (String s : liste) {
+                System.out.println(s);
+                Append(s.split(":")[0], s.split(":")[1], s.split(":")[2]);
 
+            }
+            liste.clear();
         }
-        
-        liste.clear();
     }
 
 }
