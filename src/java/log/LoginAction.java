@@ -7,11 +7,14 @@ package log;
 
 import database.daos.UserDAO;
 import database.daos.CategoryDAO;
+import database.daos.ListDAO;
 import database.jdbc.JDBCCategoryDAO;
 import database.entities.Category;
 import database.entities.User;
+import database.entities.ShopList;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
+import database.jdbc.JDBCShopListDAO;
 import database.jdbc.JDBCUserDAO;
 import java.io.IOException;
 import static java.lang.System.out;
@@ -32,6 +35,7 @@ public class LoginAction extends HttpServlet {
     String url = null;
     UserDAO userdao = null;
     CategoryDAO categorydao = null;
+    ListDAO listdao = null;
 
     @Override
     public void init() throws ServletException {
@@ -43,6 +47,7 @@ public class LoginAction extends HttpServlet {
         //assegna a userdao la connessione(costruttore) e salva la connessione in una variabile tipo Connection
         userdao = new JDBCUserDAO(daoFactory.getConnection());
         categorydao = new JDBCCategoryDAO(daoFactory.getConnection());
+        listdao = new JDBCShopListDAO(daoFactory.getConnection());
     }
 
     /**
@@ -59,6 +64,8 @@ public class LoginAction extends HttpServlet {
         User user = new User();
         ArrayList<Category> categorie = new ArrayList();
         Boolean loginResult = true;
+        Boolean find = false;
+        
 
         try {
             String username = request.getParameter("email");
@@ -71,6 +78,15 @@ public class LoginAction extends HttpServlet {
 
             if (user != null) {
                 loginResult = true;
+                
+                if (user.getTipo().equals("standard")) {
+                    find = true;
+                }
+                
+                if (find) {
+                    ArrayList<ShopList> li = listdao.getByEmail(user.getEmail());
+                     request.getSession().setAttribute("userLists", li);
+                }
                 
                 String nominativo = user.getNominativo();
                 String tipo = user.getTipo();
@@ -86,6 +102,7 @@ public class LoginAction extends HttpServlet {
                 request.getSession().setAttribute("Logged", "on");
                 request.getSession().setAttribute("user", user);
                 request.getSession().setAttribute("categorie", categorie);
+               
 
                 if ("standard".equals(user.getTipo())) {
                     url = "Pages/standard/standardType.jsp";

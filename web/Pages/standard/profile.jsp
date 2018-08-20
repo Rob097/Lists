@@ -81,7 +81,7 @@
                             <!--end left-->
                             <ul class="right">
                                 <li>
-                                    <a class="navbar-brand" href="standard/standardType.jsp" style="cursor: pointer;">
+                                    <a class="navbar-brand" href="standardType.jsp" style="cursor: pointer;">
                                         <i class="fa fa-heart"></i>Le mie Liste
                                     </a>
                                 </li>

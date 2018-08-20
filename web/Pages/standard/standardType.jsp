@@ -369,7 +369,7 @@
                                 Your own<a href="#"> Lists</a>
                             </h1>
                             <div class="table-responsive">
-                                <table id="mytable" class="datatable display">
+                                <table id="listTable" class="dataTable cell-border order-column">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -377,38 +377,13 @@
                                         <th scope="col">Descrizione</th>
                                         <th scope="col">Creator</th>
                                         <th scope="col">Categoria</th>
-                                        <th scope="col">Shared With</th>
                                     </tr>
                                 </thead>
- 
                                 <tbody>
-                                <%
-                                    for(ShopList l: li){
-                                %>
                                     <tr>
-                                        <th>1</th>
-                                        <td> <%=l.getNome()%> </td>
-                                        <td><%=l.getDescrizione()%></td>
-                                        <td><%=l.getCreator()%></td>
-                                        <td><%=l.getCategoria()%></td>
-                                        
-                                        <td>
-                                        
-                                        <ul>
-                                            <%
-                                                ArrayList<User> aru = listdao.getUsersWithWhoTheListIsShared(l);
-                                                for(User sharedUsers:aru){
-                                            %>
-                                            <li><%=sharedUsers.getEmail()%></li>
-                                            <%}%>
-                                        </ul>
-                                        </td>
-                                        
-                                        <td><a href="/Lists/ShowShopList?nome=<%=l.getNome()%>">Show list</a></td>
-                                        
-                                        
+                                        <td>CARICA I DATI DELLA TABELLA</td>                                          
                                     </tr>
-                                <%}%>
+                                
                                 </tbody>
                             </table> 
                             </div>
@@ -797,13 +772,29 @@
         <script src="../js/custom.js"></script>        
          <script type="text/javascript" src="../js/datatables.js" ></script>
         <script>
+            var data = [
+                <c:forEach varStatus="statis" items="${userLists}" var="list"  >
+                     [
+                         "1",
+                         "<a href=\"/Lists/ShowShopList?nome=${list.nome}\">${list.nome}</a>",
+                         "${list.descrizione}",
+                         "${list.creator}",
+                         "${list.categoria}"
+                         
+                     ]<c:if test="${!status.last}">    
+                        ,    
+                      </c:if>           
+                </c:forEach>
+      
+            ];
+
             $(function () {
-                $("#mytable").dataTable();
+                $('#listTable').DataTable( {
+                    data: data
+                } );
             });
         </script>    
 
-       
-        
         <!--########################## moooddaaalllll ############################-->
         
         <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">

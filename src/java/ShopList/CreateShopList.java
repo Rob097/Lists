@@ -7,6 +7,7 @@ package ShopList;
 
 import database.daos.ListDAO;
 import database.daos.UserDAO;
+import database.entities.User;
 import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
@@ -19,6 +20,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -117,6 +119,15 @@ public class CreateShopList extends HttpServlet {
         if (nuovaLista != null) {
             regResult = true;
             request.getSession().setAttribute("regResult", regResult);
+            User user =(User) request.getSession().getAttribute("user");
+            ArrayList<ShopList> li;
+            try {
+                li = listdao.getByEmail(user.getEmail());
+                request.getSession().setAttribute("userLists", li);
+            } catch (DAOException ex) {
+                Logger.getLogger(CreateShopList.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }
 
         response.sendRedirect("Pages/standard/standardType.jsp");
