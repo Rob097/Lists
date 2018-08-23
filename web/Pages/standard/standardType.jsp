@@ -97,11 +97,11 @@
                             </ul>
                             <!--end left-->
                             <ul class="right">
-                                <!--<li>
-                                    <a class="navbar-brand" href="ShowUserList.jsp" style="cursor: pointer;">
-                                        <i class="fa fa-heart"></i>Le mie Liste
+                                <li>      
+                                    <a class="navbar-brand" href="foreignLists.jsp" style="cursor: pointer;">
+                                        <i class="fa fa-heart"></i>Lists you can looking for
                                     </a>
-                                </li>-->
+                                </li>
                                 <li>
                                     <a class="navbar-brand" style="cursor: pointer;" href="profile.jsp">
                                         <i class="fa fa-user"></i>Il mio profilo
@@ -366,10 +366,10 @@
                     <div class="page-title">
                         <div class="container">
                             <h1 class="opacity-60 center">
-                                Your own<a href="#"> Lists</a>
+                                Your own Lists
                             </h1>
                             <div class="table-responsive">
-                                <table id="listTable" class="dataTable cell-border order-column">
+                                <table id="listTable" class="dataTable cell-border compact display order-column" width="100%">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -377,6 +377,7 @@
                                         <th scope="col">Descrizione</th>
                                         <th scope="col">Creator</th>
                                         <th scope="col">Categoria</th>
+                                        <th scope="col">Shared With</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -394,155 +395,13 @@
                         <br><br>
                         <div class="container">
                             <h1 class="opacity-60 center">
-                                Lists you can looking for</a>
+                                <a href="foreignLists.jsp">Lists you can looking for</a>
                             </h1>
-                            <div class="table-responsive">
-                            <table id="mytable" class="datatable display" width="100%">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Nome</th>
-                                        <th scope="col">Descrizione</th>
-                                        <th scope="col">Creator</th>
-                                        <th scope="col">Categoria</th>
-                                        <th scope="col">Shared With</th>
-                                    </tr>
-                                </thead>
-                                
-                                
-                                
-                                <tbody>
-                                <%
-                                    ArrayList<ShopList> sl = listdao.getListOfShopListsThatUserLookFor(u.getEmail());
-                                    for(ShopList l: sl){
-                                %>
-                                    <tr>
-                                        <th>1</th>
-                                        <td> <%=l.getNome()%> </td>
-                                        <td><%=l.getDescrizione()%></td>
-                                        <td><%=l.getCreator()%></td>
-                                        <td><%=l.getCategoria()%></td>
-                                        
-                                        <td>
-                                        <ul>
-                                            <%
-                                                ArrayList<User> aru = listdao.getUsersWithWhoTheListIsShared(l);
-                                                for(User sharedUsers:aru){
-                                            %>
-                                            <li><%=sharedUsers.getEmail()%></li>
-                                            <%}%>
-                                        </ul>
-                                        
-                                        </td>
-                                        
-                                        <td><a href="/Lists/ShowShopList?nome=<%=l.getNome()%>">Show list</a></td>
-                                        
-                                    </tr>
-                                <%}%>
-                                </tbody>
-                            </table>
-                            </div>
-                            
 
                         </div>
                         
                     </div>
-                    <!--============ End Page Title =====================================================================-->
-                    <!--============ Hero Form ==========================================================================-->
-                    <form class="hero-form form">
-                        <div class="container">
-                            <!--Main Form-->
-                            <div class="main-search-form">
-                                <div class="form-row">
-                                    <div class="col-md-9 col-sm-9">
-                                        <div class="form-group">
-                                            <label for="what" class="col-form-label">What Are You Looking For?</label>
-                                            <input name="keyword" type="text" class="form-control" id="what" placeholder="Enter Anything">
-                                        </div>
-                                        <!--end form-group-->
-                                    </div>
-                                    <!--end col-md-3-->
-                                    <div class="col-md-3 col-sm-3">
-                                        <button type="submit" class="btn btn-primary width-100">Search</button>
-                                    </div>
-                                    <!--end col-md-3-->
-                                </div>
-                                <!--end form-row-->
-                            </div>
-                            <!--end main-search-form-->
-                            <!--Alternative Form-->
-                            <div class="alternative-search-form">
-                                <a href="#collapseAlternativeSearchForm" class="icon" data-toggle="collapse"  aria-expanded="false" aria-controls="collapseAlternativeSearchForm"><i class="fa fa-plus"></i>More Options</a>
-                                <div class="collapse" id="collapseAlternativeSearchForm">
-                                    <div class="wrapper">
-                                        <div class="form-row">
-                                            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 d-xs-grid d-flex align-items-center justify-content-between">
-                                                <label>
-                                                    <input type="checkbox" name="new">
-                                                    New
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" name="used">
-                                                    Used
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" name="with_photo">
-                                                    With Photo
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" name="featured">
-                                                    Featured
-                                                </label>
-                                            </div>
-                                            <!--end col-xl-6-->
-                                            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
-                                                <div class="form-row">
-                                                    <div class="col-md-4 col-sm-4">
-                                                        <div class="form-group">
-                                                            <input name="min_price" type="text" class="form-control small" id="min-price" placeholder="Minimal Price">
-                                                            <span class="input-group-addon small">$</span>
-                                                        </div>
-                                                        <!--end form-group-->
-                                                    </div>
-                                                    <!--end col-md-4-->
-                                                    <div class="col-md-4 col-sm-4">
-                                                        <div class="form-group">
-                                                            <input name="max_price" type="text" class="form-control small" id="max-price" placeholder="Maximal Price">
-                                                            <span class="input-group-addon small">$</span>
-                                                        </div>
-                                                        <!--end form-group-->
-                                                    </div>
-                                                    <!--end col-md-4-->
-                                                    <div class="col-md-4 col-sm-4">
-                                                        <div class="form-group">
-                                                            <select name="distance" id="distance" class="small" data-placeholder="Distance" >
-                                                                <option value="">Distance</option>
-                                                                <option value="1">1km</option>
-                                                                <option value="2">5km</option>
-                                                                <option value="3">10km</option>
-                                                                <option value="4">50km</option>
-                                                                <option value="5">100km</option>
-                                                            </select>
-                                                        </div>
-                                                        <!--end form-group-->
-                                                    </div>
-                                                    <!--end col-md-3-->
-                                                </div>
-                                                <!--end form-row-->
-                                            </div>
-                                            <!--end col-xl-6-->
-                                        </div>
-                                        <!--end row-->
-                                    </div>
-                                    <!--end wrapper-->
-                                </div>
-                                <!--end collapse-->
-                            </div>
-                            <!--end alternative-search-form-->
-                        </div>
-                        <!--end container-->
-                    </form>
-                    <!--============ End Hero Form ======================================================================-->
+                    <!--============ End Page Title =====================================================================-->  
                     <div class="page-title">
                         <div class="container">
                             <h1>Le mie liste</h1>
@@ -773,27 +632,36 @@
          <script type="text/javascript" src="../js/datatables.js" ></script>
         <script>
             var data = [
-                <c:forEach varStatus="statis" items="${userLists}" var="list"  >
+                <c:forEach varStatus="status" items="${userLists}" var="list"  >
                      [
-                         "1",
-                         "<a href=\"/Lists/ShowShopList?nome=${list.nome}\">${list.nome}</a>",
-                         "${list.descrizione}",
-                         "${list.creator}",
-                         "${list.categoria}"
+                          "1",
+                          "<a href=\"/Lists/ShowShopList?nome=${list.nome}\">${list.nome}</a>",
+                          "${list.descrizione}",
+                          "${list.creator}",
+                          "${list.categoria}",
+                          [
+                             <c:forEach items="${list.sharedUsers}" var="user" varStatus="userStatus">
+                                     ' ${user.email}'
+                                <c:if test="${!userStatus.last}">    
+                                    ,    
+                                </c:if>   
+                             </c:forEach>
+                         ]
                          
                      ]<c:if test="${!status.last}">    
                         ,    
                       </c:if>           
                 </c:forEach>
       
-            ];
+            ];        
 
-            $(function () {
+            $(document).ready(function () {
                 $('#listTable').DataTable( {
                     data: data
-                } );
+                    
+                } );               
             });
-        </script>    
+        </script> 
 
         <!--########################## moooddaaalllll ############################-->
         

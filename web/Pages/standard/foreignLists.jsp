@@ -1,32 +1,20 @@
 <%-- 
-    Document   : profile
-    Created on : 26-lug-2018, 12.49.19
+    Document   : standardType
+    Created on : 15-giu-2018, 17.13.06
     Author     : Roberto97
 --%>
 
+<%@page import="database.jdbc.JDBCShopListDAO"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="database.entities.ShopList"%>
+<%@page import="database.daos.ListDAO"%>
+<%@page import="database.daos.UserDAO"%>
+<%@page import="database.jdbc.JDBCUserDAO"%>
+<%@page import="database.factories.DAOFactory"%>
 <%@page import="database.entities.User"%>
 <%@page import="java.net.URLDecoder"%>
-<%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Blob"%>
-<%
-    HttpSession s = (HttpSession)request.getSession();
-    User u = null;
-    boolean find = false;
- 
-        
-            u = (User)s.getAttribute("user");
-            System.out.println("=================================" + u.getNominativo());
-            System.out.println("=================================" + u.getTipo());
-            if (u.getTipo().equals("standard")) {
-                find = true;
-            }
-            
-            System.out.println("000" + find);
-
-
-    if (find) {
-%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.Connection"%>
@@ -46,24 +34,14 @@
         <link rel="stylesheet" href="../css/selectize.css" type="text/css">
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="../css/user.css">
-    </head>
-    <body>
-
-        <%
-             String Nominativo = "";
-            String Email = "";
-            String Type = "";
-            String image = "../../";
-
-            //String Image = "";
-            
-            Nominativo = u.getNominativo();
-            Email = u.getEmail();
-            Type = u.getTipo();
-            image = u.getImage();
-
-        %>
+         <link rel="stylesheet" href="../css/datatables.css" type="text/css"> 
+         
         
+         
+
+        
+    </head>
+    <body>        
         <div class="page home-page">
             <header class="hero">
                 <div class="hero-wrapper">
@@ -80,19 +58,19 @@
                             </ul>
                             <!--end left-->
                             <ul class="right">
-                                <li>      
-                                    <a class="navbar-brand" href="foreignLists.jsp" style="cursor: pointer;">
-                                        <i class="fa fa-heart"></i>Lists you can looking for
-                                    </a>
-                                </li>
                                 <li>
                                     <a class="navbar-brand" href="standardType.jsp" style="cursor: pointer;">
                                         <i class="fa fa-heart"></i>Le mie Liste
                                     </a>
                                 </li>
                                 <li>
+                                    <a class="navbar-brand" style="cursor: pointer;" href="profile.jsp">
+                                        <i class="fa fa-user"></i>Il mio profilo
+                                    </a>
+                                </li>
+                                <li>
                                     <a class="navbar-brand" style="cursor: pointer;" href="/Lists/LogoutAction" data-toggle="tooltip" data-placement="bottom" title="LogOut">
-                                        <i class="fa fa-sign-in"></i><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> / <img src="../../${user.image}" width="25px" height="25px" style="border-radius: 100%;">
+                                        <i class="fa fa-sign-in"></i><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> / <img src= "../../${user.image}" width="25px" height="25px" style="border-radius: 100%;">
                                     </a>
                                 </li>
                             </ul>
@@ -102,13 +80,7 @@
                     </div>
 
                     <!--============ End Secondary Navigation ===========================================================-->
-                    <c:if test="${updateResult==true}">
-                        <div class="alert alert-success">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            <strong>Successful Modification!</strong> Your account is actualized.
-                        </div>
-                        <% request.getSession().setAttribute("updateResult", false); %>               
-                    </c:if> 
+
                     <!--============ Main Navigation ====================================================================-->
                     <div class="main-navigation">
                         <div class="container">
@@ -335,11 +307,9 @@
                                             </ul>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="contact.html">Contact</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="submit.html" class="btn btn-primary text-caps btn-rounded">Submit Ad</a>
-                                        </li>
+                                            <a class="nav-link" href="../ShowProducts.jsp">Show all products</a>
+                                        </li>                                       
+
                                     </ul>
                                     <!--Main navigation list-->
                                 </div>
@@ -352,119 +322,39 @@
                     <!--============ End Main Navigation ================================================================-->
                     <!--============ Page Title =========================================================================-->
                     <div class="page-title">
-                        <div class="container">
-                            <h1 class="opacity-60 center">
-                                <a href="standardType.jsp">Your own Lists</a>
-                            </h1>
-                        </div>
                         <br><br>
                         <div class="container">
                             <h1 class="opacity-60 center">
-                                <a href="foreignLists.jsp">Lists you can looking for</a>
+                                Lists you can looking for</a>
                             </h1>
+                            <div class="table-responsive">
+                            <table id="shareTable" class="dataTable cell-border compact display order-column" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Nome</th>
+                                        <th scope="col">Descrizione</th>
+                                        <th scope="col">Creator</th>
+                                        <th scope="col">Categoria</th>
+                                        <th scope="col">Shared With</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>CARICA I DATI DELLA TABELLA</td> 
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                            
 
                         </div>
-                        <!--end container-->
+                        
                     </div>
                     <!--============ End Page Title =====================================================================-->
-                    <!--============ Hero Form ==========================================================================-->
-                    <form class="hero-form form">
-                        <div class="container">
-                            <!--Main Form-->
-                            <div class="main-search-form">
-                                <div class="form-row">
-                                    <div class="col-md-9 col-sm-9">
-                                        <div class="form-group">
-                                            <label for="what" class="col-form-label">What Are You Looking For?</label>
-                                            <input name="keyword" type="text" class="form-control" id="what" placeholder="Enter Anything">
-                                        </div>
-                                        <!--end form-group-->
-                                    </div>
-                                    <!--end col-md-3-->
-                                    <div class="col-md-3 col-sm-3">
-                                        <button type="submit" class="btn btn-primary width-100">Search</button>
-                                    </div>
-                                    <!--end col-md-3-->
-                                </div>
-                                <!--end form-row-->
-                            </div>
-                            <!--end main-search-form-->
-                            <!--Alternative Form-->
-                            <div class="alternative-search-form">
-                                <a href="#collapseAlternativeSearchForm" class="icon" data-toggle="collapse"  aria-expanded="false" aria-controls="collapseAlternativeSearchForm"><i class="fa fa-plus"></i>More Options</a>
-                                <div class="collapse" id="collapseAlternativeSearchForm">
-                                    <div class="wrapper">
-                                        <div class="form-row">
-                                            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 d-xs-grid d-flex align-items-center justify-content-between">
-                                                <label>
-                                                    <input type="checkbox" name="new">
-                                                    New
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" name="used">
-                                                    Used
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" name="with_photo">
-                                                    With Photo
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" name="featured">
-                                                    Featured
-                                                </label>
-                                            </div>
-                                            <!--end col-xl-6-->
-                                            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
-                                                <div class="form-row">
-                                                    <div class="col-md-4 col-sm-4">
-                                                        <div class="form-group">
-                                                            <input name="min_price" type="text" class="form-control small" id="min-price" placeholder="Minimal Price">
-                                                            <span class="input-group-addon small">$</span>
-                                                        </div>
-                                                        <!--end form-group-->
-                                                    </div>
-                                                    <!--end col-md-4-->
-                                                    <div class="col-md-4 col-sm-4">
-                                                        <div class="form-group">
-                                                            <input name="max_price" type="text" class="form-control small" id="max-price" placeholder="Maximal Price">
-                                                            <span class="input-group-addon small">$</span>
-                                                        </div>
-                                                        <!--end form-group-->
-                                                    </div>
-                                                    <!--end col-md-4-->
-                                                    <div class="col-md-4 col-sm-4">
-                                                        <div class="form-group">
-                                                            <select name="distance" id="distance" class="small" data-placeholder="Distance" >
-                                                                <option value="">Distance</option>
-                                                                <option value="1">1km</option>
-                                                                <option value="2">5km</option>
-                                                                <option value="3">10km</option>
-                                                                <option value="4">50km</option>
-                                                                <option value="5">100km</option>
-                                                            </select>
-                                                        </div>
-                                                        <!--end form-group-->
-                                                    </div>
-                                                    <!--end col-md-3-->
-                                                </div>
-                                                <!--end form-row-->
-                                            </div>
-                                            <!--end col-xl-6-->
-                                        </div>
-                                        <!--end row-->
-                                    </div>
-                                    <!--end wrapper-->
-                                </div>
-                                <!--end collapse-->
-                            </div>
-                            <!--end alternative-search-form-->
-                        </div>
-                        <!--end container-->
-                    </form>
-                    <!--============ End Hero Form ======================================================================-->
                     <div class="page-title">
                         <div class="container">
-                            <h1>Le mie liste</h1>
+                            <h1>Liste condivise</h1>
                         </div>
                         <!--end container-->
                     </div>
@@ -479,6 +369,7 @@
                 <!--end hero-wrapper-->
             </header>
             <!--end hero-->
+
             <!--*********************************************************************************************************-->
             <!--************ CONTENT ************************************************************************************-->
             <!--*********************************************************************************************************-->
@@ -488,10 +379,10 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <nav class="nav flex-column side-nav">
-                                    <a class="nav-link active icon" href="profile.jsp">
+                                    <a class="nav-link icon" href="profile.jsp">
                                         <i class="fa fa-user"></i>Il mio profilo
                                     </a>
-                                    <a class="nav-link icon" href="standardType.jsp">
+                                    <a class="nav-link active icon" href="standardType.jsp">
                                         <i class="fa fa-heart"></i>Le mie liste
                                     </a>
                                     <!--<a class="nav-link icon" href="change-password.html">
@@ -504,51 +395,73 @@
                             </div>
                             <!--end col-md-3-->
                             <div class="col-md-9">
-                                <form class="form clearfix" id="login-form" action="/Lists/updateUser" method="post" enctype="multipart/form-data" onsubmit="return checkCheckBoxes(this);">
-                                    <div class="row">
-                                        <div class="col-md-8">
-                                            <h2>Personal Information</h2>
-                                            <section>
-                                                <div class="form-group">
-                                                    <label for="email" class="col-form-label">Email</label>
-                                                    <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" value="${user.email}" >
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="password" class="col-form-label">Password</label>
-                                                    <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password"  value="${user.password}">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="nominativo" class="col-form-label">Nome</label>
-                                                    <input type="text" name="nominativo" id="nominativo" tabindex="1" class="form-control" placeholder="Nome" value="${user.nominativo}" >
-                                                </div>
- 
-                                                <!--end form-group-->
-                                                
-                                            </section>
-                                            <section class="clearfix">
-                                                <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary float-right">Save Changes</button>
-                                            </section>
-                                            <section class="clearfix">
-                                                <button type="button" class="btn btn-primary float-right" id="delete" data-toggle="modal" data-target="#delete-modal">Delete profile</button>
-                                            </section>
-                                        </div>
-                                        <!--end col-md-8--> 
-                                        <div class="col-md-4">
-                                            <div class="profile-image">
-                                                <div class="image background-image">
-                                                    <img src="../../${user.image}" alt="">
-                                                </div>
-                                                <div class="single-file-input">
-                                                    <input type="file" name="file1" >
-                                                    <div class="btn btn-framed btn-primary small">Upload a picture</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--end col-md-3-->
+                                <!--============ Section Title===================================================================-->
+                                <div class="section-title clearfix">
+                                    <div class="float-left float-xs-none">
+                                        <label class="mr-3 align-text-bottom">Ordina: </label>
+                                        <select name="sorting" id="sorting" class="small width-200px" data-placeholder="Default Sorting" >
+                                            <option value="">Ultime aggiunte</option>
+                                            <option value="1">Prime aggiunte</option>
+                                            <option value="2">Costo piu basso</option>
+                                            <option value="3">Costo più alto</option>
+                                        </select>
+
                                     </div>
-                               </form>
-                                
+                                    <div class="float-right d-xs-none thumbnail-toggle">
+                                        <a href="#" class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
+                                            <i class="fa fa-th"></i>
+                                        </a>
+                                        <a href="#" class="change-class active" data-change-from-class="grid" data-change-to-class="list" data-parent-class="items">
+                                            <i class="fa fa-th-list"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!--============ Items ==========================================================================-->
+                                <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
+                                    <!--##############-->
+
+                                    <c:forEach items="${sharedLists}" var="list"  >
+                                       <div class="item">
+                                        <!--end ribbon-->
+                                        <div class="wrapper">
+                                            <div class="image">
+                                                <h3>
+                                                    <a href="#" class="tag category"><c:out value="${list.categoria}"/></a>
+                                                    <a href="/Lists/ShowShopList?nome=" class="title"><c:out value="${list.nome}"/></a>
+                                                </h3>
+                                                <a href="single-listing-1.html" class="image-wrapper background-image">
+                                                    <img src="../../${list.immagine}" alt="">
+                                                </a>
+                                            </div>
+                                            <!--end image-->
+                                            <div class="price">$80</div>
+                                            <div class="admin-controls">
+                                                <a href="/Lists/ShowShopList?nome=${list.nome}">
+                                                    <i class="fa fa-pencil"></i>Edit
+                                                </a>
+                                                <a href="#" class="ad-hide">
+                                                    <i class="fa fa-eye-slash"></i>Hide
+                                                </a>
+                                                <a href="#" class="ad-remove">
+                                                    <i class="fa fa-trash"></i>Remove
+                                                </a>
+                                            </div>
+                                            <!--end admin-controls-->
+                                            <div class="description">
+                                                <p><c:out value="${list.descrizione}"/></p>
+                                            </div>
+                                            <!--end description-->
+                                            <a href="single-listing-1.html" class="detail text-caps underline">Detail</a>
+                                        </div>
+                                    </div> 
+                                    </c:forEach>
+                                    
+                                    <!--end item-->
+          
+                                </div>
+                                <!--end items-->
                             </div>
+                            <!--end col-md-9-->
                         </div>
                         <!--end row-->
                     </div>
@@ -653,43 +566,9 @@
         </div>
         <!--end page-->
 
-
-
-        <!--#########################################################
-                                MODAL
-        ##########################################################-->
-
-        <!-- Delete Modal -->
-        <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="page-title">
-                            <div class="container">
-                                <h1>Delete user</h1>
-                            </div>
-                            <!--end container-->
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <h3>Sei sicuro di voler eliminare questo utente?<br> Non potrai annullare la modifica.</h3>
-                        <form class="clearfix" action="/Lists/deleteUser" method="POST">
-                            <button type="submit" class="btn btn-primary" id="delete">Delete</button>
-                            <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete-btn-no">Cancel</button>
-                        </form>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-
         <!--######################################################-->
-
         <script src="../js/jquery-3.3.1.min.js"></script>
+         
         <script type="text/javascript" src="../js/popper.min.js"></script>
         <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
@@ -698,13 +577,101 @@
         <script src="../js/masonry.pkgd.min.js"></script>
         <script src="../js/icheck.min.js"></script>
         <script src="../js/jquery.validate.min.js"></script>
-        <script src="../js/custom.js"></script>
+        <script src="../js/custom.js"></script>        
+         <script type="text/javascript" src="../js/datatables.js" ></script>
+        
+        <script>
+            var data = [
+                <c:forEach varStatus="status" items="${sharedLists}" var="list"  >
+                     [
+                          "1",
+                          "<a href=\"/Lists/ShowShopList?nome=${list.nome}\">${list.nome}</a>",
+                          "${list.descrizione}",
+                          "${list.creator}",
+                          "${list.categoria}",
+                          [
+                             <c:forEach items="${list.sharedUsers}" var="user" varStatus="userStatus">
+                                     ' ${user.email}'
+                                <c:if test="${!userStatus.last}">    
+                                    ,    
+                                </c:if>   
+                             </c:forEach>
+                         ]
+                         
+                     ]<c:if test="${!status.last}">    
+                        ,    
+                      </c:if>           
+                </c:forEach>
+      
+            ];        
 
+            $(function () {
+                $('#shareTable').DataTable( {
+                    data: data
+                    
+                } );               
+            });
+        </script> 
+
+        <!--########################## moooddaaalllll ############################-->
+        
+        <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="page-title">
+                        <div class="container">
+                            <h1 style="text-align: center;">Create list</h1>
+                        </div>
+                        <!--end container-->
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form per il login -->
+                    <form class="form clearfix" id="CreateShopListform" action="/Lists/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="Nome" class="col-form-label">Nome della lista</label>
+                            <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
+                        </div>
+                        <!--end form-group-->
+                        <div class="form-group">
+                            <label for="Descrizione" class="col-form-label">Descrizione</label>
+                            <input type="text" name="Descrizione" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
+                        </div>
+                        <!--end form-group-->
+                        <div class="form-group">
+                            <label for="Categoria" class="col-form-label">Categoria</label>
+                            <select name="Categoria" id="Categoria" tabindex="1" size="5" >
+                                <c:forEach items="${categorie}" var="categoria">
+                                    <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
+                                </c:forEach>
+                            </select><!--<input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>-->
+
+                        </div>
+                    
+                    <!--end form-group-->
+
+                    <div class="form-group">
+                        <label for="Immagine" class="col-form-label required">Immagine</label>
+                        <input type="file" name="file1" required>
+                    </div>
+                    <!--end form-group-->
+                    <div class="d-flex justify-content-between align-items-baseline">
+                        
+                        <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
+                    </div>
+                    </form>
+                    <hr>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+        
 
     </body>
 </html>
-
-<%
-    } else
-        response.sendRedirect("/Lists");
-%>

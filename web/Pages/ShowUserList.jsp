@@ -119,6 +119,11 @@
                             </ul>
                             <!--end left-->
                             <ul class="right">
+                                <li>      
+                                    <a class="navbar-brand" href="standard/foreignLists.jsp" style="cursor: pointer;">
+                                        <i class="fa fa-heart"></i>Lists you can looking for
+                                    </a>
+                                </li>
                                 <li>
                                     <a class="navbar-brand" href="standard/standardType.jsp" style="cursor: pointer;">
                                         <i class="fa fa-heart"></i>Le mie Liste

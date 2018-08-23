@@ -34,6 +34,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
     public ArrayList<ShopList> getByEmail(String email) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM List WHERE creator = ?")) {
             ArrayList<ShopList> shoppingLists = new ArrayList<>();
+            
 
             stm.setString(1, email);
             try (ResultSet rs = stm.executeQuery()) {
@@ -44,6 +45,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                     sL.setImmagine(rs.getString("immagine"));
                     sL.setCreator(rs.getString("creator"));
                     sL.setCategoria(rs.getString("categoria"));
+                    sL.setSharedUsers(getUsersWithWhoTheListIsShared(sL));
 
                     shoppingLists.add(sL);
                 }
@@ -143,6 +145,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                     sL.setImmagine(rs.getString("immagine"));
                     sL.setCreator(rs.getString("creator"));
                     sL.setCategoria("categoria");
+                    sL.setSharedUsers(getUsersWithWhoTheListIsShared(sL));
 
                     shoppingLists.add(sL);
                 }

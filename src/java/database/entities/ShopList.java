@@ -18,11 +18,11 @@ public class ShopList {
     private String creator;
     private String categoria;
     private ArrayList<Product> products;
+    private ArrayList<User> sharedUsers;
+
 
     public ShopList() {
     }
-    
-    
     
     
     public ShopList(String nome, String descrizione, String immagine, String creator, String categoria, ArrayList<Product> products) {
@@ -86,6 +86,14 @@ public class ShopList {
     
     public void AddProductToList(Product x){
         this.products.add(x);
+    }
+    
+    public ArrayList<User> getSharedUsers() {
+        return sharedUsers;
+    }
+
+    public void setSharedUsers(ArrayList<User> sharedUsers) {
+        this.sharedUsers = sharedUsers;
     }
     
 }

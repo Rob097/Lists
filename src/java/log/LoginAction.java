@@ -85,7 +85,9 @@ public class LoginAction extends HttpServlet {
                 
                 if (find) {
                     ArrayList<ShopList> li = listdao.getByEmail(user.getEmail());
-                     request.getSession().setAttribute("userLists", li);
+                    ArrayList<ShopList> sl = listdao.getListOfShopListsThatUserLookFor(user.getEmail());
+                     request.getSession().setAttribute("userLists", li);  
+                     request.getSession().setAttribute("sharedLists", sl);
                 }
                 
                 String nominativo = user.getNominativo();
