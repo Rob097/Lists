@@ -69,7 +69,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="navbar-brand" style="cursor: pointer;" href="/Lists/LogoutAction" data-toggle="tooltip" data-placement="bottom" title="LogOut">
+                                    <a class="navbar-brand" style="cursor: pointer;" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
                                         <i class="fa fa-sign-in"></i><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> / <img src= "../../${user.image}" width="25px" height="25px" style="border-radius: 100%;">
                                     </a>
                                 </li>

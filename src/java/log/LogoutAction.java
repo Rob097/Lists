@@ -11,6 +11,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import database.entities.User;
 
 /**
  *
@@ -49,6 +51,16 @@ public class LogoutAction extends HttpServlet {
             response.addCookie(cookie);
             }
         }
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            User user = (User) session.getAttribute("user");
+            if (user != null) {
+                session.setAttribute("user", null);
+                session.invalidate();
+                user = null;
+            }
+        }
+         
         response.setHeader("Refresh", "0; URL=/Lists/homepage.jsp");
          
     }

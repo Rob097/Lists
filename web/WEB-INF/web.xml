@@ -13,9 +13,6 @@
         <filter-name>AutenticationFilter</filter-name>
         <url-pattern>/restricted/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
-        <dispatcher>FORWARD</dispatcher>
-        <dispatcher>INCLUDE</dispatcher>
-        <dispatcher>ERROR</dispatcher>
     </filter-mapping>
     <listener>
         <description>ServletContextListener</description>
@@ -59,7 +56,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
-        <url-pattern>/LogoutAction</url-pattern>
+        <url-pattern>/restricted/LogoutAction</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoginAction</servlet-name>
