@@ -130,7 +130,7 @@ public class CreateShopList extends HttpServlet {
             
         }
 
-        response.sendRedirect("Pages/standard/standardType.jsp");
+        response.sendRedirect("/Lists/Pages/standard/standardType.jsp");
 
     }
     

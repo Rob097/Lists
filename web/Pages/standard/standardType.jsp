@@ -30,10 +30,17 @@
     boolean find = false;
 
     u = (User) s.getAttribute("user");
-
-    if (u.getTipo().equals("standard")) {
+    if(u == null){
+        response.setHeader("Refresh", "0; URL=/Lists/homepage.jsp");
+        
+    }else{
+       if (u.getTipo().equals("standard")) {
         find = true;
+        } 
     }
+    
+
+    
 
     if (find) {
         ArrayList<ShopList> li = listdao.getByEmail(u.getEmail());
@@ -482,7 +489,7 @@
                                             <div class="image">
                                                 <h3>
                                                     <a href="#" class="tag category"><%=l.getCategoria()%></a>
-                                                    <a href="/Lists/ShowShopList?nome=<%=l.getNome()%>" class="title"><%=l.getNome()%></a>
+                                                    <a href="/Lists/restricted/ShowShopList?nome=<%=l.getNome()%>" class="title"><%=l.getNome()%></a>
                                                 </h3>
                                                 <a href="single-listing-1.html" class="image-wrapper background-image">
                                                     <img src="../../<%=l.getImmagine() %>" alt="">
@@ -491,7 +498,7 @@
                                             <!--end image-->
                                             <div class="price">$80</div>
                                             <div class="admin-controls">
-                                                <a href="/Lists/ShowShopList?nome=<%=l.getNome()%>">
+                                                <a href="/Lists/restricted/ShowShopList?nome=<%=l.getNome()%>">
                                                     <i class="fa fa-pencil"></i>Edit
                                                 </a>
                                                 <a href="#" class="ad-hide">
@@ -506,7 +513,7 @@
                                                 <p><%=l.getDescrizione() %></p>
                                             </div>
                                             <!--end description-->
-                                            <a href="single-listing-1.html" class="detail text-caps underline">Detail</a>
+                                            <a href="/Lists/restricted/ShowShopList?nome=<%=l.getNome()%>" class="detail text-caps underline">Detail</a>
                                         </div>
                                     </div>
                                     <!--end item-->
@@ -637,7 +644,7 @@
                 <c:forEach varStatus="status" items="${userLists}" var="list"  >
                      [
                           "1",
-                          "<a href=\"/Lists/ShowShopList?nome=${list.nome}\">${list.nome}</a>",
+                          "<a href=\"/Lists/restricted/ShowShopList?nome=${list.nome}\">${list.nome}</a>",
                           "${list.descrizione}",
                           "${list.creator}",
                           "${list.categoria}",
@@ -683,7 +690,7 @@
                 </div>
                 <div class="modal-body">
                     <!-- Form per il login -->
-                    <form class="form clearfix" id="CreateShopListform" action="/Lists/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
+                    <form class="form clearfix" id="CreateShopListform" action="/Lists/restricted/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="Nome" class="col-form-label">Nome della lista</label>
                             <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>

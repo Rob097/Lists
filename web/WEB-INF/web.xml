@@ -68,23 +68,23 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>deleteUser</servlet-name>
-        <url-pattern>/deleteUser</url-pattern>
+        <url-pattern>/restricted/deleteUser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>updateUser</servlet-name>
-        <url-pattern>/updateUser</url-pattern>
+        <url-pattern>/restricted/updateUser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CreateShopList</servlet-name>
-        <url-pattern>/CreateShopList</url-pattern>
+        <url-pattern>/restricted/CreateShopList</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ShareShopListServlet</servlet-name>
-        <url-pattern>/ShareShopListServlet</url-pattern>
+        <url-pattern>/restricted/ShareShopListServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ShowShopList</servlet-name>
-        <url-pattern>/ShowShopList</url-pattern>
+        <url-pattern>/restricted/ShowShopList</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>chat</servlet-name>

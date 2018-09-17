@@ -427,7 +427,7 @@
                                             <div class="image">
                                                 <h3>
                                                     <a href="#" class="tag category"><c:out value="${list.categoria}"/></a>
-                                                    <a href="/Lists/ShowShopList?nome=" class="title"><c:out value="${list.nome}"/></a>
+                                                    <a href="/Lists/restrictd/ShowShopList?nome=" class="title"><c:out value="${list.nome}"/></a>
                                                 </h3>
                                                 <a href="single-listing-1.html" class="image-wrapper background-image">
                                                     <img src="../../${list.immagine}" alt="">
@@ -436,7 +436,7 @@
                                             <!--end image-->
                                             <div class="price">$80</div>
                                             <div class="admin-controls">
-                                                <a href="/Lists/ShowShopList?nome=${list.nome}">
+                                                <a href="/Lists/restricted/ShowShopList?nome=${list.nome}">
                                                     <i class="fa fa-pencil"></i>Edit
                                                 </a>
                                                 <a href="#" class="ad-hide">
@@ -451,7 +451,7 @@
                                                 <p><c:out value="${list.descrizione}"/></p>
                                             </div>
                                             <!--end description-->
-                                            <a href="single-listing-1.html" class="detail text-caps underline">Detail</a>
+                                            <a href="/Lists/restricted/ShowShopList?nome=${list.nome}" class="detail text-caps underline">Detail</a>
                                         </div>
                                     </div> 
                                     </c:forEach>
@@ -585,7 +585,7 @@
                 <c:forEach varStatus="status" items="${sharedLists}" var="list"  >
                      [
                           "1",
-                          "<a href=\"/Lists/ShowShopList?nome=${list.nome}\">${list.nome}</a>",
+                          "<a href=\"/Lists/restricted/ShowShopList?nome=${list.nome}\">${list.nome}</a>",
                           "${list.descrizione}",
                           "${list.creator}",
                           "${list.categoria}",
@@ -631,7 +631,7 @@
                 </div>
                 <div class="modal-body">
                     <!-- Form per il login -->
-                    <form class="form clearfix" id="CreateShopListform" action="/Lists/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
+                    <form class="form clearfix" id="CreateShopListform" action="/Lists/restricted/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="Nome" class="col-form-label">Nome della lista</label>
                             <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>

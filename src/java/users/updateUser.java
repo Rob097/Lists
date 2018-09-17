@@ -151,9 +151,9 @@ public class updateUser extends HttpServlet {
         }
 
         if ("standard".equals(user.getTipo())) {
-            url = "Pages/standard/profile.jsp";
+            url = "/Lists/Pages/standard/profile.jsp";
         } else if ("amministratore".equals(user.getTipo())) {
-            url = "Pages/amministratore/profile.jsp";
+            url = "/Lists/Pages/amministratore/profile.jsp";
         } else {
             url = "homepage.jsp";
             out.println("Errore di tipo utente");

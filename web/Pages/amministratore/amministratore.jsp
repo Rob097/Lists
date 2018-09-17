@@ -17,11 +17,15 @@
  
         
             u = (User)s.getAttribute("user");
-            System.out.println("=================================" + u.getNominativo());
-            System.out.println("=================================" + u.getTipo());
-            if (u.getTipo().equals("amministratore")) {
+            if(u == null){
+              response.sendRedirect("/Lists/homepage.jsp");
+        
+            }else{
+               if (u.getTipo().equals("amministratore")) {
                 find = true;
-            }
+                } 
+               System.out.println("=================================" + u.getNominativo());
+            System.out.println("=================================" + u.getTipo());
             
             System.out.println("000" + find);
 
@@ -841,4 +845,6 @@
 <%
     } else
         response.sendRedirect("/Lists");
+}
+
 %>

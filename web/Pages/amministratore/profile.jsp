@@ -15,9 +15,14 @@
     boolean find = false;
 
     u = (User) s.getAttribute("user");
-    if (u.getTipo() == "amministratore") {
+    if(u==null){
+         response.setHeader("Refresh", "0; URL=/Lists/homepage.jsp");
+    }else{
+        if (u.getTipo() == "amministratore") {
         find = true;
     }
+    }
+    
     if (true) {
 %>
 <%@page import="java.sql.DriverManager"%>
@@ -490,7 +495,7 @@
                             </div>
                             <!--end col-md-3-->
                             <div class="col-md-9">
-                                <form class="form clearfix" id="login-form" action="/Lists/updateUser" method="post" enctype="multipart/form-data">
+                                <form class="form clearfix" id="login-form" action="<c:url context="/Lists" value="/restricted/updateUser" />" method="post" enctype="multipart/form-data">
                                     <div class="row">
                                         <div class="col-md-8">
                                             <h2>Personal Information</h2>
@@ -662,7 +667,7 @@
                     </div>
                     <div class="modal-body">
                         <h3>Sei sicuro di voler eliminare questo utente?<br> Non potrai annullare la modifica.</h3>
-                        <form class="clearfix" action="/Lists/deleteUser" method="POST">
+                        <form class="clearfix" action="/Lists/restricted/deleteUser" method="POST">
                             <button type="submit" class="btn btn-primary" id="delete">Delete</button>
                             <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete-btn-no">Cancel</button>
                         </form>

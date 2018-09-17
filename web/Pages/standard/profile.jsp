@@ -15,14 +15,20 @@
     boolean find = false;
  
         
-            u = (User)s.getAttribute("user");
-            System.out.println("=================================" + u.getNominativo());
-            System.out.println("=================================" + u.getTipo());
-            if (u.getTipo().equals("standard")) {
-                find = true;
-            }
+    u = (User)s.getAttribute("user");
+    if(u == null){
+        response.sendRedirect("/Lists/homepage.jsp");
+
+      }else{
+         if (u.getTipo().equals("amministratore")) {
+          find = true;
+          } 
+                System.out.println("=================================" + u.getNominativo());
+                System.out.println("=================================" + u.getTipo());
             
-            System.out.println("000" + find);
+                System.out.println("000" + find);
+            
+            
 
 
     if (find) {
@@ -504,7 +510,7 @@
                             </div>
                             <!--end col-md-3-->
                             <div class="col-md-9">
-                                <form class="form clearfix" id="login-form" action="/Lists/updateUser" method="post" enctype="multipart/form-data" onsubmit="return checkCheckBoxes(this);">
+                                <form class="form clearfix" id="login-form" action="/Lists/restricted/updateUser" method="post" enctype="multipart/form-data" onsubmit="return checkCheckBoxes(this);">
                                     <div class="row">
                                         <div class="col-md-8">
                                             <h2>Personal Information</h2>
@@ -676,7 +682,7 @@
                     </div>
                     <div class="modal-body">
                         <h3>Sei sicuro di voler eliminare questo utente?<br> Non potrai annullare la modifica.</h3>
-                        <form class="clearfix" action="/Lists/deleteUser" method="POST">
+                        <form class="clearfix" action="/Lists/restricted/deleteUser" method="POST">
                             <button type="submit" class="btn btn-primary" id="delete">Delete</button>
                             <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete-btn-no">Cancel</button>
                         </form>
@@ -707,4 +713,5 @@
 <%
     } else
         response.sendRedirect("/Lists");
+}
 %>

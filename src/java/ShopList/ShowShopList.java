@@ -39,7 +39,7 @@ public class ShowShopList extends HttpServlet {
         request.getSession().setAttribute("shopListName", s);
         
         
-        response.sendRedirect("Pages/ShowUserList.jsp");
+        response.sendRedirect("/Lists/Pages/ShowUserList.jsp");
     }
 
     /**
