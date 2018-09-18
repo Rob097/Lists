@@ -110,15 +110,15 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="navbar-brand" style="cursor: pointer;" href="profile.jsp">
-                                        <i class="fa fa-user"></i>Il mio profilo
-                                    </a>
-                                </li>
-                                <li>
                                     <!--<a class="navbar-brand" style="cursor: pointer;" href="/Lists/LogoutAction" data-toggle="tooltip" data-placement="bottom" title="LogOut">-->
                                         <a class="navbar-brand" style="cursor: pointer;" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
                                         
                                         <i class="fa fa-sign-in"></i><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> / <img src= "../../${user.image}" width="25px" height="25px" style="border-radius: 100%;">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="navbar-brand" style="cursor: pointer;" href="profile.jsp">
+                                        <i class="fa fa-user"></i>Il mio profilo
                                     </a>
                                 </li>
                             </ul>

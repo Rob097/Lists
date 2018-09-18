@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <filter>
-        <filter-name>AutenticationFilter</filter-name>
-        <filter-class>filters.AutenticationFilter</filter-class>
+        <filter-name>AuthenticationFilter</filter-name>
+        <filter-class>filters.AuthenticationFilter</filter-class>
     </filter>
     <context-param>
         <description>The path where the user avatar images are stored.</description>
@@ -10,7 +10,7 @@
         <param-value>/Image/AvatarImg</param-value>
     </context-param>
     <filter-mapping>
-        <filter-name>AutenticationFilter</filter-name>
+        <filter-name>AuthenticationFilter</filter-name>
         <url-pattern>/restricted/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>

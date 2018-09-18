@@ -25,7 +25,7 @@ import database.entities.User;
  *
  * @author Martin
  */
-public class AutenticationFilter implements Filter {
+public class AuthenticationFilter implements Filter {
     
     private static final boolean debug = true;
 
@@ -34,7 +34,7 @@ public class AutenticationFilter implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
     
-    public AutenticationFilter() {
+    public AuthenticationFilter() {
     }    
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)

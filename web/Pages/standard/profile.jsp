@@ -20,7 +20,7 @@
         response.sendRedirect("/Lists/homepage.jsp");
 
       }else{
-         if (u.getTipo().equals("amministratore")) {
+         if (u.getTipo().equals("standard")) {
           find = true;
           } 
                 System.out.println("=================================" + u.getNominativo());
