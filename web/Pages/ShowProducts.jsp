@@ -33,13 +33,16 @@
 
     HttpSession s = (HttpSession) request.getSession();
     String shoplistName = (String)s.getAttribute("shopListName");
-    User u = null;
+    User u = new User();
     boolean find = false;
-
-    u = (User) s.getAttribute("user");
+    if(s.getAttribute("user") != null){
+        u = (User) s.getAttribute("user");
+    }
     
-    if (u.getTipo().equals("standard")) {
-        find = true;
+    if(u.getTipo() != null){
+        if (u.getTipo().equals("standard")) {
+            find = true;
+        }
     }
 
     if (find) {

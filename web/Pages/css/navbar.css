@@ -1,0 +1,143 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 16-set-2018, 23.02.04
+    Author     : Roberto97
+*/
+
+/* --------------------navbarstyle---------------------- */
+
+
+#mainNav {
+    background-color: #212529;
+}
+
+#mainNav .navbar-toggler {
+    font-size: 12px;
+    right: 0;
+    padding: 13px;
+    text-transform: uppercase;
+    color: white;
+    border: 0;
+    background-color: #ff0000;
+    font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+#mainNav .navbar-brand {
+    color: #ff0000;
+    font-family: 'Kaushan Script', 'Helvetica Neue', Helvetica, Arial, cursive;
+}
+
+#mainNav .navbar-brand.active, #mainNav .navbar-brand:active, #mainNav .navbar-brand:focus, #mainNav .navbar-brand:hover {
+    color: #ff0000;
+}
+
+#mainNav .navbar-nav .nav-item .nav-link {
+    font-size: 80%;
+    letter-spacing: 1px;
+    color: black;
+    /*text-shadow: 1px 1px;*/
+    font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+#mainNav.navbar-shrink .navbar-nav .nav-item .nav-link {
+    color: white;
+}
+
+#mainNav .navbar-nav .nav-item .nav-link.active, #mainNav .navbar-nav .nav-item .nav-link:hover {
+    color: #ff0000;
+}
+
+@media (min-width: 1200px) {
+    #mainNav {
+        padding-top: 25px;
+        padding-bottom: 25px;
+        -webkit-transition: padding-top 0.4s, padding-bottom 0.4s;
+        -moz-transition: padding-top 0.4s, padding-bottom 0.4s;
+        transition: padding-top 0.4s, padding-bottom 0.4s;
+        border: none;
+        background-color: transparent;
+    }
+    #mainNav .navbar-brand {
+        font-size: 1.75em;
+        -webkit-transition: all 0.4s;
+        -moz-transition: all 0.4s;
+        transition: all 0.4s;
+    }
+    #mainNav .navbar-nav .nav-item .nav-link {
+        padding: 1.1em 1em !important;
+    }
+    #mainNav.navbar-shrink {
+        padding-top: 0;
+        padding-bottom: 0;
+        background-color: #212529;
+    }
+    #mainNav.navbar-shrink .navbar-brand {
+        font-size: 1.25em;
+        padding: 12px 0;
+    }
+}
+
+@media (max-width: 1200px) {
+    #mainNav .navbar-nav .nav-item .nav-link {
+        color: white;
+    }
+    #mainNav{
+        z-index: 10000;
+        position: fixed !important;
+        width: 100% !important;
+    }
+}
+@media (min-width: 1200px) {
+    #mainNav ul{
+        display: inline !important;
+    }
+    #mainNav li{
+        display: inline-block !important;
+    }
+}
+
+/*@media (min-width: 1970px) {
+    .navbar{
+        font-size: 20px;
+    }
+}
+@media (min-width: 1560px) and (max-width: 1600px) {
+    .navbar{
+        font-size: 15px;
+    }
+}
+
+@media (min-width: 1255px) and (max-width: 1560px) {
+    .navbar{
+        font-size: 13.5px;
+    }
+}
+@media (min-width: 1200px) and (max-width: 1385px) {
+    .navbar{
+        font-size: 11.3px;
+    }
+}
+@media screen and (max-height: 510px) {
+    .navbar{
+        font-size: 14px;
+    }
+}
+@media screen and (max-height: 460px) {
+    .navbar{
+        font-size: 12px;
+    }
+}
+@media screen and (max-height: 405px) {
+    .navbar{
+        font-size: 8px;
+    }
+}
+@media screen and (max-height: 320px) {
+    .navbar{
+        font-size: 6.5px;
+    }
+}*/
