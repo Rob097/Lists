@@ -105,7 +105,7 @@
                         <div class="collapse navbar-collapse" id="navbarResponsive">
                             <ul class="navbar-nav text-uppercase ml-auto text-center">
                                 <li class="nav-item">
-                                    <a href="submit.html" class="btn btn-primary text-caps btn-rounded" >+ Lista</a>
+                                    <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >+ Lista</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="foreignLists.jsp"><b>Lists you can looking for</b></a>
@@ -247,7 +247,7 @@
                                                     <a href="/Lists/restricted/ShowShopList?nome=<%=l.getNome()%>" class="title"><%=l.getNome()%></a>
                                                 </h3>
                                                 <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                    <img src="../../<%=l.getImmagine() %>" alt="">
+                                                    <img src="/Lists/<%=l.getImmagine()%>" alt="">
                                                 </a>
                                             </div>
                                             <!--end image-->

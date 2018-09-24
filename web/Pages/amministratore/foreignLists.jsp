@@ -1,5 +1,5 @@
 <%-- 
-    Document   : amministratore
+    Document   : foreignLists
     Created on : 15-giu-2018, 17.13.06
     Author     : Roberto97
 --%>
@@ -15,37 +15,6 @@
 <%@page import="java.net.URLDecoder"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Blob"%>
-
-<%
-
-    DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
-    if (daoFactory == null) {
-        throw new ServletException("Impossible to get dao factory for user storage system");
-    }
-    UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
-    ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
-
-    HttpSession s = (HttpSession) request.getSession();
-    User u = null;
-    boolean find = false;
-
-    u = (User) s.getAttribute("user");
-    if(u == null){
-        response.setHeader("Refresh", "0; URL=/Lists/homepage.jsp");
-        
-    }else{
-       if (u.getTipo().equals("amministratore")) {
-        find = true;
-        } 
-    }
-    
-
-    
-
-    if (find) {
-        ArrayList<ShopList> li = listdao.getByEmail(u.getEmail());
-
-%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.Connection"%>
@@ -66,7 +35,7 @@
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="../css/user.css">
         <link rel="stylesheet" href="../css/navbar.css">
-         <link rel="stylesheet" href="../css/datatables.css" type="text/css"> 
+        <link rel="stylesheet" href="../css/datatables.css" type="text/css"> 
          
         
          
@@ -74,21 +43,6 @@
         
     </head>
     <body>        
-
-        <%            String Nominativo = "";
-            String Email = "";
-            String Type = "";
-            String image = "../../";
-
-            //String Image = "";
-            Nominativo = u.getNominativo();
-            Email = u.getEmail();
-            Type = u.getTipo();
-            image = u.getImage();
-
-        %>
-        
-
         <div class="page home-page">
             <header class="hero">
                 <div class="hero-wrapper">
@@ -105,10 +59,10 @@
                         <div class="collapse navbar-collapse" id="navbarResponsive">
                             <ul class="navbar-nav text-uppercase ml-auto text-center">
                                 <li class="nav-item">
-                                    <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >+ Lista</a>
+                                    <a href="submit.html" class="btn btn-primary text-caps btn-rounded" >+ Lista</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="foreignLists.jsp"><b>Lists you can looking for</b></a>
+                                    <a class="nav-link js-scroll-trigger" href="amministratore.jsp"><b>Le mie liste</b></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="#home"><i class="fa fa-home"></i><b>Home</b></a>
@@ -126,17 +80,20 @@
                             </ul>
                         </div>
                     </nav>
+
+                   
                     <!--============ Page Title =========================================================================-->
                     <div class="page-title">
+                        <br><br>
                         <div class="container">
                             <h1 class="opacity-60 center">
-                                Your own Lists
+                                Lists you can looking for</a>
                             </h1>
                             <div class="table-responsive">
-                                <table id="listTable" class="dataTable cell-border compact display order-column" width="100%">
+                            <table id="shareTable" class="dataTable cell-border compact display order-column" width="100%">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
+                                        <th scope="col">#</th>
                                         <th scope="col">Nome</th>
                                         <th scope="col">Descrizione</th>
                                         <th scope="col">Creator</th>
@@ -146,29 +103,20 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>CARICA I DATI DELLA TABELLA</td>                                          
+                                        <td>CARICA I DATI DELLA TABELLA</td> 
                                     </tr>
-                                
                                 </tbody>
-                            </table> 
+                            </table>
                             </div>
                             
 
                         </div>
-                        <!--end container-->
-                        <br><br>
-                        <div class="container">
-                            <h1 class="opacity-60 center">
-                                <a href="foreignLists.jsp">Lists you can looking for</a>
-                            </h1>
-
-                        </div>
                         
                     </div>
-                    <!--============ End Page Title =====================================================================-->  
+                    <!--============ End Page Title =====================================================================-->
                     <div class="page-title">
                         <div class="container">
-                            <h1>Le mie liste</h1>
+                            <h1>Liste condivise</h1>
                         </div>
                         <!--end container-->
                     </div>
@@ -233,27 +181,24 @@
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
                                     <!--##############-->
-                                    
-                                    <%
-                                        for (ShopList l : li) {
-                                        
-                                    %>                                                                  
-                                    <div class="item">
+
+                                    <c:forEach items="${sharedLists}" var="list"  >
+                                       <div class="item">
                                         <!--end ribbon-->
                                         <div class="wrapper">
                                             <div class="image">
                                                 <h3>
-                                                    <a href="#" class="tag category"><%=l.getCategoria()%></a>
-                                                    <a href="/Lists/restricted/ShowShopList?nome=<%=l.getNome()%>" class="title"><%=l.getNome()%></a>
+                                                    <a href="#" class="tag category"><c:out value="${list.categoria}"/></a>
+                                                    <a href="/Lists/restrictd/ShowShopList?nome=" class="title"><c:out value="${list.nome}"/></a>
                                                 </h3>
                                                 <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                    <img src="/Lists/<%=l.getImmagine()%>" alt="">
+                                                    <img src="../../${list.immagine}" alt="">
                                                 </a>
                                             </div>
                                             <!--end image-->
                                             <div class="price">$80</div>
                                             <div class="admin-controls">
-                                                <a href="/Lists/restricted/ShowShopList?nome=<%=l.getNome()%>">
+                                                <a href="/Lists/restricted/ShowShopList?nome=${list.nome}">
                                                     <i class="fa fa-pencil"></i>Edit
                                                 </a>
                                                 <a href="#" class="ad-hide">
@@ -265,14 +210,16 @@
                                             </div>
                                             <!--end admin-controls-->
                                             <div class="description">
-                                                <p><%=l.getDescrizione() %></p>
+                                                <p><c:out value="${list.descrizione}"/></p>
                                             </div>
                                             <!--end description-->
-                                            <a href="/Lists/restricted/ShowShopList?nome=<%=l.getNome()%>" class="detail text-caps underline">Detail</a>
+                                            <a href="/Lists/restricted/ShowShopList?nome=${list.nome}" class="detail text-caps underline">Detail</a>
                                         </div>
-                                    </div>
+                                    </div> 
+                                    </c:forEach>
+                                    
                                     <!--end item-->
-                                    <%}%>
+          
                                 </div>
                                 <!--end items-->
                             </div>
@@ -394,9 +341,10 @@
         <script src="../js/jquery.validate.min.js"></script>
         <script src="../js/custom.js"></script>        
          <script type="text/javascript" src="../js/datatables.js" ></script>
+        
         <script>
             var data = [
-                <c:forEach varStatus="status" items="${userLists}" var="list"  >
+                <c:forEach varStatus="status" items="${sharedLists}" var="list"  >
                      [
                           "1",
                           "<a href=\"/Lists/restricted/ShowShopList?nome=${list.nome}\">${list.nome}</a>",
@@ -419,8 +367,8 @@
       
             ];        
 
-            $(document).ready(function () {
-                $('#listTable').DataTable( {
+            $(function () {
+                $('#shareTable').DataTable( {
                     data: data
                     
                 } );               
@@ -486,12 +434,6 @@
             </div>
         </div>
         
-            
             <script src="../js/nav.js"></script>
-
     </body>
 </html>
-
-<%    } else
-        response.sendRedirect("/Lists");
-%>
