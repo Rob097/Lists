@@ -36,11 +36,7 @@
         <link rel="stylesheet" href="../css/user.css">
         <link rel="stylesheet" href="../css/navbar.css">
         <link rel="stylesheet" href="../css/datatables.css" type="text/css"> 
-         
-        
-         
 
-        
     </head>
     <body>        
         <div class="page home-page">

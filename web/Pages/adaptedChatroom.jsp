@@ -18,6 +18,11 @@
 <%@page import="java.net.URLDecoder"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Blob"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<c:if test="${user == null}">
+    <c:redirect url="/homepage.jsp"/>
+</c:if>
 
 <%
 
@@ -44,7 +49,7 @@
         ArrayList<User> listautenti = listdao.getUsersWithWhoTheListIsShared(shoplistName);
 
 %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
     <head>

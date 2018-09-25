@@ -16,6 +16,21 @@
 <%@page import="java.net.URLDecoder"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Blob"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:if test="${user == null}">
+    <c:redirect url="/homepage.jsp"/>
+</c:if>
+<c:if test="${shopListName==null}">
+    <c:if test="${user.tipo=='standard'}">
+        <c:redirect url="standard/standardType.jsp"/>
+    </c:if>
+    <c:if test="${user.tipo=='amministratore'}">
+        <c:redirect url="amministratore/amministratore.jsp"/>
+    </c:if>
+    
+    
+</c:if>
+
 
 <%
 
@@ -41,13 +56,13 @@
         ArrayList<Product> li = listdao.getAllProductsOfShopList(shoplistName);
 
 %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="icon" href="img/favicon.png" sizes="16x16" type="image/png">
-        <title><%=shoplistName%></title>
+        <title><c:out value="${shopListName}"/></title>
 
         <!-- CSS personalizzati -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
