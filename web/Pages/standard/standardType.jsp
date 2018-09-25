@@ -69,14 +69,30 @@
         <link rel="stylesheet" href="../css/navbar.css">
          <link rel="stylesheet" href="../css/datatables.css" type="text/css"> 
          
-        
-         
-
+         <!-- Style for serch modal table-->
+         <style>
+            .modal-dialog{
+                position: relative;
+                display: table; /* This is important */ 
+                overflow-y: auto;    
+                overflow-x: auto;
+                width: auto;
+                min-width: 300px;
+                max-height: 530px;
+            }
+            .modal-body {
+                position: relative;
+                overflow-y: auto;
+                max-height: 530px;
+                padding: 15px;
+            }
+         </style>
         
     </head>
     <body>        
 
-        <%            String Nominativo = "";
+        <%            
+            String Nominativo = "";
             String Email = "";
             String Type = "";
             String image = "../../";
@@ -109,6 +125,9 @@
                                     <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >+ Lista</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a data-toggle="modal" data-target="#SearchListModal" class="btn btn-primary text-caps btn-rounded" >Search List</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="foreignLists.jsp"><b>Lists you can looking for</b></a>
                                 </li>
                                 <li class="nav-item">
@@ -127,45 +146,7 @@
                             </ul>
                         </div>
                     </nav>
-                    <!--============ Page Title =========================================================================-->
-                    <div class="page-title">
-                        <div class="container">
-                            <h1 class="opacity-60 center">
-                                Your own Lists
-                            </h1>
-                            <div class="table-responsive">
-                                <table id="listTable" class="dataTable cell-border compact display order-column" width="100%">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th scope="col">Nome</th>
-                                        <th scope="col">Descrizione</th>
-                                        <th scope="col">Creator</th>
-                                        <th scope="col">Categoria</th>
-                                        <th scope="col">Shared With</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>CARICA I DATI DELLA TABELLA</td>                                          
-                                    </tr>
-                                
-                                </tbody>
-                            </table> 
-                            </div>
-                            
-
-                        </div>
-                        <!--end container-->
-                        <br><br>
-                        <div class="container">
-                            <h1 class="opacity-60 center">
-                                <a href="foreignLists.jsp">Lists you can looking for</a>
-                            </h1>
-
-                        </div>
-                        
-                    </div>
+                   
                     <!--============ End Page Title =====================================================================-->  
                     <div class="page-title">
                         <div class="container">
@@ -399,11 +380,11 @@
             var data = [
                 <c:forEach varStatus="status" items="${userLists}" var="list"  >
                      [
-                          "1",
+                          "<a href=\"/Lists/restricted/ShowShopList?nome=${list.nome}\">♣</a>",
                           "<a href=\"/Lists/restricted/ShowShopList?nome=${list.nome}\">${list.nome}</a>",
-                          "${list.descrizione}",
-                          "${list.creator}",
-                          "${list.categoria}",
+                          "<a href=\"/Lists/restricted/ShowShopList?nome=${list.nome}\">${list.descrizione}</a>",
+                          "<a href=\"/Lists/restricted/ShowShopList?nome=${list.nome}\">${list.creator}</a>",
+                          "<a href=\"/Lists/restricted/ShowShopList?nome=${list.nome}\">${list.categoria}</a>",
                           [
                              <c:forEach items="${list.sharedUsers}" var="user" varStatus="userStatus">
                                      ' ${user.email}'
@@ -486,7 +467,50 @@
                 </div>
             </div>
         </div>
-        
+        </div>
+            <!--########################## modal search ############################-->
+         <div class="modal fade" id="SearchListModal" tabindex="-1" role="dialog" aria-labelledby="SearchList" aria-hidden="true" enctype="multipart/form-data">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="page-title">
+                        <div class="container">
+                            <h1 style="text-align: center;">Search List</h1>
+                        </div>
+                        <!--end container-->
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                                <table id="listTable" class="dataTable cell-border compact display order-column" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th scope="col">Nome</th>
+                                        <th scope="col">Descrizione</th>
+                                        <th scope="col">Creator</th>
+                                        <th scope="col">Categoria</th>
+                                        <th scope="col">Shared With</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>CARICA I DATI DELLA TABELLA</td>                                          
+                                    </tr>
+                                
+                                </tbody>
+                            </table> 
+                            </div>
+                    
+            </div>
+        </div>
+        </div>
+         </div>
+            
+             <!--########################## end modal search ############################-->
             
             <script src="../js/nav.js"></script>
 
