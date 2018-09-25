@@ -107,6 +107,8 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed user is null"));
         }
         
+        System.out.println(l.getCreator());
+        
         String qry = "insert into List(nome,descrizione,immagine,creator,categoria) "
                 + "values(?,?,?,"
                 + "(select email from User where email = ?),"
@@ -127,7 +129,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             }
         } catch (SQLException ex) {
             throw new DAOException(ex);
-
+            
         }
     }
     

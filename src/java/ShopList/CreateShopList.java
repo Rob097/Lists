@@ -29,6 +29,7 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import log.RegisterAction;
 
@@ -55,7 +56,8 @@ public class CreateShopList extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
+        HttpSession s = request.getSession();
         ShopList nuovaLista = new ShopList();
         Boolean regResult = false;        
         String nome;
@@ -68,11 +70,15 @@ public class CreateShopList extends HttpServlet {
         System.out.println("NOm22222222eeeeeeeeee" + nome);
         descrizione = request.getParameter("Descrizione");
         System.out.println("NOme33333333eeeeeeeee" + descrizione);
-        categoria = request.getParameter("Categoria");
+        /*categoria = request.getParameter("Categoria");*/
+        categoria = "Farmacia";
         System.out.println("NO111111meeeeeeeeee" + categoria);
         
-        User temp = (User)request.getSession().getAttribute("user");
-        creator = temp.getEmail();
+        if(s.getAttribute("user") != null){
+            User temp = (User)s.getAttribute("user");
+            creator = temp.getEmail();
+        }
+        creator = "ospite@lists.it";
         
         // IMMAGINE
         String listsFolder = "/Image/ListsImg";
@@ -110,27 +116,32 @@ public class CreateShopList extends HttpServlet {
         System.out.println(nuovaLista.getImmagine());
 
         try {
+            System.out.println(creator);
             //manda i dati del user, il metodo upate fa la parte statement 
-            nuovaLista = listdao.Insert(nuovaLista);
+            if(s.getAttribute("user") != null){
+                nuovaLista = listdao.Insert(nuovaLista);
+            }else{
+                s.setAttribute("guestList", nuovaLista);
+            }
 
         } catch (DAOException ex) {
             Logger.getLogger(RegisterAction.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (nuovaLista != null) {
+        if (nuovaLista != null && s.getAttribute("user") != null) {
             regResult = true;
-            request.getSession().setAttribute("regResult", regResult);
-            User user =(User) request.getSession().getAttribute("user");
+            s.setAttribute("regResult", regResult);
+            User user =(User) s.getAttribute("user");
             ArrayList<ShopList> li;
             try {
                 li = listdao.getByEmail(user.getEmail());
-                request.getSession().setAttribute("userLists", li);
+                s.setAttribute("userLists", li);
             } catch (DAOException ex) {
                 Logger.getLogger(CreateShopList.class.getName()).log(Level.SEVERE, null, ex);
             }
             
         }
 
-        response.sendRedirect("/Lists/Pages/standard/standardType.jsp");
+        //response.sendRedirect("/Lists/index.jsp");
 
     }
     

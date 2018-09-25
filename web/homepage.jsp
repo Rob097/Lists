@@ -4,6 +4,7 @@
     Author     : Roberto97
 --%>
 
+<%@page import="database.entities.ShopList"%>
 <%@page import="database.jdbc.JDBCCategoryDAO"%>
 <%@page import="database.daos.CategoryDAO"%>
 <%@page import="database.entities.Category"%>
@@ -117,10 +118,10 @@
                     <div class="collapse navbar-collapse" id="navbarResponsive">
                         <ul class="navbar-nav text-uppercase ml-auto text-center">
                             <li class="nav-item">
-                                <a href="submit.html" class="btn btn-primary text-caps btn-rounded" >+ Lista</a>
+                                <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >+ Lista</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link js-scroll-trigger" href="#lists"><b>Le mie liste</b></a>
+                                <a class="nav-link js-scroll-trigger" href="Pages/guest/guest.jsp" target="_blank"><b>Le mie liste</b></a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link js-scroll-trigger" href="#home"><i class="fa fa-home"></i><b>Home</b></a>
@@ -1236,6 +1237,63 @@
 
 
     <!--######################################################-->
+    
+    
+    <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="page-title">
+                        <div class="container">
+                            <h1 style="text-align: center;">Create list</h1>
+                        </div>
+                        <!--end container-->
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form per il login -->
+                    <form class="form clearfix" id="CreateShopListform" action="/Lists/restricted/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="Nome" class="col-form-label">Nome della lista</label>
+                            <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
+                        </div>
+                        <!--end form-group-->
+                        <div class="form-group">
+                            <label for="Descrizione" class="col-form-label">Descrizione</label>
+                            <input type="text" name="Descrizione" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
+                        </div>
+                        <!--end form-group-->
+                        <div class="form-group">
+                            <label for="Categoria" class="col-form-label">Categoria</label>
+                            <select name="Categoria" id="Categoria" tabindex="1" size="5" >
+                                <c:forEach items="${categorie}" var="categoria">
+                                    <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
+                                </c:forEach>
+                            </select><!--<input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>-->
+
+                        </div>
+                    <!--end form-group-->
+
+                    <div class="form-group">
+                        <label for="Immagine" class="col-form-label required">Immagine</label>
+                        <input type="file" name="file1" required>
+                    </div>
+                    <!--end form-group-->
+                    <div class="d-flex justify-content-between align-items-baseline">
+                        
+                        <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
+                    </div>
+                    </form>
+                    <hr>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
 
 	
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
