@@ -70,15 +70,14 @@ public class CreateShopList extends HttpServlet {
         System.out.println("NOm22222222eeeeeeeeee" + nome);
         descrizione = request.getParameter("Descrizione");
         System.out.println("NOme33333333eeeeeeeee" + descrizione);
-        /*categoria = request.getParameter("Categoria");*/
-        categoria = "Farmacia";
+        categoria = request.getParameter("Categoria");
+        
         System.out.println("NO111111meeeeeeeeee" + categoria);
         
         if(s.getAttribute("user") != null){
             User temp = (User)s.getAttribute("user");
             creator = temp.getEmail();
-        }
-        creator = "ospite@lists.it";
+        }else creator = "ospite@lists.it";
         
         // IMMAGINE
         String listsFolder = "/Image/ListsImg";
@@ -141,7 +140,7 @@ public class CreateShopList extends HttpServlet {
             
         }
 
-        //response.sendRedirect("/Lists/index.jsp");
+        response.sendRedirect("/Lists/index.jsp");
 
     }
     

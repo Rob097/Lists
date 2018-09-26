@@ -4,28 +4,12 @@
     Author     : Roberto97
 --%>
 
-<%@page import="database.entities.ShopList"%>
-<%@page import="database.jdbc.JDBCCategoryDAO"%>
-<%@page import="database.daos.CategoryDAO"%>
-<%@page import="database.entities.Category"%>
-<%@page import="database.entities.Category_Product"%>
-<%@page import="database.jdbc.JDBCCategory_ProductDAO"%>
-<%@page import="database.daos.Category_ProductDAO"%>
-<%@page import="database.entities.Product"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="database.entities.User"%>
-<%@page import="database.jdbc.JDBCUserDAO"%>
-<%@page import="database.jdbc.JDBCShopListDAO"%>
-<%@page import="database.jdbc.JDBCProductDAO"%>
-<%@page import="database.daos.ProductDAO"%>
-<%@page import="database.daos.ListDAO"%>
-<%@page import="database.daos.UserDAO"%>
+<%@page import="database.entities.*"%>
+<%@page import="database.jdbc.*"%>
+<%@page import="database.daos.*"%>
 <%@page import="database.factories.DAOFactory"%>
-<%@ page import="java.sql.ResultSet" %>
-<%@ page import="java.sql.Statement" %>
-<%@ page import="java.sql.Connection" %>
-<%@ page import="java.sql.DriverManager" %>
+<%@ page import="java.sql.*" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -42,7 +26,8 @@
     <link rel="stylesheet" href="Pages/css/selectize.css" type="text/css">
     <link rel="stylesheet" href="Pages/css/style.css">
     <link rel="stylesheet" href="Pages/css/user.css">  
-    <link rel="stylesheet" href="Pages/css/navbar.css">  
+    <link rel="stylesheet" href="Pages/css/navbar.css"> 
+    <link rel="stylesheet" href="Pages/css/datatables.css" type="text/css"> 
     <link rel="icon" href="Pages/img/favicon.png" sizes="16x16" type="image/png">
     <script src="Pages/js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="Pages/js/popper.min.js"></script>
@@ -121,7 +106,7 @@
                                 <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >+ Lista</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link js-scroll-trigger" href="Pages/guest/guest.jsp" target="_blank"><b>Le mie liste</b></a>
+                                <a class="nav-link js-scroll-trigger" href="Pages/guest/guest.jsp"><b>Le mie liste</b></a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link js-scroll-trigger" href="#home"><i class="fa fa-home"></i><b>Home</b></a>
@@ -1141,12 +1126,12 @@
                 <form class="form clearfix" id="login-form" action="/Lists/LoginAction" method="post" role="form">
                     <div class="form-group">
                         <label for="email" class="col-form-label required">Email</label>
-                        <input type="text" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" value="" required>
+                        <input type="text" name="email" id="emaillogin" tabindex="1" class="form-control" placeholder="Email" value="" required>
                     </div>
                     <!--end form-group-->
                     <div class="form-group">
                         <label for="password" class="col-form-label required">Password</label>
-                        <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password" required>
+                        <input type="password" name="password" id="passwordlogin" tabindex="2" class="form-control" placeholder="Password" required>
                     </div>
                     <!--end form-group-->
                     <div class="d-flex justify-content-between align-items-baseline">
@@ -1190,20 +1175,20 @@
                 </div>
                 <div class="modal-body">
                     <!-- Form per il login -->
-                    <form class="form clearfix" id="login-form" action="/Lists/RegisterAction" method="post" enctype="multipart/form-data" onsubmit="return checkCheckBoxes(this);">
+                    <form class="form clearfix" id="register-form" action="/Lists/RegisterAction" method="post" enctype="multipart/form-data" onsubmit="return checkCheckBoxes(this);">
                         <div class="form-group">
                             <label for="email" class="col-form-label">Email</label>
-                            <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" value="" required>
+                            <input type="email" name="email" id="emailRegister" tabindex="1" class="form-control" placeholder="Email" value="" required>
                         </div>
                         <!--end form-group-->
                         <div class="form-group">
                             <label for="nominativo" class="col-form-label">Nome</label>
-                            <input type="text" name="nominativo" id="nominativo" tabindex="1" class="form-control" placeholder="Nome" value="" required>
+                            <input type="text" name="nominativo" id="nominativoRegister" tabindex="1" class="form-control" placeholder="Nome" value="" required>
                         </div>
                         <!--end form-group-->
                         <div class="form-group">
                             <label for="password" class="col-form-label">Password</label>
-                            <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password" required>
+                            <input type="password" name="password" id="passwordRegister" tabindex="2" class="form-control" placeholder="Password" required>
                         </div>
                     
                     <!--end form-group-->
@@ -1269,13 +1254,14 @@
                         <div class="form-group">
                             <label for="Categoria" class="col-form-label">Categoria</label>
                             <select name="Categoria" id="Categoria" tabindex="1" size="5" >
+                                
                                 <c:forEach items="${categorie}" var="categoria">
                                     <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
                                 </c:forEach>
                             </select><!--<input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>-->
 
                         </div>
-                    <!--end form-group-->
+                        <!--end form-group-->
 
                     <div class="form-group">
                         <label for="Immagine" class="col-form-label required">Immagine</label>
@@ -1284,7 +1270,7 @@
                     <!--end form-group-->
                     <div class="d-flex justify-content-between align-items-baseline">
                         
-                        <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
+                        <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
                     </div>
                     </form>
                     <hr>
