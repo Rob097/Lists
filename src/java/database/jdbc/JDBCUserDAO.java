@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -208,6 +209,39 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
             return finalUser;
     }
     
+    
+    @Override
+    public ArrayList<User> getAllUsers() throws DAOException {
+       
+       ArrayList<User> listOfAllUsers = new ArrayList<User>();
+        
+       try(PreparedStatement statement = CON.prepareStatement("select * from User")){
+           
+            try (ResultSet rs = statement.executeQuery()) {
+
+                while (rs.next()) {
+                    
+                    User user = new User();
+                   
+                    user.setEmail(rs.getString("email"));
+                    user.setPassword(rs.getString("password"));
+                    user.setNominativo(rs.getString("nominativo"));
+                    user.setTipo(rs.getString("tipo"));
+                    user.setImage(rs.getString("immagine"));
+                    
+                    System.out.println(user.getEmail());
+                    System.out.println(user.getNominativo());
+                    
+                    listOfAllUsers.add(user);                    
+                }
+                
+                return listOfAllUsers;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of users", ex);
+        }
+    }
+
 
     
 }

@@ -999,7 +999,8 @@
         <script src="js/custom.js"></script>
 
         <script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script><script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
-        <script >$(".messages").animate({scrollTop: $(document).height()}, "fast");
+        <script >
+                                                $(".messages").animate({scrollTop: $(document).height()}, 1000);
 
                                                 $("#profile-img").click(function () {
                                                     $("#status-options").toggleClass("active");
@@ -1145,12 +1146,12 @@
                             } else {
                                 output += '<li class="replies">';
                             }
-                            if(items[key].name == "<%=Nominativo%>")
+                            if (items[key].name == "<%=Nominativo%>")
                                 output += '<img src="../${user.image}" alt="" />';
                             else
                                 output += '<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
                             output += '<p>' + items[key].message + '</p>';
-                            output += '</li>';  
+                            output += '</li>';
                         }
                         output += '</ul>';
                         document.getElementById('messages').innerHTML = output;

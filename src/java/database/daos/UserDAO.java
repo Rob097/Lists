@@ -7,6 +7,7 @@ package database.daos;
 
 import database.entities.User;
 import database.exceptions.DAOException;
+import java.util.ArrayList;
 
 /**
  * 
@@ -27,4 +28,6 @@ public interface UserDAO{
     public void deleteUser(User user) throws DAOException;
     
     public User changeUser(User newUser, User oldUser) throws DAOException;
+    
+    public ArrayList<User> getAllUsers() throws DAOException;
 }
