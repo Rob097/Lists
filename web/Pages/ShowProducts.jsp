@@ -29,18 +29,16 @@
     UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
     ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
     ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
-    
-    
 
     HttpSession s = (HttpSession) request.getSession();
-    String shoplistName = (String)s.getAttribute("shopListName");
+    String shoplistName = (String) s.getAttribute("shopListName");
     User u = new User();
     boolean find = false;
-    if(s.getAttribute("user") != null){
+    if (s.getAttribute("user") != null) {
         u = (User) s.getAttribute("user");
     }
-    
-    if(u.getTipo() != null){
+
+    if (u.getTipo() != null) {
         if (u.getTipo().equals("standard")) {
             find = true;
         }
@@ -48,6 +46,7 @@
 
     if (find) {
         ArrayList<Product> li = productdao.getAllProducts();
+        ArrayList<String> allCategories = productdao.getAllProductCategories();
 
 %>
 
@@ -65,11 +64,54 @@
         <link rel="stylesheet" href="css/selectize.css" type="text/css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/user.css">
+        <style>
+            .filterDiv {
+                float: left;
+                background-color: #2196F3;
+                color: #ffffff;
+                width: 100px;
+                line-height: 100px;
+                text-align: center;
+                margin: 2px;
+                display: none;
+            }
+
+            .show {
+                display: block;
+            }
+
+            .container {
+                margin-top: 20px;
+                overflow: hidden;
+            }
+
+            /* Style the buttons */
+            .btn {
+                border: none;
+                outline: none;
+                padding: 12px 16px;
+                background-color: black;
+                cursor: pointer;
+            }
+
+            .btn:hover {
+                background-color: #ddd;
+            }
+
+            .btn.active {
+                background-color: #666;
+                color: white;
+            }
+            
+            .dispNone{
+                display: none;
+            }
+        </style>
+
     </head>
     <body>        
 
-        <%
-            String Nominativo = "";
+        <%            String Nominativo = "";
             String Email = "";
             String Type = "";
             String image = "";
@@ -81,7 +123,7 @@
             image = u.getImage();
         %>
 
-        
+
         <div class="page home-page">
             <header class="hero">
                 <div class="hero-wrapper">
@@ -373,10 +415,10 @@
                     </div>
                     <!--============ End Page Title =====================================================================-->
                     <!--============ Hero Form ==========================================================================-->
-                    
+
                     <!--============ End Hero Form ======================================================================-->
-                    
-                    
+
+
                     <!--end background-->
                 </div>
                 <!--end hero-wrapper-->
@@ -390,9 +432,20 @@
                 <section class="block">
                     <div class="container">
                         <div class="row">
-                            
+
                             <!--end col-md-3-->
                             <div class="col-md-12">
+
+                                <div id="myBtnContainer">
+
+
+                                    <%for (String sprd : allCategories) {%>
+
+                                    <button style="margin: 5px;" class="btn" onclick="filterSelection('<%=sprd%>')"><%=sprd%></button>
+
+                                    <%}%>
+
+                                </div>
                                 <!--============ Section Title===================================================================-->
                                 <div class="section-title clearfix">
                                     <div class="float-left float-xs-none">
@@ -416,11 +469,10 @@
                                 </div>
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
-                                    
-                                    <%for(Product p: li){%>
-                                    
+
+                                    <%for (Product p : li) {%>
+
                                     <div class="item">
-                                        
                                         <!--end ribbon-->
                                         <div class="wrapper">
                                             <div class="image">
@@ -430,7 +482,7 @@
                                                     <span class="tag">Offer</span>
                                                 </h3>
                                                 <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                    <img src="<%=p.getImmagine()%>" alt="">
+                                                    <img src="../<%=p.getImmagine()%>" alt="">
                                                 </a>
                                             </div>
                                             <!--end image-->
@@ -457,13 +509,7 @@
                                             <a href="single-listing-1.html" class="detail text-caps underline">Detail</a>
                                         </div>
                                     </div>
-                                     <%}%>
-                                    <!--end item-->
-                                    
-                                    <!--end item-->
-
-                                    
-                                    <!--end item-->
+                                    <%}%>
 
                                 </div>
                                 <!--end items-->
@@ -478,98 +524,6 @@
             </section>
             <!--end content-->
 
-            <!--*********************************************************************************************************-->
-            <!--************ FOOTER *************************************************************************************-->
-            <!--*********************************************************************************************************-->
-            <footer class="footer">
-                <div class="wrapper">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <a href="#" class="brand">
-                                    <img src="img/logo.png" alt="">
-                                </a>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut nec tincidunt arcu, sit amet
-                                    fermentum sem. Class aptent taciti sociosqu ad litora torquent per conubia nostra.
-                                </p>
-                            </div>
-                            <!--end col-md-5-->
-                            <div class="col-md-3">
-                                <h2>Navigation</h2>
-                                <div class="row">
-                                    <div class="col-md-6 col-sm-6">
-                                        <nav>
-                                            <ul class="list-unstyled">
-                                                <li>
-                                                    <a href="#">Home</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Listing</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Pages</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Extras</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Contact</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Submit Ad</a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6">
-                                        <nav>
-                                            <ul class="list-unstyled">
-                                                <li>
-                                                    <a href="#">My Ads</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Sign In</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Register</a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--end col-md-3-->
-                            <div class="col-md-4">
-                                <h2>Contact</h2>
-                                <address>
-                                    <figure>
-                                        124 Abia Martin Drive<br>
-                                        New York, NY 10011
-                                    </figure>
-                                    <br>
-                                    <strong>Email:</strong> <a href="#">hello@example.com</a>
-                                    <br>
-                                    <strong>Skype: </strong> Craigs
-                                    <br>
-                                    <br>
-                                    <a href="contact.html" class="btn btn-primary text-caps btn-framed">Contact Us</a>
-                                </address>
-                            </div>
-                            <!--end col-md-4-->
-                        </div>
-                        <!--end row-->
-                    </div>
-                    <div class="background">
-                        <div class="background-image original-size">
-                            <img src="img/footer-background-icons.jpg" alt="">
-                        </div>
-                        <!--end background-image-->
-                    </div>
-                    <!--end background-->
-                </div>
-            </footer>
-            <!--end footer-->
         </div>
         <!--end page-->
 
@@ -585,6 +539,32 @@
         <script src="js/icheck.min.js"></script>
         <script src="js/jquery.validate.min.js"></script>
         <script src="js/custom.js"></script>
+
+        <script>
+                                        
+                                        function filterSelection(c) {
+                                            var x;
+                                            x = document.getElementsByClassName("item");
+                                            
+                                            var categoria;
+                                            for (var i = 0; i < x.length; i++) {
+                                                
+                                                categoria = x[i].getElementsByClassName("tag category");
+                                                //console.log(categoria);
+                                                for (var j = 0; j < categoria.length; j++) {
+                                                    
+                                                    //console.log(categoria[j].textContent);
+                                                    
+                                                    if(categoria[j].textContent != c){
+                                                        console.log(x[i].getElementByClassName);
+                                                        x[j].className = "dispNone";
+                                                    }             
+                                                }   
+                                            }                    
+                                        }
+
+
+        </script>
 
     </body>
 </html>

@@ -103,6 +103,22 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO{
         }
     }
     
+    public ArrayList<String> getAllProductCategories() throws DAOException{
+        try (PreparedStatement stm = CON.prepareStatement("SELECT nome FROM Category_Product")) {
+            
+            ArrayList<String> prd = new ArrayList<String>();
+            
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    prd.add(rs.getString("nome"));
+                }
+
+                return prd;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get bt category", ex);
+        }
+    }
 
     
 }
