@@ -45,8 +45,7 @@ public class LoginAction extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         //assegna a userdao la connessione(costruttore) e salva la connessione in una variabile tipo Connection
-        userdao = new JDBCUserDAO(daoFactory.getConnection());
-        categorydao = new JDBCCategoryDAO(daoFactory.getConnection());
+        userdao = new JDBCUserDAO(daoFactory.getConnection());        
         listdao = new JDBCShopListDAO(daoFactory.getConnection());
     }
 
@@ -61,8 +60,7 @@ public class LoginAction extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        User user = new User();
-        ArrayList<Category> categorie = new ArrayList();
+        User user = new User();       
         Boolean loginResult = true;
         Boolean find = false;
         
@@ -74,7 +72,7 @@ public class LoginAction extends HttpServlet {
 
             //ritorna i dati dell`utente con email e password inserito
             user = userdao.getByEmailAndPassword(username, password);
-            categorie = categorydao.getAllCategories();
+            
 
             if (user != null) {
                 loginResult = true;
@@ -103,7 +101,7 @@ public class LoginAction extends HttpServlet {
 
                 request.getSession().setAttribute("Logged", "on");
                 request.getSession().setAttribute("user", user);
-                request.getSession().setAttribute("categorie", categorie);
+                
                
 
                 if ("standard".equals(user.getTipo())) {

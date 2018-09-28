@@ -80,7 +80,7 @@
             
            ArrayList<Category> li = categorydao.getAllCategories();
            ArrayList<Product> prod = productdao.getAllProducts();
-           
+           request.getSession().setAttribute("categorie", li);
         %>
         <!--###############################################################################################################################-->
        
