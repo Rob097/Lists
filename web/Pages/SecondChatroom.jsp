@@ -5,16 +5,74 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="database.jdbc.JDBCProductDAO"%>
+<%@page import="database.daos.ProductDAO"%>
+<%@page import="database.entities.Product"%>
+<%@page import="database.jdbc.JDBCShopListDAO"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="database.entities.ShopList"%>
+<%@page import="database.daos.ListDAO"%>
+<%@page import="database.daos.UserDAO"%>
+<%@page import="database.jdbc.JDBCUserDAO"%>
+<%@page import="database.factories.DAOFactory"%>
+<%@page import="database.entities.User"%>
+<%@page import="java.net.URLDecoder"%>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="java.sql.Blob"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<c:if test="${user == null}">
+    <c:redirect url="/homepage.jsp"/>
+</c:if>
+
+<%
+
+    DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
+    if (daoFactory == null) {
+        throw new ServletException("Impossible to get dao factory for user storage system");
+    }
+    UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
+    ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
+    ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
+
+    HttpSession s = (HttpSession) request.getSession();
+    String shoplistName = (String) s.getAttribute("shopListName");
+    User u = null;
+    boolean find = false;
+
+    u = (User) s.getAttribute("user");
+
+    if (u.getTipo().equals("standard")) {
+        find = true;
+    }
+
+    if (find) {
+        ArrayList<User> listautenti = listdao.getUsersWithWhoTheListIsShared(shoplistName);
+
+        String Nominativo = "";
+        String Email = "";
+        String Type = "";
+        String image = "";
+
+        //String Image = "";
+        Nominativo = u.getNominativo();
+        Email = u.getEmail();
+        Type = u.getTipo();
+        image = u.getImage();
+
+%>
+
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        
+
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-        
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
         <style>
             * {
                 box-sizing: border-box;
@@ -216,20 +274,80 @@
 
     </head>
     <body>
+
+        <h1>List name: <%=shoplistName%></h1>
+        <h1>Users: </h1>
+        
+        <%for (User utente : listautenti) {%>
+        <h1><%=utente.getNominativo()%></h1>
+        <%}%>
+
+        <span class="label label-default">Default</span>
+
+        
         <div class="chat_window">
             <div class="top_menu">
-                <div class="buttons"><div class="button close">
+                <div class="buttons"><div class="button close"> </div>
+                    <div class="button minimize"> </div>
+                    <div class="button maximize"> </div>
+                </div>
 
-                    </div>
-
-                    <div class="button minimize">
-                    </div>
-                    <div class="button maximize">
-
-                    </div>
+                <div class="title">Chat</div>
+            </div>
+            <ul class="messages">
+                <il class="appeared">
+                    cioa
+                </il>
+            <li class="message left appeared">
+                <div class="avatar">
 
                 </div>
-                <div class="title">Chat</div></div><ul class="messages"></ul><div class="bottom_wrapper clearfix"><div class="message_input_wrapper"><input class="message_input" placeholder="Type your message here..." /></div><div class="send_message"><div class="icon"></div><div class="text">Send</div></div></div></div><div class="message_template"><li class="message"><div class="avatar"></div><div class="text_wrapper"><div class="text"></div></div></li></div>
+                <div class="text_wrapper">
+                    <div class="text">Hello Philip! :)</div>
+                </div>
+            </li><li class="message right appeared">
+                <div class="avatar">
+
+                </div>
+                <div class="text_wrapper">
+                    <div class="text">Hi Sandy! How are you?</div>
+                </div>
+            </li><li class="message left appeared">
+                <div class="avatar">
+
+                </div>
+                <div class="text_wrapper">
+                    <div class="text">I'm fine, thank you!</div>
+                </div>
+            </li></ul>
+
+            <!-- barra dell'invio dei messaggi -->
+            <div class="bottom_wrapper clearfix">
+                <div class="message_input_wrapper">
+                    <input class="message_input" placeholder="Type your message here...">
+                </div>
+
+                <div class="send_message">
+                    <div class="icon"> </div>
+
+                    <div class="text">Send</div>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="message_template">
+            <li class="message">
+                <div class="avatar">
+
+                </div>
+                <div class="text_wrapper">
+                    <div class="text">
+
+                    </div>
+                </div>
+            </li>
+        </div>
 
 
         <script type="text/javascript">
@@ -250,6 +368,7 @@
                     }(this);
                     return this;
                 };
+
                 $(function () {
                     var getMessageText, message_side, sendMessage;
                     message_side = 'right';
@@ -273,14 +392,18 @@
                         message.draw();
                         return $messages.animate({scrollTop: $messages.prop('scrollHeight')}, 300);
                     };
+
                     $('.send_message').click(function (e) {
                         return sendMessage(getMessageText());
                     });
+
                     $('.message_input').keyup(function (e) {
                         if (e.which === 13) {
                             return sendMessage(getMessageText());
                         }
                     });
+
+
                     sendMessage('Hello Philip! :)');
                     setTimeout(function () {
                         return sendMessage('Hi Sandy! How are you?');
@@ -297,3 +420,8 @@
 
     </body>
 </html>
+
+<%
+    } else
+        response.sendRedirect("/Lists");
+%>
