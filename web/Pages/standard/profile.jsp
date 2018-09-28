@@ -120,113 +120,15 @@
                         <% request.getSession().setAttribute("updateResult", false); %>               
                     </c:if> 
                     
-                    <!--============ Page Title =========================================================================-->
-                    <div class="page-title">
-                        <div class="container">
-                            <h1 class="opacity-60 center">
-                                <a href="standardType.jsp">Your own Lists</a>
-                            </h1>
-                        </div>
-                        <br><br>
-                        <div class="container">
-                            <h1 class="opacity-60 center">
-                                <a href="foreignLists.jsp">Lists you can looking for</a>
-                            </h1>
-
-                        </div>
-                        <!--end container-->
-                    </div>
-                    <!--============ End Page Title =====================================================================-->
+                    
                     <!--============ Hero Form ==========================================================================-->
                     <form class="hero-form form">
                         <div class="container">
                             <!--Main Form-->
-                            <div class="main-search-form">
-                                <div class="form-row">
-                                    <div class="col-md-9 col-sm-9">
-                                        <div class="form-group">
-                                            <label for="what" class="col-form-label">What Are You Looking For?</label>
-                                            <input name="keyword" type="text" class="form-control" id="what" placeholder="Enter Anything">
-                                        </div>
-                                        <!--end form-group-->
-                                    </div>
-                                    <!--end col-md-3-->
-                                    <div class="col-md-3 col-sm-3">
-                                        <button type="submit" class="btn btn-primary width-100">Search</button>
-                                    </div>
-                                    <!--end col-md-3-->
-                                </div>
-                                <!--end form-row-->
-                            </div>
+                          
                             <!--end main-search-form-->
                             <!--Alternative Form-->
-                            <div class="alternative-search-form">
-                                <a href="#collapseAlternativeSearchForm" class="icon" data-toggle="collapse"  aria-expanded="false" aria-controls="collapseAlternativeSearchForm"><i class="fa fa-plus"></i>More Options</a>
-                                <div class="collapse" id="collapseAlternativeSearchForm">
-                                    <div class="wrapper">
-                                        <div class="form-row">
-                                            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 d-xs-grid d-flex align-items-center justify-content-between">
-                                                <label>
-                                                    <input type="checkbox" name="new">
-                                                    New
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" name="used">
-                                                    Used
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" name="with_photo">
-                                                    With Photo
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" name="featured">
-                                                    Featured
-                                                </label>
-                                            </div>
-                                            <!--end col-xl-6-->
-                                            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
-                                                <div class="form-row">
-                                                    <div class="col-md-4 col-sm-4">
-                                                        <div class="form-group">
-                                                            <input name="min_price" type="text" class="form-control small" id="min-price" placeholder="Minimal Price">
-                                                            <span class="input-group-addon small">$</span>
-                                                        </div>
-                                                        <!--end form-group-->
-                                                    </div>
-                                                    <!--end col-md-4-->
-                                                    <div class="col-md-4 col-sm-4">
-                                                        <div class="form-group">
-                                                            <input name="max_price" type="text" class="form-control small" id="max-price" placeholder="Maximal Price">
-                                                            <span class="input-group-addon small">$</span>
-                                                        </div>
-                                                        <!--end form-group-->
-                                                    </div>
-                                                    <!--end col-md-4-->
-                                                    <div class="col-md-4 col-sm-4">
-                                                        <div class="form-group">
-                                                            <select name="distance" id="distance" class="small" data-placeholder="Distance" >
-                                                                <option value="">Distance</option>
-                                                                <option value="1">1km</option>
-                                                                <option value="2">5km</option>
-                                                                <option value="3">10km</option>
-                                                                <option value="4">50km</option>
-                                                                <option value="5">100km</option>
-                                                            </select>
-                                                        </div>
-                                                        <!--end form-group-->
-                                                    </div>
-                                                    <!--end col-md-3-->
-                                                </div>
-                                                <!--end form-row-->
-                                            </div>
-                                            <!--end col-xl-6-->
-                                        </div>
-                                        <!--end row-->
-                                    </div>
-                                    <!--end wrapper-->
-                                </div>
-                                <!--end collapse-->
-                            </div>
+                            
                             <!--end alternative-search-form-->
                         </div>
                         <!--end container-->
@@ -234,7 +136,7 @@
                     <!--============ End Hero Form ======================================================================-->
                     <div class="page-title">
                         <div class="container">
-                            <h1>Le mie liste</h1>
+                            <h1>Il mio profilo</h1>
                         </div>
                         <!--end container-->
                     </div>
@@ -257,12 +159,12 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-3">
-                                <nav class="nav flex-column side-nav">
-                                    <a class="nav-link active icon" href="profile.jsp">
-                                        <i class="fa fa-user"></i>Il mio profilo
-                                    </a>
+                                <nav class="nav flex-column side-nav">                                   
                                     <a class="nav-link icon" href="standardType.jsp">
                                         <i class="fa fa-heart"></i>Le mie liste
+                                    </a>
+                                    <a class="nav-link icon" href="foreignLists.jsp">
+                                        <i class="fa fa-heart"></i>Liste condivise
                                     </a>
                                     <!--<a class="nav-link icon" href="change-password.html">
                                         <i class="fa fa-recycle"></i>Cambia Password

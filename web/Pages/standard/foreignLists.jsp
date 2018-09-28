@@ -36,6 +36,23 @@
         <link rel="stylesheet" href="../css/user.css">
         <link rel="stylesheet" href="../css/navbar.css">
         <link rel="stylesheet" href="../css/datatables.css" type="text/css"> 
+        <style>
+            .modal-dialog{
+                position: relative;
+                display: table; /* This is important */ 
+                overflow-y: auto;    
+                overflow-x: auto;
+                width: auto;
+                min-width: 300px;
+                max-height: 530px;
+            }
+            .modal-body {
+                position: relative;
+                overflow-y: auto;
+                max-height: 530px;
+                padding: 15px;
+            }
+         </style>
 
     </head>
     <body>        
@@ -53,10 +70,7 @@
                             <i class="fa fa-bars"></i>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarResponsive">
-                            <ul class="navbar-nav text-uppercase ml-auto text-center">
-                                <li class="nav-item">
-                                    <a href="submit.html" class="btn btn-primary text-caps btn-rounded" >+ Lista</a>
-                                </li>
+                            <ul class="navbar-nav text-uppercase ml-auto text-center">                                
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="standardType.jsp"><b>Le mie liste</b></a>
                                 </li>
@@ -77,39 +91,6 @@
                         </div>
                     </nav>
 
-                   
-                    <!--============ Page Title =========================================================================-->
-                    <div class="page-title">
-                        <br><br>
-                        <div class="container">
-                            <h1 class="opacity-60 center">
-                                Lists you can looking for</a>
-                            </h1>
-                            <div class="table-responsive">
-                            <table id="shareTable" class="dataTable cell-border compact display order-column" width="100%">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Nome</th>
-                                        <th scope="col">Descrizione</th>
-                                        <th scope="col">Creator</th>
-                                        <th scope="col">Categoria</th>
-                                        <th scope="col">Shared With</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>CARICA I DATI DELLA TABELLA</td> 
-                                    </tr>
-                                </tbody>
-                            </table>
-                            </div>
-                            
-
-                        </div>
-                        
-                    </div>
-                    <!--============ End Page Title =====================================================================-->
                     <div class="page-title">
                         <div class="container">
                             <h1>Liste condivise</h1>
@@ -156,14 +137,7 @@
                                 <!--============ Section Title===================================================================-->
                                 <div class="section-title clearfix">
                                     <div class="float-left float-xs-none">
-                                        <label class="mr-3 align-text-bottom">Ordina: </label>
-                                        <select name="sorting" id="sorting" class="small width-200px" data-placeholder="Default Sorting" >
-                                            <option value="">Ultime aggiunte</option>
-                                            <option value="1">Prime aggiunte</option>
-                                            <option value="2">Costo piu basso</option>
-                                            <option value="3">Costo più alto</option>
-                                        </select>
-
+                                       <a data-toggle="modal" data-target="#SearchListModal" class="btn btn-primary text-caps btn-rounded" >Search List</a>
                                     </div>
                                     <div class="float-right d-xs-none thumbnail-toggle">
                                         <a href="#" class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
@@ -429,6 +403,51 @@
                 </div>
             </div>
         </div>
+        </div>
+            
+            <!--########################## modal search ############################-->
+         <div class="modal fade" id="SearchListModal" tabindex="-1" role="dialog" aria-labelledby="SearchList" aria-hidden="true" enctype="multipart/form-data">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="page-title">
+                        <div class="container">
+                            <h1 style="text-align: center;">Search List</h1>
+                        </div>
+                        <!--end container-->
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                                <table id="shareTable" class="dataTable cell-border compact display order-column" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th scope="col">Nome</th>
+                                        <th scope="col">Descrizione</th>
+                                        <th scope="col">Creator</th>
+                                        <th scope="col">Categoria</th>
+                                        <th scope="col">Shared With</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>CARICA I DATI DELLA TABELLA</td>                                          
+                                    </tr>
+                                
+                                </tbody>
+                            </table> 
+                            </div>
+                    
+            </div>
+        </div>
+        </div>
+         </div>
+            
+             <!--########################## end modal search ############################-->
         
             <script src="../js/nav.js"></script>
     </body>

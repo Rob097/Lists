@@ -175,8 +175,8 @@
                                     <a class="nav-link icon" href="profile.jsp">
                                         <i class="fa fa-user"></i>Il mio profilo
                                     </a>
-                                    <a class="nav-link active icon" href="standardType.jsp">
-                                        <i class="fa fa-heart"></i>Le mie liste
+                                    <a class="nav-link active icon" href="foreignLists.jsp">
+                                        <i class="fa fa-heart"></i>Liste condivise
                                     </a>
                                     <!--<a class="nav-link icon" href="change-password.html">
                                         <i class="fa fa-recycle"></i>Cambia Password
