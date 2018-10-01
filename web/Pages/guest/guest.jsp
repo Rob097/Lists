@@ -19,7 +19,11 @@
 <%
 
     HttpSession s = (HttpSession) request.getSession();
-    ShopList lista = (ShopList) s.getAttribute("guestList");
+    ShopList lista = new ShopList();
+    if(s.getAttribute("guestList") != null){
+        lista = (ShopList) s.getAttribute("guestList");
+    }
+    
 
 %>
 <%@page import="java.sql.DriverManager"%>
@@ -42,8 +46,10 @@
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="../css/user.css">
         <link rel="stylesheet" href="../css/navbar.css">
-         <link rel="stylesheet" href="../css/datatables.css" type="text/css"> 
-         
+        <link rel="stylesheet" href="../css/datatables.css" type="text/css"> 
+        <script src="Pages/js/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="Pages/js/popper.min.js"></script>
+        <script type="text/javascript" src="Pages/bootstrap/js/bootstrap.min.js"></script>
         
          
 
@@ -84,7 +90,7 @@
                                 <a class="nav-link js-scroll-trigger" href="#lists"><b>Le mie liste</b></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link js-scroll-trigger" href="#home"><i class="fa fa-home"></i><b>Home</b></a>
+                                <a class="nav-link js-scroll-trigger" href="/Lists/index.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#LoginModal" style="cursor: pointer;">
@@ -206,7 +212,7 @@
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
                                     <!--##############-->
-                                                                                                     
+                                    <%if(s.getAttribute("guestList") != null){%>                                                                 
                                     <div class="item">
                                         <!--end ribbon-->
                                         <div class="wrapper">
@@ -240,7 +246,9 @@
                                             <a href="/Lists/restricted/ShowShopList?nome=<%=lista.getNome()%>" class="detail text-caps underline">Detail</a>
                                         </div>
                                     </div>
-                                    <!--end item-->
+                                    <!--end item--><%}else{%>
+                                    <h1>Non hai ancora creato nessuna lista</h1>
+                                    <%}%>
                                     
                                 </div>
                                 <!--end items-->
@@ -364,9 +372,138 @@
         <script src="../js/custom.js"></script>        
          <script type="text/javascript" src="../js/datatables.js" ></script>
         
-        <!--########################## moooddaaalllll ############################-->
-        
-        <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
+        <!--#########################################################
+                            MODAL
+    ##########################################################-->
+    
+    <!-- Login Modal -->
+    <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+              
+                <div class="page-title">
+                    <div class="container">
+                        <h1>Sign In</h1>
+                    </div>
+                    <!--end container-->
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>            
+
+          </div>
+            <div class="modal-body">
+                <c:if test="${loginResult==false}">
+                    <div class="alert alert-danger">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Login Failed!</strong> <br> Please try again or <a data-toggle="modal" href="#RegisterModal" class="alert-link"><u>Sign up!</u></a>
+                        
+                    </div>
+                </c:if>
+                    <!-- Form per il login -->
+                <form class="form clearfix" id="login-form" action="/Lists/LoginAction" method="post" role="form">
+                    <div class="form-group">
+                        <label for="email" class="col-form-label required">Email</label>
+                        <input type="text" name="email" id="emaillogin" tabindex="1" class="form-control" placeholder="Email" value="" required>
+                    </div>
+                    <!--end form-group-->
+                    <div class="form-group">
+                        <label for="password" class="col-form-label required">Password</label>
+                        <input type="password" name="password" id="passwordlogin" tabindex="2" class="form-control" placeholder="Password" required>
+                    </div>
+                    <!--end form-group-->
+                    <div class="d-flex justify-content-between align-items-baseline">
+                        <div class="form-group text-center">
+                            <label>
+                                <input type="checkbox" name="remember" value="1">
+                                Remember Me
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Sign In</button>
+                    </div>
+                    
+                </form>
+                <hr>
+                <p>
+                    Troubles with signing? <a href="#RegisterModal" data-toggle="modal" class="link">Click here.</a>
+                </p>
+            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--######################################################-->
+    
+    <!-- Register Modal -->
+    <div class="modal fade" id="RegisterModal" tabindex="-1" role="dialog" aria-labelledby="RegisterModal" aria-hidden="true" enctype="multipart/form-data">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="page-title">
+                        <div class="container">
+                            <h1>Register</h1>
+                        </div>
+                        <!--end container-->
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form per il login -->
+                    <form class="form clearfix" id="register-form" action="/Lists/RegisterAction" method="post" enctype="multipart/form-data" onsubmit="return checkCheckBoxes(this);">
+                        <div class="form-group">
+                            <label for="email" class="col-form-label">Email</label>
+                            <input type="email" name="email" id="emailRegister" tabindex="1" class="form-control" placeholder="Email" value="" required>
+                        </div>
+                        <!--end form-group-->
+                        <div class="form-group">
+                            <label for="nominativo" class="col-form-label">Nome</label>
+                            <input type="text" name="nominativo" id="nominativoRegister" tabindex="1" class="form-control" placeholder="Nome" value="" required>
+                        </div>
+                        <!--end form-group-->
+                        <div class="form-group">
+                            <label for="password" class="col-form-label">Password</label>
+                            <input type="password" name="password" id="passwordRegister" tabindex="2" class="form-control" placeholder="Password" required>
+                        </div>
+                    
+                    <!--end form-group-->
+
+                    <div class="form-group">
+                        <label for="image" class="col-form-label required">Avatar</label>
+                        <input type="file" name="file1" required>
+                    </div>
+                    <!--end form-group-->
+                    <div class="d-flex justify-content-between align-items-baseline">
+                        <div class="form-group text-center">
+                            <input type="checkbox" tabindex="3" class="" name="standard" id="standard">
+                            <label for="standard">Standard</label>
+                            <input type="checkbox" tabindex="3" class="" name="amministratore" id="amministratore">
+                            <label for="amministratore">Amministratore</label>
+                        </div>
+                        <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Register Now</button>
+                    </div>
+                    </form>
+                    <hr>
+                    <p>
+                        By clicking "Register Now" button, you agree with our <a href="#" class="link">Terms & Conditions.</a>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--######################################################-->
+    
+    
+    <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -396,14 +533,14 @@
                         <div class="form-group">
                             <label for="Categoria" class="col-form-label">Categoria</label>
                             <select name="Categoria" id="Categoria" tabindex="1" size="5" >
+                                
                                 <c:forEach items="${categorie}" var="categoria">
                                     <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
                                 </c:forEach>
                             </select><!--<input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>-->
 
                         </div>
-                    
-                    <!--end form-group-->
+                        <!--end form-group-->
 
                     <div class="form-group">
                         <label for="Immagine" class="col-form-label required">Immagine</label>
@@ -412,7 +549,7 @@
                     <!--end form-group-->
                     <div class="d-flex justify-content-between align-items-baseline">
                         
-                        <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
+                        <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
                     </div>
                     </form>
                     <hr>
@@ -425,6 +562,12 @@
         
             
             <script src="../js/nav.js"></script>
+            <script src="../js/selectize.min.js"></script>
+	<script src="../js/masonry.pkgd.min.js"></script>
+	<script src="../js/icheck.min.js"></script>
+	<script src="../js/jquery.validate.min.js"></script>
+	<script src="../js/custom.js"></script>
+        <script src="../js/vari.js"></script>
 
     </body>
 </html>

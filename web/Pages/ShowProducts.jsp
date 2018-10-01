@@ -428,7 +428,7 @@
             <!--*********************************************************************************************************-->
             <!--************ CONTENT ************************************************************************************-->
             <!--*********************************************************************************************************-->
-            <section class="content">
+            <section class="content" id="prodottiBox">
                 <section class="block">
                     <div class="container">
                         <div class="row">
@@ -438,10 +438,13 @@
 
                                 <div id="myBtnContainer">
 
+                                    <a style="margin: 5px;" href="/Lists/Pages/ShowProducts.jsp?cat=all" class="btn">Tutti</a>
+                                    <%  String prod = "";
+                                    
+                                        for (String sprd : allCategories) {
+                                        System.out.println("sprd: " + sprd);%>
 
-                                    <%for (String sprd : allCategories) {%>
-
-                                    <button style="margin: 5px;" class="btn" onclick="filterSelection('<%=sprd%>')"><%=sprd%></button>
+                                        <a style="margin: 5px;" href="/Lists/Pages/ShowProducts.jsp?cat=<%=sprd%>" class="btn"><%=sprd%></a>
 
                                     <%}%>
 
@@ -470,7 +473,11 @@
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
 
-                                    <%for (Product p : li) {%>
+                                    <%
+                                    if(request.getParameter("cat") != null && !request.getParameter("cat").equals("all")){
+                                    for (Product p : li) {  
+                                        if(request.getParameter("cat").equals(p.getCategoria_prodotto())){
+                                    %>
 
                                     <div class="item">
                                         <!--end ribbon-->
@@ -509,7 +516,48 @@
                                             <a href="single-listing-1.html" class="detail text-caps underline">Detail</a>
                                         </div>
                                     </div>
-                                    <%}%>
+                                            <%}
+                                         }}else if(request.getParameter("cat") == null || request.getParameter("cat").equals("all")){
+                                           for (Product p : li) { %>
+                                        <div class="item">
+                                        <!--end ribbon-->
+                                        <div class="wrapper">
+                                            <div class="image">
+                                                <h3>
+                                                    <a href="#" class="tag category"><%=p.getCategoria_prodotto()%></a>
+                                                    <a href="single-listing-1.html" class="title"><%=p.getNome()%></a>
+                                                    <span class="tag">Offer</span>
+                                                </h3>
+                                                <a href="single-listing-1.html" class="image-wrapper background-image">
+                                                    <img src="../<%=p.getImmagine()%>" alt="">
+                                                </a>
+                                            </div>
+                                            <!--end image-->
+                                            <h4 class="location">
+                                                <a href="#"><%=p.getPid()%></a>
+                                            </h4>
+                                            <div class="price">$80</div>
+                                            <div class="admin-controls">
+                                                <a href="edit-ad.html">
+                                                    <i class="fa fa-pencil"></i>Edit
+                                                </a>
+                                                <a href="#" class="ad-hide">
+                                                    <i class="fa fa-eye-slash"></i>Hide
+                                                </a>
+                                                <a href="#" class="ad-remove">
+                                                    <i class="fa fa-trash"></i>Remove
+                                                </a>
+                                            </div>
+                                            <!--end admin-controls-->
+                                            <div class="description">
+                                                <p><%=p.getNote()%></p>
+                                            </div>
+                                            <!--end description-->
+                                            <a href="single-listing-1.html" class="detail text-caps underline">Detail</a>
+                                        </div>
+                                    </div>
+                                        <%}
+                                    }%>
 
                                 </div>
                                 <!--end items-->
@@ -539,32 +587,6 @@
         <script src="js/icheck.min.js"></script>
         <script src="js/jquery.validate.min.js"></script>
         <script src="js/custom.js"></script>
-
-        <script>
-                                        
-                                        function filterSelection(c) {
-                                            var x;
-                                            x = document.getElementsByClassName("item");
-                                            
-                                            var categoria;
-                                            for (var i = 0; i < x.length; i++) {
-                                                
-                                                categoria = x[i].getElementsByClassName("tag category");
-                                                //console.log(categoria);
-                                                for (var j = 0; j < categoria.length; j++) {
-                                                    
-                                                    //console.log(categoria[j].textContent);
-                                                    
-                                                    if(categoria[j].textContent != c){
-                                                        console.log(x[i].getElementByClassName);
-                                                        x[j].className = "dispNone";
-                                                    }             
-                                                }   
-                                            }                    
-                                        }
-
-
-        </script>
 
     </body>
 </html>

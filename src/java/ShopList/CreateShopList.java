@@ -114,13 +114,17 @@ public class CreateShopList extends HttpServlet {
 
         System.out.println(nuovaLista.getImmagine());
 
+        String url = "";
         try {
             System.out.println(creator);
+            
             //manda i dati del user, il metodo upate fa la parte statement 
             if(s.getAttribute("user") != null){
                 nuovaLista = listdao.Insert(nuovaLista);
+                url = "/Lists/index.jsp";
             }else{
                 s.setAttribute("guestList", nuovaLista);
+                url = "/Lists/Pages/guest/guest.jsp";
             }
 
         } catch (DAOException ex) {
@@ -139,8 +143,9 @@ public class CreateShopList extends HttpServlet {
             }
             
         }
-
-        response.sendRedirect("/Lists/index.jsp");
+       
+        System.out.println(url);
+        response.sendRedirect(url);
 
     }
     
