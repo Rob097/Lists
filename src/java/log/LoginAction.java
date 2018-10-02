@@ -25,6 +25,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -63,6 +64,8 @@ public class LoginAction extends HttpServlet {
         User user = new User();       
         Boolean loginResult = true;
         Boolean find = false;
+        HttpSession session = (HttpSession) request.getSession(false);
+       
         
 
         try {
@@ -84,8 +87,8 @@ public class LoginAction extends HttpServlet {
                 if (find) {
                     ArrayList<ShopList> li = listdao.getByEmail(user.getEmail());
                     ArrayList<ShopList> sl = listdao.getListOfShopListsThatUserLookFor(user.getEmail());
-                     request.getSession().setAttribute("userLists", li);  
-                     request.getSession().setAttribute("sharedLists", sl);
+                     session.setAttribute("userLists", li);  
+                     session.setAttribute("sharedLists", sl);
                 }
                 
                 String nominativo = user.getNominativo();
@@ -99,8 +102,8 @@ public class LoginAction extends HttpServlet {
                 user.setPassword(password);
                 user.setTipo(tipo);
 
-                request.getSession().setAttribute("Logged", "on");
-                request.getSession().setAttribute("user", user);
+                session.setAttribute("Logged", "on");
+                session.setAttribute("user", user);
                 
                
 
@@ -122,7 +125,7 @@ public class LoginAction extends HttpServlet {
             Logger.getLogger(LoginAction.class.getName()).log(Level.SEVERE, null, ex);
         }
         //gestisce un login non valido
-        request.getSession().setAttribute("loginResult", loginResult);
+        session.setAttribute("loginResult", loginResult);
 
         if (url != null) {
             response.sendRedirect(url);

@@ -159,7 +159,7 @@
                                             <div class="image">
                                                 <h3>
                                                     <a href="#" class="tag category"><c:out value="${list.categoria}"/></a>
-                                                    <a href="/Lists/restrictd/ShowShopList?nome=" class="title"><c:out value="${list.nome}"/></a>
+                                                    <a href="/Lists/restricted/ShowShopList?nome=" class="title"><c:out value="${list.nome}"/></a>
                                                 </h3>
                                                 <a href="single-listing-1.html" class="image-wrapper background-image">
                                                     <img src="../../${list.immagine}" alt="">

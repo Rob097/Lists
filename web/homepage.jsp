@@ -50,6 +50,7 @@
                             CONNESSIONE DATABASE
         ###############################################################################################################################-->    
         <%
+            HttpSession s = (HttpSession) request.getSession();
             Connection conn = null;
             Statement stmt = null;
             try {
@@ -76,7 +77,7 @@
             Category_ProductDAO category_productdao = new JDBCCategory_ProductDAO(daoFactory.getConnection());
             CategoryDAO categorydao = new JDBCCategoryDAO(daoFactory.getConnection());
             
-            HttpSession s = (HttpSession) request.getSession();
+            
             
            ArrayList<Category> li = categorydao.getAllCategories();
            ArrayList<Product> prod = productdao.getAllProducts();

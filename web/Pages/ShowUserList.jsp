@@ -444,7 +444,7 @@
                         <div class="icon-bar">
                             <a href="#"><i class="fas fa-plus"></i></a> 
                             <a href="adaptedChatroom.jsp"><i class="fas fa-users"></i></a> 
-                            <a href="#"><i class="fa fa-globe"></i></a>
+                            <a data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"></i></a>
                             <a href="#"><i class="fa fa-trash"></i></a> 
                         </div>
                         <div class="row">
@@ -643,7 +643,35 @@
         <script src="js/icheck.min.js"></script>
         <script src="js/jquery.validate.min.js"></script>
         <script src="js/custom.js"></script>
-
+        <!--##########################--Share Modal--############################-->
+        <div class="modal fade" id="ShareListModal" tabindex="-1" role="dialog" aria-labelledby="ShareList" aria-hidden="true" enctype="multipart/form-data">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1 style="text-align: center;">Share List <c:out value="${shopListName}"/></h1>
+                                <label>Selezionare gli utenti che possono lavorare con questa lista</label>
+                            </div>
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                              <select class="mdb-select colorful-select dropdown-primary" multiple>
+                                    <option value="" disabled selected>Choose Users</option>
+                                    <c:forEach items="${Users}" var="u">
+                                        <option value="${u.email}"><c:out value="${u.email}"/></option> 
+                                    </c:forEach>
+                                </select>
+                                <button class="btn-save btn btn-primary btn-sm">Save</button> 
+                                <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete-btn-no">Cancel</button>
+                    </div>
+                </div>
+            </div>
+         </div>
+        <!--##########################-- End Share Modal--############################-->
     </body>
 </html>
 
