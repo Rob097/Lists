@@ -5,10 +5,12 @@
  */
 package ShopList;
 
+import database.daos.ListDAO;
 import database.daos.UserDAO;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
+import database.jdbc.JDBCShopListDAO;
 import database.jdbc.JDBCUserDAO;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import javax.servlet.http.HttpSession;
  */
 public class ShowShopList extends HttpServlet {
     UserDAO userdao;
+    ListDAO listdao;
 
     @Override
     public void init() throws ServletException {
@@ -36,7 +39,8 @@ public class ShowShopList extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         //assegna a userdao la connessione(costruttore) e salva la connessione in una variabile tipo Connection
-        userdao = new JDBCUserDAO(daoFactory.getConnection());        
+        userdao = new JDBCUserDAO(daoFactory.getConnection()); 
+        listdao = new JDBCShopListDAO(daoFactory.getConnection());
     }
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -53,26 +57,38 @@ public class ShowShopList extends HttpServlet {
         ArrayList<User> users = new ArrayList<>();
         User user = (User) session.getAttribute("user");
         User dbuser = null;
+        ArrayList<User> sharedusers = new ArrayList<>();
+        String s = request.getParameter("nome");
+        
         try {
             dbuser = userdao.getByEmail(user.getEmail());
+            sharedusers = listdao.getUsersWithWhoTheListIsShared(s);
         } catch (DAOException ex) {
             Logger.getLogger(ShowShopList.class.getName()).log(Level.SEVERE, null, ex);
         }
-        int index;
         
         try {
             users = userdao.getAllUsers();
             Iterator<User> i = users.iterator();
             while(i.hasNext()){
+                //remove your username
                 if(i.next().getEmail().equals(user.getEmail())){
                     i.remove();
+                }
+            }
+            //remove just linked usernames
+            for (int j = 0; j < users.size(); j++) {
+                for (int k = 0; k < sharedusers.size(); k++) {
+                    if(users.get(j).getEmail().equals(sharedusers.get(k).getEmail())){
+                        users.remove(j);
+                    }
                 }
             }
         } catch (DAOException ex) {
             Logger.getLogger(ShowShopList.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("problems with getAllUsers()");
         }
-        String s = request.getParameter("nome");
+        
         
         System.out.println("==========================" + s);
         
