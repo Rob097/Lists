@@ -27,8 +27,8 @@
     <c:if test="${user.tipo=='amministratore'}">
         <c:redirect url="amministratore/amministratore.jsp"/>
     </c:if>
-    
-    
+
+
 </c:if>
 
 
@@ -54,6 +54,7 @@
 
     if (find) {
         ArrayList<Product> li = listdao.getAllProductsOfShopList(shoplistName);
+        ArrayList<User> AllUsersOfCurentList = listdao.getUsersWithWhoTheListIsShared(shoplistName);
 
 %>
 
@@ -99,13 +100,24 @@
             .active {
                 background-color: black;
             }
+
+            i {  vertical-align: middle; }
+            .table-users tbody tr:hover {
+                cursor: pointer;
+                background-color: #eee;
+            }
+            .nav-user-photo {
+                vertical-align: middle;
+            }
+            .user_panel {
+                width: 50%;
+            }
         </style>
 
     </head>
     <body>        
 
-        <%
-            String Nominativo = "";
+        <%            String Nominativo = "";
             String Email = "";
             String Type = "";
             String image = "";
@@ -442,27 +454,21 @@
                 <section class="block">
                     <div class="container">
                         <div class="icon-bar">
-                            <a href="#"><i class="fas fa-plus"></i></a> 
-                            <a href="adaptedChatroom.jsp"><i class="fas fa-users"></i></a> 
-                            <a data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"></i></a>
-                            <a href="#"><i class="fa fa-trash"></i></a> 
+                            <a href="#"><i class="fas fa-plus"> <br>Add products</i></a> 
+                            <a href="adaptedChatroom.jsp"><i class="fas fa-users"><br>ChatRoom</i></a> 
+                            <a data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Share</i></a>
+                            <a href="#"><i class="fa fa-trash"><br>Delete</i></a> 
                         </div>
+
+                        <hr>
+
                         <div class="row">
 
                             <!--end col-md-3-->
-                            <div class="col-md-12">
+                            <div class="col-md-9">
                                 <!--============ Section Title===================================================================-->
                                 <div class="section-title clearfix">
-                                    <div class="float-left float-xs-none">
-                                        <label class="mr-3 align-text-bottom">Ordina: </label>
-                                        <select name="sorting" id="sorting" class="small width-200px" data-placeholder="Default Sorting" >
-                                            <option value="">Ultime aggiunte</option>
-                                            <option value="1">Prime aggiunte</option>
-                                            <option value="2">Costo piu basso</option>
-                                            <option value="3">Costo più alto</option>
-                                        </select>
 
-                                    </div>
                                     <div class="float-right d-xs-none thumbnail-toggle">
                                         <a href="#" class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
                                             <i class="fa fa-th"></i>
@@ -526,6 +532,34 @@
                                 </div>
                                 <!--end items-->
                             </div>
+
+                            <div class = "col-md-3">
+                                <div class="panel-body">
+                                    <div class="table-container">
+                                        <table class="table-users table" border="0">
+                                            <tbody>
+                                                <%for (User usersoflist : AllUsersOfCurentList) {%>
+                                                <tr>
+                                                    
+                                                    
+                                                        <td width="10" align="center">
+                                                            <i class="fa fa-2x fa-user fw"></i>
+                                                        </td>
+                                                        <td>
+                                                            <%=usersoflist.getNominativo()%><br>
+                                                        </td>
+                                                        <td>
+                                                            <%=usersoflist.getTipo()%>
+                                                        </td>
+                                                </tr>
+                                                <%}%>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>>
+
                             <!--end col-md-9-->
                         </div>
                         <!--end row-->
@@ -539,94 +573,7 @@
             <!--*********************************************************************************************************-->
             <!--************ FOOTER *************************************************************************************-->
             <!--*********************************************************************************************************-->
-            <footer class="footer">
-                <div class="wrapper">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <a href="#" class="brand">
-                                    <img src="img/logo.png" alt="">
-                                </a>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut nec tincidunt arcu, sit amet
-                                    fermentum sem. Class aptent taciti sociosqu ad litora torquent per conubia nostra.
-                                </p>
-                            </div>
-                            <!--end col-md-5-->
-                            <div class="col-md-3">
-                                <h2>Navigation</h2>
-                                <div class="row">
-                                    <div class="col-md-6 col-sm-6">
-                                        <nav>
-                                            <ul class="list-unstyled">
-                                                <li>
-                                                    <a href="#">Home</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Listing</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Pages</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Extras</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Contact</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Submit Ad</a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6">
-                                        <nav>
-                                            <ul class="list-unstyled">
-                                                <li>
-                                                    <a href="#">My Ads</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Sign In</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Register</a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--end col-md-3-->
-                            <div class="col-md-4">
-                                <h2>Contact</h2>
-                                <address>
-                                    <figure>
-                                        124 Abia Martin Drive<br>
-                                        New York, NY 10011
-                                    </figure>
-                                    <br>
-                                    <strong>Email:</strong> <a href="#">hello@example.com</a>
-                                    <br>
-                                    <strong>Skype: </strong> Craigs
-                                    <br>
-                                    <br>
-                                    <a href="contact.html" class="btn btn-primary text-caps btn-framed">Contact Us</a>
-                                </address>
-                            </div>
-                            <!--end col-md-4-->
-                        </div>
-                        <!--end row-->
-                    </div>
-                    <div class="background">
-                        <div class="background-image original-size">
-                            <img src="img/footer-background-icons.jpg" alt="">
-                        </div>
-                        <!--end background-image-->
-                    </div>
-                    <!--end background-->
-                </div>
-            </footer>
+            
             <!--end footer-->
         </div>
         <!--end page-->
@@ -668,11 +615,11 @@
                             <button type="submit" class="btn btn-primary" id="delete">Save</button> 
                             <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete-btn-no">Cancel</button> 
                         </form>
-                              
+
                     </div>
                 </div>
             </div>
-         </div>
+        </div>
         <!--##########################-- End Share Modal--############################-->
     </body>
 </html>
