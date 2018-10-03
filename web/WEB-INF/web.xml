@@ -54,6 +54,10 @@
         <servlet-name>chat</servlet-name>
         <servlet-class>ShopList.chat</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteShopList</servlet-name>
+        <servlet-class>ShopList.DeleteShopList</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -89,6 +93,10 @@
     <servlet-mapping>
         <servlet-name>chat</servlet-name>
         <url-pattern>/chat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteShopList</servlet-name>
+        <url-pattern>/restricted/DeleteShopList</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

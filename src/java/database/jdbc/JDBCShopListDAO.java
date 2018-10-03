@@ -215,4 +215,69 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
         }
     }
 
+    @Override
+    public void deleteList(ShopList list) throws DAOException {
+        if ( list == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed list is null"));
+        }
+        try(PreparedStatement stm = CON.prepareStatement("DELETE FROM User_List WHERE list=?")){
+            stm.setString(1, list.getNome());
+            if (stm.executeUpdate() == 1) {
+               
+            } else {
+                throw new DAOException("Impossible to insert the User");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try(PreparedStatement stm = CON.prepareStatement("DELETE FROM List_Prod WHERE lista=?")){
+            stm.setString(1, list.getNome());
+            if (stm.executeUpdate() == 1) {
+               
+            } else {
+                throw new DAOException("Impossible to insert the User");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try(PreparedStatement stm = CON.prepareStatement("DELETE FROM List WHERE nome=?")){
+            stm.setString(1, list.getNome());
+            if (stm.executeUpdate() == 1) {
+              
+            } else {
+                throw new DAOException("Impossible to insert the User");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public ShopList getbyName(String nome) throws DAOException {
+        if ( nome == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed name is null"));
+        }
+        ShopList sL = new ShopList();
+        try(PreparedStatement stm = CON.prepareStatement("SELECT * FROM List where nome=?")){
+            stm.setString(1, nome);
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    sL.setNome(rs.getString("nome"));
+                    sL.setDescrizione(rs.getString("descrizione"));
+                    sL.setImmagine(rs.getString("immagine"));
+                    sL.setCreator(rs.getString("creator"));
+                    sL.setCategoria("categoria");
+                    sL.setSharedUsers(getUsersWithWhoTheListIsShared(sL));
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (SQLException ex) {
+                Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        return sL;
+    }
+
 }
