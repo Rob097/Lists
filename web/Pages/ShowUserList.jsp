@@ -454,7 +454,7 @@
                 <section class="block">
                     <div class="container">
                         <div class="icon-bar">
-                            <a href="#"><i class="fas fa-plus"> <br>Add products</i></a> 
+                            <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
                             <a href="adaptedChatroom.jsp"><i class="fas fa-users"><br>ChatRoom</i></a> 
                             <a data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Share</i></a>
                             <a href="#"><i class="fa fa-trash"><br>Delete</i></a> 

@@ -1244,7 +1244,7 @@ Headers:		'Varela Round', sans-serif;
 /*------ Description ------*/
 .items:not(.selectize-input).list .item .description {
     position: absolute;
-    bottom: 2rem;
+    bottom: 8rem;
     padding: 0;
     left: 27rem;
     z-index: 1;
@@ -1336,10 +1336,7 @@ Headers:		'Varela Round', sans-serif;
     padding: .3rem 1.1rem;
     font-size: 1.3rem;
 }
-.items:not(.selectize-input).list.compact .item .description {
-    padding-right: 20rem;
-    bottom: 1.4rem;
-}
+
 .items:not(.selectize-input).list.compact .item .description p {
     font-size: 1.2rem;
 }

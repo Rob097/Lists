@@ -333,7 +333,7 @@
                                                 <p><%=p.getNote()%></p>
                                             </div>
                                             <!--end description-->
-                                            <a data-toggle="modal" data-target="#myModal" class="detail text-caps underline">Add to your list</a>
+                                            <a class="detail text-caps underline" href="/Lists/AddProductToList?prodotto=<%=p.getPid()%>">Add to your list</a>
                                         </div>
                                     </div>
                                     <%}
@@ -378,16 +378,7 @@
                         <h4 class="modal-title">Modal Header</h4>
                     </div>
                     <div class="modal-body">
-                        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
-
-                        <ul id="myUL">
-                            
-                            <%for (String nomeLista : allListsOfUser) {%>
-                            
-                            <li><a href="#"><%=nomeLista%></a></li>
-                            
-                            <%}%>
-                        </ul>
+                        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -397,23 +388,7 @@
             </div>
         </div>
 
-        <script>
-            function myFunction() {
-                var input, filter, ul, li, a, i;
-                input = document.getElementById("myInput");
-                filter = input.value.toUpperCase();
-                ul = document.getElementById("myUL");
-                li = ul.getElementsByTagName("li");
-                for (i = 0; i < li.length; i++) {
-                    a = li[i].getElementsByTagName("a")[0];
-                    if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                        li[i].style.display = "";
-                    } else {
-                        li[i].style.display = "none";
-                    }
-                }
-            }
-        </script>
+       
     </body>
 </html>
 

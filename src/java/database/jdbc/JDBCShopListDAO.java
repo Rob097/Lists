@@ -279,5 +279,62 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             }
         return sL;
     }
+    
+    
+    @Override
+    public ArrayList<String> getAllListsByCurentUser(String nome) throws DAOException {
+        if ( nome == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed name is null"));
+        }
+        ArrayList<String> liste = new ArrayList<>();
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM List where creator=?")) {
+            stm.setString(1, nome);
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    liste.add(rs.getString("nome"));                 
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM User_List where user=?")) {
+            stm.setString(1, nome);
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    liste.add(rs.getString("list"));                 
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return liste;
+    }
+    
+    @Override
+    public void insertProductToList(int prodotto, String lista) throws DAOException {
+        if (lista == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed email or listname is null"));
+        }
+        
+        try(PreparedStatement stm = CON.prepareStatement("INSERT INTO List_Prod VALUES (?,?,'2008-7-04','2008-7-04')")){
+            stm.setString(1, lista);
+            stm.setInt(2, prodotto);
+            
+            if (stm.executeUpdate() == 1) {
+                System.out.println("successful operation");
+            } else {
+                throw new DAOException("Impossible to insert the query");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
 
 }
