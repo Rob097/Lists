@@ -195,4 +195,24 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
         }
     }
 
+    @Override
+    public void insertSharedUser(String email, String nomeLista) throws DAOException {
+        if (email == null || nomeLista == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed email or listname is null"));
+        }
+        
+        try(PreparedStatement stm = CON.prepareStatement("INSERT INTO User_List VALUES (?,?)")){
+            stm.setString(1, email);
+            stm.setString(2, nomeLista);
+            
+            if (stm.executeUpdate() == 1) {
+                System.out.println("successful operation");
+            } else {
+                throw new DAOException("Impossible to insert the query");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }

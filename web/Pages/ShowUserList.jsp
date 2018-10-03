@@ -659,14 +659,16 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                              <select class="mdb-select colorful-select dropdown-primary" multiple>
-                                    <option value="" disabled selected>Choose Users</option>
-                                    <c:forEach items="${Users}" var="u">
-                                        <option value="${u.email}"><c:out value="${u.email}"/></option> 
-                                    </c:forEach>
-                                </select>
-                                <button class="btn-save btn btn-primary btn-sm">Save</button> 
-                                <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete-btn-no">Cancel</button>
+                        <form method="POST" action="/Lists/restricted/ShareShopListServlet">
+                            <select name="sharedUsers" class="mdb-select colorful-select dropdown-primary" multiple>     
+                                <c:forEach items="${Users}" var="u">
+                                    <option value="${u.email}"><c:out value="${u.email}"/></option> 
+                                </c:forEach>
+                            </select>
+                            <button type="submit" class="btn btn-primary" id="delete">Save</button> 
+                            <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete-btn-no">Cancel</button> 
+                        </form>
+                              
                     </div>
                 </div>
             </div>

@@ -24,4 +24,5 @@ public interface ListDAO {
     public ArrayList<ShopList> getListOfShopListsThatUserLookFor(String email) throws DAOException;
     public ArrayList<Product> getAllProductsOfShopList(String name)throws DAOException;
     public ArrayList<User> getUsersWithWhoTheListIsShared(String listname) throws DAOException;
+    public void insertSharedUser(String email, String nomeLista) throws DAOException;
 }

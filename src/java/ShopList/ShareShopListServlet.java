@@ -5,12 +5,18 @@
  */
 package ShopList;
 
+import database.daos.ListDAO;
+import database.exceptions.DAOException;
+import database.factories.DAOFactory;
+import database.jdbc.JDBCShopListDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -18,7 +24,17 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ShareShopListServlet extends HttpServlet {
 
-
+    ListDAO listdao;
+    @Override
+    public void init() throws ServletException {
+        //carica la Connessione inizializzata in JDBCDAOFactory, quindi ritorna il Class.for() e la connessione
+        DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
+        if (daoFactory == null) {
+            throw new ServletException("Impossible to get dao factory for user storage system");
+        }
+        //assegna a userdao la connessione(costruttore) e salva la connessione in una variabile tipo Connection
+        listdao = new JDBCShopListDAO(daoFactory.getConnection());        
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -35,24 +51,27 @@ public class ShareShopListServlet extends HttpServlet {
         
         String n = request.getParameter("nome");
         request.setAttribute("ClickedListName", n);
-        
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ShareShopListServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1> " + n + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-            response.sendRedirect("Pages/standard/standardType.jsp");
-        }
-        
-        
+
         
     }
+    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String[] emailsharedUsers = request.getParameterValues("sharedUsers");
+        HttpSession session =(HttpSession) request.getSession(false);
+        String listname = (String) session.getAttribute("shopListName");
+        try {
+            for (int i = 0; i < emailsharedUsers.length; i++) {            
+                listdao.insertSharedUser(emailsharedUsers[i], listname);            
+            }
+        } catch (DAOException ex) {
+            Logger.getLogger(ShareShopListServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        response.sendRedirect("/Lists/Pages/ShowUserList.jsp");
+    }
+    
 
     
     /**
