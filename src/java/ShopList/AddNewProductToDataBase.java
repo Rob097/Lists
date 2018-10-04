@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.regex.Pattern;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +32,7 @@ import javax.servlet.http.Part;
  *
  * @author Dmytr
  */
+@MultipartConfig(maxFileSize = 16177215)
 public class AddNewProductToDataBase extends HttpServlet {
 
     ListDAO listdao = null;
@@ -72,7 +74,7 @@ public class AddNewProductToDataBase extends HttpServlet {
         String creator= "";
 
         try {
-            nome = (String)request.getAttribute("NomeProdotto");
+            nome = request.getParameter("NomeProdotto");
 
             note = request.getParameter("NoteProdotto");
 
