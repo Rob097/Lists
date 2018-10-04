@@ -46,6 +46,7 @@
 
     if (find) {
         ArrayList<ShopList> li = listdao.getByEmail(u.getEmail());
+        
 
 %>
 
@@ -202,8 +203,8 @@
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
                                     <!--##############-->
 
-                                    <%                                        for (ShopList l : li) {
-
+                                    <% 
+                                        for (ShopList l : li) {
                                     %>                                                                  
                                     <div class="item">
                                         <!--end ribbon-->
@@ -240,6 +241,7 @@
                                     </div>
                                     <!--end item-->
                                     <%}%>
+                                    
                                 </div>
                                 <!--end items-->
                             </div>

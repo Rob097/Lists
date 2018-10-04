@@ -208,6 +208,7 @@
 
                             <h1 class="opacity-60 center">
                                 <%=shoplistName%>
+                                <%System.out.println("NOME:    ====   " + shoplistName); %>
                             </h1>
                         </div>
                         <!--end container-->
