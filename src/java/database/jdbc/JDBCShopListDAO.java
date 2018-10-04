@@ -335,6 +335,31 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
         }
     }
     
-    
+    @Override
+    public ArrayList<ShopList> getAllSharedList(String email) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM User_List INNER JOIN List ON User_List.list=List.nome where user = ?")) {
+            ArrayList<ShopList> shoppingLists = new ArrayList<>();
+            
+
+            stm.setString(1, email);
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    ShopList sL = new ShopList();
+                    sL.setNome(rs.getString("nome"));
+                    sL.setDescrizione(rs.getString("descrizione"));
+                    sL.setImmagine(rs.getString("immagine"));
+                    sL.setCreator(rs.getString("creator"));
+                    sL.setCategoria(rs.getString("categoria"));
+                    sL.setSharedUsers(getUsersWithWhoTheListIsShared(sL));
+
+                    shoppingLists.add(sL);
+                }
+
+                return shoppingLists;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of users", ex);
+        }
+    }
 
 }

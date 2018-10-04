@@ -64,6 +64,7 @@ public class ShowShopList extends HttpServlet {
             dbuser = userdao.getByEmail(user.getEmail());
             sharedusers = listdao.getUsersWithWhoTheListIsShared(s);
         } catch (DAOException ex) {
+            System.out.println("try error showShopList.java\n");
             Logger.getLogger(ShowShopList.class.getName()).log(Level.SEVERE, null, ex);
         }
         

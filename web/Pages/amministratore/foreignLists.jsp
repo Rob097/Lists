@@ -20,6 +20,34 @@
 <%@page import="java.sql.Connection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%
+
+    DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
+    if (daoFactory == null) {
+        throw new ServletException("Impossible to get dao factory for user storage system");
+    }
+    UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
+    ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
+
+    HttpSession s = (HttpSession) request.getSession();
+    User u = null;
+    boolean find = false;
+
+    u = (User) s.getAttribute("user");
+    if (u == null) {
+        response.setHeader("Refresh", "0; URL=/Lists/homepage.jsp");
+
+    } else {
+        if (u.getTipo().equals("amministratore")) {
+            find = true;
+        }
+    }
+
+    if (find) {
+        ArrayList<ShopList> li = listdao.getAllSharedList(u.getEmail());
+%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -143,41 +171,44 @@
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
                                     <!--##############-->
 
-                                    <c:forEach items="${sharedLists}" var="list"  >
-                                        <div class="item">
-                                            <!--end ribbon-->
-                                            <div class="wrapper">
-                                                <div class="image">
-                                                    <h3>
-                                                        <a href="#" class="tag category"><c:out value="${list.categoria}"/></a>
-                                                        <a href="/Lists/restrictd/ShowShopList?nome=" class="title"><c:out value="${list.nome}"/></a>
-                                                    </h3>
-                                                    <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                        <img src="../../${list.immagine}" alt="">
-                                                    </a>
-                                                </div>
-                                                <!--end image-->
-                                                <div class="price">$80</div>
-                                                <div class="admin-controls">
-                                                    <a href="/Lists/restricted/ShowShopList?nome=${list.nome}">
-                                                        <i class="fa fa-pencil"></i>Edit
-                                                    </a>
-                                                    <a href="#" class="ad-hide">
-                                                        <i class="fa fa-eye-slash"></i>Hide
-                                                    </a>
-                                                    <a href="#" class="ad-remove">
-                                                        <i class="fa fa-trash"></i>Remove
-                                                    </a>
-                                                </div>
-                                                <!--end admin-controls-->
-                                                <div class="description">
-                                                    <p><c:out value="${list.descrizione}"/></p>
-                                                </div>
-                                                <!--end description-->
-                                                <a href="/Lists/restricted/ShowShopList?nome=${list.nome}" class="detail text-caps underline">Detail</a>
+                                    <% 
+                                        for (ShopList l : li) {
+                                    %>                                                                  
+                                    <div class="item">
+                                        <!--end ribbon-->
+                                        <div class="wrapper">
+                                            <div class="image">
+                                                <h3>
+                                                    <a href="#" class="tag category"><%=l.getCategoria()%></a>
+                                                    <a href="/Lists/restricted/ShowShopList?nome=<%=l.getNome()%>" class="title"><%=l.getNome()%></a>
+                                                </h3>
+                                                <a href="single-listing-1.html" class="image-wrapper background-image">
+                                                    <img src="/Lists/<%=l.getImmagine()%>" alt="">
+                                                </a>
                                             </div>
-                                        </div> 
-                                    </c:forEach>
+                                            <!--end image-->
+                                            <div class="price">$80</div>
+                                            <div class="admin-controls">
+                                                <a href="/Lists/restricted/ShowShopList?nome=<%=l.getNome()%>">
+                                                    <i class="fa fa-pencil"></i>Edit
+                                                </a>
+                                                <a href="#" class="ad-hide">
+                                                    <i class="fa fa-eye-slash"></i>Hide
+                                                </a>
+                                                <a href="#" class="ad-remove">
+                                                    <i class="fa fa-trash"></i>Remove
+                                                </a>
+                                            </div>
+                                            <!--end admin-controls-->
+                                            <div class="description">
+                                                <p><%=l.getDescrizione()%></p>
+                                            </div>
+                                            <!--end description-->
+                                            <a href="/Lists/restricted/ShowShopList?nome=<%=l.getNome()%>" class="detail text-caps underline">Detail</a>
+                                        </div>
+                                    </div>
+                                    <!--end item-->
+                                    <%}%>
 
                                     <!--end item-->
 
@@ -442,3 +473,6 @@
             <script src="../js/nav.js"></script>
     </body>
 </html>
+<%    } else
+        response.sendRedirect("/Lists");
+%>

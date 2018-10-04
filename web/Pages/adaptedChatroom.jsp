@@ -1059,7 +1059,7 @@
         </script>
 
         <script type="text/javascript">
-            var webSocket = new WebSocket("ws://localhost:8080/Lists/wsServer");
+            var webSocket = new WebSocket("ws://10.196.176.120:8080/Lists/wsServer");
             var slname = document.getElementById("shoplistName");
             var messaggioDaInviare = document.getElementById("messaggioDaInviare");
             var user = document.getElementById("Sender");
