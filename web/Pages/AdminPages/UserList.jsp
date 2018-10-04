@@ -63,9 +63,13 @@
         <title>Craigs - Easy Buy & Sell Listing HTML Template</title>
 
         <style>
-
+            
+            body{
+                overflow-x: unset;
+            }
+            
             .items:not(.selectize-input).list .item .wrapper {
-                min-height: 10rem;
+                min-height: 14rem;
                 padding-bottom: 0;
             }
 
@@ -81,6 +85,18 @@
                 min-height: 0rem;
             }
         </style>
+        
+                
+        <style>
+            
+            
+            .avatar {
+    vertical-align: middle;
+    width: 140px;
+    height: 140px;
+    border-radius: 4%;
+}
+            </style>
 
     </head>
     <body>
@@ -122,14 +138,8 @@
                         </div>
                         <!--end container-->
                     </div>
-                    <!--============ End Secondary Navigation ===========================================================-->
-
-                    <!--============ End Main Navigation ================================================================-->
-                    <!--============ Hero Form ==========================================================================-->
-
-                    <!--end collapse-->
-                    <!--============ End Hero Form ======================================================================-->
-                    <!--============ Page Title =========================================================================-->
+                    
+                    
                     <div class="page-title">
                         <div class="container">
                             <h1>My Ads</h1>
@@ -168,8 +178,8 @@
                                                     <a href="#" class="tag category"><%=elem.getTipo()%></a>
                                                     <a href="single-listing-1.html" class="title"><%=elem.getNominativo()%></a>                           
                                                 </h3>
-                                                <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                    <img src="../../<%=elem.getImage()%>" alt="">
+                                                <a href="single-listing-1.html" >
+                                                    <img src="../../<%=elem.getImage()%>" alt="" class="avatar">
                                                 </a>
                                             </div>
                                             <h4 class="location">
@@ -187,23 +197,11 @@
                                                     <i class="fa fa-trash"></i>Remove
                                                 </a>
                                             </div>
-                                            <div class="description">
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam venenatis lobortis</p>
-                                            </div>
+                                            
                                         </div>
                                     </div>
                                     <%}%>
-                                    <!--end item-->
-
-
-
-
-                                    <!--end admin-controls-->
-
-                                    <!--end description-->
-
-                                    <!--end addition-info-->
-
+ 
                                 </div>
                             </div>
                             <!--end item-->

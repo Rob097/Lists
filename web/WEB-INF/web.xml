@@ -58,6 +58,10 @@
         <servlet-name>DeleteShopList</servlet-name>
         <servlet-class>ShopList.DeleteShopList</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddNewProductToDataBase</servlet-name>
+        <servlet-class>ShopList.AddNewProductToDataBase</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -97,6 +101,10 @@
     <servlet-mapping>
         <servlet-name>DeleteShopList</servlet-name>
         <url-pattern>/restricted/DeleteShopList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddNewProductToDataBase</servlet-name>
+        <url-pattern>/AddNewProductToDataBase</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
