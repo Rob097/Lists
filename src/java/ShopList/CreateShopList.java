@@ -62,9 +62,10 @@ public class CreateShopList extends HttpServlet {
         Boolean regResult = false;        
         String nome;
         String descrizione;
-        String immagine;
+        String immagine = "/Image/ListsImg/guestsList.jpg";
         String creator;
         String categoria;
+        String url = "/Lists/Pages/guest/guest.jsp";
         
         nome = request.getParameter("Nome");
         System.out.println("NOm22222222eeeeeeeeee" + nome);
@@ -76,55 +77,60 @@ public class CreateShopList extends HttpServlet {
         
         if(s.getAttribute("user") != null){
             User temp = (User)s.getAttribute("user");
+            url = "/Lists/Pages/" + temp.getTipo() + "/" + temp.getTipo() + ".jsp";
             creator = temp.getEmail();
-        }else creator = "ospite@lists.it";
-        
-        // IMMAGINE
-        String listsFolder = "/Image/ListsImg";
-        String rp = "/Image/ListsImg";
-        listsFolder = getServletContext().getRealPath(listsFolder);
-        listsFolder = listsFolder.replace("\\build", "");
-        File uploadDirFile = new File(listsFolder);
-        String filename1 = "";
-        Part filePart1 = request.getPart("file1");
-        if ((filePart1 != null) && (filePart1.getSize() > 0)) {
-            
-            String extension = Paths.get(filePart1.getSubmittedFileName()).getFileName().toString().split(Pattern.quote("."))[1];;
-            String nomeIMG = creator + "-" + nome;
-            
-            filename1 = nomeIMG + "." + extension;
-            filename1 = filename1.replaceAll("\\s+","");
-            File file1 = new File(uploadDirFile, filename1);
-            try (InputStream fileContent = filePart1.getInputStream()) {
-                Files.copy(fileContent, file1.toPath());
-            }
+        }else{
+            creator = "ospite@lists.it";
         }
-        immagine = rp + "/" + filename1;
-        immagine = immagine.replaceFirst("/", ""); 
-        immagine = immagine.replaceAll("\\s+","");
-        //FINE IMMAGINE
+        
+        if(!creator.equals("ospite@lists.it")){
+            // IMMAGINE
+            String listsFolder = "/Image/ListsImg";
+            String rp = "/Image/ListsImg";
+            listsFolder = getServletContext().getRealPath(listsFolder);
+            listsFolder = listsFolder.replace("\\build", "");
+            File uploadDirFile = new File(listsFolder);
+            String filename1 = "";
+            Part filePart1 = request.getPart("file1");
+            if ((filePart1 != null) && (filePart1.getSize() > 0)) {
+
+                String extension = Paths.get(filePart1.getSubmittedFileName()).getFileName().toString().split(Pattern.quote("."))[1];;
+                String nomeIMG = creator + "-" + nome;
+
+                filename1 = nomeIMG + "." + extension;
+                filename1 = filename1.replaceAll("\\s+","");
+                File file1 = new File(uploadDirFile, filename1);
+                try (InputStream fileContent = filePart1.getInputStream()) {
+                    Files.copy(fileContent, file1.toPath());
+                }catch(Exception imgexception) {
+                System.out.println("exception image #1");
+                s.setAttribute("erroreIMG", "Esiste già una lista sul duo account con questo nome!");
+            }
+            }
+            immagine = rp + "/" + filename1;
+            immagine = immagine.replaceFirst("/", ""); 
+            immagine = immagine.replaceAll("\\s+","");
+            //FINE IMMAGINE
+        }
         
         
         nuovaLista.setImmagine(immagine);
         nuovaLista.setCategoria(categoria);
         nuovaLista.setCreator(creator);
-        nuovaLista.setImmagine(immagine);
         nuovaLista.setDescrizione(descrizione);
         nuovaLista.setNome(nome);
 
         System.out.println(nuovaLista.getImmagine());
 
-        String url = "";
+        
         try {
             System.out.println(creator);
             
             //manda i dati del user, il metodo upate fa la parte statement 
             if(s.getAttribute("user") != null){
                 nuovaLista = listdao.Insert(nuovaLista);
-                url = "/Lists/index.jsp";
             }else{
                 s.setAttribute("guestList", nuovaLista);
-                url = "/Lists/Pages/guest/guest.jsp";
             }
 
         } catch (DAOException ex) {
@@ -143,7 +149,7 @@ public class CreateShopList extends HttpServlet {
             }
             
         }
-       
+        s.setAttribute("regResult", false);
         System.out.println(url);
         response.sendRedirect(url);
 

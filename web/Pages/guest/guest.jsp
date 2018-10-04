@@ -1,5 +1,5 @@
 <%-- 
-    Document   : standardType
+    Document   : guest
     Created on : 15-giu-2018, 17.13.06
     Author     : Roberto97
 --%>
@@ -82,11 +82,11 @@
                         <div class="collapse navbar-collapse" id="navbarResponsive">
                             <ul class="navbar-nav text-uppercase ml-auto text-center">
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="#lists"><b>Le mie liste</b></a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/index.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="#lists"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                </li>                                
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#LoginModal" style="cursor: pointer;">
                                         <i class="fa fa-sign-in"></i><b>Login</b>
@@ -493,10 +493,7 @@
                             </div>
                             <!--end form-group-->
 
-                            <div class="form-group">
-                                <label for="Immagine" class="col-form-label required">Immagine</label>
-                                <input type="file" name="file1" required>
-                            </div>
+                            
                             <!--end form-group-->
                             <div class="d-flex justify-content-between align-items-baseline">
 

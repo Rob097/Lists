@@ -1,5 +1,5 @@
 <%-- 
-    Document   : standardType
+    Document   : ShowUserList
     Created on : 15-giu-2018, 17.13.06
     Author     : Roberto97
 --%>
@@ -34,9 +34,10 @@
     User u = null;
     boolean find = false;
 
-    u = (User) s.getAttribute("user");
+    
 
-    if (u.getTipo().equals("standard")) {
+    if (s.getAttribute("user") != null) {
+        u = (User) s.getAttribute("user");
         find = true;
     }
 
@@ -206,7 +207,7 @@
 
 
                             <h1 class="opacity-60 center">
-                                You are looking for <%=shoplistName%> list
+                                <%=shoplistName%>
                             </h1>
                         </div>
                         <!--end container-->
@@ -337,7 +338,7 @@
                                     </div>
                                 </div>
 
-                            </div>>
+                            </div>
 
                             <!--end col-md-9-->
                         </div>

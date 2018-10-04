@@ -55,7 +55,7 @@ public class DeleteShopList extends HttpServlet {
         }
         String url;
         if ("standard".equals(user.getTipo())) {
-                    url = "Pages/standard/standardType.jsp";
+                    url = "Pages/standard/standard.jsp";
                 } else if ("amministratore".equals(user.getTipo())) {
                     url = "Pages/amministratore/amministratore.jsp";
                 } else {

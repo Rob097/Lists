@@ -16,7 +16,7 @@ and open the template in the editor.
         if(logged.equals("on")){
             User user = (User) sessione.getAttribute("user");
             if(user.getTipo().equals("standard"))
-                url = "Pages/standard/standardType.jsp";
+                url = "Pages/standard/standard.jsp";
             else if(user.getTipo().equals("amministratore"))
                 url = "Pages/amministratore/amministratore.jsp";
             else{

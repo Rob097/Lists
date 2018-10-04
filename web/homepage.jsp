@@ -173,14 +173,25 @@
                     </nav>
                     <%}%>
                     <!--============ End Secondary Navigation ===========================================================-->
-                    <!--============ Main Navigation ====================================================================-->
+                    <!--######################################################################################### 
+                                    check dell'eventuale messaggio da visualizzare
+                    ######################################################################################### -->
                     <c:if test="${regResult==true}">
-                        <div class="alert alert-success">
+                        <div class="alert alert-success" id="alert">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                             <strong>Successful Registration!</strong> You can now log in in your account.
                         </div>
-                    </c:if> 
-
+                        <%session.setAttribute("regResult", null); %>
+                    </c:if>
+                    <c:if test="${erroreIMG!=null}">
+                        <div class="alert alert-warning" id="alert">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>Attenzione!</strong> ${erroreIMG}
+                        </div>
+                        <%session.setAttribute("erroreIMG", null); %>
+                    </c:if>
+                    <!--#########################################################################################-->
+            
                     <!--============ Page Title =========================================================================-->
                     <div class="page-title" id="home">
                         <div class="container pt-5">
@@ -260,7 +271,7 @@
                                             <span>1</span>
                                         </figure>
                                         <a style="cursor: pointer;" data-toggle="modal" data-target="#RegisterModal"><h3>Crea un Account</h3></a>
-                                        <p>Scegli che tipo di utente vuoi essere</p>
+                                        <p>Scegli che tipo di utente vuoi essere, o usa l'applicazione come ospite</p>
                                     </div>
                                     <!--end feature-box-->
                                 </div>
@@ -606,11 +617,12 @@
 
                             </div>
                             <!--end form-group-->
-
+                            <%if(find){%>
                             <div class="form-group">
                                 <label for="Immagine" class="col-form-label required">Immagine</label>
                                 <input type="file" name="file1" required>
                             </div>
+                            <%}%>
                             <!--end form-group-->
                             <div class="d-flex justify-content-between align-items-baseline">
 

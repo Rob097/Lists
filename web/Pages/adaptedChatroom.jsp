@@ -1,5 +1,5 @@
 <%-- 
-    Document   : standardType
+    Document   : adaptedChatroom
     Created on : 15-giu-2018, 17.13.06
     Author     : Roberto97
 --%>
@@ -778,7 +778,7 @@
                             <!--end left-->
                             <ul class="right">
                                 <li>
-                                    <a class="navbar-brand" href="standard/standardType.jsp" style="cursor: pointer;">
+                                    <a class="navbar-brand" href="standard/standard.jsp" style="cursor: pointer;">
                                         <i class="fa fa-heart"></i>Le mie Liste
                                     </a>
                                 </li>

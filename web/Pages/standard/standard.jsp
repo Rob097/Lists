@@ -124,7 +124,7 @@
                                     <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="foreignLists.jsp"><i class="fa fa-bars"></i><b>Lists you can looking for</b></a>
+                                    <a class="nav-link js-scroll-trigger" href="foreignLists.jsp"><i class="fa fa-bars"></i><b>Liste condivise con me</b></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">

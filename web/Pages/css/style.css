@@ -4075,6 +4075,15 @@ textarea.form-control {
     line-height: 40px;
 }
 
+#alert{
+    position: fixed;
+    z-index: 10000;
+    max-width: -webkit-fill-available;
+    width: -webkit-fill-available;
+    width: -moz-available;
+    max-width: -moz-available;
+}
+
 @media (max-width: 768px){
     #welcomeGrid{
         display: grid;
