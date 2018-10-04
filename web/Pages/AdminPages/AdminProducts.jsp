@@ -40,7 +40,7 @@
 
     ArrayList<Product> li = productdao.getAllProducts();
     ArrayList<String> allCategories = productdao.getAllProductCategories();
-    ArrayList<String> allListsOfUser = listdao.getAllListsByCurentUser(u.getEmail());
+    //ArrayList<String> allListsOfUser = listdao.getAllListsByCurentUser(u.getEmail());
     ArrayList<User> allUsers = userdao.getAllUsers();
 
 %>
@@ -53,7 +53,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="author" content="ThemeStarz">
 
+        
+        
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
+          
+        <link rel="stylesheet" href="../css/navbar.css"> 
+        <link rel="stylesheet" href="../css/datatables.css" type="text/css"> 
+        <link rel="icon" href="../img/favicon.png" sizes="16x16" type="image/png">
+        <script src="../js/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="../js/popper.min.js"></script>
+        <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+        
+        
         <link rel="stylesheet" href="../bootstrap/css/bootstrap.css" type="text/css">
         <link rel="stylesheet" href="../fonts/font-awesome.css" type="text/css">
         <link rel="stylesheet" href="../css/selectize.css" type="text/css">
@@ -148,12 +159,12 @@
                     </div>
                     <!--============ End Page Title =====================================================================-->
                     <div class="background"></div>
-                    
+
                     <div class="container text-center" id="welcomeGrid">
-                    <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" style="color: white;">Aggiungu un nuovo prodotto</a>
-                       
-                </div
-                    
+                        <a data-toggle="modal" data-target="#AddProductModal" class="btn btn-primary text-caps btn-rounded" style="color: white;">Aggiungu un nuovo prodotto</a>
+
+                    </div
+
                     <!--end background-->
                 </div>
 
@@ -238,6 +249,62 @@
         </div>
         <!--end page-->
 
+        <div class="modal fade" id="AddProductModal" tabindex="-1" role="dialog" aria-labelledby="AddProductModal" aria-hidden="true" enctype="multipart/form-data">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1>Aggiungi prodotto</h1>
+                            </div>
+                            <!--end container-->
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form per il login -->
+                        <form class="form clearfix" id="register-form" action="/Lists/AddNewProductToDataBase" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="NomeProdotto" class="col-form-label">Nome Prodotto</label>
+                                <input type="text" name="NomeProdotto" id="NomeProdotto" tabindex="1" class="form-control" placeholder="Email" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="NoteProdotto" class="col-form-label">Note Prodotto</label>
+                                <input type="text" name="NoteProdotto" id="NoteProdotto" tabindex="1" class="form-control" placeholder="Nome" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="CategoriaProdotto" class="col-form-label">CategoriaProdotto</label>
+                                <input type="text" name="CategoriaProdotto" id="CategoriaProdotto" tabindex="2" class="form-control" placeholder="CategoriaProdotto" required>
+                            </div>
+
+                            <!--end form-group-->
+
+                            <div class="form-group">
+                                <label for="image" class="col-form-label required">Immagine Prodotto</label>
+                                <input type="file" name="ImmagineProdotto" required>
+                            </div>
+                            
+                            <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Aggiungi</button>
+                            <!--end form-group-->
+
+                        </form>
+                        <hr>
+                        <p>
+                            By clicking "Register Now" button, you agree with our <a href="#" class="link">Terms & Conditions.</a>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <script src="../js/jquery-3.3.1.min.js"></script>
         <script type="text/javascript" src="assets/js/popper.min.js"></script>
         <script type="text/javascript" src="assets/bootstrap/js/bootstrap.min.js"></script>
@@ -247,6 +314,11 @@
         <script src="../js/icheck.min.js"></script>
         <script src="../js/jquery.validate.min.js"></script>
         <script src="../js/custom.js"></script>
+            <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
+            
+            <script src="../js/vari.js"></script>
+            <script src="../js/nav.js"></script>
+
 
     </body>
 </html>

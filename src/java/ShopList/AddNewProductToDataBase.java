@@ -60,28 +60,38 @@ public class AddNewProductToDataBase extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        System.out.println("=============================SERVLET ADD NEW PRODUCT===================");
         HttpSession s = request.getSession();
         Product nuovoProdotto = new Product();
 
         int pid;
-        String nome;
-        String note;
-        String categoria_prodotto;
-        String immagine;
-        String creator;
-        
-        nome = request.getParameter("Nome");
+        String nome = "";
+        String note= "";
+        String categoria_prodotto= "";
+        String immagine= "";
+        String creator= "";
 
-        note = request.getParameter("Note");
+        try {
+            nome = (String)request.getAttribute("NomeProdotto");
 
-        categoria_prodotto = request.getParameter("Categoria_prodotto");
-        
-        if(s.getAttribute("user") != null){
-            User temp = (User)s.getAttribute("user");
+            note = request.getParameter("NoteProdotto");
+
+            categoria_prodotto = request.getParameter("CategoriaProdotto");
+        } catch (Exception e) {
+            System.out.println("ERRROREEEEE CATCH");
+        }
+
+        System.out.println(nome);
+        System.out.println(note);
+        System.out.println(categoria_prodotto);
+
+        if (s.getAttribute("user") != null) {
+            User temp = (User) s.getAttribute("user");
             creator = temp.getEmail();
-        }else creator = "ospite@lists.it";
-        
+        } else {
+            creator = "ospite@lists.it";
+        }
+
         String listsFolder = "/Image/ProductImg";
         String rp = "/Image/ProductImg";
         listsFolder = getServletContext().getRealPath(listsFolder);
@@ -90,44 +100,46 @@ public class AddNewProductToDataBase extends HttpServlet {
         String filename1 = "";
         Part filePart1 = request.getPart("file1");
         if ((filePart1 != null) && (filePart1.getSize() > 0)) {
-            
+
             String extension = Paths.get(filePart1.getSubmittedFileName()).getFileName().toString().split(Pattern.quote("."))[1];;
             String nomeIMG = creator + "-" + nome;
-            
+
             filename1 = nomeIMG + "." + extension;
-            filename1 = filename1.replaceAll("\\s+","");
+            filename1 = filename1.replaceAll("\\s+", "");
             File file1 = new File(uploadDirFile, filename1);
             try (InputStream fileContent = filePart1.getInputStream()) {
                 Files.copy(fileContent, file1.toPath());
             }
         }
-        
+
         immagine = rp + "/" + filename1;
-        immagine = immagine.replaceFirst("/", ""); 
-        immagine = immagine.replaceAll("\\s+","");
-        
+        immagine = immagine.replaceFirst("/", "");
+        immagine = immagine.replaceAll("\\s+", "");
+
         nuovoProdotto.setCategoria_prodotto(categoria_prodotto);
         nuovoProdotto.setImmagine(immagine);
         nuovoProdotto.setNome(nome);
         //nuovoProdotto.setPid(pid);
         nuovoProdotto.setNote(note);
-        
+
         try {
             productdao.Insert(nuovoProdotto);
         } catch (Exception e) {
+            System.out.println("EEEEEEEERRRRRRRROOEEEEEEEEEEEEEEEE");
         }
-        
+
+        response.sendRedirect("/Lists/Pages/AdminPages/AdminProducts.jsp");
 
     }
-    
-    public String SetImgName(String name, String extension){
-        
+
+    public String SetImgName(String name, String extension) {
+
         String s;
         s = name;
         s = s.trim();
         s = s.replace("@", "");
         s = s.replace(".", "");
-       
+
         return s + "." + extension;
     }
 

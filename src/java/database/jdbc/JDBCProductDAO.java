@@ -128,14 +128,13 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO{
 
         
         String qry = "insert into Product(nome,note,categoria_prod,immagine) "
-                + "values(?,?,"
-                + "(select nome from Category_Product where nome = ?),?";
+                + "values(?,?,?,?";
 
         
         try (PreparedStatement statement = CON.prepareStatement(qry)) {
             statement.setString(1, l.getNome());
             statement.setString(2, l.getNote());
-            statement.setString(3, l.getCategoria_prodotto());
+            statement.setString(3, "Frutta");
             statement.setString(4, l.getImmagine());
         } catch (SQLException ex) {
             throw new DAOException(ex);
