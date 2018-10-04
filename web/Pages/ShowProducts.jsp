@@ -44,7 +44,7 @@
         }
     }
 
-    if (find) {
+    
         ArrayList<Product> li = productdao.getAllProducts();
         ArrayList<String> allCategories = productdao.getAllProductCategories();
         ArrayList<String> allListsOfUser = listdao.getAllListsByCurentUser(u.getEmail());
@@ -65,6 +65,7 @@
         <link rel="stylesheet" href="css/selectize.css" type="text/css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/user.css">
+        <link rel="stylesheet" href="css/navbar.css"> 
         <style>
 
             body{
@@ -171,42 +172,69 @@
             <header class="hero">
                 <div class="hero-wrapper">
 
-                    <!--============ Secondary Navigation ===============================================================-->
-                    <div class="secondary-navigation sticky-top">
-                        <div class="container">
-                            <ul class="left">
-                                <li>
-                                    <span>
-                                        <i class="fa fa-phone"></i> +1 123 456 789
-                                    </span>
+                    <%if (find) {%> 
+                    <nav class="navbar navbar-expand-xl navbar-dark fixed-top " id="mainNav">
+                        <a class="navbar-brand">
+                            <img width= "50" src="/Lists/Pages/img/favicon.png" alt="Logo">
+                        </a>
+                        <a class="navbar-brand js-scroll-trigger" href="/Lists/homepage.jsp">LISTS</a>
+                        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                            Menu
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarResponsive">
+                            <ul class="navbar-nav text-uppercase ml-auto text-center">
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/Pages/<%=Type%>/<%=Type%>.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
+                                        <i class="fa fa-sign-in"></i><b><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> </b>/ <img src= "/Lists/${user.image}" width="25px" height="25px" style="border-radius: 100%;">
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/Pages/<%=Type%>/profile.jsp">
+                                        <i class="fa fa-user"></i><b>Il mio profilo</b>
+                                    </a>
                                 </li>
                             </ul>
-                            <!--end left-->
-                            <ul class="right">
-                                <li>
-                                    <a class="navbar-brand" href="standard/standardType.jsp" style="cursor: pointer;">
-                                        <i class="fa fa-heart"></i>Le mie Liste
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="navbar-brand" style="cursor: pointer;" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
-                                        <i class="fa fa-sign-in"></i><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> / <img src= "../${user.image}" width="25px" height="25px" style="border-radius: 100%;">
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="navbar-brand" style="cursor: pointer;" href="standard/profile.jsp">
-                                        <i class="fa fa-user"></i>Il mio profilo
-                                    </a>
-                                </li>
-                            </ul>
-                            <!--end right-->
                         </div>
-                        <!--end container-->
-                    </div>
-
-
-
-                    <!--============ End Main Navigation ================================================================-->
+                    </nav>
+                    <%} else {%>
+                    <nav class="navbar navbar-expand-xl navbar-dark fixed-top " id="mainNav">
+                        <a class="navbar-brand">
+                            <img width= "50" src="/Lists/Pages/img/favicon.png" alt="Logo">
+                        </a>
+                        <a class="navbar-brand js-scroll-trigger" href="/Lists/homepage.jsp">LISTS</a>
+                        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                            Menu
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarResponsive">
+                            <ul class="navbar-nav text-uppercase ml-auto text-center">
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/Pages/guest/guest.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#LoginModal" style="cursor: pointer;">
+                                        <i class="fa fa-sign-in"></i><b>Login</b>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#RegisterModal" style="cursor: pointer;">
+                                        <i class="fa fa-pencil-square-o"></i><b>Registrati</b>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <%}%>
                     <!--============ Page Title =========================================================================-->
                     <div class="page-title">
                         <div class="container">
@@ -367,6 +395,7 @@
         <script src="js/icheck.min.js"></script>
         <script src="js/jquery.validate.min.js"></script>
         <script src="js/custom.js"></script>
+        <script src="js/nav.js"></script>
 
         <div class="modal fade" id="myModal" role="dialog">
             <div class="modal-dialog">
@@ -416,8 +445,3 @@
         </script>
     </body>
 </html>
-
-<%
-    } else
-        response.sendRedirect("/Lists");
-%>
