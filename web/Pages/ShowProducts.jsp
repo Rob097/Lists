@@ -44,10 +44,9 @@
         }
     }
 
-    
-        ArrayList<Product> li = productdao.getAllProducts();
-        ArrayList<String> allCategories = productdao.getAllProductCategories();
-        ArrayList<String> allListsOfUser = listdao.getAllListsByCurentUser(u.getEmail());
+    ArrayList<Product> li = productdao.getAllProducts();
+    ArrayList<String> allCategories = productdao.getAllProductCategories();
+    ArrayList<String> allListsOfUser = listdao.getAllListsByCurentUser(u.getEmail());
 
 %>
 
@@ -113,43 +112,43 @@
             .dispNone{
                 display: none;
             }
-            
+
             * {
-  box-sizing: border-box;
-}
+                box-sizing: border-box;
+            }
 
-#myInput {
-  background-image: url('/css/searchicon.png');
-  background-position: 10px 12px;
-  background-repeat: no-repeat;
-  width: 100%;
-  font-size: 16px;
-  padding: 12px 20px 12px 40px;
-  border: 1px solid #ddd;
-  margin-bottom: 12px;
-}
+            #myInput {
+                background-image: url('/css/searchicon.png');
+                background-position: 10px 12px;
+                background-repeat: no-repeat;
+                width: 100%;
+                font-size: 16px;
+                padding: 12px 20px 12px 40px;
+                border: 1px solid #ddd;
+                margin-bottom: 12px;
+            }
 
-#myUL {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
+            #myUL {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+            }
 
-#myUL li a {
-  border: 1px solid #ddd;
-  margin-top: -1px; /* Prevent double borders */
-  background-color: #f6f6f6;
-  padding: 12px;
-  text-decoration: none;
-  font-size: 18px;
-  color: black;
-  display: block
-}
+            #myUL li a {
+                border: 1px solid #ddd;
+                margin-top: -1px; /* Prevent double borders */
+                background-color: #f6f6f6;
+                padding: 12px;
+                text-decoration: none;
+                font-size: 18px;
+                color: black;
+                display: block
+            }
 
-#myUL li a:hover:not(.header) {
-  background-color: #eee;
-}
-            
+            #myUL li a:hover:not(.header) {
+                background-color: #eee;
+            }
+
         </style>
 
     </head>
@@ -262,21 +261,23 @@
                         <div class="row">
 
                             <!--end col-md-3-->
-                            <div class="col-md-12">
-
-                                <div id="myBtnContainer">
-
-                                    <a style="margin: 5px;" href="/Lists/Pages/ShowProducts.jsp?cat=all" class="btn">Tutti</a>
-                                    <%  String prod = "";
+                            
+                            <div class="col-md-3">
+                                <div class="list-group">
+                                    <a href="/Lists/Pages/ShowProducts.jsp?cat=all" class="list-group-item">All</a>
+                                     <%  String prod = "";
 
                                         for (String sprd : allCategories) {
                                             System.out.println("sprd: " + sprd);%>
-
-                                    <a style="margin: 5px;" href="/Lists/Pages/ShowProducts.jsp?cat=<%=sprd%>" class="btn"><%=sprd%></a>
-
+                                    <a href="/Lists/Pages/ShowProducts.jsp?cat=<%=sprd%>" class="list-group-item"><%=sprd%></a>
                                     <%}%>
-
                                 </div>
+
+                            </div>
+
+                            <div class="col-md-9">
+
+                                
                                 <!--============ Section Title===================================================================-->
                                 <div class="section-title clearfix">
                                     <div class="float-left float-xs-none">
@@ -410,11 +411,11 @@
                         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
 
                         <ul id="myUL">
-                            
+
                             <%for (String nomeLista : allListsOfUser) {%>
-                            
+
                             <li><a href="#"><%=nomeLista%></a></li>
-                            
+
                             <%}%>
                         </ul>
                     </div>
