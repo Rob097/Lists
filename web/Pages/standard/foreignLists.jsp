@@ -1,5 +1,6 @@
+
 <%-- 
-    Document   : standardType
+    Document   : foreignList
     Created on : 15-giu-2018, 17.13.06
     Author     : Roberto97
 --%>
@@ -52,7 +53,7 @@
                 max-height: 530px;
                 padding: 15px;
             }
-         </style>
+        </style>
 
     </head>
     <body>        
@@ -70,12 +71,15 @@
                             <i class="fa fa-bars"></i>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarResponsive">
-                            <ul class="navbar-nav text-uppercase ml-auto text-center">                                
+                            <ul class="navbar-nav text-uppercase ml-auto text-center">
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="standardType.jsp"><b>Le mie liste</b></a>
+                                    <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >Crea una lista</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="#home"><i class="fa fa-home"></i><b>Home</b></a>
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="standard.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
@@ -121,7 +125,7 @@
                                     <a class="nav-link icon" href="profile.jsp">
                                         <i class="fa fa-user"></i>Il mio profilo
                                     </a>
-                                    <a class="nav-link active icon" href="standardType.jsp">
+                                    <a class="nav-link active icon" href="standard.jsp">
                                         <i class="fa fa-heart"></i>Le mie liste
                                     </a>
                                     <!--<a class="nav-link icon" href="change-password.html">
@@ -137,7 +141,7 @@
                                 <!--============ Section Title===================================================================-->
                                 <div class="section-title clearfix">
                                     <div class="float-left float-xs-none">
-                                       <a data-toggle="modal" data-target="#SearchListModal" class="btn btn-primary text-caps btn-rounded" >Search List</a>
+                                        <a data-toggle="modal" data-target="#SearchListModal" class="btn btn-primary text-caps btn-rounded" >Search List</a>
                                     </div>
                                     <div class="float-right d-xs-none thumbnail-toggle">
                                         <a href="#" class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
@@ -153,43 +157,43 @@
                                     <!--##############-->
 
                                     <c:forEach items="${sharedLists}" var="list"  >
-                                       <div class="item">
-                                        <!--end ribbon-->
-                                        <div class="wrapper">
-                                            <div class="image">
-                                                <h3>
-                                                    <a href="#" class="tag category"><c:out value="${list.categoria}"/></a>
-                                                    <a href="/Lists/restricted/ShowShopList?nome=" class="title"><c:out value="${list.nome}"/></a>
-                                                </h3>
-                                                <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                    <img src="../../${list.immagine}" alt="">
-                                                </a>
+                                        <div class="item">
+                                            <!--end ribbon-->
+                                            <div class="wrapper">
+                                                <div class="image">
+                                                    <h3>
+                                                        <a href="#" class="tag category"><c:out value="${list.categoria}"/></a>
+                                                        <a href="/Lists/restricted/ShowShopList?nome=" class="title"><c:out value="${list.nome}"/></a>
+                                                    </h3>
+                                                    <a href="single-listing-1.html" class="image-wrapper background-image">
+                                                        <img src="../../${list.immagine}" alt="">
+                                                    </a>
+                                                </div>
+                                                <!--end image-->
+                                                <div class="price">$80</div>
+                                                <div class="admin-controls">
+                                                    <a href="/Lists/restricted/ShowShopList?nome=${list.nome}">
+                                                        <i class="fa fa-pencil"></i>Edit
+                                                    </a>
+                                                    <a href="#" class="ad-hide">
+                                                        <i class="fa fa-eye-slash"></i>Hide
+                                                    </a>
+                                                    <a href="#" class="ad-remove">
+                                                        <i class="fa fa-trash"></i>Remove
+                                                    </a>
+                                                </div>
+                                                <!--end admin-controls-->
+                                                <div class="description">
+                                                    <p><c:out value="${list.descrizione}"/></p>
+                                                </div>
+                                                <!--end description-->
+                                                <a href="/Lists/restricted/ShowShopList?nome=${list.nome}" class="detail text-caps underline">Detail</a>
                                             </div>
-                                            <!--end image-->
-                                            <div class="price">$80</div>
-                                            <div class="admin-controls">
-                                                <a href="/Lists/restricted/ShowShopList?nome=${list.nome}">
-                                                    <i class="fa fa-pencil"></i>Edit
-                                                </a>
-                                                <a href="#" class="ad-hide">
-                                                    <i class="fa fa-eye-slash"></i>Hide
-                                                </a>
-                                                <a href="#" class="ad-remove">
-                                                    <i class="fa fa-trash"></i>Remove
-                                                </a>
-                                            </div>
-                                            <!--end admin-controls-->
-                                            <div class="description">
-                                                <p><c:out value="${list.descrizione}"/></p>
-                                            </div>
-                                            <!--end description-->
-                                            <a href="/Lists/restricted/ShowShopList?nome=${list.nome}" class="detail text-caps underline">Detail</a>
-                                        </div>
-                                    </div> 
+                                        </div> 
                                     </c:forEach>
-                                    
+
                                     <!--end item-->
-          
+
                                 </div>
                                 <!--end items-->
                             </div>
@@ -300,7 +304,7 @@
 
         <!--######################################################-->
         <script src="../js/jquery-3.3.1.min.js"></script>
-         
+
         <script type="text/javascript" src="../js/popper.min.js"></script>
         <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
@@ -310,119 +314,119 @@
         <script src="../js/icheck.min.js"></script>
         <script src="../js/jquery.validate.min.js"></script>
         <script src="../js/custom.js"></script>        
-         <script type="text/javascript" src="../js/datatables.js" ></script>
-        
+        <script type="text/javascript" src="../js/datatables.js" ></script>
+
         <script>
             var data = [
-                <c:forEach varStatus="status" items="${sharedLists}" var="list"  >
-                     [
-                          "1",
-                          "<a href=\"/Lists/restricted/ShowShopList?nome=${list.nome}\">${list.nome}</a>",
-                          "${list.descrizione}",
-                          "${list.creator}",
-                          "${list.categoria}",
-                          [
-                             <c:forEach items="${list.sharedUsers}" var="user" varStatus="userStatus">
-                                     ' ${user.email}'
-                                <c:if test="${!userStatus.last}">    
-                                    ,    
-                                </c:if>   
-                             </c:forEach>
-                         ]
-                         
-                     ]<c:if test="${!status.last}">    
-                        ,    
-                      </c:if>           
+            <c:forEach varStatus="status" items="${sharedLists}" var="list"  >
+            [
+                    "1",
+                    "<a href=\"/Lists/restricted/ShowShopList?nome=${list.nome}\">${list.nome}</a>",
+                    "${list.descrizione}",
+                    "${list.creator}",
+                    "${list.categoria}",
+            [
+                <c:forEach items="${list.sharedUsers}" var="user" varStatus="userStatus">
+            ' ${user.email}'
+                    <c:if test="${!userStatus.last}">
+            ,
+                    </c:if>
                 </c:forEach>
-      
-            ];        
+            ]
+
+            ]<c:if test="${!status.last}">
+            ,
+                </c:if>
+            </c:forEach>
+
+            ];
 
             $(function () {
-                $('#shareTable').DataTable( {
+                $('#shareTable').DataTable({
                     data: data
-                    
-                } );               
+
+                });
             });
         </script> 
 
         <!--########################## moooddaaalllll ############################-->
-        
+
         <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="page-title">
-                        <div class="container">
-                            <h1 style="text-align: center;">Create list</h1>
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1 style="text-align: center;">Create list</h1>
+                            </div>
+                            <!--end container-->
                         </div>
-                        <!--end container-->
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- Form per il login -->
-                    <form class="form clearfix" id="CreateShopListform" action="/Lists/restricted/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="Nome" class="col-form-label">Nome della lista</label>
-                            <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
-                        </div>
-                        <!--end form-group-->
-                        <div class="form-group">
-                            <label for="Descrizione" class="col-form-label">Descrizione</label>
-                            <input type="text" name="Descrizione" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
-                        </div>
-                        <!--end form-group-->
-                        <div class="form-group">
-                            <label for="Categoria" class="col-form-label">Categoria</label>
-                            <select name="Categoria" id="Categoria" tabindex="1" size="5" >
-                                <c:forEach items="${categorie}" var="categoria">
-                                    <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
-                                </c:forEach>
-                            </select><!--<input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>-->
+                    <div class="modal-body">
+                        <!-- Form per il login -->
+                        <form class="form clearfix" id="CreateShopListform" action="/Lists/restricted/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="Nome" class="col-form-label">Nome della lista</label>
+                                <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="Descrizione" class="col-form-label">Descrizione</label>
+                                <input type="text" name="Descrizione" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="Categoria" class="col-form-label">Categoria</label>
+                                <select name="Categoria" id="Categoria" tabindex="1" size="5" >
+                                    <c:forEach items="${categorie}" var="categoria">
+                                        <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
+                                    </c:forEach>
+                                </select><!--<input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>-->
 
-                        </div>
-                    
-                    <!--end form-group-->
+                            </div>
 
-                    <div class="form-group">
-                        <label for="Immagine" class="col-form-label required">Immagine</label>
-                        <input type="file" name="file1" required>
+                            <!--end form-group-->
+
+                            <div class="form-group">
+                                <label for="Immagine" class="col-form-label required">Immagine</label>
+                                <input type="file" name="file1" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="d-flex justify-content-between align-items-baseline">
+
+                                <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
+                            </div>
+                        </form>
+                        <hr>
                     </div>
-                    <!--end form-group-->
-                    <div class="d-flex justify-content-between align-items-baseline">
-                        
-                        <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
-                    </form>
-                    <hr>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
-        </div>
-            
-            <!--########################## modal search ############################-->
-         <div class="modal fade" id="SearchListModal" tabindex="-1" role="dialog" aria-labelledby="SearchList" aria-hidden="true" enctype="multipart/form-data">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="page-title">
-                        <div class="container">
-                            <h1 style="text-align: center;">Search List</h1>
+
+        <!--########################## modal search ############################-->
+        <div class="modal fade" id="SearchListModal" tabindex="-1" role="dialog" aria-labelledby="SearchList" aria-hidden="true" enctype="multipart/form-data">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1 style="text-align: center;">Search List</h1>
+                            </div>
+                            <!--end container-->
                         </div>
-                        <!--end container-->
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="table-responsive">
-                                <table id="shareTable" class="dataTable cell-border compact display order-column" width="100%">
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table id="shareTable" class="dataTable cell-border compact display order-column" width="100%">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -437,18 +441,18 @@
                                     <tr>
                                         <td>CARICA I DATI DELLA TABELLA</td>                                          
                                     </tr>
-                                
+
                                 </tbody>
                             </table> 
-                            </div>
-                    
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
-        </div>
-         </div>
-            
-             <!--########################## end modal search ############################-->
-        
-            <script src="../js/nav.js"></script>
+
+        <!--########################## end modal search ############################-->
+
+        <script src="../js/nav.js"></script>
     </body>
 </html>

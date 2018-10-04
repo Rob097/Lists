@@ -16,28 +16,24 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
-    HttpSession s = (HttpSession)request.getSession();
+    HttpSession s = (HttpSession) request.getSession();
     User u = null;
     boolean find = false;
- 
-        
-    u = (User)s.getAttribute("user");
-    if(u == null){
+
+    u = (User) s.getAttribute("user");
+    if (u == null) {
         response.sendRedirect("/Lists/homepage.jsp");
 
-      }else{
-         if (u.getTipo().equals("standard")) {
-          find = true;
-          } 
-                System.out.println("=================================" + u.getNominativo());
-                System.out.println("=================================" + u.getTipo());
-            
-                System.out.println("000" + find);
-            
-            
+    } else {
+        if (u.getTipo().equals("standard")) {
+            find = true;
+        }
+        System.out.println("=================================" + u.getNominativo());
+        System.out.println("=================================" + u.getTipo());
 
+        System.out.println("000" + find);
 
-    if (find) {
+        if (find) {
 %>
 
 <!DOCTYPE html>
@@ -59,20 +55,19 @@
     <body>
 
         <%
-             String Nominativo = "";
+            String Nominativo = "";
             String Email = "";
             String Type = "";
             String image = "../../";
 
             //String Image = "";
-            
             Nominativo = u.getNominativo();
             Email = u.getEmail();
             Type = u.getTipo();
             image = u.getImage();
 
         %>
-        
+
         <div class="page home-page">
             <header class="hero">
                 <div class="hero-wrapper">
@@ -89,13 +84,13 @@
                         <div class="collapse navbar-collapse" id="navbarResponsive">
                             <ul class="navbar-nav text-uppercase ml-auto text-center">
                                 <li class="nav-item">
-                                    <a href="submit.html" class="btn btn-primary text-caps btn-rounded" >+ Lista</a>
+                                    <a href="submit.html" class="btn btn-primary text-caps btn-rounded" style="color: black;">Crea una lista</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="foreignLists.jsp"><b>Lists you can looking for</b></a>
+                                    <a class="nav-link js-scroll-trigger" href="standard.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="#home"><i class="fa fa-home"></i><b>Home</b></a>
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
@@ -103,7 +98,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="standardType.jsp">
+                                    <a class="nav-link js-scroll-trigger" href="standard.jsp">
                                         <i class="fa fa-user"></i><b>Le mie liste</b>
                                     </a>
                                 </li>
@@ -119,16 +114,16 @@
                         </div>
                         <% request.getSession().setAttribute("updateResult", false); %>               
                     </c:if> 
-                    
-                    
+
+
                     <!--============ Hero Form ==========================================================================-->
                     <form class="hero-form form">
                         <div class="container">
                             <!--Main Form-->
-                          
+
                             <!--end main-search-form-->
                             <!--Alternative Form-->
-                            
+
                             <!--end alternative-search-form-->
                         </div>
                         <!--end container-->
@@ -160,7 +155,7 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <nav class="nav flex-column side-nav">                                   
-                                    <a class="nav-link icon" href="standardType.jsp">
+                                    <a class="nav-link icon" href="standard.jsp">
                                         <i class="fa fa-heart"></i>Le mie liste
                                     </a>
                                     <a class="nav-link icon" href="foreignLists.jsp">
@@ -193,9 +188,9 @@
                                                     <label for="nominativo" class="col-form-label">Nome</label>
                                                     <input type="text" name="nominativo" id="nominativo" tabindex="1" class="form-control" placeholder="Nome" value="${user.nominativo}" >
                                                 </div>
- 
+
                                                 <!--end form-group-->
-                                                
+
                                             </section>
                                             <section class="clearfix">
                                                 <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary float-right">Save Changes</button>
@@ -218,8 +213,8 @@
                                         </div>
                                         <!--end col-md-3-->
                                     </div>
-                               </form>
-                                
+                                </form>
+
                             </div>
                         </div>
                         <!--end row-->
@@ -357,7 +352,7 @@
                 </div>
             </div>
         </div>
-        
+
 
         <!--######################################################-->
 
@@ -378,7 +373,7 @@
 </html>
 
 <%
-    } else
-        response.sendRedirect("/Lists");
-}
+        } else
+            response.sendRedirect("/Lists");
+    }
 %>

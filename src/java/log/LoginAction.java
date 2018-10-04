@@ -107,14 +107,7 @@ public class LoginAction extends HttpServlet {
                 
                
 
-                if ("standard".equals(user.getTipo())) {
-                    url = "Pages/standard/standardType.jsp";
-                } else if ("amministratore".equals(user.getTipo())) {
-                    url = "Pages/amministratore/amministratore.jsp";
-                } else {
-                    url = "homepage.jsp";
-                    out.println("Errore di tipo utente");
-                }
+                url = "homepage.jsp";
             } else {
                 System.out.println("user=null");
                 url = "homepage.jsp";
