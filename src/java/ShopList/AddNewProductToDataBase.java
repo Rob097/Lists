@@ -66,7 +66,7 @@ public class AddNewProductToDataBase extends HttpServlet {
         HttpSession s = request.getSession();
         Product nuovoProdotto = new Product();
 
-        int pid;
+        int pid = 0;
         String nome = "";
         String note= "";
         String categoria_prodotto= "";
@@ -79,6 +79,9 @@ public class AddNewProductToDataBase extends HttpServlet {
             note = request.getParameter("NoteProdotto");
 
             categoria_prodotto = request.getParameter("CategoriaProdotto");
+            
+            pid = productdao.LastPIDOfProducts();
+            
         } catch (Exception e) {
             System.out.println("ERRROREEEEE CATCH");
         }
@@ -100,11 +103,13 @@ public class AddNewProductToDataBase extends HttpServlet {
         listsFolder = listsFolder.replace("\\build", "");
         File uploadDirFile = new File(listsFolder);
         String filename1 = "";
-        Part filePart1 = request.getPart("file1");
+        Part filePart1 = request.getPart("ImmagineProdotto");
         if ((filePart1 != null) && (filePart1.getSize() > 0)) {
 
             String extension = Paths.get(filePart1.getSubmittedFileName()).getFileName().toString().split(Pattern.quote("."))[1];;
-            String nomeIMG = creator + "-" + nome;
+            String nomeIMG = Integer.toString(pid);
+            
+            System.out.println("NOME DELLIMMAGINE PRODOTTO: " + nomeIMG);
 
             filename1 = nomeIMG + "." + extension;
             filename1 = filename1.replaceAll("\\s+", "");

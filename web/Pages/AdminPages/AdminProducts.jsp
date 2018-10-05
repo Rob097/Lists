@@ -276,9 +276,17 @@
                                 <input type="text" name="NoteProdotto" id="NoteProdotto" tabindex="1" class="form-control" placeholder="Nome" value="" required>
                             </div>
                             <!--end form-group-->
+                            
+                            
                             <div class="form-group">
-                                <label for="CategoriaProdotto" class="col-form-label">CategoriaProdotto</label>
-                                <input type="text" name="CategoriaProdotto" id="CategoriaProdotto" tabindex="2" class="form-control" placeholder="CategoriaProdotto" required>
+                                <label for="CategoriaProdotto" class="col-form-label">Categoria</label>
+                                <select name="CategoriaProdotto" id="Categoria" tabindex="1" size="5" >
+
+                                    <c:forEach items="${categorie}" var="categoria">
+                                        <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
+                                    </c:forEach>
+                                </select><!--<input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>-->
+
                             </div>
 
                             <!--end form-group-->

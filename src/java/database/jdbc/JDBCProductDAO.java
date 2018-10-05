@@ -151,4 +151,21 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO{
         
     }
     
+    public int LastPIDOfProducts() throws DAOException{
+        try (PreparedStatement stm = CON.prepareStatement("SELECT PID FROM Product ORDER BY PID DESC LIMIT 1")) {
+            
+            int pid = 0;
+            
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    pid = rs.getInt("PID");
+                }
+
+                return pid+1;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get bt category", ex);
+        }
+    }
+    
 }
