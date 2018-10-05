@@ -238,7 +238,7 @@
                             <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
                             <a href="adaptedChatroom.jsp"><i class="fas fa-users"><br>ChatRoom</i></a> 
                             <a data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Share</i></a>
-                            <a href="#"><i class="fa fa-trash"><br>Delete</i></a> 
+                            <a data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Delete</i></a> 
                         </div>
 
                         <hr>
@@ -403,5 +403,36 @@
             </div>
         </div>
         <!--##########################-- End Share Modal--############################-->
+        
+        <!-- Delete Modal -->
+        <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1>Delete List</h1>
+                            </div>
+                            <!--end container-->
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>Sei sicuro di voler eliminare questa lista?<br> Non potrai annullare la modifica.</h3>
+                        <form class="clearfix" action="/Lists/restricted/DeleteShopList" method="POST">
+                            <button type="submit" class="btn btn-primary" id="delete">Delete</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete-btn-no">Cancel</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--########################end delete modal##############################-->
+        
     </body>
 </html>

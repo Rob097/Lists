@@ -49,13 +49,15 @@ public class DeleteShopList extends HttpServlet {
        
         try {
             ShopList list = listdao.getbyName(listname);
+            System.out.println("NOME LISTAAA" + list.getNome());
             listdao.deleteList(list);
         } catch (DAOException ex) {
             Logger.getLogger(DeleteShopList.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("ERRORE MOME LISTA");
         }
         String url;
         if ("standard".equals(user.getTipo())) {
-                    url = "Pages/standard/standard.jsp";
+                    url = "/Lists/Pages/standard/standard.jsp";
                 } else if ("amministratore".equals(user.getTipo())) {
                     url = "Pages/amministratore/amministratore.jsp";
                 } else {
