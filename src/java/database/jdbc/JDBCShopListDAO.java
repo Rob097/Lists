@@ -18,6 +18,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -323,6 +325,43 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
         } catch (SQLException ex) {
             Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    @Override
+    public void insertProductToGuestList(int prodotto, HttpServletRequest request) throws DAOException {
+        
+        try (PreparedStatement stm = CON.prepareStatement("select * from Product where PID = ?")) {
+            
+            HttpSession s = (HttpSession) request.getSession();
+            ArrayList <Product> productLists = new ArrayList();
+            if(s.getAttribute("prodottiGuest") != null){
+                productLists = (ArrayList<Product>) s.getAttribute("prodottiGuest");
+            }
+            stm.setInt(1, prodotto);
+            
+            try (ResultSet rs = stm.executeQuery()) {
+                System.out.println("\nIN\n\n");
+                while (rs.next()) {
+                    Product sL = new Product();
+                    String n = rs.getString("nome");
+                    sL.setNome(n);
+                    sL.setCategoria_prodotto(rs.getString("categoria_prod"));
+                    sL.setPid(rs.getInt("PID"));
+                    sL.setNote(rs.getString("note"));
+                    sL.setImmagine(rs.getString("immagine"));
+                    System.out.println("\nBeforDo\n\n");
+                    productLists.add(sL);
+                    s.setAttribute("prodottiGuest", productLists);
+                }
+                System.out.println("\nDO\n\n");
+            }catch (SQLException ex) {
+                throw new DAOException("Impossible to insert the product in the guest list", ex);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     @Override

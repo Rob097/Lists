@@ -21,29 +21,44 @@
 
 
 <%
-
+    System.out.println("ShowUserList\n\n");
     DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
     if (daoFactory == null) {
         throw new ServletException("Impossible to get dao factory for user storage system");
     }
+    
     UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
     ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
-
     HttpSession s = (HttpSession) request.getSession();
-    String shoplistName = (String) s.getAttribute("shopListName");
-    User u = null;
+    String shoplistName = null; //Nome della lista
+    ShopList guestList = null; //Lista dell'utente non registrato
+    ArrayList<Product> li = null; //ArrayList dei prodotti della lista
+    ArrayList<User> AllUsersOfCurentList = null; //ArrayList degli utenti con cui la lista è condivisa
+    User u = null; //Eventuale utent
     boolean find = false;
-
     
-
+    //Se rileva che c'è un utente loggato imposta find = true
     if (s.getAttribute("user") != null) {
         u = (User) s.getAttribute("user");
         find = true;
     }
+    
+    
+    if(find){//Se c'è un utente loggato
+        if(s.getAttribute("shopListName") != null){//Se l'attributo di session col nome della lista non è null
+            shoplistName = (String) s.getAttribute("shopListName");
+            li = listdao.getAllProductsOfShopList(shoplistName); //prendi tutti i prodotti della lista e mettili in li
+            AllUsersOfCurentList = listdao.getUsersWithWhoTheListIsShared(shoplistName); //Prendi tutti gli utenti con cui la lista è condivisa
+        }
+    }else if(s.getAttribute("guestList") != null){ //Se non è loggato nessun utente, se l'attributo di sessione contenente la lista dell'utente Guest non è nullo
+            guestList = (ShopList) s.getAttribute("guestList");
+            if(s.getAttribute("prodottiGuest") != null){
+                li = (ArrayList<Product>) s.getAttribute("prodottiGuest"); //Prendi l'attributo di sessione contenente i prodotti se non è nullo
+            }
+            shoplistName = (String) guestList.getNome();
+        }
 
    
-        ArrayList<Product> li = listdao.getAllProductsOfShopList(shoplistName);
-        ArrayList<User> AllUsersOfCurentList = listdao.getUsersWithWhoTheListIsShared(shoplistName);
 
 %>
 
@@ -53,7 +68,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="icon" href="img/favicon.png" sizes="16x16" type="image/png">
         <title><c:out value="${shopListName}"/></title>
-
         <!-- CSS personalizzati -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
         <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css">
@@ -62,6 +76,11 @@
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/user.css">
         <link rel="stylesheet" href="css/navbar.css">
+        <link rel="stylesheet" href="css/datatables.css" type="text/css"> 
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="js/popper.min.js"></script>
+        <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+        
 
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
         <style>
@@ -111,16 +130,19 @@
     </head>
     <body>        
 
-        <%            String Nominativo = "";
-            String Email = "";
-            String Type = "";
-            String image = "";
-
-            //String Image = "";
-            Nominativo = u.getNominativo();
-            Email = u.getEmail();
-            Type = u.getTipo();
-            image = u.getImage();
+        <%  
+            
+                String Nominativo = "";
+                String Email = "";
+                String Type = "";
+                String image = "";
+            if(find){
+                //String Image = "";
+                Nominativo = u.getNominativo();
+                Email = u.getEmail();
+                Type = u.getTipo();
+                image = u.getImage();
+            }
         %>
 
 
@@ -133,7 +155,7 @@
                         <a class="navbar-brand">
                             <img width= "50" src="/Lists/Pages/img/favicon.png" alt="Logo">
                         </a>
-                        <a class="navbar-brand js-scroll-trigger" href="#home">LISTS</a>
+                        <a class="navbar-brand js-scroll-trigger" href="/Lists/homepage.jsp">LISTS</a>
                         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                             Menu
                             <i class="fa fa-bars"></i>
@@ -147,7 +169,7 @@
                                     <a class="nav-link js-scroll-trigger" href="/Lists/Pages/<%=Type%>/<%=Type%>.jsp"><b>Le mie liste</b></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="#home"><i class="fa fa-home"></i><b>Home</b></a>
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
@@ -161,13 +183,14 @@
                                 </li>
                             </ul>
                         </div>
-                    </nav>
+                    </nav>                    
+                    
                     <%} else {%>
                     <nav class="navbar navbar-expand-xl navbar-dark fixed-top " id="mainNav">
                         <a class="navbar-brand">
                             <img width= "50" src="/Lists/Pages/img/favicon.png" alt="Logo">
                         </a>
-                        <a class="navbar-brand js-scroll-trigger" href="#home">LISTS</a>
+                        <a class="navbar-brand js-scroll-trigger" href="/Lists/homepage.jsp">LISTS</a>
                         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                             Menu
                             <i class="fa fa-bars"></i>
@@ -181,7 +204,7 @@
                                     <a class="nav-link js-scroll-trigger" href="/Lists/Pages/guest/guest.jsp"><b>Le mie liste</b></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="#home"><i class="fa fa-home"></i><b>Home</b></a>
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#LoginModal" style="cursor: pointer;">
@@ -197,33 +220,20 @@
                         </div>
                     </nav>
                     <%}%>
-
-
-
+                    
+                                        
                     <!--============ Page Title =========================================================================-->
                     <div class="page-title">
-
                         <div class="container">
-
-
                             <h1 class="opacity-60 center">
                                 <%=shoplistName%>
                                 <%System.out.println("NOME:    ====   " + shoplistName); %>
                             </h1>
                         </div>
-                        <!--end container-->
                     </div>
                     <!--============ End Page Title =====================================================================-->
-                    <!--============ Hero Form ==========================================================================-->
-
-                    <!--============ End Hero Form ======================================================================-->
-
-
-                    <!--end background-->
                 </div>
-                <!--end hero-wrapper-->
             </header>
-            <!--end hero-->
 
 
 
@@ -235,10 +245,17 @@
                 <section class="block">
                     <div class="container">
                         <div class="icon-bar">
-                            <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
-                            <a href="adaptedChatroom.jsp"><i class="fas fa-users"><br>ChatRoom</i></a> 
-                            <a data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Share</i></a>
-                            <a data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Delete</i></a> 
+                            <%if(find){%>
+                                <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
+                                <a href="adaptedChatroom.jsp"><i class="fas fa-users"><br>ChatRoom</i></a> 
+                                <a style="cursor: pointer;" data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Share</i></a>
+                                <a style="cursor: pointer;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Delete</i></a> 
+                            <%}else{%>
+                                <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
+                                <a data-toggle="tooltip" title="Devi registrarti per usare questa funzione" class="disabled"><i class="fas fa-users"><br>ChatRoom</i></a> 
+                                <a data-toggle="tooltip" title="Devi registrarti per usare questa funzione" class="disabled"><i class="fa fa-globe"><br>Share</i></a>
+                                <a style="cursor: pointer;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Delete</i></a> 
+                            <%}%>
                         </div>
 
                         <hr>
@@ -313,7 +330,8 @@
                                 </div>
                                 <!--end items-->
                             </div>
-
+                            
+                            <%if(find){%>
                             <div class = "col-md-3">
                                 <div class="panel-body">
                                     <div class="table-container">
@@ -338,8 +356,8 @@
                                         </table>
                                     </div>
                                 </div>
-
                             </div>
+                            <%}%>
 
                             <!--end col-md-9-->
                         </div>
@@ -360,19 +378,203 @@
         <!--end page-->
 
         <!--######################################################-->
+        
+        
+        <!--#########################################################
+                                MODAL
+        ##########################################################-->
 
-        <script src="js/jquery-3.3.1.min.js"></script>
-        <script type="text/javascript" src="js/popper.min.js"></script>
-        <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
-        <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
-        <script src="js/selectize.min.js"></script>
-        <script src="js/masonry.pkgd.min.js"></script>
-        <script src="js/icheck.min.js"></script>
-        <script src="js/jquery.validate.min.js"></script>
-        <script src="js/custom.js"></script>
-        <script src="js/nav.js"></script>
-        <!--##########################--Share Modal--############################-->
+        <!-- Login Modal -->
+        <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+
+                        <div class="page-title">
+                            <div class="container">
+                                <h1>Sign In</h1>
+                            </div>
+                            <!--end container-->
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>            
+
+                    </div>
+                    <div class="modal-body">
+                        <c:if test="${loginResult==false}">
+                            <div class="alert alert-danger">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>Login Failed!</strong> <br> Please try again or <a data-toggle="modal" href="#RegisterModal" class="alert-link"><u>Sign up!</u></a>
+
+                            </div>
+                        </c:if>
+                        <!-- Form per il login -->
+                        <form class="form clearfix" id="login-form" action="/Lists/LoginAction" method="post" role="form">
+                            <div class="form-group">
+                                <label for="email" class="col-form-label required">Email</label>
+                                <input type="text" name="email" id="emaillogin" tabindex="1" class="form-control" placeholder="Email" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="password" class="col-form-label required">Password</label>
+                                <input type="password" name="password" id="passwordlogin" tabindex="2" class="form-control" placeholder="Password" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <div class="form-group text-center">
+                                    <label>
+                                        <input type="checkbox" name="remember" value="1">
+                                        Remember Me
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Sign In</button>
+                            </div>
+
+                        </form>
+                        <hr>
+                        <p>
+                            Troubles with signing? <a href="#RegisterModal" data-toggle="modal" class="link">Click here.</a>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--######################################################-->
+
+        <!-- Register Modal -->
+        <div class="modal fade" id="RegisterModal" tabindex="-1" role="dialog" aria-labelledby="RegisterModal" aria-hidden="true" enctype="multipart/form-data">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1>Register</h1>
+                            </div>
+                            <!--end container-->
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form per il login -->
+                        <form class="form clearfix" id="register-form" action="/Lists/RegisterAction" method="post" enctype="multipart/form-data" onsubmit="return checkCheckBoxes(this);">
+                            <div class="form-group">
+                                <label for="email" class="col-form-label">Email</label>
+                                <input type="email" name="email" id="emailRegister" tabindex="1" class="form-control" placeholder="Email" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="nominativo" class="col-form-label">Nome</label>
+                                <input type="text" name="nominativo" id="nominativoRegister" tabindex="1" class="form-control" placeholder="Nome" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="password" class="col-form-label">Password</label>
+                                <input type="password" name="password" id="passwordRegister" tabindex="2" class="form-control" placeholder="Password" required>
+                            </div>
+
+                            <!--end form-group-->
+
+                            <div class="form-group">
+                                <label for="image" class="col-form-label required">Avatar</label>
+                                <input type="file" name="file1" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <div class="form-group text-center">
+                                    <input type="checkbox" tabindex="3" class="" name="standard" id="standard">
+                                    <label for="standard">Standard</label>
+                                    <input type="checkbox" tabindex="3" class="" name="amministratore" id="amministratore">
+                                    <label for="amministratore">Amministratore</label>
+                                </div>
+                                <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Register Now</button>
+                            </div>
+                        </form>
+                        <hr>
+                        <p>
+                            By clicking "Register Now" button, you agree with our <a href="#" class="link">Terms & Conditions.</a>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--######################################################-->
+
+
+        <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1 style="text-align: center;">Create list</h1>
+                            </div>
+                            <!--end container-->
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form per il login -->
+                        <form class="form clearfix" id="CreateShopListform" action="/Lists/restricted/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="Nome" class="col-form-label">Nome della lista</label>
+                                <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="Descrizione" class="col-form-label">Descrizione</label>
+                                <input type="text" name="Descrizione" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="Categoria" class="col-form-label">Categoria</label>
+                                <select name="Categoria" id="Categoria" tabindex="1" size="5" >
+
+                                    <c:forEach items="${categorie}" var="categoria">
+                                        <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
+                                    </c:forEach>
+                                </select><!--<input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>-->
+
+                            </div>
+                            <!--end form-group-->
+                            <%if(find){%>
+                            <div class="form-group">
+                                <label for="Immagine" class="col-form-label required">Immagine</label>
+                                <input type="file" name="file1" required>
+                            </div>
+                            <%}%>
+                            <!--end form-group-->
+                            <div class="d-flex justify-content-between align-items-baseline">
+
+                                <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
+
+                                <%if (find == false && session.getAttribute("guestList") != null) {%>
+                                <h5>Attenzione, hai già salvato una lista. Se non sei registrato puoi salvare solo una lista alla volta. Salvando questa lista, cancellerai la lista gia salvata.</h5>
+                                <%}%>
+                            </div>
+                        </form>
+                        <hr>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+                            
+            <!--##########################--Share Modal--############################-->
         <div class="modal fade" id="ShareListModal" tabindex="-1" role="dialog" aria-labelledby="ShareList" aria-hidden="true" enctype="multipart/form-data">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -433,6 +635,22 @@
 
 
         <!--########################end delete modal##############################-->
+<!--###################################################################################################################################################################################################-->
+
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="js/popper.min.js"></script>
+        <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
+        <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
+        <script src="js/selectize.min.js"></script>
+        <script src="js/masonry.pkgd.min.js"></script>
+        <script src="js/icheck.min.js"></script>
+        <script src="js/jquery.validate.min.js"></script>
+        <script src="js/custom.js"></script>
+        <script src="js/nav.js"></script>
+        <script src="js/vari.js"></script>
+        
+        
         
     </body>
 </html>

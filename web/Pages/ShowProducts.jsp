@@ -330,7 +330,7 @@
                                                 <p><%=p.getNote()%></p>
                                             </div>
                                             <!--end description-->
-                                            <a data-toggle="modal" data-target="#exampleModal" class="detail text-caps underline">Detail</a>
+                                            <a style="cursor: pointer;" data-toggle="modal" data-target="#myModal" data-id="<%=p.getPid()%>" class="detail text-caps underline">Add to your list</a>
                                         </div>
                                     </div>
                                     <%}
@@ -362,7 +362,7 @@
                                                 <p><%=p.getNote()%></p>
                                             </div>
                                             <!--end description-->
-                                            <a data-toggle="modal" data-target="#myModal" class="detail text-caps underline">Add to your list</a>
+                                            <a style="cursor: pointer;" data-toggle="modal" data-target="#myModal" data-id="<%=p.getPid()%>" class="detail text-caps underline">Add to your list</a>
                                         </div>
                                     </div>
                                     <%}
@@ -411,22 +411,83 @@
                         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
 
                         <ul id="myUL">
-
+                            
                             <%for (String nomeLista : allListsOfUser) {%>
-
-                            <li><a href="#"><%=nomeLista%></a></li>
+                            
+                            <li><a href="/Lists/Pages/AddProductToListPage.jsp?shopListName=<%=nomeLista%>"><%=nomeLista%></a></li>
 
                             <%}%>
                         </ul>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <div style="padding: 1rem;">
+                        <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >Crea una lista</a>
+                        <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
 
             </div>
         </div>
+         
+                     
+        <!--########################## moooddaaalllll ############################-->
 
+        <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1 style="text-align: center;">Create list</h1>
+                            </div>
+                            <!--end container-->
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form per il login -->
+                        <form class="form clearfix" id="CreateShopListform" action="/Lists/restricted/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="Nome" class="col-form-label">Nome della lista</label>
+                                <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="Descrizione" class="col-form-label">Descrizione</label>
+                                <input type="text" name="Descrizione" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="Categoria" class="col-form-label">Categoria</label>
+                                <select name="Categoria" id="Categoria" tabindex="1" size="5" >
+                                    <c:forEach items="${categorie}" var="categoria">
+                                        <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
+                                    </c:forEach>
+                                </select><!--<input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>-->
+
+                            </div>
+
+                            <!--end form-group-->
+
+                            <div class="form-group">
+                                <label for="Immagine" class="col-form-label required">Immagine</label>
+                                <input type="file" name="file1" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="d-flex justify-content-between align-items-baseline">
+
+                                <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
+                            </div>
+                        </form>
+                        <hr>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <script>
             function myFunction() {
                 var input, filter, ul, li, a, i;
@@ -442,6 +503,14 @@
                         li[i].style.display = "none";
                     }
                 }
+            }
+        </script>
+        
+        <script>
+            function nameL(<%String nome = "";%>) {
+                <%
+                    s.setAttribute("shopListName", nome);
+                %>
             }
         </script>
     </body>

@@ -45,7 +45,10 @@ public class DeleteShopList extends HttpServlet {
         
        HttpSession session = (HttpSession) request.getSession(false); 
        String listname = (String) session.getAttribute("shopListName");
-       User user = (User) session.getAttribute("user");
+       User user = null;
+       if(session.getAttribute("user") != null){
+           user = (User) session.getAttribute("user");
+       }
        
         try {
             ShopList list = listdao.getbyName(listname);
@@ -56,14 +59,11 @@ public class DeleteShopList extends HttpServlet {
             System.out.println("ERRORE MOME LISTA");
         }
         String url;
-        if ("standard".equals(user.getTipo())) {
-                    url = "/Lists/Pages/standard/standard.jsp";
-                } else if ("amministratore".equals(user.getTipo())) {
-                    url = "Pages/amministratore/amministratore.jsp";
-                } else {
-                    url = "homepage.jsp";
-                    out.println("Errore di tipo utente");
-                }
+        if (user != null) {
+            url = "/Lists/Pages/"+ user.getTipo() + "/"+ user.getTipo() + ".jsp";
+        } else {
+            url = "homepage.jsp";
+        }
         
         if (url != null) {
             response.sendRedirect(url);

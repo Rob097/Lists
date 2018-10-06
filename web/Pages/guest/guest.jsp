@@ -19,7 +19,7 @@
 <%
 
     HttpSession s = (HttpSession) request.getSession();
-    ShopList lista = new ShopList();
+    ShopList lista = null;
     if (s.getAttribute("guestList") != null) {
         lista = (ShopList) s.getAttribute("guestList");
     }
@@ -163,14 +163,14 @@
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
                                     <!--##############-->
-                                    <%if (s.getAttribute("guestList") != null) {%>                                                                 
+                                    <%if (lista != null) {%>                                                                 
                                     <div class="item">
                                         <!--end ribbon-->
                                         <div class="wrapper">
                                             <div class="image">
                                                 <h3>
                                                     <a href="#" class="tag category"><%=lista.getCategoria()%></a>
-                                                    <a href="/Lists/Pages/ShowUserList.jsp?nome=<%=lista.getNome()%>" class="title"><%=lista.getNome()%></a>
+                                                    <a href="/Lists/restricted/ShowShopList?nome=<%=lista.getNome()%>" class="title"><%=lista.getNome()%></a>
                                                 </h3>
                                                 <a href="single-listing-1.html" class="image-wrapper background-image">
                                                     <img src="/Lists/<%=lista.getImmagine()%>" alt="">
@@ -179,7 +179,7 @@
                                             <!--end image-->
                                             <div class="price">$80</div>
                                             <div class="admin-controls">
-                                                <a href="/Lists/Pages/ShowUserList.jsp?nome=<%=lista.getNome()%>">
+                                                <a href="/Lists/restricted/ShowShopList?nome=<%=lista.getNome()%>">
                                                     <i class="fa fa-pencil"></i>Edit
                                                 </a>
                                                 <a href="#" class="ad-hide">
@@ -197,7 +197,8 @@
                                             <a href="/Lists/restricted/ShowShopList?nome=<%=lista.getNome()%>" class="detail text-caps underline">Detail</a>
                                         </div>
                                     </div>
-                                    <!--end item--><%} else {%>
+                                    <!--end item-->
+                                    <%} else {%>
                                     <h1>Non hai ancora creato nessuna lista</h1>
                                     <%}%>
 

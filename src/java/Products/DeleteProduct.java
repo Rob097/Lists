@@ -58,7 +58,7 @@ public class DeleteProduct extends HttpServlet {
         
         System.out.println("PID integer " + Integer.getInteger(PID));
         try {
-            productdao.Delete(p);
+            /*productdao Delete(p);*/
         } catch (Exception e) {
         }
         

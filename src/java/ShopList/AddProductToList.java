@@ -6,10 +6,13 @@
 package ShopList;
 
 import database.daos.ListDAO;
+import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCShopListDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -47,9 +50,18 @@ public class AddProductToList extends HttpServlet {
         String prodotto = request.getParameter("prodotto");
         String lista = (String) s.getAttribute("shopListName");
         
-        try {
-            listdao.insertProductToList(Integer.parseInt(prodotto), lista);
-        } catch (Exception e) {
+        if(s.getAttribute("user") != null){            
+            try {
+                listdao.insertProductToList(Integer.parseInt(prodotto), lista);
+            } catch (DAOException ex) {
+                Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
+            }            
+        }else{
+            try {
+                listdao.insertProductToGuestList(Integer.parseInt(prodotto), request);
+            } catch (DAOException ex) {
+                Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
         response.sendRedirect("/Lists/Pages/ShowUserList.jsp");
