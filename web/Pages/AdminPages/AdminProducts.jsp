@@ -216,7 +216,7 @@
                                                 <a href="#" class="ad-hide">
                                                     <i class="fa fa-eye-slash"></i>Hide
                                                 </a>
-                                                <a href="#" class="ad-remove">
+                                                <a href="/Lists/DeleteProduct?PID=<%=elem.getPid()%>" class="ad-remove">
                                                     <i class="fa fa-trash"></i>Remove
                                                 </a>
                                             </div>

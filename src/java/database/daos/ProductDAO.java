@@ -22,4 +22,6 @@ public interface ProductDAO {
     public ArrayList<String> getAllProductCategories() throws DAOException;
     public void Insert(Product l) throws DAOException;
     public int LastPIDOfProducts() throws DAOException;
+    public void Delete(Product l) throws DAOException;
+    public Product getProductByID(int id) throws DAOException;
 }
