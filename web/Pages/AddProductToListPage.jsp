@@ -31,7 +31,15 @@
     ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
 
     HttpSession s = (HttpSession) request.getSession();
-    String shoplistName = (String) s.getAttribute("shopListName");
+    String shoplistName = "";
+    if(s.getAttribute("shopListName") != null){
+        shoplistName = (String) s.getAttribute("shopListName");
+    }
+    if(request.getParameter("shopListName") != null){
+        shoplistName = (String) request.getParameter("shopListName");
+        s.setAttribute("shopListName", shoplistName);
+        
+    }
     User u = new User();
     boolean find = false;
     if (s.getAttribute("user") != null) {
@@ -39,15 +47,17 @@
     }
 
     if (u.getTipo() != null) {
-        if (u.getTipo().equals("standard")) {
+        if (u.getTipo().equals("standard") || u.getTipo().equals("amministratore")) {
             find = true;
         }
     }
-
-    if (find) {
         ArrayList<Product> li = productdao.getAllProducts();
         ArrayList<String> allCategories = productdao.getAllProductCategories();
-        ArrayList<String> allListsOfUser = listdao.getAllListsByCurentUser(u.getEmail());
+        ArrayList<String> allListsOfUser = null;
+        if(find){
+            allListsOfUser = listdao.getAllListsByCurentUser(u.getEmail());
+        }
+
 
 %>
 
@@ -155,16 +165,19 @@
     </head>
     <body>        
 
-        <%            String Nominativo = "";
+        <%            
+            String Nominativo = "";
             String Email = "";
             String Type = "";
             String image = "";
 
-            //String Image = "";
-            Nominativo = u.getNominativo();
-            Email = u.getEmail();
-            Type = u.getTipo();
-            image = u.getImage();
+            if(find){
+                //String Image = "";
+                Nominativo = u.getNominativo();
+                Email = u.getEmail();
+                Type = u.getTipo();
+                image = u.getImage();
+            }
         %>
 
 
@@ -239,7 +252,7 @@
                     <div class="page-title">
                         <div class="container">
                             <h1 class="opacity-60 center">
-                                You are looking for all products list
+                                Tutti i Prodotti
                             </h1>
                         </div>
                         <!--end container-->
@@ -420,8 +433,3 @@
        
     </body>
 </html>
-
-<%
-    } else
-        response.sendRedirect("/Lists");
-%>

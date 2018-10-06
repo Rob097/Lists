@@ -10,6 +10,7 @@ import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
 import java.util.ArrayList;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -29,5 +30,6 @@ public interface ListDAO {
     public ShopList getbyName(String nome) throws DAOException;
     public ArrayList<String> getAllListsByCurentUser(String nome) throws DAOException;
     public void insertProductToList(int prodotto, String lista) throws DAOException;
+    public void insertProductToGuestList(int prodotto, HttpServletRequest request) throws DAOException;
     public ArrayList<ShopList> getAllSharedList(String email) throws DAOException;
 }

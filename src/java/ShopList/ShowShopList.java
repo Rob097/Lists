@@ -53,51 +53,50 @@ public class ShowShopList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("ShowShopList:\n\n");
         HttpSession session =(HttpSession) request.getSession(false);
-        ArrayList<User> users = new ArrayList<>();
-        User user = (User) session.getAttribute("user");
-        User dbuser = null;
-        ArrayList<User> sharedusers = new ArrayList<>();
         String s = request.getParameter("nome");
         
-        try {
-            dbuser = userdao.getByEmail(user.getEmail());
-            sharedusers = listdao.getUsersWithWhoTheListIsShared(s);
-        } catch (DAOException ex) {
-            System.out.println("try error showShopList.java\n");
-            Logger.getLogger(ShowShopList.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        try {
-            users = userdao.getAllUsers();
-            Iterator<User> i = users.iterator();
-            while(i.hasNext()){
-                //remove your username
-                if(i.next().getEmail().equals(user.getEmail())){
-                    i.remove();
-                }
+        if(session.getAttribute("user") != null) {
+            ArrayList<User> users = new ArrayList<>();
+            User user = (User) session.getAttribute("user");
+            User dbuser = null;
+            ArrayList<User> sharedusers = new ArrayList<>();
+
+            try {
+                dbuser = userdao.getByEmail(user.getEmail());
+                sharedusers = listdao.getUsersWithWhoTheListIsShared(s);
+            } catch (DAOException ex) {
+                System.out.println("try error showShopList.java\n");
+                Logger.getLogger(ShowShopList.class.getName()).log(Level.SEVERE, null, ex);
             }
-            //remove just linked usernames
-            for (int j = 0; j < users.size(); j++) {
-                for (int k = 0; k < sharedusers.size(); k++) {
-                    if(users.get(j).getEmail().equals(sharedusers.get(k).getEmail())){
-                        users.remove(j);
+
+            try {
+                users = userdao.getAllUsers();
+                Iterator<User> i = users.iterator();
+                while(i.hasNext()){
+                    //remove your username
+                    if(i.next().getEmail().equals(user.getEmail())){
+                        i.remove();
                     }
                 }
+                //remove just linked usernames
+                for (int j = 0; j < users.size(); j++) {
+                    for (int k = 0; k < sharedusers.size(); k++) {
+                        if(users.get(j).getEmail().equals(sharedusers.get(k).getEmail())){
+                            users.remove(j);
+                        }
+                    }
+                }
+            } catch (DAOException ex) {
+                Logger.getLogger(ShowShopList.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("problems with getAllUsers()");
             }
-        } catch (DAOException ex) {
-            Logger.getLogger(ShowShopList.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("problems with getAllUsers()");
-        }
-        
-        
-        System.out.println("==========================" + s);
-        
-        session.setAttribute("shopListName", s);
-        if(users != null){
             session.setAttribute("Users", users);
         }
+        System.out.println("==========================" + s);
         
+        session.setAttribute("shopListName", s);        
         response.sendRedirect("/Lists/Pages/ShowUserList.jsp");
     }
 
