@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 /**
@@ -55,88 +56,75 @@ public class updateUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
+        HttpSession s = request.getSession();
         User user = new User();
         Boolean updateResult = false;
         User cgeUser = new User();
-        user = (User) request.getSession().getAttribute("user");
-
-        String email = null;
-        String nominativo = null;
-        String password = null;
+        user = (User) s.getAttribute("user");
+        
+        //Creazione variabili per l'immagine
+        String email = request.getParameter("email");
+        String nominativo = request.getParameter("nominativo");
+        String password = request.getParameter("password");
         String url = null;
-        String Image = "";
-        String avatarsFolder = "/Image/AvatarImg";
-        String rp = "/Image/AvatarImg";
-        String Tipostandard, TipoAmministratore, photo, standard = "standard", amministratore = "amministratore";
-        avatarsFolder = getServletContext().getRealPath(avatarsFolder);
-        avatarsFolder = avatarsFolder.replace("\\build", "");
-        Image = user.getImage();
-
-        email = request.getParameter("email");
-        nominativo = request.getParameter("nominativo");
-        password = request.getParameter("password");
-        System.out.println(email + " " + nominativo + " " + password);
-
-        cgeUser.setEmail(email);
-        cgeUser.setNominativo(nominativo);
-        cgeUser.setPassword(password);
-
-        System.out.println(request.getPart("file1"));
-        //Eliminazione dell'immagine dell'utente
-        if ((request.getPart("file1") != null) && (request.getPart("file1").getSize() > 0)) {
-            try {
-                String filename = "/" + Image;
-                System.out.println("==================== dal db:        " + filename);
-                String avatarsFolder1 = getServletContext().getRealPath(filename);
-                System.out.println("==================== get rela path" + avatarsFolder1);
-                avatarsFolder1 = avatarsFolder1.replace("\\build", "");
-                System.out.println("==================== senza build" + avatarsFolder1);
-                File file = new File(avatarsFolder1);
-
-                System.out.println("==================== path completo" + avatarsFolder1);
-
-                if (file.delete()) {
-                    System.out.println(file.getName() + " is deleted!");
-                } else {
-                    System.out.println(file.getAbsoluteFile() + "Delete operation is failed.");
+        String nomeIMG = user.getImage();
+        String immagine = "";
+       
+        // IMMAGINE
+            String imageFolder = "/Image/AvatarImg";
+            String rp = "/Image/AvatarImg";
+            imageFolder = getServletContext().getRealPath("");
+            imageFolder = imageFolder.replace("\\build", "");
+            File uploadDirFile = new File(imageFolder);
+            
+            //Controllo se l'immagine esiste già e in uesto caso la cancello col etodo DeleteImgFromDirectory
+            if (uploadDirFile.exists()) {
+                try {
+                    DeleteImgFromDirectory(imageFolder + "/" + nomeIMG);
+                } catch (Exception ex1) {
+                    System.out.println("Causa Errore: ");
+                    ex1.printStackTrace();
                 }
-
-            } catch (Exception ex1) {
-                System.out.println("Causa Errore: ");
-                ex1.printStackTrace();
             }
-
-            // obtains the upload file part in this multipart request
-            File uploadDirFile = new File(avatarsFolder);
-            System.out.println("2##########\n");
+        
+            
             String filename1 = "";
-            System.out.println("3##########\n");
-            Part filePart1 = request.getPart("file1");
-            System.out.println("4##########\n");
+            Part filePart1 = request.getPart("file1"); //File di upload
+            if ((filePart1 != null) && (filePart1.getSize() > 0)) {
+                
+                //Estensione
+                String extension = Paths.get(filePart1.getSubmittedFileName()).getFileName().toString().split(Pattern.quote("."))[1];;
+                
+                
+                filename1 = nomeIMG;
+                filename1 = filename1.replaceAll("\\s+","");
 
-            System.out.println("5##########\n");
-            String extension = Paths.get(filePart1.getSubmittedFileName()).getFileName().toString().split(Pattern.quote("."))[1];;
-            System.out.println("6##########\n");
-            filename1 = user.getEmail() + "." + extension;
-            System.out.println("7##########\n");
-            File file1 = new File(uploadDirFile, filename1);
-            System.out.println("8##########\n");
-            try (InputStream fileContent = filePart1.getInputStream()) {
-                System.out.println("9##########\n");
-                Files.copy(fileContent, file1.toPath());
-                System.out.println("10##########\n");
+                //Tolgo il primo /Image/AvatarImg
+                filename1 = filename1.replaceFirst("/Image/AvatarImg", "");
+                
+                
+                File file1 = new File(uploadDirFile, filename1);
+                try (InputStream fileContent = filePart1.getInputStream()) {
+                    String s1 = file1.toPath().toString().replaceFirst("/Image/AvatarImg", "");
+                    File f = new File(s1);
+                    
+                    Files.copy(fileContent, f.toPath());
+                }catch(Exception imgexception) {
+                System.out.println("exception image #1");
+                s.setAttribute("erroreIMG", "Esiste già una lista sul duo account con questo nome!");
             }
-            System.out.println("11##########\n");
-
-            System.out.println("12##########\n");
-            photo = rp + "/" + filename1;
-            System.out.println("13##########\n");
-            photo = photo.replaceFirst("/", "");
-            System.out.println("14##########\n");
-            user.setImage(photo);
-            System.out.println("15##########\n");
-        }
+            }
+            immagine = rp + "/" + filename1;
+            immagine = immagine.replaceFirst("/", ""); 
+            immagine = immagine.replaceAll("\\s+","");
+            cgeUser.setImage(immagine);
+            //FINE IMMAGINE
+            
+            //Aggiornamento dei campi nominativo, email, e password
+            cgeUser.setEmail(email);
+            cgeUser.setNominativo(nominativo);
+            cgeUser.setPassword(password);
 
         try {
             user = userdao.changeUser(cgeUser, user);
@@ -150,10 +138,10 @@ public class updateUser extends HttpServlet {
             request.getSession().setAttribute("updateResult", updateResult);
         }
 
-        if ("standard".equals(user.getTipo())) {
-            url = "/Lists/Pages/standard/profile.jsp";
-        } else if ("amministratore".equals(user.getTipo())) {
-            url = "/Lists/Pages/amministratore/profile.jsp";
+        
+        //Redirect
+        if (s.getAttribute("user") != null) {
+            url = "/Lists/Pages/"+ user.getTipo() +"/profile.jsp";
         } else {
             url = "homepage.jsp";
             out.println("Errore di tipo utente");
@@ -172,5 +160,36 @@ public class updateUser extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    public void DeleteImgFromDirectory(String fileName) {
+        // Creo un oggetto file
+        File f = new File(fileName);
+
+        // Mi assicuro che il file esista
+        if (!f.exists()) {
+            throw new IllegalArgumentException("Il File o la Directory non esiste: " + fileName);
+        }
+
+        // Mi assicuro che il file sia scrivibile
+        if (!f.canWrite()) {
+            throw new IllegalArgumentException("Non ho il permesso di scrittura: " + fileName);
+        }
+
+        // Se è una cartella verifico che sia vuota
+        if (f.isDirectory()) {
+            String[] files = f.list();
+            if (files.length > 0) {
+                throw new IllegalArgumentException("La Directory non è vuota: " + fileName);
+            }
+        }
+
+        // Profo a cancellare
+        boolean success = f.delete();
+
+        // Se si è verificato un errore...
+        if (!success) {
+            throw new IllegalArgumentException("Cancellazione fallita");
+        }
+    }
 
 }
