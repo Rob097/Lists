@@ -414,7 +414,7 @@
                             
                             <%for (String nomeLista : allListsOfUser) {%>
                             
-                            <li><a href="/Lists/Pages/AddProductToListPage.jsp?shopListName=<%=nomeLista%>"><%=nomeLista%></a></li>
+                            <li><a href="/Lists/Pages/AddProductToList?shopListName=<%=nomeLista%>"><%=nomeLista%></a></li>
 
                             <%}%>
                         </ul>

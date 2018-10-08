@@ -44,31 +44,32 @@ public class DeleteShopList extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = (HttpSession) request.getSession(false);
-        String listname = (String) session.getAttribute("shopListName");
-        User user = null;
-        if (session.getAttribute("user") != null) {
-            user = (User) session.getAttribute("user");
-        }
+        
+        if(session.getAttribute("user") != null){
+            String listname = (String) session.getAttribute("shopListName");
+            User user = null;
+            user = (User) session.getAttribute("user");           
 
-        try {
-            ShopList list = listdao.getbyName(listname);
-            System.out.println("NOME LISTAAA" + list.getNome());
-            listdao.deleteList(list);
-        } catch (DAOException ex) {
-            Logger.getLogger(DeleteShopList.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("ERRORE MOME LISTA");
-        }
-        String url;
-        if (user != null) {
-            url = "/Lists/Pages/" + user.getTipo() + "/" + user.getTipo() + ".jsp";
-        } else {
-            url = "homepage.jsp";
-        }
-
-        if (url != null) {
-            response.sendRedirect(url);
-        } else {
-            out.print("Errore Imprevisto");
+            try {
+                ShopList list = listdao.getbyName(listname);
+                System.out.println("NOME LISTAAA" + list.getNome());
+                listdao.deleteList(list);
+            } catch (DAOException ex) {
+                Logger.getLogger(DeleteShopList.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("ERRORE MOME LISTA");
+            }
+            String url  = "/Lists/Pages/" + user.getTipo() + "/" + user.getTipo() + ".jsp";
+                           
+            if (url != null) {
+                response.sendRedirect(url);
+            } else {
+                out.print("Errore Imprevisto");
+            }
+        }else{
+            session.setAttribute("guestList", null);
+            
+            response.sendRedirect("/Lists/homepage.jsp");
+            
         }
 
     }
