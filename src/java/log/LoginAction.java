@@ -8,8 +8,6 @@ package log;
 import database.daos.UserDAO;
 import database.daos.CategoryDAO;
 import database.daos.ListDAO;
-import database.jdbc.JDBCCategoryDAO;
-import database.entities.Category;
 import database.entities.User;
 import database.entities.ShopList;
 import database.exceptions.DAOException;

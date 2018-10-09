@@ -6,10 +6,13 @@
 package ShopList;
 
 import database.daos.ListDAO;
+import database.entities.ShopList;
+import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCShopListDAO;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -58,16 +61,27 @@ public class ShareShopListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String[] emailsharedUsers = request.getParameterValues("sharedUsers");
-        HttpSession session =(HttpSession) request.getSession(false);
-        String listname = (String) session.getAttribute("shopListName");
-        try {
-            for (int i = 0; i < emailsharedUsers.length; i++) {            
-                listdao.insertSharedUser(emailsharedUsers[i], listname);            
+       
+            User user ;
+            String[] emailsharedUsers = request.getParameterValues("sharedUsers");            
+            HttpSession session =(HttpSession) request.getSession(false);
+            String listname = (String) session.getAttribute("shopListName");
+            user = (User) session.getAttribute("user");
+            try {
+                for (int i = 0; i < emailsharedUsers.length; i++) {
+                    listdao.insertSharedUser(emailsharedUsers[i], listname);
+                }
+            } catch (DAOException ex) {
+                Logger.getLogger(ShareShopListServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (DAOException ex) {
-            Logger.getLogger(ShareShopListServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        try {
+            ArrayList<ShopList> li = listdao.getByEmail(user.getEmail());
+            ArrayList<ShopList> sl = listdao.getListOfShopListsThatUserLookFor(user.getEmail());
+            session.setAttribute("userLists", li);
+            session.setAttribute("sharedLists", sl);
+            } catch (DAOException ex) {
+                Logger.getLogger(ShareShopListServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
         
         response.sendRedirect("/Lists/Pages/ShowUserList.jsp");
     }
