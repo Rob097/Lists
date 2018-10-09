@@ -32,6 +32,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import log.RegisterAction;
+import Tools.ImageDispatcher;
+import static Tools.ImageDispatcher.getImageExtension;
 
 /**
  *
@@ -85,32 +87,21 @@ public class CreateShopList extends HttpServlet {
         
         if(!creator.equals("ospite@lists.it")){
             // IMMAGINE
-            String listsFolder = "/Image/ListsImg";
-            String rp = "/Image/ListsImg";
-            listsFolder = getServletContext().getRealPath(listsFolder);
-            listsFolder = listsFolder.replace("\\build", "");
+            String relativeListFolderPath = "/Image/ListsImg";
+            String listsFolder = ObtainRootFolderPath(relativeListFolderPath);
+            //prendo il file dalla form
             File uploadDirFile = new File(listsFolder);
-            String filename1 = "";
             Part filePart1 = request.getPart("file1");
+            String extension = getImageExtension(filePart1);
+            String imagineName = creator + "-" + nome+"."+extension;
+            //verfico se il file non è nullo
             if ((filePart1 != null) && (filePart1.getSize() > 0)) {
 
-                String extension = Paths.get(filePart1.getSubmittedFileName()).getFileName().toString().split(Pattern.quote("."))[1];;
-                String nomeIMG = creator + "-" + nome;
-
-                filename1 = nomeIMG + "." + extension;
-                filename1 = filename1.replaceAll("\\s+","");
-                File file1 = new File(uploadDirFile, filename1);
-                try (InputStream fileContent = filePart1.getInputStream()) {
-                    Files.copy(fileContent, file1.toPath());
-                }catch(Exception imgexception) {
-                System.out.println("exception image #1");
-                s.setAttribute("erroreIMG", "Esiste già una lista sul duo account con questo nome!");
+                ImageDispatcher.InsertImgIntoDirectory(listsFolder, imagineName,filePart1);
+                        
             }
-            }
-            immagine = rp + "/" + filename1;
-            immagine = immagine.replaceFirst("/", ""); 
-            immagine = immagine.replaceAll("\\s+","");
-            //FINE IMMAGINE
+            immagine = ImageDispatcher.savePathImgInDatabsae(relativeListFolderPath, imagineName);
+            
         }
         
         
@@ -175,5 +166,20 @@ public class CreateShopList extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    /**
+     * Questo metodo restituisce il percorso il percorso alla directory
+     * @param relativePath se questa stringa è vuota allora il metodo restituisce il percorso a "...Web/"
+     * altrimenti restituisce il percroso alla cartella "...Web/[relativePath]"
+     * Esempio: relativePath = "Image/AvatarImg" 
+     * @return web/Image/AvatarImg
+     */
+    public String ObtainRootFolderPath(String relativePath){
+        String folder = "";
+        folder = relativePath;
+        folder = getServletContext().getRealPath(folder);
+        folder = folder.replace("\\build", "");
+        return folder;
+    }
 
 }
