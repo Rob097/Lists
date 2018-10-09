@@ -58,69 +58,55 @@ public class CreateShopList extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         HttpSession s = request.getSession();
         ShopList nuovaLista = new ShopList();
-        Boolean regResult = false;        
+        Boolean regResult = false;
         String nome;
         String descrizione;
         String immagine = "/Image/ListsImg/guestsList.jpg";
         String creator;
         String categoria;
         String url = "/Lists/Pages/guest/guest.jsp";
+        String relativeListFolderPath = "/Image/ListsImg";
         
+        //richiesa dei parametri
         nome = request.getParameter("Nome");
-        System.out.println("NOm22222222eeeeeeeeee" + nome);
         descrizione = request.getParameter("Descrizione");
-        System.out.println("NOme33333333eeeeeeeee" + descrizione);
         categoria = request.getParameter("Categoria");
-        
-        System.out.println("NO111111meeeeeeeeee" + categoria);
-        
-        if(s.getAttribute("user") != null){
-            User temp = (User)s.getAttribute("user");
+        Part filePart1 = request.getPart("file1");
+
+        if (s.getAttribute("user") != null) {
+            User temp = (User) s.getAttribute("user");
             url = "/Lists/Pages/" + temp.getTipo() + "/" + temp.getTipo() + ".jsp";
             creator = temp.getEmail();
-        }else{
+        } else {
             creator = "ospite@lists.it";
         }
-        
-        if(!creator.equals("ospite@lists.it")){
-            // IMMAGINE
-            String relativeListFolderPath = "/Image/ListsImg";
-            String listsFolder = ObtainRootFolderPath(relativeListFolderPath);
-            //prendo il file dalla form
-            File uploadDirFile = new File(listsFolder);
-            Part filePart1 = request.getPart("file1");
-            String extension = getImageExtension(filePart1);
-            String imagineName = creator + "-" + nome+"."+extension;
-            //verfico se il file non è nullo
-            if ((filePart1 != null) && (filePart1.getSize() > 0)) {
 
-                ImageDispatcher.InsertImgIntoDirectory(listsFolder, imagineName,filePart1);
-                        
-            }
-            immagine = ImageDispatcher.savePathImgInDatabsae(relativeListFolderPath, imagineName);
+        if (!creator.equals("ospite@lists.it")) {
+
+            String listsFolder = ObtainRootFolderPath(relativeListFolderPath);
+            String extension = getImageExtension(filePart1);
+            String imagineName = creator + "-" + nome + "." + extension;
+            ImageDispatcher.InsertImgIntoDirectory(listsFolder, imagineName, filePart1);
             
+            immagine = ImageDispatcher.savePathImgInDatabsae(relativeListFolderPath, imagineName);
+
         }
-        
-        
+
         nuovaLista.setImmagine(immagine);
         nuovaLista.setCategoria(categoria);
         nuovaLista.setCreator(creator);
         nuovaLista.setDescrizione(descrizione);
         nuovaLista.setNome(nome);
 
-        System.out.println(nuovaLista.getImmagine());
-
-        
         try {
-            System.out.println(creator);
-            
+
             //manda i dati del user, il metodo upate fa la parte statement 
-            if(s.getAttribute("user") != null){
+            if (s.getAttribute("user") != null) {
                 nuovaLista = listdao.Insert(nuovaLista);
-            }else{
+            } else {
                 s.setAttribute("guestList", nuovaLista);
             }
 
@@ -130,7 +116,7 @@ public class CreateShopList extends HttpServlet {
         if (nuovaLista != null && s.getAttribute("user") != null) {
             regResult = true;
             s.setAttribute("regResult", regResult);
-            User user =(User) s.getAttribute("user");
+            User user = (User) s.getAttribute("user");
             ArrayList<ShopList> li;
             try {
                 li = listdao.getByEmail(user.getEmail());
@@ -138,22 +124,22 @@ public class CreateShopList extends HttpServlet {
             } catch (DAOException ex) {
                 Logger.getLogger(CreateShopList.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
         s.setAttribute("regResult", false);
         System.out.println(url);
         response.sendRedirect(url);
 
     }
-    
-    public String SetImgName(String name, String extension){
-        
+
+    public String SetImgName(String name, String extension) {
+
         String s;
         s = name;
         s = s.trim();
         s = s.replace("@", "");
         s = s.replace(".", "");
-       
+
         return s + "." + extension;
     }
 
@@ -166,15 +152,17 @@ public class CreateShopList extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
+
     /**
      * Questo metodo restituisce il percorso il percorso alla directory
-     * @param relativePath se questa stringa è vuota allora il metodo restituisce il percorso a "...Web/"
-     * altrimenti restituisce il percroso alla cartella "...Web/[relativePath]"
-     * Esempio: relativePath = "Image/AvatarImg" 
+     *
+     * @param relativePath se questa stringa è vuota allora il metodo
+     * restituisce il percorso a "...Web/" altrimenti restituisce il percroso
+     * alla cartella "...Web/[relativePath]" Esempio: relativePath =
+     * "Image/AvatarImg"
      * @return web/Image/AvatarImg
      */
-    public String ObtainRootFolderPath(String relativePath){
+    public String ObtainRootFolderPath(String relativePath) {
         String folder = "";
         folder = relativePath;
         folder = getServletContext().getRealPath(folder);

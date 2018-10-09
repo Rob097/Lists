@@ -61,8 +61,6 @@ public class ImageDispatcher {
         String CompleteImgName;
         if ((filePart1 != null) && (filePart1.getSize() > 0)) {
 
-            String extension = getImageExtension(filePart1);
-
             CompleteImgName = imgName;
             CompleteImgName = CompleteImgName.replaceAll("\\s+", "");
             
