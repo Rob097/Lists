@@ -658,7 +658,7 @@
                     </div>
                     <div class="modal-body">
                         <h3>Sei sicuro di voler eliminare questa lista?<br> Non potrai annullare la modifica.</h3>
-                        <form class="clearfix" action="/Lists/restricted/DeleteShopList" method="POST">
+                        <form class="clearfix" action="/Lists/DeleteShopList" method="POST">
                             <button type="submit" class="btn btn-dark" id="delete">Delete</button>
                             <button type="button" data-dismiss="modal" class="btn btn-dark" id="delete-btn-no">Cancel</button>
                         </form>

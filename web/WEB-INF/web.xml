@@ -70,6 +70,14 @@
         <servlet-name>DeleteSharedUsers</servlet-name>
         <servlet-class>ShopList.DeleteSharedUsers</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddProductToList</servlet-name>
+        <servlet-class>ShopList.AddProductToList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>setPID</servlet-name>
+        <servlet-class>ShopList.setPID</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -92,7 +100,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CreateShopList</servlet-name>
-        <url-pattern>/restricted/CreateShopList</url-pattern>
+        <url-pattern>/CreateShopList</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ShareShopListServlet</servlet-name>
@@ -100,7 +108,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ShowShopList</servlet-name>
-        <url-pattern>/restricted/ShowShopList</url-pattern>
+        <url-pattern>/ShowShopList</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>chat</servlet-name>
@@ -108,7 +116,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DeleteShopList</servlet-name>
-        <url-pattern>/restricted/DeleteShopList</url-pattern>
+        <url-pattern>/DeleteShopList</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddNewProductToDataBase</servlet-name>
@@ -121,6 +129,14 @@
     <servlet-mapping>
         <servlet-name>DeleteSharedUsers</servlet-name>
         <url-pattern>/restricted/DeleteSharedUsers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddProductToList</servlet-name>
+        <url-pattern>/AddProductToList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>setPID</servlet-name>
+        <url-pattern>/setPID</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

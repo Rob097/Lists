@@ -39,7 +39,7 @@ public class AddProductToList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        System.out.println("\nPRIMO\n");
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
             throw new ServletException("Impossible to get dao factory for user storage system");
@@ -47,8 +47,21 @@ public class AddProductToList extends HttpServlet {
         ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
 
         HttpSession s = (HttpSession) request.getSession();
-        String prodotto = request.getParameter("prodotto");
-        String lista = (String) s.getAttribute("shopListName");
+        String prodotto = ""; String lista = "";
+        
+        if(request.getParameter("prodotto") != null){
+            prodotto = request.getParameter("prodotto");
+        }else if(s.getAttribute("prodotto") != null){
+            prodotto = (String) "" + s.getAttribute("prodotto");
+        }else prodotto = "niente";
+        System.out.println("\nSECONDO\nprodotto="+prodotto);
+        
+        if(request.getParameter("shopListName") != null){
+            lista = (String) request.getParameter("shopListName");
+        }else if(s.getAttribute("shopListName") != null){
+            lista = (String) "" + s.getAttribute("shopListName");
+        }else prodotto = "niente";
+        System.out.println("\nTERZO\nlista="+lista);
         
         if(s.getAttribute("user") != null){            
             try {
@@ -63,6 +76,9 @@ public class AddProductToList extends HttpServlet {
                 Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        System.out.println("\nFINE\n");
+        s.setAttribute("prodotto", prodotto);
+        s.setAttribute("shopListName", lista);
         
         response.sendRedirect("/Lists/Pages/ShowUserList.jsp");
 

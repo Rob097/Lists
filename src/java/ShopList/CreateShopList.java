@@ -58,7 +58,7 @@ public class CreateShopList extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        System.out.println("CREATEEEE");
         HttpSession s = request.getSession();
         ShopList nuovaLista = new ShopList();
         Boolean regResult = false;
@@ -69,20 +69,33 @@ public class CreateShopList extends HttpServlet {
         String categoria;
         String url = "/Lists/Pages/guest/guest.jsp";
         String relativeListFolderPath = "/Image/ListsImg";
-        
+
         //richiesa dei parametri
         nome = request.getParameter("Nome");
         descrizione = request.getParameter("Descrizione");
         categoria = request.getParameter("Categoria");
         Part filePart1 = request.getPart("file1");
-
+        User temp = new User();
+        
         if (s.getAttribute("user") != null) {
-            User temp = (User) s.getAttribute("user");
-            url = "/Lists/Pages/" + temp.getTipo() + "/" + temp.getTipo() + ".jsp";
+            temp = (User) s.getAttribute("user");
             creator = temp.getEmail();
         } else {
             creator = "ospite@lists.it";
+        }        
+        
+        if(request.getParameter("showProduct") != null){
+            if(request.getParameter("showProduct").equals("true")){
+                s.setAttribute("LISTMODAL", true);
+                url = "/Lists/Pages/ShowProducts.jsp";
+            }
         }
+        else if (s.getAttribute("user") != null) {
+            url = "/Lists/Pages/" + temp.getTipo() + "/" + temp.getTipo() + ".jsp";
+        }
+        
+        
+        
 
         if (!creator.equals("ospite@lists.it")) {
 

@@ -73,6 +73,48 @@ public class DeleteShopList extends HttpServlet {
         }
 
     }
+    
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        HttpSession session = (HttpSession) request.getSession(false);
+        
+        if(session.getAttribute("user") != null){
+            String listname = (String) request.getParameter("shopListName");
+            User user = null;
+            user = (User) session.getAttribute("user");           
+
+            try {
+                ShopList list = listdao.getbyName(listname);
+                System.out.println("NOME LISTAAA" + list.getNome());
+                listdao.deleteList(list);
+            } catch (DAOException ex) {
+                Logger.getLogger(DeleteShopList.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("ERRORE MOME LISTA");
+            }
+            String url  = "/Lists/Pages/" + user.getTipo() + "/" + user.getTipo() + ".jsp";
+                           
+            if (url != null) {
+                response.sendRedirect(url);
+            } else {
+                out.print("Errore Imprevisto");
+            }
+        }else{
+            session.setAttribute("guestList", null);
+            
+            response.sendRedirect("/Lists/homepage.jsp");
+            
+        }
+    }
 
     /**
      * Returns a short description of the servlet.

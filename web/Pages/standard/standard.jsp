@@ -29,7 +29,7 @@
     }
     UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
     ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
-
+    
     HttpSession s = (HttpSession) request.getSession();
     User u = null;
     boolean find = false;
@@ -227,7 +227,7 @@
                                                 <a href="#" class="ad-hide">
                                                     <i class="fa fa-eye-slash"></i>Hide
                                                 </a>
-                                                <a href="#" class="ad-remove">
+                                                <a href="/Lists/DeleteShopList?shopListName=<%=l.getNome()%>" class="ad-remove">
                                                     <i class="fa fa-trash"></i>Remove
                                                 </a>
                                             </div>
@@ -498,7 +498,7 @@
         </div>
 
         <!--########################## end modal search ############################-->
-
+        
         <script src="../js/nav.js"></script>
 
     </body>

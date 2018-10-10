@@ -74,7 +74,7 @@
                         <a class="navbar-brand">
                             <img width= "50" src="../img/favicon.png" alt="Logo">
                         </a>
-                        <a class="navbar-brand js-scroll-trigger" href="#home">LISTS</a>
+                        <a class="navbar-brand js-scroll-trigger" href="/Lists/homepage.jsp">LISTS</a>
                         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                             Menu
                             <i class="fa fa-bars"></i>
@@ -82,7 +82,7 @@
                         <div class="collapse navbar-collapse" id="navbarResponsive">
                             <ul class="navbar-nav text-uppercase ml-auto text-center">
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/index.jsp"><i class="fa fa-home"></i><b>Home</b></a>
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="#lists"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
@@ -170,7 +170,7 @@
                                             <div class="image">
                                                 <h3>
                                                     <a href="#" class="tag category"><%=lista.getCategoria()%></a>
-                                                    <a href="/Lists/restricted/ShowShopList?nome=<%=lista.getNome()%>" class="title"><%=lista.getNome()%></a>
+                                                    <a href="/Lists/ShowShopList?nome=<%=lista.getNome()%>" class="title"><%=lista.getNome()%></a>
                                                 </h3>
                                                 <a href="single-listing-1.html" class="image-wrapper background-image">
                                                     <img src="/Lists/<%=lista.getImmagine()%>" alt="">
@@ -185,7 +185,7 @@
                                                 <a href="#" class="ad-hide">
                                                     <i class="fa fa-eye-slash"></i>Hide
                                                 </a>
-                                                <a href="#" class="ad-remove">
+                                                <a href="/Lists/DeleteShopList?shopListName=<%=s.getAttribute("guestList")%>" class="ad-remove">
                                                     <i class="fa fa-trash"></i>Remove
                                                 </a>
                                             </div>
@@ -471,7 +471,7 @@
                     </div>
                     <div class="modal-body">
                         <!-- Form per il login -->
-                        <form class="form clearfix" id="CreateShopListform" action="/Lists/restricted/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
+                        <form class="form clearfix" id="CreateShopListform" action="/Lists/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="Nome" class="col-form-label">Nome della lista</label>
                                 <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>

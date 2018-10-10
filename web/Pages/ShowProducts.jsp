@@ -4,9 +4,9 @@
     Author     : Roberto97
 --%>
 
+<%@page import="database.entities.Product"%>
 <%@page import="database.jdbc.JDBCProductDAO"%>
 <%@page import="database.daos.ProductDAO"%>
-<%@page import="database.entities.Product"%>
 <%@page import="database.jdbc.JDBCShopListDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="database.entities.ShopList"%>
@@ -31,23 +31,29 @@
     ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
 
     HttpSession s = (HttpSession) request.getSession();
-    String shoplistName = (String) s.getAttribute("shopListName");
+    String shoplistName = "";
+    if(s.getAttribute("shopListName") != null){
+        shoplistName = (String) s.getAttribute("shopListName");
+    }
     User u = new User();
     boolean find = false;
-    if (s.getAttribute("user") != null) {
-        u = (User) s.getAttribute("user");
-    }
-
-    if (u.getTipo() != null) {
-        if (u.getTipo().equals("standard")) {
-            find = true;
-        }
-    }
-
+    
     ArrayList<Product> li = productdao.getAllProducts();
     ArrayList<String> allCategories = productdao.getAllProductCategories();
-    ArrayList<String> allListsOfUser = listdao.getAllListsByCurentUser(u.getEmail());
-
+    ArrayList<String> allListsOfUser = new ArrayList();
+    
+    int PID = 0;
+    String cat = null;
+    if(request.getParameter("cat") != null){
+        cat = request.getParameter("cat");
+        System.out.println("\nCAT: " + cat);
+    }
+    
+    if (s.getAttribute("user") != null) {
+        u = (User) s.getAttribute("user");
+        allListsOfUser = listdao.getAllListsByCurentUser(u.getEmail());
+        find = true;
+    }
 %>
 
 <!DOCTYPE html>
@@ -160,10 +166,12 @@
             String image = "";
 
             //String Image = "";
-            Nominativo = u.getNominativo();
-            Email = u.getEmail();
-            Type = u.getTipo();
-            image = u.getImage();
+            if(find){
+                Nominativo = u.getNominativo();
+                Email = u.getEmail();
+                Type = u.getTipo();
+                image = u.getImage();
+            }
         %>
 
 
@@ -301,71 +309,77 @@
                                 </div>
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
-
-                                    <%
-                                        if (request.getParameter("cat") != null && !request.getParameter("cat").equals("all")) {
+                                    
+                                    <%  if (cat != null && !cat.equals("all")) {
                                             for (Product p : li) {
-                                                if (request.getParameter("cat").equals(p.getCategoria_prodotto())) {
+                                                PID = p.getPid();
+                                                if (cat.equals(p.getCategoria_prodotto())) {
                                     %>
 
-                                    <div class="item">
-                                        <!--end ribbon-->
-                                        <div class="wrapper">
-                                            <div class="image">
-                                                <h3>
-                                                    <a href="#" class="tag category"><%=p.getCategoria_prodotto()%></a>
-                                                    <a href="single-listing-1.html" class="title"><%=p.getNome()%></a>
-                                                    <span class="tag">Offer</span>
-                                                </h3>
-                                                <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                    <img src="../<%=p.getImmagine()%>" alt="">
-                                                </a>
-                                            </div>\
-                                            <!--end image-->
+                                                    <div class="item">
+                                                        <!--end ribbon-->
+                                                        <div class="wrapper">
+                                                            <div class="image">
+                                                                <h3>
+                                                                    <a href="#" class="tag category"><%=p.getCategoria_prodotto()%></a>
+                                                                    <a href="single-listing-1.html" class="title"><%=p.getNome()%></a>
+                                                                    <span class="tag">Offer</span>
+                                                                </h3>
+                                                                <a href="single-listing-1.html" class="image-wrapper background-image">
+                                                                    <img src="../<%=p.getImmagine()%>" alt="">
+                                                                </a>
+                                                            </div>
+                                                            <!--end image-->
 
-                                            <div class="price">$80</div>
+                                                            <div class="price">$<%=PID%></div>
 
-                                            <!--end admin-controls-->
-                                            <div class="description">
-                                                <p><%=p.getNote()%></p>
-                                            </div>
-                                            <!--end description-->
-                                            <a style="cursor: pointer;" data-toggle="modal" data-target="#myModal" data-id="<%=p.getPid()%>" class="detail text-caps underline">Add to your list</a>
-                                        </div>
-                                    </div>
-                                    <%}
-                                        }
-                                    } else if (request.getParameter("cat") == null || request.getParameter("cat").equals("all")) {
-                                        for (Product p : li) {%>
+                                                            <!--end admin-controls-->
+                                                            <div class="description">
+                                                                <p><%=p.getNote()%></p>
+                                                            </div>
+                                                            <!--end description-->
+                                                            <form class="ListModal detail text-caps underline" action="/Lists/setPID" method="post" role="form" id="ListModal" >
+                                                                <input type="submit" class="btn btn-primary" value="Add to your list">
+                                                                <input name="PID" type="hidden" value="<%=PID%>">
+                                                            </form>
+                                                            
+                                                        </div>
+                                                    </div>
+                                    <%          }
+                                            }
+                                        } else if (cat == null || cat.equals("all")) {
+                                            for (Product p : li) {
+                                            PID = p.getPid();
+                                            %>
+                                                <div class="item">
+                                                    <!--end ribbon-->
+                                                    <div class="wrapper">
+                                                        <div class="image">
+                                                            <h3>
+                                                                <a href="#" class="tag category"><%=p.getCategoria_prodotto()%></a>
+                                                                <a href="single-listing-1.html" class="title"><%=p.getNome()%></a>
 
+                                                            </h3>
+                                                            <a href="single-listing-1.html" class="image-wrapper background-image">
+                                                                <img src="../<%=p.getImmagine()%>" alt="">
+                                                            </a>
+                                                        </div>
+                                                        <!--end image-->
 
+                                                        <div class="price">$<%=PID%></div>
 
-                                    <div class="item">
-                                        <!--end ribbon-->
-                                        <div class="wrapper">
-                                            <div class="image">
-                                                <h3>
-                                                    <a href="#" class="tag category"><%=p.getCategoria_prodotto()%></a>
-                                                    <a href="single-listing-1.html" class="title"><%=p.getNome()%></a>
-
-                                                </h3>
-                                                <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                    <img src="../<%=p.getImmagine()%>" alt="">
-                                                </a>
-                                            </div>
-                                            <!--end image-->
-
-                                            <div class="price">$80</div>
-
-                                            <!--end admin-controls-->
-                                            <div class="description">
-                                                <p><%=p.getNote()%></p>
-                                            </div>
-                                            <!--end description-->
-                                            <a style="cursor: pointer;" data-toggle="modal" data-target="#myModal" data-id="<%=p.getPid()%>" class="detail text-caps underline">Add to your list</a>
-                                        </div>
-                                    </div>
-                                    <%}
+                                                        <!--end admin-controls-->
+                                                        <div class="description">
+                                                            <p><%=p.getNote()%></p>
+                                                        </div>
+                                                        <!--end description-->
+                                                        <form class="ListModal detail text-caps underline" action="/Lists/setPID" method="post" role="form" id="ListModal">
+                                                            <button type="submit" class="btn btn-primary">Add to your list</button>
+                                                            <input name="PID" type="hidden" value="<%=PID%>">
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            <%}
                                         }%>
 
                                 </div>
@@ -409,15 +423,21 @@
                     </div>
                     <div class="modal-body">
                         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
-
-                        <ul id="myUL">
-                            
-                            <%for (String nomeLista : allListsOfUser) {%>
-                            
-                            <li><a href="/Lists/Pages/AddProductToList?shopListName=<%=nomeLista%>"><%=nomeLista%></a></li>
-
-                            <%}%>
-                        </ul>
+                        
+                        
+                        <%if (find) {
+                            for (String nomeLista : allListsOfUser) {%>
+                                <ul id="myUL">
+                                    <li><a class="btn btn-primary" href="/Lists/AddProductToList?shopListName=<%=nomeLista%>&prodotto=<%=s.getAttribute("PID")%>"><%=nomeLista%></a></li>
+                                </ul>
+                            <%}
+                        } else if(s.getAttribute("guestList") != null){
+                            ShopList Glist = (ShopList) s.getAttribute("guestList");%>
+                                <ul id="myUL">
+                                    <li><a href="/Lists/AddProductToList?shopListName=<%=Glist.getNome()%>&prodotto=<%=s.getAttribute("PID")%>"></a><%=Glist.getNome()%></li> 
+                                </ul> 
+                        <%}%>
+                                                       
                     </div>
                     <div style="padding: 1rem;">
                         <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >Crea una lista</a>
@@ -447,7 +467,7 @@
                     </div>
                     <div class="modal-body">
                         <!-- Form per il login -->
-                        <form class="form clearfix" id="CreateShopListform" action="/Lists/restricted/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
+                        <form class="form clearfix" id="CreateShopListform" action="/Lists/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="Nome" class="col-form-label">Nome della lista</label>
                                 <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
@@ -461,23 +481,29 @@
                             <div class="form-group">
                                 <label for="Categoria" class="col-form-label">Categoria</label>
                                 <select name="Categoria" id="Categoria" tabindex="1" size="5" >
+
                                     <c:forEach items="${categorie}" var="categoria">
                                         <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
                                     </c:forEach>
                                 </select><!--<input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>-->
 
                             </div>
-
                             <!--end form-group-->
-
+                            <%if(find){%>
                             <div class="form-group">
                                 <label for="Immagine" class="col-form-label required">Immagine</label>
                                 <input type="file" name="file1" required>
                             </div>
+                            <%}%>
                             <!--end form-group-->
                             <div class="d-flex justify-content-between align-items-baseline">
 
-                                <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
+                                <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
+                                <input type="hidden" name="showProduct" value="true">
+                                
+                                <%if (find == false && session.getAttribute("guestList") != null) {%>
+                                <h5>Attenzione, hai già salvato una lista. Se non sei registrato puoi salvare solo una lista alla volta. Salvando questa lista, cancellerai la lista gia salvata.</h5>
+                                <%}%>
                             </div>
                         </form>
                         <hr>
@@ -487,7 +513,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+                            
         <script>
             function myFunction() {
                 var input, filter, ul, li, a, i;
@@ -507,11 +533,14 @@
         </script>
         
         <script>
-            function nameL(<%String nome = "";%>) {
-                <%
-                    s.setAttribute("shopListName", nome);
-                %>
-            }
-        </script>
+            var check = <%=s.getAttribute("LISTMODAL")%>;
+            $('document').ready(function(){
+                if (check === true) {
+                    $('\\#myModal').modal('show');
+                }
+            });
+            
+        </script>       
+        
     </body>
 </html>
