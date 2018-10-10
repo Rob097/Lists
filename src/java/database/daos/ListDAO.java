@@ -32,4 +32,5 @@ public interface ListDAO {
     public void insertProductToList(int prodotto, String lista) throws DAOException;
     public void insertProductToGuestList(int prodotto, HttpServletRequest request) throws DAOException;
     public ArrayList<ShopList> getAllSharedList(String email) throws DAOException;
+    public void deleteSharedUser(String email, String listname)throws DAOException;
 }

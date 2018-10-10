@@ -334,7 +334,8 @@
                             <%if(find){%>
                             <div class = "col-md-3">
                                 <div class="panel-body">
-                                    <div class="table-container">
+                                    <div class="table-container">                                        
+                                        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#ShareListModal">Share List</button>
                                         <table class="table-users table" border="0">
                                             <tbody>
                                                 <%for (User usersoflist : AllUsersOfCurentList) {%>
@@ -354,6 +355,8 @@
                                                 <%}%>
                                             </tbody>
                                         </table>
+                                        <button type="button" class="btn btn-dark btn-block" data-toggle="modal" data-target="#DeleteShareListModal">Delete Shared Users</button>
+
                                     </div>
                                 </div>
                             </div>
@@ -605,6 +608,38 @@
             </div>
         </div>
         <!--##########################-- End Share Modal--############################-->
+        <!--##########################--Delete Shared Users Modal--############################-->
+        <div class="modal fade" id="DeleteShareListModal" tabindex="-1" role="dialog" aria-labelledby="ShareList" aria-hidden="true" enctype="multipart/form-data">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1 style="text-align: center;">Delete Shared Users</h1>
+                           
+                                <label>Choose users to remove</label>
+                            </div>
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="/Lists/restricted/DeleteSharedUsers">
+                            <select name="sharedToDelete" class="mdb-select colorful-select dropdown-primary" multiple>     
+                                <c:forEach items="${shoplist.sharedUsers}" var="susers">
+                                    <option value="${susers.email}"><c:out value="${susers.email}"/></option> 
+                                </c:forEach>
+                            </select>
+                            <button type="submit" class="btn btn-dark" id="delete">Remove</button> 
+                            <button type="button" data-dismiss="modal" class="btn btn-dark" id="delete-btn-no">Cancel</button> 
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--##########################-- End Share Modal--############################-->
         
         <!-- Delete Modal -->
         <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal" aria-hidden="true">
@@ -624,8 +659,8 @@
                     <div class="modal-body">
                         <h3>Sei sicuro di voler eliminare questa lista?<br> Non potrai annullare la modifica.</h3>
                         <form class="clearfix" action="/Lists/restricted/DeleteShopList" method="POST">
-                            <button type="submit" class="btn btn-primary" id="delete">Delete</button>
-                            <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete-btn-no">Cancel</button>
+                            <button type="submit" class="btn btn-dark" id="delete">Delete</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-dark" id="delete-btn-no">Cancel</button>
                         </form>
 
                     </div>

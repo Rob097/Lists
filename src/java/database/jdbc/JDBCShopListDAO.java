@@ -390,4 +390,21 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
         }
     }
 
+    @Override
+    public void deleteSharedUser(String email, String listname) throws DAOException {
+        if (email == null || listname == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed email or listname is null"));
+        }
+        
+        try(PreparedStatement statement = CON.prepareStatement("DELETE FROM User_List WHERE user=? AND list=?")){
+            statement.setString(1, email);
+            statement.setString(2, listname);
+            
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Problems with deleting shared user");
+        }
+    }
+
 }

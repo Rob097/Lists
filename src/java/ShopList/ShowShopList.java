@@ -7,6 +7,7 @@ package ShopList;
 
 import database.daos.ListDAO;
 import database.daos.UserDAO;
+import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
@@ -56,6 +57,7 @@ public class ShowShopList extends HttpServlet {
         System.out.println("ShowShopList:\n\n");
         HttpSession session =(HttpSession) request.getSession(false);
         String s = request.getParameter("nome");
+        ShopList shoplist ;
         
         if(session.getAttribute("user") != null) {
             ArrayList<User> users = new ArrayList<>();
@@ -66,6 +68,8 @@ public class ShowShopList extends HttpServlet {
             try {
                 dbuser = userdao.getByEmail(user.getEmail());
                 sharedusers = listdao.getUsersWithWhoTheListIsShared(s);
+                shoplist = listdao.getbyName(s);
+                session.setAttribute("shoplist", shoplist);
             } catch (DAOException ex) {
                 System.out.println("try error showShopList.java\n");
                 Logger.getLogger(ShowShopList.class.getName()).log(Level.SEVERE, null, ex);
@@ -96,7 +100,8 @@ public class ShowShopList extends HttpServlet {
         }
         System.out.println("==========================" + s);
         
-        session.setAttribute("shopListName", s);        
+        session.setAttribute("shopListName", s); 
+        
         response.sendRedirect("/Lists/Pages/ShowUserList.jsp");
     }
 

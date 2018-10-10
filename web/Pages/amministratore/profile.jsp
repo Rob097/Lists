@@ -181,7 +181,7 @@
                                                 <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary float-right">Save Changes</button>
                                             </section>
                                             <section class="clearfix">
-                                                <button type="button" class="btn btn-primary float-right" id="delete" data-toggle="modal" data-target="#delete-modal">Delete profile</button>
+                                                <button type="button" class="btn btn-dark float-right" id="delete" data-toggle="modal" data-target="#delete-modal">Delete profile</button>
                                             </section>
                                         </div>
                                         <!--end col-md-8--> 
@@ -329,8 +329,8 @@
                     <div class="modal-body">
                         <h3>Sei sicuro di voler eliminare questo utente?<br> Non potrai annullare la modifica.</h3>
                         <form class="clearfix" action="/Lists/restricted/deleteUser" method="POST">
-                            <button type="submit" class="btn btn-primary" id="delete">Delete</button>
-                            <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete-btn-no">Cancel</button>
+                            <button type="submit" class="btn btn-dark" id="delete">Delete</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-dark" id="delete-btn-no">Cancel</button>
                         </form>
 
                     </div>

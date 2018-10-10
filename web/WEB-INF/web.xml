@@ -66,6 +66,10 @@
         <servlet-name>DeleteProduct</servlet-name>
         <servlet-class>Products.DeleteProduct</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteSharedUsers</servlet-name>
+        <servlet-class>ShopList.DeleteSharedUsers</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -113,6 +117,10 @@
     <servlet-mapping>
         <servlet-name>DeleteProduct</servlet-name>
         <url-pattern>/DeleteProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteSharedUsers</servlet-name>
+        <url-pattern>/restricted/DeleteSharedUsers</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
