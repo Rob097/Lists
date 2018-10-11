@@ -209,16 +209,51 @@
 
                     <!--============ End Page Title =====================================================================-->
                     <div class="container text-center" id="welcomeGrid">
-                        <a href="/Lists/Pages/<%=Type%>/<%=Type%>.jsp" class="text-caps" style="padding: 0em 4em !important; font-size: 15px;"><b><i>Le mie liste</i></b></a>
-                        <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" style="color: white;">Crea una nuova Lista</a>
-                        <%if (find) {%>
-                        <a href="/Lists/Pages/<%=Type%>/foreignLists.jsp" class="text-caps" style="padding: 0em 4em !important; font-size: 15px;"><b><i>Liste condivise</i></b></a>
+                        <div class="row">
+                            <div class="col-md-2">
+                                
+                            </div>
+                            <div class="col-md-3">
+                                <a href="/Lists/Pages/<%=Type%>/<%=Type%>.jsp" class="text-caps" style="padding: 0em 4em !important; font-size: 15px;"><b><i>Le mie liste</i></b></a>
+                            </div>
+                            <div class="col-md-2">
+                                <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" style="color: white;">Crea una nuova Lista</a>
+                            </div>
+                            <div class="col-md-3">
+                                    <%if (find) {%>
+                                <a href="/Lists/Pages/<%=Type%>/foreignLists.jsp" class="text-caps" style="padding: 0em 4em !important; font-size: 15px;"><b><i>Liste condivise</i></b></a>
                                     <%} else {%>
-                        <a class="text-caps disabled" style="padding: 0em 3em !important; font-size: 15px;" data-toggle="tooltip" title="Registrati o fai il login per usare questa funzione"><b><i>Liste condivise</i></b></a>
+                                <a class="text-caps disabled" style="padding: 0em 3em !important; font-size: 15px;" data-toggle="tooltip" title="Registrati o fai il login per usare questa funzione"><b><i>Liste condivise</i></b></a>
                                     <%}%>
+                            </div>  
+                            <div class="col-md-2">                                
+                            </div>
+                           
+                        </div>
+                            <br>
+                            
+                        <div class="row">
+                            <c:if test="${not empty user}">
+                        <c:if test="${user.tipo == 'amministratore'}">
+                            <div class="col-md-2">                                
+                            </div>
+                            <div class="col-md-3">
+                                <a href="/Lists/Pages/AdminPages/AdminProducts.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">Product List</a>
+                            </div>
+                            <div class="col-md-2">
+                                <a href="#" class="btn btn-primary text-caps btn-rounded" style="color: white;">product-categories</a>                                
+                            </div>
+                            <div class="col-md-3">
+                                <a href="#" class="btn btn-primary text-caps btn-rounded" style="color: white;">list-categories</a>
+                            </div>  
+                            <div class="col-md-2">                                
+                            </div>                             
+                        </c:if>
+                    </c:if>
+                        </div>
                     </div>
-
-
+       
+                    
                     <div class="background">
                         <div class="background-image">
                             <img src="Pages/img/hero-background-image-02.jpg" alt="">

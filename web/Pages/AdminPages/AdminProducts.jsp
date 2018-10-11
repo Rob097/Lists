@@ -111,49 +111,42 @@
 
     </head>
     <body>
-        <div class="page sub-page">
-            <!--*********************************************************************************************************-->
-            <!--************ HERO ***************************************************************************************-->
-            <!--*********************************************************************************************************-->
+        <div class="page home-page">
             <header class="hero">
                 <div class="hero-wrapper">
-                    <!--============ Secondary Navigation ===============================================================-->
-                    <div class="secondary-navigation">
-                        <div class="container">
-                            <ul class="left">
-                                <li>
-                                    <span>
-                                        <i class="fa fa-phone"></i> +1 123 456 789
-                                    </span>
+                    <nav class="navbar navbar-expand-xl navbar-dark fixed-top " id="mainNav">
+                        <a class="navbar-brand">
+                            <img width= "50" src="../img/favicon.png" alt="Logo">
+                        </a>
+                        <a class="navbar-brand js-scroll-trigger" href="#home">LISTS</a>
+                        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                            Menu
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarResponsive">
+                            <ul class="navbar-nav text-uppercase ml-auto text-center">
+                                <li class="nav-item">
+                                    <a data-toggle="modal" data-target="#AddProductModal" class="btn btn-primary text-caps btn-rounded" >+ Product</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="../amministratore/amministratore.jsp"><b>my Lists</b></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
+                                        <i class="fa fa-sign-in"></i><b><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> </b>/ <img src= "../../${user.image}" width="25px" height="25px" style="border-radius: 100%;">
+                                    </a>
+                                </li>                              
                             </ul>
-                            <!--end left-->
-                            <ul class="right">
-                                <li>
-                                    <a href="my-ads.html">
-                                        <i class="fa fa-heart"></i>My Ads
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="sign-in.html">
-                                        <i class="fa fa-sign-in"></i>Sign In
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="register.html">
-                                        <i class="fa fa-pencil-square-o"></i>Register
-                                    </a>
-                                </li>
-                            </ul>
-                            <!--end right-->
                         </div>
-                        <!--end container-->
-                    </div>
-
-
+                    </nav>
+                    <!--============ Secondary Navigation ===============================================================-->
+   
                     <div class="page-title">
                         <div class="container">
-                            <h1>My Ads</h1>
+                            <h1>All Products</h1>
                         </div>
                         <!--end container-->
                     </div>
@@ -161,7 +154,7 @@
                     <div class="background"></div>
 
                     <div class="container text-center" id="welcomeGrid">
-                        <a data-toggle="modal" data-target="#AddProductModal" class="btn btn-primary text-caps btn-rounded" style="color: white;">Aggiungu un nuovo prodotto</a>
+                        <a data-toggle="modal" data-target="#AddProductModal" class="btn btn-primary text-caps btn-rounded" style="color: white;">Add new product</a>
 
                     </div
 

@@ -161,6 +161,9 @@
                                     <a class="nav-link icon" href="/Lists/Pages/ShowProducts.jsp">
                                         <i class="fa fa-recycle"></i>Tutti i Prodotti
                                     </a>
+                                    <a class="nav-link icon" href="/Lists/Pages/AdminPages/adminPage.jsp">
+                                        <i class="fa fa-users"></i>user list
+                                    </a>
                                     <!--<a class="nav-link icon" href="sold-items.html">
                                         <i class="fa fa-check"></i>Articoli in offerta
                                     </a>-->
