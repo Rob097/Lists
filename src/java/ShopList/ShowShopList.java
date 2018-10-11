@@ -59,6 +59,7 @@ public class ShowShopList extends HttpServlet {
         String s = request.getParameter("nome");
         ShopList shoplist ;
         
+        
         if(session.getAttribute("user") != null) {
             ArrayList<User> users = new ArrayList<>();
             User user = (User) session.getAttribute("user");
@@ -101,6 +102,7 @@ public class ShowShopList extends HttpServlet {
         System.out.println("==========================" + s);
         
         session.setAttribute("shopListName", s); 
+        
         
         response.sendRedirect("/Lists/Pages/ShowUserList.jsp");
     }

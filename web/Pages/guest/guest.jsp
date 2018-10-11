@@ -83,10 +83,7 @@
                             <ul class="navbar-nav text-uppercase ml-auto text-center">
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="#lists"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
-                                </li>                                
+                                </li>                                      
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#LoginModal" style="cursor: pointer;">
                                         <i class="fa fa-sign-in"></i><b>Login</b>

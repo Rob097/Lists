@@ -62,14 +62,14 @@ public class ShareShopListServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
        
-            User user ;
+            User user ;           
             String[] emailsharedUsers = request.getParameterValues("sharedUsers");            
             HttpSession session =(HttpSession) request.getSession(false);
             String listname = (String) session.getAttribute("shopListName");
             user = (User) session.getAttribute("user");
             try {
-                for (int i = 0; i < emailsharedUsers.length; i++) {
-                    listdao.insertSharedUser(emailsharedUsers[i], listname);
+                for (String emailsharedUser : emailsharedUsers) {
+                    listdao.insertSharedUser(emailsharedUser, listname);
                 }
             } catch (DAOException ex) {
                 Logger.getLogger(ShareShopListServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -77,8 +77,10 @@ public class ShareShopListServlet extends HttpServlet {
         try {
             ArrayList<ShopList> li = listdao.getByEmail(user.getEmail());
             ArrayList<ShopList> sl = listdao.getListOfShopListsThatUserLookFor(user.getEmail());
+            ShopList shoplist = listdao.getbyName(listname);
             session.setAttribute("userLists", li);
             session.setAttribute("sharedLists", sl);
+            session.setAttribute("shoplist", shoplist);
             } catch (DAOException ex) {
                 Logger.getLogger(ShareShopListServlet.class.getName()).log(Level.SEVERE, null, ex);
             }

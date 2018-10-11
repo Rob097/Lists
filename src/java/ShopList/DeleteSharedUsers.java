@@ -72,8 +72,10 @@ public class DeleteSharedUsers extends HttpServlet {
          try{
             ArrayList<ShopList> li = listdao.getByEmail(user.getEmail());
             ArrayList<ShopList> sl = listdao.getListOfShopListsThatUserLookFor(user.getEmail());
+            ShopList shoplist = listdao.getbyName(listname);
             session.setAttribute("userLists", li);
             session.setAttribute("sharedLists", sl);
+            session.setAttribute("shoplist", shoplist);
          }  catch (DAOException ex1) {
                 Logger.getLogger(DeleteSharedUsers.class.getName()).log(Level.SEVERE, null, ex1);
             } 

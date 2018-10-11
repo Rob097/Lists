@@ -335,7 +335,7 @@
                             <div class = "col-md-3">
                                 <div class="panel-body">
                                     <div class="table-container">                                        
-                                        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#ShareListModal">Share List</button>
+                                        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#ShareListModal" <c:if test="${empty Users}">disabled</c:if>>Share List</button>
                                         <table class="table-users table" border="0">
                                             <tbody>
                                                 <%for (User usersoflist : AllUsersOfCurentList) {%>
@@ -355,8 +355,7 @@
                                                 <%}%>
                                             </tbody>
                                         </table>
-                                        <button type="button" class="btn btn-dark btn-block" data-toggle="modal" data-target="#DeleteShareListModal">Delete Shared Users</button>
-
+                                                <button type="button" class="btn btn-dark btn-block" data-toggle="modal" data-target="#DeleteShareListModal" <c:if test="${empty shoplist.sharedUsers}">disabled</c:if>>Delete Shared Users</button>
                                     </div>
                                 </div>
                             </div>

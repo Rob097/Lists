@@ -197,7 +197,7 @@
                                             <div class="image">
                                                 <h3>
                                                     <a href="#" class="tag category"><%=l.getCategoria()%></a>
-                                                    <a href="/Lists/restricted/ShowShopList?nome=<%=l.getNome()%>" class="title"><%=l.getNome()%></a>
+                                                    <a href="/Lists/ShowShopList?nome=<%=l.getNome()%>" class="title"><%=l.getNome()%></a>
                                                 </h3>
                                                 <a href="single-listing-1.html" class="image-wrapper background-image">
                                                     <img src="/Lists/<%=l.getImmagine()%>" alt="">
@@ -206,7 +206,7 @@
                                             <!--end image-->
                                             <div class="price">$80</div>
                                             <div class="admin-controls">
-                                                <a href="/Lists/restricted/ShowShopList?nome=<%=l.getNome()%>">
+                                                <a href="/Lists/ShowShopList?nome=<%=l.getNome()%>">
                                                     <i class="fa fa-pencil"></i>Edit
                                                 </a>
                                                 <a href="#" class="ad-hide">
@@ -221,7 +221,7 @@
                                                 <p><%=l.getDescrizione()%></p>
                                             </div>
                                             <!--end description-->
-                                            <a href="/Lists/restricted/ShowShopList?nome=<%=l.getNome()%>" class="detail text-caps underline">Detail</a>
+                                            <a href="/Lists/ShowShopList?nome=<%=l.getNome()%>" class="detail text-caps underline">Detail</a>
                                         </div>
                                     </div>
                                     <!--end item-->
