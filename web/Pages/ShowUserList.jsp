@@ -247,7 +247,7 @@
                         <div class="icon-bar">
                             <%if(find){%>
                                 <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
-                                <a href="adaptedChatroom.jsp"><i class="fas fa-users"><br>ChatRoom</i></a> 
+                                <a href="ThirdChatroom.jsp"><i class="fas fa-users"><br>ChatRoom</i></a> 
                                 <a style="cursor: pointer;" data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Share</i></a>
                                 <a style="cursor: pointer;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Delete</i></a> 
                             <%}else{%>
