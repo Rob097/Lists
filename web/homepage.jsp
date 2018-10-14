@@ -120,23 +120,23 @@
                             <i class="fa fa-bars"></i>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarResponsive">
-                            <ul class="navbar-nav text-uppercase ml-auto text-center">
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="#home"><i class="fa fa-home"></i><b>Home</b></a>
-                                </li>
+                            <ul class="navbar-nav text-uppercase ml-auto text-center">                                
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/Pages/<%=Type%>/<%=Type%>.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
-                                        <i class="fa fa-sign-in"></i><b><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> </b>/ <img src= "/Lists/${user.image}" width="25px" height="25px" style="border-radius: 100%;">
-                                    </a>
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/Pages/<%=Type%>/foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/Pages/<%=Type%>/profile.jsp">
                                         <i class="fa fa-user"></i><b>Il mio profilo</b>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
+                                        <i class="fa fa-sign-out"></i><b><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> </b>/ <img src= "/Lists/${user.image}" width="25px" height="25px" style="border-radius: 100%;">
+                                    </a>
+                                </li>                                
                             </ul>
                         </div>
                     </nav>
@@ -305,7 +305,11 @@
                                             <img src="Pages/img/add-user.png" alt="">
                                             <span>1</span>
                                         </figure>
+                                        <%if (!find) {%>
                                         <a style="cursor: pointer;" data-toggle="modal" data-target="#RegisterModal"><h3>Crea un Account</h3></a>
+                                        <%} else {%>
+                                        <h3>Crea un Account</h3>
+                                        <%}%>     
                                         <p>Scegli che tipo di utente vuoi essere, o usa l'applicazione come ospite</p>
                                     </div>
                                     <!--end feature-box-->
@@ -316,8 +320,8 @@
                                         <figure>
                                             <img src="Pages/img/add-list.png" alt="">
                                             <span>2</span>
-                                        </figure>
-                                        <a style="cursor: pointer;" data-toggle="modal" data-target="#CreateListModal"><h3>Crea una lista</h3></a>
+                                        </figure>                                        
+                                        <a style="cursor: pointer;" data-toggle="modal" data-target="#CreateListModal"><h3>Crea una lista</h3></a>                                                                               
                                         <p>Crea la tua lista personalizzata</p>
                                     </div>
                                     <!--end feature-box-->

@@ -87,21 +87,21 @@
                                     <a href="submit.html" class="btn btn-primary text-caps btn-rounded" style="color: black;">Crea una lista</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="standard.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
+                                    <a class="nav-link js-scroll-trigger" href="foreignLists.jsp">
+                                        <i class="fa fa-share-alt"></i><b>Liste condivise con me</b>
+                                    </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
                                         <i class="fa fa-sign-in"></i><b><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> </b>/ <img src= "../../${user.image}" width="25px" height="25px" style="border-radius: 100%;">
                                     </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="standard.jsp">
-                                        <i class="fa fa-user"></i><b>Le mie liste</b>
-                                    </a>
-                                </li>
+                                </li>                                
                             </ul>
                         </div>
                     </nav>
@@ -156,17 +156,11 @@
                             <div class="col-md-3">
                                 <nav class="nav flex-column side-nav">                                   
                                     <a class="nav-link icon" href="standard.jsp">
-                                        <i class="fa fa-heart"></i>Le mie liste
+                                        <i class="fa fa-bars"></i>Le mie liste
                                     </a>
                                     <a class="nav-link icon" href="foreignLists.jsp">
-                                        <i class="fa fa-heart"></i>Liste condivise
+                                        <i class="fa fa-share-alt"></i>Liste condivise
                                     </a>
-                                    <!--<a class="nav-link icon" href="change-password.html">
-                                        <i class="fa fa-recycle"></i>Cambia Password
-                                    </a>
-                                    <a class="nav-link icon" href="sold-items.html">
-                                        <i class="fa fa-check"></i>Articoli in offerta
-                                    </a>-->
                                 </nav>
                             </div>
                             <!--end col-md-3-->

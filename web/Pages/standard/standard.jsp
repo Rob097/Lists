@@ -125,18 +125,18 @@
                                     <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="foreignLists.jsp"><i class="fa fa-bars"></i><b>Liste condivise con me</b></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
-                                        <i class="fa fa-sign-in"></i><b><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> </b>/ <img src= "../../${user.image}" width="25px" height="25px" style="border-radius: 100%;">
-                                    </a>
+                                    <a class="nav-link js-scroll-trigger" href="foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="profile.jsp">
                                         <i class="fa fa-user"></i><b>Il mio profilo</b>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
+                                        <i class="fa fa-sign-in"></i><b><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> </b>/ <img src= "../../${user.image}" width="25px" height="25px" style="border-radius: 100%;">
+                                    </a>
+                                </li>                                
                             </ul>
                         </div>
                     </nav>
@@ -173,7 +173,7 @@
                                         <i class="fa fa-user"></i>Il mio profilo
                                     </a>
                                     <a class="nav-link active icon" href="foreignLists.jsp">
-                                        <i class="fa fa-heart"></i>Liste condivise
+                                        <i class="fa fa-share-alt"></i>Liste condivise
                                     </a>
                                     <a class="nav-link icon" href="/Lists/Pages/ShowProducts.jsp">
                                         <i class="fa fa-recycle"></i>Tutti i Prodotti
