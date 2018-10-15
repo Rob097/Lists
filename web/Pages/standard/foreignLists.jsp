@@ -1,4 +1,5 @@
 
+<%@page import="Notifications.Notification"%>
 <%-- 
     Document   : foreignList
     Created on : 15-giu-2018, 17.13.06
@@ -49,6 +50,10 @@
 
     if (find) {
         ArrayList<ShopList> li = listdao.getAllSharedList(u.getEmail());
+        ArrayList <Notification> notifiche = new ArrayList();
+            if(session.getAttribute("notifiche") != null){
+                notifiche = (ArrayList<Notification>) session.getAttribute("notifiche");
+            }
 %>
 
 
@@ -193,8 +198,17 @@
 
                                     <% 
                                         for (ShopList l : li) {
-                                    %>                                                                  
+                                            ArrayList<Notification> n = new ArrayList();
+                                            for(Notification nn : notifiche) {
+                                                if(nn.getListName().equals(l.getNome())){
+                                                    n.add(nn);
+                                                }
+                                            }
+                                    %>                                                                 
                                     <div class="item">
+                                        <%if(!n.isEmpty()){%>
+                                            <div class="ribbon-featured">Featured</div>
+                                        <%}%>
                                         <!--end ribbon-->
                                         <div class="wrapper">
                                             <div class="image">

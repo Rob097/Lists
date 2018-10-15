@@ -398,7 +398,7 @@
                     </div>
                     <div class="modal-body">
                         <!-- Form per il login -->
-                        <form class="form clearfix" id="CreateShopListform" action="/Lists/restricted/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
+                        <form class="form clearfix" id="CreateShopListform" action="/Lists/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="Nome" class="col-form-label">Nome della lista</label>
                                 <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>

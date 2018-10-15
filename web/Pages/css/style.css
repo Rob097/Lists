@@ -3941,7 +3941,8 @@ textarea.form-control {
     font-weight: normal;
     padding: 1rem;
     position: relative;
-    width: calc( 50% - 2rem );
+    max-width: -webkit-fill-available;
+    max-width: -moz-fill-available;
 }
 
 .messaging__main-chat .messaging__main-chat__bubble p small {

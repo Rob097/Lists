@@ -5,13 +5,16 @@
  */
 package log;
 
+import Notifications.Notification;
 import database.daos.UserDAO;
 import database.daos.CategoryDAO;
 import database.daos.ListDAO;
+import database.daos.NotificationDAO;
 import database.entities.User;
 import database.entities.ShopList;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
+import database.jdbc.JDBCNotificationsDAO;
 import database.jdbc.JDBCShopListDAO;
 import database.jdbc.JDBCUserDAO;
 import java.io.IOException;
@@ -59,11 +62,16 @@ public class LoginAction extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
+        if (daoFactory == null) {
+            throw new ServletException("Impossible to get dao factory for user storage system");
+        }
         User user = new User();       
         Boolean loginResult = true;
         Boolean find = false;
         HttpSession session = (HttpSession) request.getSession(false);
-       
+        NotificationDAO n = new JDBCNotificationsDAO(daoFactory.getConnection());
+        ArrayList <Notification> notifiche = new ArrayList();
         
 
         try {
@@ -77,10 +85,7 @@ public class LoginAction extends HttpServlet {
 
             if (user != null) {
                 loginResult = true;
-                
-                if (user.getTipo().equals("standard")) {
-                    find = true;
-                }
+                find = true;
                 
                 if (find) {
                     ArrayList<ShopList> li = listdao.getByEmail(user.getEmail());
@@ -102,8 +107,15 @@ public class LoginAction extends HttpServlet {
 
                 session.setAttribute("Logged", "on");
                 session.setAttribute("user", user);
-                
-               
+                notifiche = n.getAllNotifications(user.getEmail());
+                int i = 1;
+                for(Notification nn : notifiche){
+                    System.out.println("Nome lista " + i + ": " + nn.getListName());
+                    System.out.println("Nome utente list " + i + ": " + nn.getUser());
+                    System.out.println("Tipo list  " + i + ": " + nn.getType());
+                    i++;
+                }
+               session.setAttribute("notifiche", notifiche);
 
                 url = "homepage.jsp";
             } else {

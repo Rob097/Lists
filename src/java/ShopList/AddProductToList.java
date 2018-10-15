@@ -6,10 +6,15 @@
 package ShopList;
 
 import database.daos.ListDAO;
+import database.daos.NotificationDAO;
+import database.entities.ShopList;
+import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
+import database.jdbc.JDBCNotificationsDAO;
 import database.jdbc.JDBCShopListDAO;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -44,7 +49,7 @@ public class AddProductToList extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
-
+        NotificationDAO notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
         HttpSession s = (HttpSession) request.getSession();
         String prodotto = ""; String lista = "";
         
@@ -62,9 +67,21 @@ public class AddProductToList extends HttpServlet {
         }else prodotto = "niente";
         System.out.println("\nTERZO\nlista="+lista);
         
+         ArrayList<User> utenti = new ArrayList();
+        try {
+            utenti = notificationdao.getUsersWithWhoTheListIsShared(lista);
+             
+        } catch (DAOException ex) {
+            Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        
         if(s.getAttribute("user") != null){            
             try {
                 listdao.insertProductToList(Integer.parseInt(prodotto), lista);
+                for(User u : utenti){
+                    System.out.println("Nome: "+u.getNominativo() + "\nlista: " + lista);
+                    notificationdao.addNotification(u.getEmail(), "new_product", lista);
+                }
             } catch (DAOException ex) {
                 Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
             }            
@@ -94,3 +111,4 @@ public class AddProductToList extends HttpServlet {
     }// </editor-fold>
 
 }
+

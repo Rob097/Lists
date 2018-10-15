@@ -4,6 +4,7 @@
     Author     : Roberto97
 --%>
 
+<%@page import="Notifications.Notification"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="database.entities.*"%>
 <%@page import="database.jdbc.*"%>
@@ -43,6 +44,25 @@
                 });
             </script>
         </c:if>
+            
+            <style>
+                #alert{
+                    position: fixed;
+                    z-index: 10000;
+                    max-width: -webkit-fill-available;
+                    width: -webkit-fill-available;
+                    width: -moz-available;
+                    max-width: -moz-available;
+                    bottom: 0;
+                }
+                .alert{
+                    position: relative;
+                    padding: 1.75rem 1.25rem;
+                    margin-bottom: 0;
+                    border: 1px solid transparent;
+                    border-radius: 0.25rem;
+                }
+            </style>
 
     </head>
     <body>
@@ -265,6 +285,31 @@
                 <!--end hero-wrapper-->
             </header>
             <!--end hero-->
+            <%if(find){
+                if (session.getAttribute("notifiche") != null) {
+            ArrayList <Notification> nn = (ArrayList<Notification>) session.getAttribute("notifiche");%>
+            <div class="container pt-5" id="alert">
+                <%for(Notification n : nn) {
+                switch(n.getType()){
+                    case("new_product"):%>
+                        <div class="alert alert-success text-center" role="alert">
+                            <strong>Nuovo prodotto!</strong> E' stato aggiunto un nuovo prodotto alla lista <%=n.getListName()%></a>.
+                        </div>
+                    <%break;
+                    case("new_user"):%>
+                    <div class="alert alert-success text-center" role="alert">
+                        <strong>Congratulazioni!</strong> Il prodotto è stato aggiunto correttamente al <a onclick="cartAdd()" class="alert-link" style="cursor: pointer;">Carrello</a>.
+                    </div>
+                    <%break;
+                    case("new_message"):%>
+                    <div class="alert alert-success text-center" role="alert">
+                        <strong>Congratulazioni!</strong> Il prodotto è stato aggiunto correttamente al <a onclick="cartAdd()" class="alert-link" style="cursor: pointer;">Carrello</a>.
+                    </div>
+                    <%break;
+                }
+                }%>
+            </div>
+            <%}}%>
 
             <!--*********************************************************************************************************-->
             <!--************ CONTENT ************************************************************************************-->
@@ -691,7 +736,16 @@
             <script src="Pages/js/vari.js"></script>
             <script src="Pages/js/nav.js"></script>
 
+            <script type="text/javascript">
+                $(document).ready (function(){
+                $("#alert").hide();
 
+                $("#alert").fadeTo(10000, 500).slideUp(500, function(){
+                $("#alert").slideUp(500);
+                });   
+
+                });
+            </script>
 
             <!--###############################################################################################################################
                                 CHIUSURA DATABASE

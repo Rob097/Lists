@@ -85,14 +85,14 @@ public class ShowShopList extends HttpServlet {
                         i.remove();
                     }
                 }
-                //remove just linked usernames
+                /*remove just linked usernames
                 for (int j = 0; j < users.size(); j++) {
                     for (int k = 0; k < sharedusers.size(); k++) {
                         if(users.get(j).getEmail().equals(sharedusers.get(k).getEmail())){
                             users.remove(j);
                         }
                     }
-                }
+                }*/
             } catch (DAOException ex) {
                 Logger.getLogger(ShowShopList.class.getName()).log(Level.SEVERE, null, ex);
                 System.out.println("problems with getAllUsers()");
