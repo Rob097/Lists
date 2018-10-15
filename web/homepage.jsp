@@ -290,23 +290,25 @@
             ArrayList <Notification> nn = (ArrayList<Notification>) session.getAttribute("notifiche");%>
             <div class="container pt-5" id="alert">
                 <%for(Notification n : nn) {
-                switch(n.getType()){
-                    case("new_product"):%>
-                        <div class="alert alert-success text-center" role="alert">
-                            <strong>Nuovo prodotto!</strong> E' stato aggiunto un nuovo prodotto alla lista <%=n.getListName()%></a>.
-                        </div>
-                    <%break;
-                    case("new_user"):%>
-                    <div class="alert alert-success text-center" role="alert">
-                        <strong>Congratulazioni!</strong> Il prodotto è stato aggiunto correttamente al <a onclick="cartAdd()" class="alert-link" style="cursor: pointer;">Carrello</a>.
-                    </div>
-                    <%break;
-                    case("new_message"):%>
-                    <div class="alert alert-success text-center" role="alert">
-                        <strong>Congratulazioni!</strong> Il prodotto è stato aggiunto correttamente al <a onclick="cartAdd()" class="alert-link" style="cursor: pointer;">Carrello</a>.
-                    </div>
-                    <%break;
-                }
+                    if(n.getUser().equals(u.getEmail())){
+                        switch(n.getType()){
+                            case("new_product"):%>
+                                <div class="alert alert-success text-center" role="alert">
+                                    <strong>Nuovo prodotto!</strong> E' stato aggiunto un nuovo prodotto alla lista <%=n.getListName()%></a>.
+                                </div>
+                            <%break;
+                            case("new_user"):%>
+                            <div class="alert alert-success text-center" role="alert">
+                                <strong>Congratulazioni!</strong> Il prodotto è stato aggiunto correttamente al <a onclick="cartAdd()" class="alert-link" style="cursor: pointer;">Carrello</a>.
+                            </div>
+                            <%break;
+                            case("new_message"):%>
+                            <div class="alert alert-success text-center" role="alert">
+                                <strong>Congratulazioni!</strong> Il prodotto è stato aggiunto correttamente al <a onclick="cartAdd()" class="alert-link" style="cursor: pointer;">Carrello</a>.
+                            </div>
+                            <%break;
+                        }
+                    }
                 }%>
             </div>
             <%}}%>

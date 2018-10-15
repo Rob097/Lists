@@ -19,4 +19,5 @@ public interface NotificationDAO {
     public ArrayList<User> getUsersWithWhoTheListIsShared(String l) throws DAOException;
     public ArrayList<Notification> thereIsNewNotifications(String listName, String type, String userName) throws DAOException;
     public ArrayList<Notification> getAllNotifications(String userName) throws DAOException;
+    public void deleteNotification(String email, String listname) throws DAOException;
 }

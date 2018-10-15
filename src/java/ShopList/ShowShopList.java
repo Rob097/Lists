@@ -5,12 +5,15 @@
  */
 package ShopList;
 
+import Notifications.Notification;
 import database.daos.ListDAO;
+import database.daos.NotificationDAO;
 import database.daos.UserDAO;
 import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
+import database.jdbc.JDBCNotificationsDAO;
 import database.jdbc.JDBCShopListDAO;
 import database.jdbc.JDBCUserDAO;
 import java.io.IOException;
@@ -31,6 +34,7 @@ import javax.servlet.http.HttpSession;
 public class ShowShopList extends HttpServlet {
     UserDAO userdao;
     ListDAO listdao;
+    NotificationDAO notificationdao;
 
     @Override
     public void init() throws ServletException {
@@ -42,6 +46,7 @@ public class ShowShopList extends HttpServlet {
         //assegna a userdao la connessione(costruttore) e salva la connessione in una variabile tipo Connection
         userdao = new JDBCUserDAO(daoFactory.getConnection()); 
         listdao = new JDBCShopListDAO(daoFactory.getConnection());
+        notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
     }
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -57,7 +62,7 @@ public class ShowShopList extends HttpServlet {
         System.out.println("ShowShopList:\n\n");
         HttpSession session =(HttpSession) request.getSession(false);
         String s = request.getParameter("nome");
-        ShopList shoplist ;
+        ShopList shoplist ;        
         
         
         if(session.getAttribute("user") != null) {
@@ -65,6 +70,12 @@ public class ShowShopList extends HttpServlet {
             User user = (User) session.getAttribute("user");
             User dbuser = null;
             ArrayList<User> sharedusers = new ArrayList<>();
+            
+            try{
+                notificationdao.deleteNotification(user.getEmail(), s);
+            } catch (Exception ex) {
+                System.out.println("Non ci sono notifiche da eliminare\n");
+            }
 
             try {
                 dbuser = userdao.getByEmail(user.getEmail());

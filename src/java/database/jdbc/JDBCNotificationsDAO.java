@@ -15,6 +15,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -123,6 +125,25 @@ public class JDBCNotificationsDAO extends JDBCDAO implements NotificationDAO{
             }
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the notifications of users", ex);
+        }
+        
+        
+    }
+    
+    @Override
+    public void deleteNotification(String email, String listname) throws DAOException {
+        if (email == null || listname == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed email or listname is null"));
+        }
+        
+        try(PreparedStatement statement = CON.prepareStatement("DELETE FROM Notifications WHERE User=? AND ListName=?")){
+            statement.setString(1, email);
+            statement.setString(2, listname);
+            
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Problems with deleting shared user");
         }
     }
     
