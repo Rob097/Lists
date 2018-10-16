@@ -4,6 +4,7 @@
     Author     : Roberto97
 --%>
 
+<%@page import="Notifications.Notification"%>
 <%@page import="database.jdbc.JDBCShopListDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="database.entities.ShopList"%>
@@ -77,6 +78,10 @@
             String Email = "";
             String Type = "";
             String image = "../../";
+            ArrayList <Notification> notifiche = new ArrayList();
+            if(session.getAttribute("notifiche") != null){
+                notifiche = (ArrayList<Notification>) session.getAttribute("notifiche");
+            }
 
             //String Image = "";
             Nominativo = u.getNominativo();
@@ -189,9 +194,18 @@
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
                                     <!--##############-->
 
-                                    <%                                        for (ShopList l : li) {
+                                    <%for (ShopList l : li) {
+                                        ArrayList<Notification> n = new ArrayList();
+                                            for(Notification nn : notifiche) {
+                                                if(nn.getListName().equals(l.getNome())){
+                                                    n.add(nn);
+                                                }
+                                            }
                                     %>                                                                  
                                     <div class="item">
+                                        <%if(!n.isEmpty()){%>
+                                            <div class="ribbon-featured">Featured</div>
+                                        <%}%>
                                         <!--end ribbon-->
                                         <div class="wrapper">
                                             <div class="image">

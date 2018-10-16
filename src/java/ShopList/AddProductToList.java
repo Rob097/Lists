@@ -44,6 +44,8 @@ public class AddProductToList extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         System.out.println("\nPRIMO\n");
+        
+        //Dichiarazioni
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
             throw new ServletException("Impossible to get dao factory for user storage system");
@@ -53,6 +55,7 @@ public class AddProductToList extends HttpServlet {
         HttpSession s = (HttpSession) request.getSession();
         String prodotto = ""; String lista = "";
         
+        //richieste dei parametri lista e prodotto
         if(request.getParameter("prodotto") != null){
             prodotto = request.getParameter("prodotto");
         }else if(s.getAttribute("prodotto") != null){
@@ -67,7 +70,8 @@ public class AddProductToList extends HttpServlet {
         }else prodotto = "niente";
         System.out.println("\nTERZO\nlista="+lista);
         
-         ArrayList<User> utenti = new ArrayList();
+        //utenti con cui la lista è condivisa
+        ArrayList<User> utenti = new ArrayList();
         try {
             utenti = notificationdao.getUsersWithWhoTheListIsShared(lista);
              
@@ -75,12 +79,17 @@ public class AddProductToList extends HttpServlet {
             Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
         } 
         
-        if(s.getAttribute("user") != null){            
+        //Inserimento del prodotto nel database
+        //Invio della nootifica ad ogni utente della lista
+        if(s.getAttribute("user") != null){
+            User utente = (User) s.getAttribute("user");
             try {
                 listdao.insertProductToList(Integer.parseInt(prodotto), lista);
                 for(User u : utenti){
-                    System.out.println("Nome: "+u.getNominativo() + "\nlista: " + lista);
-                    notificationdao.addNotification(u.getEmail(), "new_product", lista);
+                    //System.out.println("Nome: "+u.getNominativo() + "\nlista: " + lista);
+                    if(!u.getEmail().equals(utente.getEmail())){
+                        notificationdao.addNotification(u.getEmail(), "new_product", lista);
+                    }
                 }
             } catch (DAOException ex) {
                 Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
@@ -92,7 +101,7 @@ public class AddProductToList extends HttpServlet {
                 Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        System.out.println("\nFINE\n");
+        //System.out.println("\nFINE\n");
         s.setAttribute("prodotto", prodotto);
         s.setAttribute("shopListName", lista);
         

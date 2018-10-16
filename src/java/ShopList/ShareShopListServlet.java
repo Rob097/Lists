@@ -6,10 +6,12 @@
 package ShopList;
 
 import database.daos.ListDAO;
+import database.daos.NotificationDAO;
 import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
+import database.jdbc.JDBCNotificationsDAO;
 import database.jdbc.JDBCShopListDAO;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ import javax.servlet.http.HttpSession;
 public class ShareShopListServlet extends HttpServlet {
 
     ListDAO listdao;
+    NotificationDAO notificationdao;
     @Override
     public void init() throws ServletException {
         //carica la Connessione inizializzata in JDBCDAOFactory, quindi ritorna il Class.for() e la connessione
@@ -37,6 +40,7 @@ public class ShareShopListServlet extends HttpServlet {
         }
         //assegna a userdao la connessione(costruttore) e salva la connessione in una variabile tipo Connection
         listdao = new JDBCShopListDAO(daoFactory.getConnection());        
+        notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -63,13 +67,28 @@ public class ShareShopListServlet extends HttpServlet {
             throws ServletException, IOException {
        
             User user ;           
-            String[] emailsharedUsers = request.getParameterValues("sharedUsers");            
+            String[] emailsharedUsers = request.getParameterValues("sharedUsers");
             HttpSession session =(HttpSession) request.getSession(false);
             String listname = (String) session.getAttribute("shopListName");
+            
+            ArrayList<User> listUsers = new ArrayList<>();
+            try {
+                listUsers = notificationdao.getUsersWithWhoTheListIsShared(listname);
+            } catch (DAOException ex) {
+                Logger.getLogger(ShareShopListServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             user = (User) session.getAttribute("user");
+            
+            //Per ogni utente con cui vuoi condividere la lista, aggiungilo alla lista e a tutti gli altri invia una notifica.s
             try {
                 for (String emailsharedUser : emailsharedUsers) {
                     listdao.insertSharedUser(emailsharedUser, listname);
+                    for(User u : listUsers){
+                        if(!u.getEmail().equals(user.getEmail())){
+                            notificationdao.addNotification(u.getEmail(), "new_user", listname);
+                        }
+                    }
                 }
             } catch (DAOException ex) {
                 Logger.getLogger(ShareShopListServlet.class.getName()).log(Level.SEVERE, null, ex);

@@ -70,9 +70,11 @@ public class ShowShopList extends HttpServlet {
             User user = (User) session.getAttribute("user");
             User dbuser = null;
             ArrayList<User> sharedusers = new ArrayList<>();
-            
-            try{
+            ArrayList<Notification> notifiche = new ArrayList<>();
+             try{
                 notificationdao.deleteNotification(user.getEmail(), s);
+                notifiche = notificationdao.getAllNotifications(user.getEmail());
+                session.setAttribute("notifiche", notifiche);
             } catch (Exception ex) {
                 System.out.println("Non ci sono notifiche da eliminare\n");
             }

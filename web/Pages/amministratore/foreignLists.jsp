@@ -4,6 +4,7 @@
     Author     : Roberto97
 --%>
 
+<%@page import="Notifications.Notification"%>
 <%@page import="database.jdbc.JDBCShopListDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="database.entities.ShopList"%>
@@ -46,6 +47,10 @@
 
     if (find) {
         ArrayList<ShopList> li = listdao.getAllSharedList(u.getEmail());
+        ArrayList <Notification> notifiche = new ArrayList();
+            if(session.getAttribute("notifiche") != null){
+                notifiche = (ArrayList<Notification>) session.getAttribute("notifiche");
+            }
 %>
 
 <!DOCTYPE html>
@@ -63,12 +68,7 @@
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="../css/user.css">
         <link rel="stylesheet" href="../css/navbar.css">
-        <link rel="stylesheet" href="../css/datatables.css" type="text/css"> 
-
-
-
-
-
+        <link rel="stylesheet" href="../css/datatables.css" type="text/css">
     </head>
     <body>        
         <div class="page home-page">
@@ -173,8 +173,17 @@
 
                                     <% 
                                         for (ShopList l : li) {
+                                            ArrayList<Notification> n = new ArrayList();
+                                            for(Notification nn : notifiche) {
+                                                if(nn.getListName().equals(l.getNome())){
+                                                    n.add(nn);
+                                                }
+                                            }
                                     %>                                                                  
                                     <div class="item">
+                                        <%if(!n.isEmpty()){%>
+                                            <div class="ribbon-featured">Featured</div>
+                                        <%}%>
                                         <!--end ribbon-->
                                         <div class="wrapper">
                                             <div class="image">

@@ -86,14 +86,12 @@ public class LoginAction extends HttpServlet {
             if (user != null) {
                 loginResult = true;
                 find = true;
-                
-                if (find) {
-                    ArrayList<ShopList> li = listdao.getByEmail(user.getEmail());
-                    ArrayList<ShopList> sl = listdao.getListOfShopListsThatUserLookFor(user.getEmail());
-                     session.setAttribute("userLists", li);  
-                     session.setAttribute("sharedLists", sl);
-                }
-                
+
+                ArrayList<ShopList> li = listdao.getByEmail(user.getEmail());
+                ArrayList<ShopList> sl = listdao.getListOfShopListsThatUserLookFor(user.getEmail());
+                session.setAttribute("userLists", li);
+                session.setAttribute("sharedLists", sl);
+
                 String nominativo = user.getNominativo();
                 String tipo = user.getTipo();
                 String image = user.getImage();
@@ -108,13 +106,13 @@ public class LoginAction extends HttpServlet {
                 session.setAttribute("Logged", "on");
                 session.setAttribute("user", user);
                 notifiche = n.getAllNotifications(user.getEmail());
-                int i = 1;
+                /*int i = 1;
                 for(Notification nn : notifiche){
                     System.out.println("Nome lista " + i + ": " + nn.getListName());
                     System.out.println("Nome utente list " + i + ": " + nn.getUser());
                     System.out.println("Tipo list  " + i + ": " + nn.getType());
                     i++;
-                }
+                }*/
                session.setAttribute("notifiche", notifiche);
 
                 url = "homepage.jsp";

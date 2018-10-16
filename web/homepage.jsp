@@ -285,33 +285,80 @@
                 <!--end hero-wrapper-->
             </header>
             <!--end hero-->
+            
+            <!-- SISTEMA PER LE NOTIFICHE -->
             <%if(find){
                 if (session.getAttribute("notifiche") != null) {
-            ArrayList <Notification> nn = (ArrayList<Notification>) session.getAttribute("notifiche");%>
-            <div class="container pt-5" id="alert">
-                <%for(Notification n : nn) {
-                    if(n.getUser().equals(u.getEmail())){
-                        switch(n.getType()){
-                            case("new_product"):%>
-                                <div class="alert alert-success text-center" role="alert">
-                                    <strong>Nuovo prodotto!</strong> E' stato aggiunto un nuovo prodotto alla lista <%=n.getListName()%></a>.
-                                </div>
-                            <%break;
-                            case("new_user"):%>
-                            <div class="alert alert-success text-center" role="alert">
-                                <strong>Congratulazioni!</strong> Il prodotto è stato aggiunto correttamente al <a onclick="cartAdd()" class="alert-link" style="cursor: pointer;">Carrello</a>.
-                            </div>
-                            <%break;
-                            case("new_message"):%>
-                            <div class="alert alert-success text-center" role="alert">
-                                <strong>Congratulazioni!</strong> Il prodotto è stato aggiunto correttamente al <a onclick="cartAdd()" class="alert-link" style="cursor: pointer;">Carrello</a>.
-                            </div>
-                            <%break;
+                    ArrayList <Notification> nn = (ArrayList<Notification>) session.getAttribute("notifiche");
+                    ArrayList <Notification> nProd = new ArrayList<>();
+                    ArrayList <Notification> nUser = new ArrayList<>();
+                    ArrayList <Notification> nMsg = new ArrayList<>();
+                    int checkNotification = 0;
+            
+                    for(Notification nf : nn) {
+                        if(nf.getUser().equals(u.getEmail())){
+                            checkNotification = 1;
+                            if( nf.getType().equals("new_product")) nProd.add(nf);
+                            if( nf.getType().equals("new_user")) nUser.add(nf);
+                            if( nf.getType().equals("new_message")) nMsg.add(nf);
+                            
                         }
                     }
-                }%>
-            </div>
-            <%}}%>
+            
+            
+            %>
+                    <div class="container pt-5" id="alert">
+                        <%if(!nProd.isEmpty()){
+                            if(nProd.size() == 1){
+                        %>
+                                <div class="alert alert-success text-center" role="alert">
+                                    <a href="/Lists/Pages/<%=u.getTipo()%>/foreignLists.jsp"><strong>Nuovo prodotto!</strong> E' stato aggiunto un nuovo prodotto alla lista <%=nProd.get(0).getListName()%></a>.
+                                </div>
+                            <%}else{%>
+                                <div class="alert alert-success text-center" role="alert">
+                                    <a href="/Lists/Pages/<%=u.getTipo()%>/foreignLists.jsp"><strong>Nuovi Prodotti</strong> sono stati aggiunti alle liste.</a>
+                                </div>
+                            <%}
+                        }%>
+                        <%if(!nUser.isEmpty()){
+                            if(nUser.size() == 1){
+                        %>
+                                <div class="alert alert-success text-center" role="alert">
+                                    <a href="/Lists/Pages/<%=u.getTipo()%>/foreignLists.jsp"><strong>Nuovo Utente!</strong> E' stato aggiunto un nuovo utente alla lista <%=nUser.get(0).getListName()%></a>.
+                                </div>
+                            <%}else{%>
+                                <div class="alert alert-success text-center" role="alert">
+                                    <a href="/Lists/Pages/<%=u.getTipo()%>/foreignLists.jsp"><strong>Nuovi Utenti</strong> sono stati aggiunti alle liste.</a>
+                                </div>
+                            <%}
+                        }%>
+                        <%if(!nMsg.isEmpty()){
+                            if(nMsg.size() == 1){
+                        %>
+                                <div class="alert alert-success text-center" role="alert">
+                                    <a href="/Lists/Pages/<%=u.getTipo()%>/foreignLists.jsp"><strong>Nuovo Messaggio!</strong> Hai un nuovo messaggio nella lista <%=nUser.get(0).getListName()%></a>.
+                                </div>
+                            <%}else{%>
+                                <div class="alert alert-success text-center" role="alert">
+                                    <a href="/Lists/Pages/<%=u.getTipo()%>/foreignLists.jsp"><strong>Nuovi Messaggi</strong> nelle liste.</a>
+                                </div>
+                            <%}
+                        }%>
+                        <%if(checkNotification == 0){%>
+                            <div class="alert alert-info text-center" role="alert">
+                                <strong>Non</strong> hai nuove notifiche <%=u.getNominativo()%></a>.
+                            </div>
+                        <%}%>
+                    </div>
+                <%}else{%>
+                <div class="container pt-5" id="alert">
+                    <div class="alert alert-info text-center" role="alert">
+                        <strong>Non</strong> hai nuove notifiche <%=u.getNominativo()%></a>.
+                    </div>
+                </div>
+                <%}
+            }%>
+            <!-- FINE DELLE NOTIFICHE -->
 
             <!--*********************************************************************************************************-->
             <!--************ CONTENT ************************************************************************************-->
@@ -726,7 +773,7 @@
                     </div>
                 </div>
             </div>
-
+        </div>
 
             <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
             <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
