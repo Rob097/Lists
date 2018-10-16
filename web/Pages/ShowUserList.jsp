@@ -166,7 +166,7 @@
                                     <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >+ Lista</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/Pages/<%=Type%>/<%=Type%>.jsp"><b>Le mie liste</b></a>
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/userlists.jsp"><b>Le mie liste</b></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>

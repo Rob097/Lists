@@ -69,25 +69,12 @@
         <!--###############################################################################################################################
                                 CONNESSIONE DATABASE
             ###############################################################################################################################-->    
-        <%
+        
+            
+       
+
+        <%                
             HttpSession s = (HttpSession) request.getSession();
-            Connection conn = null;
-            Statement stmt = null;
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-                String url = "jdbc:mysql://ourlists.ddns.net:3306/ourlists?zeroDateTimeBehavior=convertToNull";
-                String username = "user";
-                String password = "the_password";
-                conn = DriverManager.getConnection(url, username, password);
-                stmt = conn.createStatement();
-
-            } catch (Exception e) {
-                System.out.println("Causa Connessione: ");
-                e.printStackTrace();
-            }
-        %>
-
-        <%
             DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
             if (daoFactory == null) {
                 throw new ServletException("Impossible to get dao factory for user storage system");
@@ -142,7 +129,7 @@
                         <div class="collapse navbar-collapse" id="navbarResponsive">
                             <ul class="navbar-nav text-uppercase ml-auto text-center">                                
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/Pages/<%=Type%>/<%=Type%>.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/Pages/<%=Type%>/foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>
@@ -176,7 +163,7 @@
                                     <a class="nav-link js-scroll-trigger" href="#home"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/Pages/guest/guest.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#LoginModal" style="cursor: pointer;">
@@ -234,7 +221,7 @@
                                 
                             </div>
                             <div class="col-md-3">
-                                <a href="/Lists/Pages/<%=Type%>/<%=Type%>.jsp" class="text-caps" style="padding: 0em 4em !important; font-size: 15px;"><b><i>Le mie liste</i></b></a>
+                                <a href="/Lists/userlists.jsp" class="text-caps" style="padding: 0em 4em !important; font-size: 15px;"><b><i>Le mie liste</i></b></a>
                             </div>
                             <div class="col-md-2">
                                 <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" style="color: white;">Crea una nuova Lista</a>
@@ -799,15 +786,7 @@
             <!--###############################################################################################################################
                                 CHIUSURA DATABASE
             ###############################################################################################################################-->            
-            <%
-                try {
-                    stmt.close();
-                    conn.close();
-                } catch (Exception e) {
-                    System.out.println("Causa Chiusura ");
-                    e.printStackTrace();
-                }
-            %>    
+   
             <!--###############################################################################################################################-->
 
     </body>

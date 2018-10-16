@@ -195,7 +195,7 @@
                                     <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/Pages/<%=Type%>/<%=Type%>.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/Pages/<%=Type%>/foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>

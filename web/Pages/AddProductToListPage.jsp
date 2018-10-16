@@ -201,7 +201,7 @@
                                     <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/Pages/<%=Type%>/<%=Type%>.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
