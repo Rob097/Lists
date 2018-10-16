@@ -56,11 +56,16 @@ public class JDBCNotificationsDAO extends JDBCDAO implements NotificationDAO{
     
     @Override
     public ArrayList<User> getUsersWithWhoTheListIsShared(String listname) throws DAOException {
-        try (PreparedStatement stm = CON.prepareStatement("select * from User where email in (select user from User_List where list = ?)")) {
+        try{
+            PreparedStatement stm = CON.prepareStatement("select * from User where email in (select user from User_List where list = ?)");
+            PreparedStatement stm2 = CON.prepareStatement("select * from User where email in (select creator from List where nome = ?)");
             ArrayList<User> userList = new ArrayList<>();
 
             stm.setString(1, listname);
-            try (ResultSet rs = stm.executeQuery()) {
+            stm2.setString(1, listname);
+            try{
+                ResultSet rs = stm.executeQuery();
+                ResultSet rs2 = stm2.executeQuery();
                 while (rs.next()) {
                     User u = new User();
                     u.setEmail(rs.getString("email"));
@@ -68,11 +73,23 @@ public class JDBCNotificationsDAO extends JDBCDAO implements NotificationDAO{
                     u.setImage(rs.getString("immagine"));
                     userList.add(u);
                 }
-
-                return userList;
+                while(rs2.next()){
+                    User u = new User();
+                    u.setEmail(rs2.getString("email"));
+                    u.setNominativo(rs2.getString("nominativo"));
+                    u.setImage(rs2.getString("immagine"));
+                    userList.add(u);
+                }
+                    
+            } catch (SQLException ex) {
+                throw new DAOException("Impossible to get the list of users #1", ex);
             }
+            for(User u : userList){
+                System.out.println("\n"+u.getEmail());
+            }
+            return userList;
         } catch (SQLException ex) {
-            throw new DAOException("Impossible to get the list of users", ex);
+            throw new DAOException("Impossible to get the list of users #2", ex);
         }
     }
 

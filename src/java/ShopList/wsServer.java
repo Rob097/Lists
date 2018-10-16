@@ -29,7 +29,8 @@ public class wsServer {
 
     private static ArrayList<Session> allSessions = new ArrayList<Session>();
     private static ArrayList<String> liste = new ArrayList<String>();
-
+    
+    
     @OnOpen
     public void handleOpen(Session session) {
         System.out.println("client is now connecteddddddddddddddddddddddddddddddddddddd...");

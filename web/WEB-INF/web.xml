@@ -78,6 +78,10 @@
         <servlet-name>setPID</servlet-name>
         <servlet-class>ShopList.setPID</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>messageNotification</servlet-name>
+        <servlet-class>Notifications.messageNotification</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -137,6 +141,10 @@
     <servlet-mapping>
         <servlet-name>setPID</servlet-name>
         <url-pattern>/setPID</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>messageNotification</servlet-name>
+        <url-pattern>/messageNotification</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

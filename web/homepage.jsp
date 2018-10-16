@@ -287,7 +287,13 @@
                             checkNotification = 1;
                             if( nf.getType().equals("new_product")) nProd.add(nf);
                             if( nf.getType().equals("new_user")) nUser.add(nf);
-                            if( nf.getType().equals("new_message")) nMsg.add(nf);
+                            if( nf.getType().equals("new_message")){
+                                try{
+                                    nMsg.add(nf);
+                                }catch(Exception e){
+                                    e.printStackTrace();
+                                }
+                            }
                             
                         }
                     }
@@ -299,7 +305,7 @@
                             if(nProd.size() == 1){
                         %>
                                 <div class="alert alert-success text-center" role="alert">
-                                    <a href="/Lists/Pages/<%=u.getTipo()%>/foreignLists.jsp"><strong>Nuovo prodotto!</strong> E' stato aggiunto un nuovo prodotto alla lista <%=nProd.get(0).getListName()%></a>.
+                                    <a href="/Lists/ShowShopList?nome=<%=nProd.get(0).getListName()%>"><strong>Nuovo prodotto!</strong> E' stato aggiunto un nuovo prodotto alla lista <%=nProd.get(0).getListName()%></a>.
                                 </div>
                             <%}else{%>
                                 <div class="alert alert-success text-center" role="alert">
@@ -311,7 +317,7 @@
                             if(nUser.size() == 1){
                         %>
                                 <div class="alert alert-success text-center" role="alert">
-                                    <a href="/Lists/Pages/<%=u.getTipo()%>/foreignLists.jsp"><strong>Nuovo Utente!</strong> E' stato aggiunto un nuovo utente alla lista <%=nUser.get(0).getListName()%></a>.
+                                    <a href="/Lists/ShowShopList?nome=<%=nUser.get(0).getListName()%>"><strong>Nuovo Utente!</strong> E' stato aggiunto un nuovo utente alla lista <%=nUser.get(0).getListName()%></a>.
                                 </div>
                             <%}else{%>
                                 <div class="alert alert-success text-center" role="alert">
@@ -323,7 +329,7 @@
                             if(nMsg.size() == 1){
                         %>
                                 <div class="alert alert-success text-center" role="alert">
-                                    <a href="/Lists/Pages/<%=u.getTipo()%>/foreignLists.jsp"><strong>Nuovo Messaggio!</strong> Hai un nuovo messaggio nella lista <%=nUser.get(0).getListName()%></a>.
+                                    <a href="/Lists/ShowShopList?nome=<%=nMsg.get(0).getListName()%>"><strong>Nuovo Messaggio!</strong> Hai un nuovo messaggio nella lista <%=nMsg.get(0).getListName()%></a>.
                                 </div>
                             <%}else{%>
                                 <div class="alert alert-success text-center" role="alert">

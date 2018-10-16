@@ -49,7 +49,7 @@ public class chat extends HttpServlet {
         chatFolder = chatFolder + "/" + listaname + ".json";
 
         SaveMessage(m, chatFolder);
-
+        
     }
 
     public void SaveMessage(ArrayList<String> m, String listname) throws IOException {

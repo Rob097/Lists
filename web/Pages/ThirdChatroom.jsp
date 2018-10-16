@@ -35,7 +35,7 @@
 
     u = (User) s.getAttribute("user");
 
-    if (u.getTipo().equals("standard")) {
+    if (u.getTipo().equals("standard") || u.getTipo().equals("amministratore")) {
         find = true;
     }
 
@@ -207,6 +207,7 @@
                             <div class="messaging__header">
                                 <div class="float-left flex-row-reverse messaging__person">
                                     <h5 class="font-weight-bold" id="Sender"><%=Nominativo%></h5>
+                                    <input type = "hidden" name = "senderEmail" id = "senderEmail" value = "<%=Email%>">
                                     <figure class="mr-4 messaging__image-person" data-background-image="assets/img/author-02.jpg"></figure>
                                 </div>
                                 <div class="float-right messaging__person">
@@ -353,10 +354,11 @@
 </script>
 
 <script type="text/javascript">
-    var webSocket = new WebSocket("ws://10.196.189.177:8080/Lists/wsServer");
+    var webSocket = new WebSocket("ws://localhost:8080/Lists/wsServer");
     var slname = document.getElementById("shoplistName");
     var messaggioDaInviare = document.getElementById("messaggioDaInviare");
     var user = document.getElementById("Sender");
+    var email = document.getElementById("senderEmail");
     //var messages = document.getElementById('messages');
 
     webSocket.onopen = function (message) {
@@ -364,6 +366,12 @@
     };
     webSocket.onmessage = function (message) {
         processMessage(message);
+        $.ajax({
+                type: "GET",
+                url: "/Lists/messageNotification",
+                async: false
+            });
+        //window.location.href = "/Lists/messageNotification";
     };
     webSocket.onclose = function (message) {
         processClose(message);
