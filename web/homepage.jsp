@@ -132,10 +132,10 @@
                                     <a class="nav-link js-scroll-trigger" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/Pages/<%=Type%>/foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/Pages/<%=Type%>/profile.jsp">
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/profile.jsp">
                                         <i class="fa fa-user"></i><b>Il mio profilo</b>
                                     </a>
                                 </li>
