@@ -91,7 +91,7 @@ public class CreateShopList extends HttpServlet {
             }
         }
         else if (s.getAttribute("user") != null) {
-            url = "/Lists/Pages/" + temp.getTipo() + "/" + temp.getTipo() + ".jsp";
+            url = "/Lists/userpages.jsp";
         }
         
         

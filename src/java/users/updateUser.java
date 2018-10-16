@@ -141,7 +141,7 @@ public class updateUser extends HttpServlet {
         
         //Redirect
         if (s.getAttribute("user") != null) {
-            url = "/Lists/Pages/"+ user.getTipo() +"/profile.jsp";
+            url = "/Lists/profile.jsp";
         } else {
             url = "homepage.jsp";
             out.println("Errore di tipo utente");

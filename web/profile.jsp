@@ -6,9 +6,6 @@
 
 <%@page import="database.entities.User"%>
 <%@page import="java.net.URLDecoder"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.PreparedStatement"%>
-<%@page import="java.sql.Blob"%>
 
 <%
     HttpSession s = (HttpSession) request.getSession();
@@ -20,38 +17,30 @@
         response.sendRedirect("/Lists/homepage.jsp");
 
     } else {
-        if (u.getTipo().equals("amministratore")) {
-            find = true;
-        }
-
-        System.out.println("000" + find);
-
+        find = true;      
         if (find) {
 %>
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.Connection"%>
+
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="icon" href="../img/favicon.png" sizes="16x16" type="image/png">
+        <link rel="icon" href="Pages/img/favicon.png" sizes="16x16" type="image/png">
         <title>Lists</title>
 
         <!-- CSS personalizzati -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
-        <link rel="stylesheet" href="../bootstrap/css/bootstrap.css" type="text/css">
-        <link rel="stylesheet" href="../fonts/font-awesome.css" type="text/css">
-        <link rel="stylesheet" href="../css/selectize.css" type="text/css">
-        <link rel="stylesheet" href="../css/style.css">
-        <link rel="stylesheet" href="../css/user.css">
-        <link rel="stylesheet" href="../css/navbar.css">
+        <link rel="stylesheet" href="Pages/bootstrap/css/bootstrap.css" type="text/css">
+        <link rel="stylesheet" href="Pages/fonts/font-awesome.css" type="text/css">
+        <link rel="stylesheet" href="Pages/css/selectize.css" type="text/css">
+        <link rel="stylesheet" href="Pages/css/style.css">
+        <link rel="stylesheet" href="Pages/css/user.css">
+        <link rel="stylesheet" href="Pages/css/navbar.css">
     </head>
     <body>
-
-
         <%
             String Nominativo = "";
             String Email = "";
@@ -63,10 +52,7 @@
             Email = u.getEmail();
             Type = u.getTipo();
             image = u.getImage();
-
-
         %>
-        
         
         <div class="page home-page">
             <header class="hero">
@@ -74,7 +60,7 @@
 
                     <nav class="navbar navbar-expand-xl navbar-dark fixed-top " id="mainNav">
                         <a class="navbar-brand">
-                            <img width= "50" src="../img/favicon.png" alt="Logo">
+                            <img width= "50" src="Pages/img/favicon.png" alt="Logo">
                         </a>
                         <a class="navbar-brand js-scroll-trigger" href="#home">LISTS</a>
                         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,15 +68,12 @@
                             <i class="fa fa-bars"></i>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarResponsive">
-                            <ul class="navbar-nav text-uppercase ml-auto text-center">
-                                <li class="nav-item">
-                                    <a href="submit.html" class="btn btn-primary text-caps btn-rounded" style="color: black;">Crea una lista</a>
-                                </li>
+                            <ul class="navbar-nav text-uppercase ml-auto text-center">                                
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="amministratore.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                    <a class="nav-link js-scroll-trigger" href="userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="foreignLists.jsp">
@@ -123,7 +106,7 @@
                     </div>
                     <div class="background">
                         <div class="background-image">
-                            <img src="../img/hero-background-image-02.jpg" alt="">
+                            <img src="Pages/img/hero-background-image-02.jpg" alt="">
                         </div>
                         <!--end background-image-->
                     </div>
@@ -141,15 +124,18 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <nav class="nav flex-column side-nav">                                   
-                                    <a class="nav-link icon" href="amministratore.jsp">
+                                    <a class="nav-link icon" href="userlists.jsp">
                                         <i class="fa fa-bars"></i>Le mie liste
                                     </a>
                                     <a class="nav-link icon" href="foreignLists.jsp">
                                         <i class="fa fa-share-alt"></i>Liste condivise
                                     </a>
-                                    <a class="nav-link icon" href="/Lists/Pages/AdminPages/adminPage.jsp">
-                                        <i class="fa fa-users"></i>User list
-                                    </a>                                    
+                                    <c:if test="${user.tipo=='amministratore'}">
+                                        <a class="nav-link icon" href="/Lists/Pages/AdminPages/adminPage.jsp">
+                                            <i class="fa fa-users"></i>Lista Utenti
+                                        </a>
+                                    </c:if>
+                                                                        
                                 </nav>
                             </div>
                             <!--end col-md-3-->
@@ -186,7 +172,7 @@
                                         <div class="col-md-4">
                                             <div class="profile-image">
                                                 <div class="image background-image">
-                                                    <img src="../../${user.image}" alt="">
+                                                    <img src="/Lists/${user.image}" alt="">
                                                 </div>
                                                 <div class="single-file-input">
                                                     <input type="file" name="file1" >
@@ -217,7 +203,7 @@
                         <div class="row">
                             <div class="col-md-5">
                                 <a href="#" class="brand">
-                                    <img src="../img/logo.png" alt="">
+                                    <img src="Pages/img/logo.png" alt="">
                                 </a>
                                 <p>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut nec tincidunt arcu, sit amet
@@ -292,7 +278,7 @@
                     </div>
                     <div class="background">
                         <div class="background-image original-size">
-                            <img src="../img/footer-background-icons.jpg" alt="">
+                            <img src="Pages/img/footer-background-icons.jpg" alt="">
                         </div>
                         <!--end background-image-->
                     </div>
@@ -335,22 +321,19 @@
                 </div>
             </div>
         </div>
-
-
         <!--######################################################-->
 
-        <script src="../js/jquery-3.3.1.min.js"></script>
-        <script type="text/javascript" src="../js/popper.min.js"></script>
-        <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+        <script src="Pages/js/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="Pages/js/popper.min.js"></script>
+        <script type="text/javascript" src="Pages/bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
         <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
-        <script src="../js/selectize.min.js"></script>
-        <script src="../js/masonry.pkgd.min.js"></script>
-        <script src="../js/icheck.min.js"></script>
-        <script src="../js/jquery.validate.min.js"></script>
-        <script src="../js/custom.js"></script>
-        <script src="../js/nav.js"></script>
-
+        <script src="Pages/js/selectize.min.js"></script>
+        <script src="Pages/js/masonry.pkgd.min.js"></script>
+        <script src="Pages/js/icheck.min.js"></script>
+        <script src="Pages/js/jquery.validate.min.js"></script>
+        <script src="Pages/js/custom.js"></script>
+        <script src="Pages/js/nav.js"></script>
 
     </body>
 </html>
