@@ -96,45 +96,39 @@
             <!--*********************************************************************************************************-->
             <header class="hero">
                 <div class="hero-wrapper">
-                    <!--============ Secondary Navigation ===============================================================-->
-                    <div class="secondary-navigation">
-                        <div class="container">
-                            <ul class="left">
-                                <li>
-                                    <span>
-                                        <i class="fa fa-phone"></i> +1 123 456 789
-                                    </span>
+                    <nav class="navbar navbar-expand-xl navbar-dark fixed-top " id="mainNav">
+                        <a class="navbar-brand">
+                            <img width= "50" src="img/favicon.png" alt="Logo">
+                        </a>
+                        <a class="navbar-brand js-scroll-trigger" href="#home">LISTS</a>
+                        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                            Menu
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarResponsive">
+                            <ul class="navbar-nav text-uppercase ml-auto text-center">
+                                <li class="nav-item">
+                                    <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >Crea una lista</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger"  href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="../foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="profile.jsp">
+                                        <i class="fa fa-user"></i><b>Il mio profilo</b>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
+                                        <i class="fa fa-sign-in"></i><b><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> </b>/ <img src= "/Lists/${user.image}" width="25px" height="25px" style="border-radius: 100%;">
+                                    </a>
+                                </li>                             
                             </ul>
-                            <!--end left-->
-                            <ul class="right">
-                                <li>
-                                    <a href="my-ads.html">
-                                        <i class="fa fa-heart"></i>My Ads
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="sign-in.html">
-                                        <i class="fa fa-sign-in"></i>Sign In
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="register.html">
-                                        <i class="fa fa-pencil-square-o"></i>Register
-                                    </a>
-                                </li>
-                            </ul>
-                            <!--end right-->
                         </div>
-                        <!--end container-->
-                    </div>
-                    <!--============ End Secondary Navigation ===========================================================-->
-                    <!--============ Main Navigation ====================================================================-->
-
-                    <!--============ End Main Navigation ================================================================-->
-                    <!--============ Hero Form ==========================================================================-->
-
-                    <!--end hero-form-->
+                    </nav>
                 </div>
                 <!--end collapse-->
                 <!--============ End Hero Form ======================================================================-->
@@ -291,6 +285,69 @@
     <!--end footer-->
 </div>
 <!--end page-->
+
+<div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1 style="text-align: center;">Create list</h1>
+                            </div>
+                            <!--end container-->
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form per il login -->
+                        <form class="form clearfix" id="CreateShopListform" action="/Lists/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="Nome" class="col-form-label">Nome della lista</label>
+                                <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="Descrizione" class="col-form-label">Descrizione</label>
+                                <input type="text" name="Descrizione" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="Categoria" class="col-form-label">Categoria</label>
+                                <select name="Categoria" id="Categoria" tabindex="1" size="5" >
+
+                                    <c:forEach items="${categorie}" var="categoria">
+                                        <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
+                                    </c:forEach>
+                                </select><!--<input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>-->
+
+                            </div>
+                            <!--end form-group-->
+                            <%if(find){%>
+                            <div class="form-group">
+                                <label for="Immagine" class="col-form-label required">Immagine</label>
+                                <input type="file" name="file1" required>
+                            </div>
+                            <%}%>
+                            <!--end form-group-->
+                            <div class="d-flex justify-content-between align-items-baseline">
+
+                                <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
+
+                                <%if (find == false && session.getAttribute("guestList") != null) {%>
+                                <h5>Attenzione, hai già salvato una lista. Se non sei registrato puoi salvare solo una lista alla volta. Salvando questa lista, cancellerai la lista gia salvata.</h5>
+                                <%}%>
+                            </div>
+                        </form>
+                        <hr>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 <script src="js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="js/popper.min.js"></script>
