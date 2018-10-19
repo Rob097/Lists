@@ -69,21 +69,23 @@ public class ShareShopListServlet extends HttpServlet {
             User user ;           
             String[] emailsharedUsers = request.getParameterValues("sharedUsers");
             HttpSession session =(HttpSession) request.getSession(false);
-            String listname = (String) session.getAttribute("shopListName");
+            String listname = (String) session.getAttribute("shopListName");            
+            ArrayList<User> users = (ArrayList<User>) session.getAttribute("Users");
+            user = (User) session.getAttribute("user");
+            
             
             ArrayList<User> listUsers = new ArrayList<>();
-            try {
+                        try {
                 listUsers = notificationdao.getUsersWithWhoTheListIsShared(listname);
             } catch (DAOException ex) {
                 Logger.getLogger(ShareShopListServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }            
             
-            user = (User) session.getAttribute("user");
             
             //Per ogni utente con cui vuoi condividere la lista, aggiungilo alla lista e a tutti gli altri invia una notifica.s
             try {
                 for (String emailsharedUser : emailsharedUsers) {
-                    listdao.insertSharedUser(emailsharedUser, listname);
+                    listdao.insertSharedUser(emailsharedUser, listname);                    
                     for(User u : listUsers){
                         if(!u.getEmail().equals(user.getEmail())){
                             notificationdao.addNotification(u.getEmail(), "new_user", listname);
@@ -93,10 +95,21 @@ public class ShareShopListServlet extends HttpServlet {
             } catch (DAOException ex) {
                 Logger.getLogger(ShareShopListServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
+            //rimuove gli utenti appena condivisi dal dropdown
+            for (int j = 0; j < users.size(); j++) {
+                    for (int k = 0; k <emailsharedUsers.length; k++) {
+                        if(users.get(j).getEmail().equals(emailsharedUsers[k])){
+                            users.remove(j);
+                        }
+                    }
+                }
+            session.setAttribute("Users", users);
+            
         try {
             ArrayList<ShopList> li = listdao.getByEmail(user.getEmail());
             ArrayList<ShopList> sl = listdao.getListOfShopListsThatUserLookFor(user.getEmail());
-            ShopList shoplist = listdao.getbyName(listname);
+            ShopList shoplist = listdao.getbyName(listname);             
             session.setAttribute("userLists", li);
             session.setAttribute("sharedLists", sl);
             session.setAttribute("shoplist", shoplist);

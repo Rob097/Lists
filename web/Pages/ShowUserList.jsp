@@ -161,26 +161,23 @@
                             <i class="fa fa-bars"></i>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarResponsive">
-                            <ul class="navbar-nav text-uppercase ml-auto text-center">
-                                <li class="nav-item">
-                                    <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >+ Lista</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/userlists.jsp"><b>Le mie liste</b></a>
-                                </li>
+                            <ul class="navbar-nav text-uppercase ml-auto text-center">  
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                </li>                                
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/profile.jsp">
+                                        <i class="fa fa-user"></i><b>Il mio profilo</b>
+                                    </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
                                         <i class="fa fa-sign-in"></i><b><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> </b>/ <img src= "/Lists/${user.image}" width="25px" height="25px" style="border-radius: 100%;">
                                     </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/Pages/<%=Type%>/profile.jsp">
-                                        <i class="fa fa-user"></i><b>Il mio profilo</b>
-                                    </a>
-                                </li>
+                                </li>                                
                             </ul>
                         </div>
                     </nav>                    
@@ -198,14 +195,11 @@
                         <div class="collapse navbar-collapse" id="navbarResponsive">
                             <ul class="navbar-nav text-uppercase ml-auto text-center">
                                 <li class="nav-item">
-                                    <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >+ Lista</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/Pages/guest/guest.jsp"><b>Le mie liste</b></a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                </li>                                
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#LoginModal" style="cursor: pointer;">
                                         <i class="fa fa-sign-in"></i><b>Login</b>
@@ -245,17 +239,26 @@
                 <section class="block">
                     <div class="container">
                         <div class="icon-bar">
-                            <%if(find){%>
-                                <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
-                                <a href="ThirdChatroom.jsp"><i class="fas fa-users"><br>ChatRoom</i></a> 
-                                <a style="cursor: pointer;" data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Share</i></a>
-                                <a style="cursor: pointer;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Delete</i></a> 
-                            <%}else{%>
-                                <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
-                                <a data-toggle="tooltip" title="Devi registrarti per usare questa funzione" class="disabled"><i class="fas fa-users"><br>ChatRoom</i></a> 
-                                <a data-toggle="tooltip" title="Devi registrarti per usare questa funzione" class="disabled"><i class="fa fa-globe"><br>Share</i></a>
-                                <a style="cursor: pointer;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Delete</i></a> 
-                            <%}%>
+                            <c:choose>
+                                <c:when test="${(not empty user) && (user.email == shoplist.creator)}">
+                                    <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
+                                    <a href="ThirdChatroom.jsp"><i class="fas fa-users"><br>ChatRoom</i></a> 
+                                    <a style="cursor: pointer;" data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Share</i></a>
+                                    <a style="cursor: pointer;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Delete</i></a>
+                                </c:when>
+                                <c:when test="${(not empty user) && (user.email != shoplist.creator)}">
+                                    <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
+                                    <a href="ThirdChatroom.jsp"><i class="fas fa-users"><br>ChatRoom</i></a>
+                                    <a data-toggle="tooltip" title="Devi essere il creatore della lista per condividerla" class="disabled"><i class="fa fa-globe"><br>Share</i></a>
+                                    <a data-toggle="tooltip" title="Devi essere il creatore della lista per cancellarla" class="disabled"><i class="fa fa-trash"><br>Delete</i></a> 
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
+                                    <a data-toggle="tooltip" title="Devi registrarti per usare questa funzione" class="disabled"><i class="fas fa-users"><br>ChatRoom</i></a> 
+                                    <a data-toggle="tooltip" title="Devi registrarti per usare questa funzione" class="disabled"><i class="fa fa-globe"><br>Share</i></a>
+                                    <a style="cursor: pointer;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Delete</i></a> 
+                                </c:otherwise>
+                            </c:choose>                                    
                         </div>
 
                         <hr>
@@ -334,8 +337,10 @@
                             <%if(find){%>
                             <div class = "col-md-3">
                                 <div class="panel-body">
-                                    <div class="table-container">                                        
-                                        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#ShareListModal" <c:if test="${empty Users}">disabled</c:if>>Share List</button>
+                                    <div class="table-container">  
+                                        <c:if test="${user.email == shoplist.creator}">
+                                            <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#ShareListModal" <c:if test="${empty Users}">disabled</c:if>>Share List</button>
+                                        </c:if>                                        
                                         <table class="table-users table" border="0">
                                             <tbody>
                                                 <%for (User usersoflist : AllUsersOfCurentList) {%>
@@ -355,7 +360,9 @@
                                                 <%}%>
                                             </tbody>
                                         </table>
+                                            <c:if test="${user.email == shoplist.creator}">
                                                 <button type="button" class="btn btn-dark btn-block" data-toggle="modal" data-target="#DeleteShareListModal" <c:if test="${empty shoplist.sharedUsers}">disabled</c:if>>Delete Shared Users</button>
+                                            </c:if>
                                     </div>
                                 </div>
                             </div>
@@ -508,74 +515,7 @@
                 </div>
             </div>
         </div>
-
-
-        <!--######################################################-->
-
-
-        <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="page-title">
-                            <div class="container">
-                                <h1 style="text-align: center;">Create list</h1>
-                            </div>
-                            <!--end container-->
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Form per il login -->
-                        <form class="form clearfix" id="CreateShopListform" action="/Lists/restricted/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
-                            <div class="form-group">
-                                <label for="Nome" class="col-form-label">Nome della lista</label>
-                                <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="Descrizione" class="col-form-label">Descrizione</label>
-                                <input type="text" name="Descrizione" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="Categoria" class="col-form-label">Categoria</label>
-                                <select name="Categoria" id="Categoria" tabindex="1" size="5" >
-
-                                    <c:forEach items="${categorie}" var="categoria">
-                                        <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
-                                    </c:forEach>
-                                </select><!--<input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>-->
-
-                            </div>
-                            <!--end form-group-->
-                            <%if(find){%>
-                            <div class="form-group">
-                                <label for="Immagine" class="col-form-label required">Immagine</label>
-                                <input type="file" name="file1" required>
-                            </div>
-                            <%}%>
-                            <!--end form-group-->
-                            <div class="d-flex justify-content-between align-items-baseline">
-
-                                <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
-
-                                <%if (find == false && session.getAttribute("guestList") != null) {%>
-                                <h5>Attenzione, hai già salvato una lista. Se non sei registrato puoi salvare solo una lista alla volta. Salvando questa lista, cancellerai la lista gia salvata.</h5>
-                                <%}%>
-                            </div>
-                        </form>
-                        <hr>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-                            
+           
             <!--##########################--Share Modal--############################-->
         <div class="modal fade" id="ShareListModal" tabindex="-1" role="dialog" aria-labelledby="ShareList" aria-hidden="true" enctype="multipart/form-data">
             <div class="modal-dialog modal-dialog-centered" role="document">
