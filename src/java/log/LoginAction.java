@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,8 +37,8 @@ public class LoginAction extends HttpServlet {
 
     String url = null;
     UserDAO userdao = null;
-    CategoryDAO categorydao = null;
     ListDAO listdao = null;
+    NotificationDAO notificationdao = null;
 
     @Override
     public void init() throws ServletException {
@@ -49,6 +50,7 @@ public class LoginAction extends HttpServlet {
         //assegna a userdao la connessione(costruttore) e salva la connessione in una variabile tipo Connection
         userdao = new JDBCUserDAO(daoFactory.getConnection());        
         listdao = new JDBCShopListDAO(daoFactory.getConnection());
+        notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
     }
 
     /**
@@ -69,8 +71,7 @@ public class LoginAction extends HttpServlet {
         User user = new User();       
         Boolean loginResult = true;
         Boolean find = false;
-        HttpSession session = (HttpSession) request.getSession(false);
-        NotificationDAO n = new JDBCNotificationsDAO(daoFactory.getConnection());
+        HttpSession session = (HttpSession) request.getSession(false);        
         ArrayList <Notification> notifiche = new ArrayList();
         
 
@@ -105,14 +106,15 @@ public class LoginAction extends HttpServlet {
 
                 session.setAttribute("Logged", "on");
                 session.setAttribute("user", user);
-                notifiche = n.getAllNotifications(user.getEmail());
-                /*int i = 1;
-                for(Notification nn : notifiche){
-                    System.out.println("Nome lista " + i + ": " + nn.getListName());
-                    System.out.println("Nome utente list " + i + ": " + nn.getUser());
-                    System.out.println("Tipo list  " + i + ": " + nn.getType());
-                    i++;
-                }*/
+                notifiche = notificationdao.getAllNotifications(user.getEmail());
+                
+                //create remember me cookie
+                if(remember != null){
+                    Cookie coouser = new Cookie("User",user.getEmail());
+                    coouser.setMaxAge(2*60*60*60);
+                    response.addCookie(coouser);                    
+                }
+
                session.setAttribute("notifiche", notifiche);
 
                 url = "homepage.jsp";
