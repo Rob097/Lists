@@ -11,6 +11,8 @@ import database.factories.JDBCDAOFactory;
 import database.factories.DAOFactory;
 import database.exceptions.DAOFactoryException;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
+
         
 
 /**
@@ -29,6 +31,7 @@ public class WebAppListener implements ServletContextListener {
            
            //l`evento sce mette nella Servlet-Context un attributo daoFactory ad accedere da ogni servlet
            sce.getServletContext().setAttribute("daoFactory", daoFactory);
+                                  
        } catch (DAOFactoryException ex) {
             Logger.getLogger(getClass().getName()).severe(ex.toString());
             throw new RuntimeException(ex);

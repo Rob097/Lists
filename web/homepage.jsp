@@ -74,7 +74,7 @@
        
 
         <%                
-            HttpSession s = (HttpSession) request.getSession();
+            HttpSession s = (HttpSession) request.getSession(false);
             DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
             if (daoFactory == null) {
                 throw new ServletException("Impossible to get dao factory for user storage system");
@@ -158,10 +158,7 @@
                             <i class="fa fa-bars"></i>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarResponsive">
-                            <ul class="navbar-nav text-uppercase ml-auto text-center">
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="#home"><i class="fa fa-home"></i><b>Home</b></a>
-                                </li>
+                            <ul class="navbar-nav text-uppercase ml-auto text-center">                               
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
                                 </li>
@@ -204,7 +201,7 @@
                         <div class="container pt-5">
                             <%if (find) {%>
                             <h1 class="opacity-60 center">
-                                Bentornato <a href="/Lists/Pages/<%=Type%>/profile.jsp" data-toggle="tooltip" title="Il mio profilo"><%=u.getNominativo()%></a>
+                                Bentornato <a href="/Lists/profile.jsp" data-toggle="tooltip" title="Il mio profilo"><%=u.getNominativo()%></a>
                             </h1><br>
                             <%} else {%>
                             <h1 class="opacity-60 center">
