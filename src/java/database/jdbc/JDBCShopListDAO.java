@@ -6,7 +6,6 @@
 package database.jdbc;
 
 import database.daos.ListDAO;
-import database.daos.UserDAO;
 import database.entities.Product;
 import database.entities.ShopList;
 import database.entities.User;
@@ -108,8 +107,6 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed user is null"));
         }
 
-        System.out.println(l.getCreator());
-
         String qry = "insert into List(nome,descrizione,immagine,creator,categoria) "
                 + "values(?,?,?,"
                 + "(select email from User where email = ?),"
@@ -125,7 +122,34 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             if (statement.executeUpdate() == 1) {
                 return l;
             } else {
-                throw new DAOException("Impossible to insert the User");
+                throw new DAOException("Impossible to insert the List");
+            }
+        } catch (SQLException ex) {
+            throw new DAOException(ex);
+
+        }
+    }
+    
+    @Override
+    public ShopList GuestSave(ShopList l, String creator) throws DAOException{
+        if (l == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed user is null"));
+        }
+
+        String qry = "insert into guestLists(nome,descrizione,immagine,creator,categoria) "
+                + "values(?,?,?,?,?)";
+
+        try (PreparedStatement statement = CON.prepareStatement(qry)) {
+            statement.setString(1, l.getNome());
+            statement.setString(2, l.getDescrizione());
+            statement.setString(3, l.getImmagine());
+            statement.setString(4, creator);
+            statement.setString(5, l.getCategoria());
+
+            if (statement.executeUpdate() == 1) {
+                return l;
+            } else {
+                throw new DAOException("Impossible to insert the GuestList");
             }
         } catch (SQLException ex) {
             throw new DAOException(ex);
@@ -164,30 +188,21 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
 
         try (PreparedStatement stm = CON.prepareStatement("select * from Product where PID in (select prodotto from List_Prod where lista = ?)")) {
             ArrayList<Product> productLists = new ArrayList<>();
-            System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL" + name);
             stm.setString(1, name);
             try (ResultSet rs = stm.executeQuery()) {
-                System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY" + name);
                 while (rs.next()) {
 
                     Product sL = new Product();
-                    System.out.println("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW" + name);
                     String n = rs.getString("nome");
-                    System.out.println(n);
                     sL.setNome(n);
-                    System.out.println("NNNNNNNNNNNNNNNNNNNNNNNNOME" + name);
                     sL.setCategoria_prodotto(rs.getString("categoria_prod"));
-                    System.out.println("CCCCCCCCCCCCCCCCCCCCCCATEGORIA" + name);
                     sL.setPid(rs.getInt("PID"));
-                    System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPID" + name);
                     sL.setNote(rs.getString("note"));
                     sL.setImmagine(rs.getString("immagine"));
-                    System.out.println("NTTTTTTTTTTTTTEEEEEE" + name);
 
                     productLists.add(sL);
                 }
 
-                System.out.println("ENNNNDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD" + name);
                 return productLists;
             }
         } catch (SQLException ex) {
@@ -340,7 +355,6 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             stm.setInt(1, prodotto);
             
             try (ResultSet rs = stm.executeQuery()) {
-                System.out.println("\nIN\n\n");
                 while (rs.next()) {
                     Product sL = new Product();
                     String n = rs.getString("nome");
@@ -349,11 +363,9 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                     sL.setPid(rs.getInt("PID"));
                     sL.setNote(rs.getString("note"));
                     sL.setImmagine(rs.getString("immagine"));
-                    System.out.println("\nBeforDo\n\n");
                     productLists.add(sL);
                     s.setAttribute("prodottiGuest", productLists);
                 }
-                System.out.println("\nDO\n\n");
             }catch (SQLException ex) {
                 throw new DAOException("Impossible to insert the product in the guest list", ex);
             }
@@ -404,6 +416,74 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
         } catch (SQLException ex) {
             Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Problems with deleting shared user");
+        }
+    }
+
+    @Override
+    public ShopList getGuestList(String email) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM guestLists WHERE creator =?")) {
+            ShopList shoppingLists = new ShopList();
+
+            stm.setString(1, email);
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    shoppingLists.setNome(rs.getString("nome"));
+                    shoppingLists.setDescrizione(rs.getString("descrizione"));
+                    shoppingLists.setImmagine(rs.getString("immagine"));
+                    shoppingLists.setCreator(rs.getString("creator"));
+                    shoppingLists.setCategoria("categoria");
+                }
+
+                return shoppingLists;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of users", ex);
+        }
+    }
+
+    @Override
+    public void checkIfGuestListExistInDatabase(String creator) throws DAOException {
+        
+        boolean check = false;
+        try (PreparedStatement stm = CON.prepareStatement("select * from guestLists where creator = ?")) {
+            stm.setString(1, creator);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    check = true;
+                }
+            }catch (SQLException ex) {
+                Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if(check){
+                try (PreparedStatement stm1 = CON.prepareStatement("DELETE FROM guestLists WHERE creator=?")) {
+                    
+                    stm1.setString(1, creator);
+                    if (stm1.executeUpdate() == 1) {
+                        System.out.println("successful delete GuestList");
+                    } else {
+                        throw new DAOException("Impossible to delete the GuestList");
+                    }         
+                } catch (SQLException ex) {
+                    Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void deleteGuestListFromDB(String creator) throws DAOException {
+        
+        try (PreparedStatement stm = CON.prepareStatement("DELETE FROM guestLists WHERE creator=?")) {
+            stm.setString(1, creator);
+            stm.executeUpdate();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

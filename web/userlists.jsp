@@ -24,28 +24,30 @@
     ArrayList<ShopList> li = null;
     boolean find = false;
     ShopList lista = null;
-    ArrayList <Notification> notifiche = null;
-    
-    u = (User) s.getAttribute("user");
+    ArrayList<Notification> notifiche = null;
+
+    if(s.getAttribute("user") != null){
+        u = (User) s.getAttribute("user");
+    }
     if (u == null) {
-       
-       if (s.getAttribute("guestList") != null) {
-        lista = (ShopList) s.getAttribute("guestList");
-       }
-    }else{
+
+        if (s.getAttribute("guestList") != null) {
+            lista = (ShopList) s.getAttribute("guestList");
+        }
+    } else {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
-        ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());   
+        ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
         li = listdao.getByEmail(u.getEmail());
         notifiche = new ArrayList();
-            if(session.getAttribute("notifiche") != null){
-                notifiche = (ArrayList<Notification>) session.getAttribute("notifiche");
-            }
-    }   
-            
-        %>
+        if (session.getAttribute("notifiche") != null) {
+            notifiche = (ArrayList<Notification>) session.getAttribute("notifiche");
+        }
+    }
+
+%>
 
 <!DOCTYPE html>
 <html>
@@ -63,9 +65,9 @@
         <link rel="stylesheet" href="Pages/css/user.css">
         <link rel="stylesheet" href="Pages/css/navbar.css">
         <link rel="stylesheet" href="Pages/css/datatables.css" type="text/css"> 
-        
+
         <title>Lists</title>
-        
+
         <!-- Style for serch modal table-->
         <style>
             .modal-dialog{
@@ -84,7 +86,7 @@
                 padding: 15px;
             }
         </style>
-        
+
     </head>
     <body>
         <div class="page home-page">
@@ -198,14 +200,14 @@
                                 </div>
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
-                                <c:choose>         
-                                    <c:when test = "${ not empty user}">  
-                                        
-                                            <% 
+                                    <c:choose>         
+                                        <c:when test = "${ not empty user}">  
+
+                                            <%  
                                                 for (ShopList l : li) {
                                                     ArrayList<Notification> n = new ArrayList();
-                                                    for(Notification nn : notifiche) {
-                                                        if(nn.getListName().equals(l.getNome())){
+                                                    for (Notification nn : notifiche) {
+                                                        if (nn.getListName().equals(l.getNome())) {
                                                             n.add(nn);
                                                         }
                                                     }
@@ -247,50 +249,51 @@
                                             </div>                                        
                                             <!--end item-->
                                             <%}%>                                   
-                                        
-                                    </c:when>
 
-                                    <c:otherwise>        
-                                        <%if (lista != null) {%>                                                                 
-                                        <div class="item">
-                                            <!--end ribbon-->
-                                            <div class="wrapper">
-                                                <div class="image">
-                                                    <h3>
-                                                        <a href="#" class="tag category"><%=lista.getCategoria()%></a>
-                                                        <a href="/Lists/ShowShopList?nome=<%=lista.getNome()%>" class="title"><%=lista.getNome()%></a>
-                                                    </h3>
-                                                    <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                        <img src="/Lists/<%=lista.getImmagine()%>" alt="">
-                                                    </a>
+                                        </c:when>
+
+                                        <c:otherwise>        
+                                            <%if (lista != null && lista.getNome() != null) {%>                                                                 
+                                            <div class="item">
+                                                <!--end ribbon-->
+                                                <div class="wrapper">
+                                                    <div class="image">
+                                                        <h3>
+                                                            <a href="#" class="tag category"><%=lista.getCategoria()%></a>
+                                                            <a href="/Lists/ShowShopList?nome=<%=lista.getNome()%>" class="title"><%=lista.getNome()%></a>
+                                                        </h3>
+                                                        <a href="single-listing-1.html" class="image-wrapper background-image">
+                                                            <img src="/Lists/<%=lista.getImmagine()%>" alt="">
+                                                        </a>
+                                                    </div>
+                                                    <!--end image-->
+                                                    <div class="price">$80</div>
+                                                    <div class="admin-controls">
+                                                        <a href="/Lists/restricted/ShowShopList?nome=<%=lista.getNome()%>">
+                                                            <i class="fa fa-pencil"></i>Edit
+                                                        </a>
+                                                        <a href="#" class="ad-hide">
+                                                            <i class="fa fa-eye-slash"></i>Hide
+                                                        </a>
+                                                        <a href="/Lists/DeleteShopList?shopListName=<%=s.getAttribute("guestList")%>" class="ad-remove">
+                                                            <i class="fa fa-trash"></i>Remove
+                                                        </a>
+                                                    </div>
+                                                    <!--end admin-controls-->
+                                                    <div class="description">
+                                                        <p><%=lista.getDescrizione()%></p>
+                                                    </div>
+                                                    <!--end description-->
+                                                    <a href="/Lists/restricted/ShowShopList?nome=<%=lista.getNome()%>" class="detail text-caps underline">Detail</a>
                                                 </div>
-                                                <!--end image-->
-                                                <div class="price">$80</div>
-                                                <div class="admin-controls">
-                                                    <a href="/Lists/restricted/ShowShopList?nome=<%=lista.getNome()%>">
-                                                        <i class="fa fa-pencil"></i>Edit
-                                                    </a>
-                                                    <a href="#" class="ad-hide">
-                                                        <i class="fa fa-eye-slash"></i>Hide
-                                                    </a>
-                                                    <a href="/Lists/DeleteShopList?shopListName=<%=s.getAttribute("guestList")%>" class="ad-remove">
-                                                        <i class="fa fa-trash"></i>Remove
-                                                    </a>
-                                                </div>
-                                                <!--end admin-controls-->
-                                                <div class="description">
-                                                    <p><%=lista.getDescrizione()%></p>
-                                                </div>
-                                                <!--end description-->
-                                                <a href="/Lists/restricted/ShowShopList?nome=<%=lista.getNome()%>" class="detail text-caps underline">Detail</a>
                                             </div>
-                                        </div>
-                                        <!--end item-->
-                                        <%} else {%>
-                                        <h1>Non hai ancora creato nessuna lista</h1>
-                                        <%}%>                                        
-                                    </c:otherwise>
-                                 </c:choose>
+                                            <!--end item-->
+                                            <%} else {%>
+                                            <h1>Non hai ancora creato nessuna lista</h1>
+                                            <button data-toggle="modal" data-target="#import-list" class="btn btn-primary text-caps btn-rounded" >Ho una lista salvata</button>
+                                            <%}%>                                        
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>                                
                                 <!--end items-->
                             </div>
@@ -497,7 +500,7 @@
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     </div>
                                 </c:when>
-                                
+
                                 <c:otherwise>
                                     <div class="d-flex justify-content-between align-items-baseline">
                                         <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
@@ -561,8 +564,66 @@
             <!--########################## end modal search ############################-->
         </c:if>
 
+        <div class="modal fade" id="import-list" tabindex="-1" role="dialog" aria-labelledby="import-list" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1 style="text-align: center;">Importa la tua lista</h1>
+                            </div>
+                            <!--end container-->
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/Lists/importGuestList" action="POST">
+                            <input type="email" name="creator" placeholder="Email" required><br><br>
+                            <input type="submit" class="btn btn-primary" value="Importa">
+                        </form>
+
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="import-list" tabindex="-1" role="dialog" aria-labelledby="import-list" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1 style="text-align: center;">Importa la tua lista</h1>
+                            </div>
+                            <!--end container-->
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form per il login -->
+                        <form class="form clearfix" id="ImportShopListform" action="/Lists/importGuestList"  method="get" role="form">
+                            <div class="form-group">
+                                <label for="Nome" class="col-form-label">Email</label>
+                                <input type="email" name="creator" id="creator" tabindex="1" class="form-control" placeholder="Email" required>
+                            </div>
+                            <!--end form-group-->
+                            <button type="submit" name="import-submit" id="import-list-submit" tabindex="4" class="btn btn-primary">Importa lista</button>
+                        </form>
+                        <hr>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script src="Pages/js/nav.js"></script>
-        
+
     </body>
 </html>
 

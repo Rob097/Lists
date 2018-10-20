@@ -366,8 +366,16 @@
                                     </div>
                                 </div>
                             </div>
+                            <%}else{%>
+                            <div class = "col-md-3">
+                                <div class="panel-body">
+                                    <div class="table-container">
+                                        <button type="button" class="btn btn-dark btn-block" data-toggle="modal" data-target="#save-modal">Salva la lista</button>
+                                        <button type="button" class="btn btn-dark btn-block" data-toggle="modal" data-target="#DeleteListModal">Elimina la lista</button>
+                                    </div>
+                                </div>
+                            </div>
                             <%}%>
-
                             <!--end col-md-9-->
                         </div>
                         <!--end row-->
@@ -598,10 +606,43 @@
                     <div class="modal-body">
                         <h3>Sei sicuro di voler eliminare questa lista?<br> Non potrai annullare la modifica.</h3>
                         <form class="clearfix" action="/Lists/DeleteShopList" method="POST">
+                            <%if(!find && s.getAttribute("import") != null){%>
+                            <input type="email" name="creator" placeholder="Email" required><br><br>
+                            <%}%>
                             <button type="submit" class="btn btn-dark" id="delete">Delete</button>
                             <button type="button" data-dismiss="modal" class="btn btn-dark" id="delete-btn-no">Cancel</button>
                         </form>
 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Save Modal -->
+        <div class="modal fade" id="save-modal" tabindex="-1" role="dialog" aria-labelledby="save-modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1>Salva la tua lista</h1>
+                            </div>
+                            <!--end container-->
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>Sei sicuro di voler salvare questa lista?</h3>
+                        <form action="/Lists/SaveGuestList" method="POST">
+                            <input type="email" name="creator" required>
+                            <input type="hidden" name="nome" value="<%=shoplistName%>">
+                            <input type="hidden" name="categoria" value="<%=guestList.getCategoria()%>">
+                            <input type="hidden" name="descrizione" value="<%=guestList.getDescrizione()%>">
+                            <input type="hidden" name="immagine" value="<%=guestList.getImmagine()%>">
+                            <input type="submit" class="btn btn-primary btn-block" data-toggle="modal" data-target="#SaveListModal" value="Salva la lista">
+                            <button type="button" data-dismiss="modal" class="btn btn-dark" id="delete-btn-no">Cancel</button>
+                        </form>
                     </div>
                 </div>
             </div>

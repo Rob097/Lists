@@ -6,24 +6,15 @@
 package ShopList;
 
 import database.daos.ListDAO;
-import database.daos.UserDAO;
-import database.entities.User;
 import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCShopListDAO;
-import database.jdbc.JDBCUserDAO;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -67,7 +58,7 @@ public class CreateShopList extends HttpServlet {
         String immagine = "/Image/ListsImg/guestsList.jpg";
         String creator;
         String categoria;
-        String url = "/Lists/Pages/guest/guest.jsp";
+        String url = "/Lists/userlists.jsp";
         String relativeListFolderPath = "/Image/ListsImg";
 
         //richiesa dei parametri
@@ -91,7 +82,7 @@ public class CreateShopList extends HttpServlet {
             }
         }
         else if (s.getAttribute("user") != null) {
-            url = "/Lists/userpages.jsp";
+            url = "/Lists/userlists.jsp";
         }
         
         

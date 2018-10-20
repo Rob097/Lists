@@ -44,7 +44,10 @@ public class DeleteShopList extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = (HttpSession) request.getSession(false);
-        
+        String creator = "";
+        if(request.getParameter("creator") != null){
+            creator = request.getParameter("creator");
+        }
         if(session.getAttribute("user") != null){
             String listname = (String) session.getAttribute("shopListName");
             User user = null;
@@ -67,7 +70,13 @@ public class DeleteShopList extends HttpServlet {
             }
         }else{
             session.setAttribute("guestList", null);
-            
+            session.setAttribute("prodottiGuest", null);
+            try {
+                listdao.deleteGuestListFromDB(creator);
+            } catch (DAOException ex) {
+                System.out.println("impossibile eliminare la guest list dal database");
+                Logger.getLogger(DeleteShopList.class.getName()).log(Level.SEVERE, null, ex);
+            }
             response.sendRedirect("/Lists/homepage.jsp");
             
         }
@@ -87,6 +96,10 @@ public class DeleteShopList extends HttpServlet {
             throws ServletException, IOException {
         
         HttpSession session = (HttpSession) request.getSession(false);
+        String creator = "";
+        if(request.getParameter("creator") != null){
+            creator = request.getParameter("creator");
+        }
         
         if(session.getAttribute("user") != null){
             String listname = (String) request.getParameter("shopListName");
@@ -110,7 +123,13 @@ public class DeleteShopList extends HttpServlet {
             }
         }else{
             session.setAttribute("guestList", null);
-            
+            session.setAttribute("prodottiGuest", null);
+            try {
+                listdao.deleteGuestListFromDB(creator);
+            } catch (DAOException ex) {
+                System.out.println("impossibile eliminare la guest list dal database");
+                Logger.getLogger(DeleteShopList.class.getName()).log(Level.SEVERE, null, ex);
+            }
             response.sendRedirect("/Lists/homepage.jsp");
             
         }

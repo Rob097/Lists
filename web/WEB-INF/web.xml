@@ -82,6 +82,14 @@
         <servlet-name>messageNotification</servlet-name>
         <servlet-class>Notifications.messageNotification</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SaveGuestList</servlet-name>
+        <servlet-class>ShopList.SaveGuestList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>importGuestList</servlet-name>
+        <servlet-class>ShopList.importGuestList</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -145,6 +153,14 @@
     <servlet-mapping>
         <servlet-name>messageNotification</servlet-name>
         <url-pattern>/messageNotification</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaveGuestList</servlet-name>
+        <url-pattern>/SaveGuestList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>importGuestList</servlet-name>
+        <url-pattern>/importGuestList</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -19,8 +19,10 @@ public interface ProductDAO {
     public ArrayList<Product> getByID(Integer id) throws DAOException;
     public ArrayList<Product> getByCategory(String category) throws DAOException;
     public ArrayList<Product> getAllProducts() throws DAOException;
+    public ArrayList<Product> getGuestsProducts(String email) throws DAOException;
     public ArrayList<String> getAllProductCategories() throws DAOException;
     public void Insert(Product l) throws DAOException;
+    public void GuestInsert(int pId, String creator, String nomeLista) throws DAOException;
     public int LastPIDOfProducts() throws DAOException;
     public void Delete(Product l) throws DAOException;
     public Product getProductByID(int id) throws DAOException;

@@ -6,18 +6,13 @@
 package database.jdbc;
 
 import database.daos.ProductDAO;
-import database.daos.UserDAO;
 import database.entities.Product;
-import database.entities.ShopList;
-import database.entities.User;
 import database.exceptions.DAOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -143,6 +138,32 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
         }
 
     }
+    
+    @Override
+    public void GuestInsert(int Pid, String creator, String nomeLista) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement("insert into guestListProd(creator, prodotto, nomeLista) values(?,?,?)")){
+            
+            
+            try{
+                stm.setString(1, creator);
+                stm.setInt(2, Pid);
+                stm.setString(3, nomeLista);
+                
+                if (stm.executeUpdate() == 1) {
+                    System.out.println("INSERITO");
+                } else {
+                    throw new DAOException("Impossible to insert the Guest Product");
+                }
+
+            } catch (SQLException ex) {
+                throw new DAOException(ex);
+            }
+            
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to update the Products #2", ex);
+        }
+
+    }
 
     public int LastPIDOfProducts() throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement("SELECT PID FROM Product ORDER BY PID DESC LIMIT 1")) {
@@ -203,6 +224,29 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
                 }
 
                 return p;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of users", ex);
+        }
+    }
+
+    @Override
+    public ArrayList<Product> getGuestsProducts(String email) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement("select * from Product where PID in (select prodotto from guestListProd where creator = ?);")) {
+            ArrayList<Product> productLists = new ArrayList<>();
+            stm.setString(1, email);
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    Product p = new Product();
+                    p.setPid(rs.getInt("PID"));
+                    p.setNome(rs.getString("nome"));
+                    p.setNote(rs.getString("note"));
+                    p.setCategoria_prodotto(rs.getString("categoria_prod"));
+                    p.setImmagine(rs.getString("immagine"));
+                    productLists.add(p);
+                }
+
+                return productLists;
             }
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of users", ex);
