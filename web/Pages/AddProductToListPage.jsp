@@ -32,13 +32,13 @@
 
     HttpSession s = (HttpSession) request.getSession();
     String shoplistName = "";
-    if(s.getAttribute("shopListName") != null){
+    if (s.getAttribute("shopListName") != null) {
         shoplistName = (String) s.getAttribute("shopListName");
     }
-    if(request.getParameter("shopListName") != null){
+    if (request.getParameter("shopListName") != null) {
         shoplistName = (String) request.getParameter("shopListName");
         s.setAttribute("shopListName", shoplistName);
-        
+
     }
     User u = new User();
     boolean find = false;
@@ -51,12 +51,12 @@
             find = true;
         }
     }
-        ArrayList<Product> li = productdao.getAllProducts();
-        ArrayList<String> allCategories = productdao.getAllProductCategories();
-        ArrayList<String> allListsOfUser = null;
-        if(find){
-            allListsOfUser = listdao.getAllListsByCurentUser(u.getEmail());
-        }
+    ArrayList<Product> li = productdao.getAllProducts();
+    ArrayList<String> allCategories = productdao.getAllProductCategories();
+    ArrayList<String> allListsOfUser = null;
+    if (find) {
+        allListsOfUser = listdao.getAllListsByCurentUser(u.getEmail());
+    }
 
 
 %>
@@ -123,55 +123,60 @@
             .dispNone{
                 display: none;
             }
-            
+
             * {
-  box-sizing: border-box;
-}
+                box-sizing: border-box;
+            }
 
-#myInput {
-  background-image: url('/css/searchicon.png');
-  background-position: 10px 12px;
-  background-repeat: no-repeat;
-  width: 100%;
-  font-size: 16px;
-  padding: 12px 20px 12px 40px;
-  border: 1px solid #ddd;
-  margin-bottom: 12px;
-}
+            #myInput {
+                background-image: url('/css/searchicon.png');
+                background-position: 10px 12px;
+                background-repeat: no-repeat;
+                width: 100%;
+                font-size: 16px;
+                padding: 12px 20px 12px 40px;
+                border: 1px solid #ddd;
+                margin-bottom: 12px;
+            }
 
-#myUL {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
+            #myUL {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+            }
 
-#myUL li a {
-  border: 1px solid #ddd;
-  margin-top: -1px; /* Prevent double borders */
-  background-color: #f6f6f6;
-  padding: 12px;
-  text-decoration: none;
-  font-size: 18px;
-  color: black;
-  display: block
-}
+            #myUL li a {
+                border: 1px solid #ddd;
+                margin-top: -1px; /* Prevent double borders */
+                background-color: #f6f6f6;
+                padding: 12px;
+                text-decoration: none;
+                font-size: 18px;
+                color: black;
+                display: block
+            }
 
-#myUL li a:hover:not(.header) {
-  background-color: #eee;
-}
-            
+            #myUL li a:hover:not(.header) {
+                background-color: #eee;
+            }
+            .botButton {
+
+                position: fixed;
+                bottom: 1rem;
+                right: 1rem;
+                z-index: 1000;
+            }
         </style>
 
     </head>
     <body>        
 
-        <%            
-            String Nominativo = "";
+        <%            String Nominativo = "";
             String Email = "";
             String Type = "";
             String image = "";
 
-            if(find){
+            if (find) {
                 //String Image = "";
                 Nominativo = u.getNominativo();
                 Email = u.getEmail();
@@ -247,6 +252,7 @@
                             </ul>
                         </div>
                     </nav>
+
                     <%}%>
                     <!--============ Page Title =========================================================================-->
                     <div class="page-title">
@@ -273,7 +279,7 @@
                 <section class="block">
                     <div class="container">
                         <div class="row">
-
+                            <a href="/Lists/Pages/ShowUserList.jsp" id="backToList" class="btn btn-primary botButton social dispNone">Torna alla lista</a>
                             <!--end col-md-3-->
                             <div class="col-md-12">
 
@@ -342,7 +348,8 @@
                                                 <p><%=p.getNote()%></p>
                                             </div>
                                             <!--end description-->
-                                            <a class="detail text-caps underline" href="/Lists/AddProductToList?prodotto=<%=p.getPid()%>">Add to your list</a>
+                                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
+                                            <a class="detail"><img src="img/correct.png" id="addIco<%=p.getPid()%>" class="dispNone"></a>
                                         </div>
                                     </div>
                                     <%}
@@ -374,7 +381,8 @@
                                                 <p><%=p.getNote()%></p>
                                             </div>
                                             <!--end description-->
-                                            <a class="detail text-caps underline" href="/Lists/AddProductToList?prodotto=<%=p.getPid()%>">Add to your list</a>
+                                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
+                                            <a class="detail"><img src="img/correct.png" id="addIco<%=p.getPid()%>" class="dispNone"></a>
                                         </div>
                                     </div>
                                     <%}
@@ -420,7 +428,7 @@
                         <h4 class="modal-title">Modal Header</h4>
                     </div>
                     <div class="modal-body">
-                        
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -430,6 +438,23 @@
             </div>
         </div>
 
-       
+        <script>
+        function addProduct(id) {
+            $.ajax({
+                type: "GET",
+                url: "/Lists/AddProductToList?prodotto=" + id,
+                async: false,
+                success: function () {
+                    $('#addButton' + id).addClass('dispNone');
+                    $('#addIco' + id).removeClass('dispNone');
+                    $('#backToList').removeClass('dispNone');
+                },
+                error: function () {
+                   alert("Errore");
+               }
+            });
+        }
+        </script>
+
     </body>
 </html>
