@@ -370,7 +370,7 @@
                             <div class = "col-md-3">
                                 <div class="panel-body">
                                     <div class="table-container">
-                                        <button type="button" class="btn btn-dark btn-block" data-toggle="modal" data-target="#save-modal">Salva la lista</button>
+                                        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#save-modal">Salva la lista</button>
                                         <button type="button" class="btn btn-dark btn-block" data-toggle="modal" data-target="#DeleteListModal">Elimina la lista</button>
                                     </div>
                                 </div>
@@ -634,13 +634,14 @@
                     </div>
                     <div class="modal-body">
                         <h3>Sei sicuro di voler salvare questa lista?</h3>
+                        <h4>Iserisci un indirizzo email:</h4>
                         <form action="/Lists/SaveGuestList" method="POST">
                             <input type="email" name="creator" required>
                             <input type="hidden" name="nome" value="<%=shoplistName%>">
                             <input type="hidden" name="categoria" value="<%=guestList.getCategoria()%>">
                             <input type="hidden" name="descrizione" value="<%=guestList.getDescrizione()%>">
                             <input type="hidden" name="immagine" value="<%=guestList.getImmagine()%>">
-                            <input type="submit" class="btn btn-primary btn-block" data-toggle="modal" data-target="#SaveListModal" value="Salva la lista">
+                            <input type="submit" class="btn btn-primary" data-toggle="modal" data-target="#SaveListModal" value="Salva la lista">
                             <button type="button" data-dismiss="modal" class="btn btn-dark" id="delete-btn-no">Cancel</button>
                         </form>
                     </div>
