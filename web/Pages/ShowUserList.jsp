@@ -618,36 +618,39 @@
             </div>
         </div>
         <!-- Save Modal -->
-        <div class="modal fade" id="save-modal" tabindex="-1" role="dialog" aria-labelledby="save-modal" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="page-title">
-                            <div class="container">
-                                <h1>Salva la tua lista</h1>
+        <c:if test="${not empty guestList}">
+            <div class="modal fade" id="save-modal" tabindex="-1" role="dialog" aria-labelledby="save-modal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="page-title">
+                                <div class="container">
+                                    <h1>Salva la tua lista</h1>
+                                </div>
+                                <!--end container-->
                             </div>
-                            <!--end container-->
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <h3>Sei sicuro di voler salvare questa lista?</h3>
-                        <h4>Iserisci un indirizzo email:</h4>
-                        <form action="/Lists/SaveGuestList" method="POST">
-                            <input type="email" name="creator" required>
-                            <input type="hidden" name="nome" value="<%=shoplistName%>">
-                            <input type="hidden" name="categoria" value="<%=guestList.getCategoria()%>">
-                            <input type="hidden" name="descrizione" value="<%=guestList.getDescrizione()%>">
-                            <input type="hidden" name="immagine" value="<%=guestList.getImmagine()%>">
-                            <input type="submit" class="btn btn-primary" data-toggle="modal" data-target="#SaveListModal" value="Salva la lista">
-                            <button type="button" data-dismiss="modal" class="btn btn-dark" id="delete-btn-no">Cancel</button>
-                        </form>
+                        <div class="modal-body">
+                            <h3>Sei sicuro di voler salvare questa lista?</h3>
+                            <h4>Iserisci un indirizzo email:</h4>
+                            <form action="/Lists/SaveGuestList" method="POST">
+                                <input type="email" name="creator" required>
+                                <input type="hidden" name="nome" value="<%=shoplistName%>">
+                                <input type="hidden" name="categoria" value="<%=guestList.getCategoria()%>">
+                                <input type="hidden" name="descrizione" value="<%=guestList.getDescrizione()%>">
+                                <input type="hidden" name="immagine" value="<%=guestList.getImmagine()%>">
+                                <input type="submit" class="btn btn-primary btn-block" data-toggle="modal" data-target="#SaveListModal" value="Salva la lista">
+                                <button type="button" data-dismiss="modal" class="btn btn-dark" id="delete-btn-no">Cancel</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </c:if>
+        
 
 
         <!--########################end delete modal##############################-->

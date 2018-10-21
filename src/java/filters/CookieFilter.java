@@ -68,11 +68,11 @@ public class CookieFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         Cookie[] cookies = req.getCookies();
         HttpSession session = (HttpSession) req.getSession(false);     
-        if(session != null){
+        if(session != null){             
             User user = (User) session.getAttribute("user");
-            if (cookies != null && user == null){
+            if (cookies != null && user == null){                
                 for (Cookie ck : cookies) {
-                    if (ck.getName().equals("User")) {
+                    if (ck.getName().equals("User")) {                        
                         try {
                             User dbuser = userdao.getByEmail(ck.getValue());
                             if(dbuser != null){

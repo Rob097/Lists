@@ -37,20 +37,20 @@ public class LogoutAction extends HttpServlet {
         
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
-            cookie.setMaxAge(0);
-            cookie.setValue(null);
-            cookie.setPath("/");
-            response.addCookie(cookie);
+            if(cookie.getName().equals("User")){
+                System.out.println(cookie.getMaxAge());
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+            }
+            
         }
         
         //remove sessions
-        HttpSession session = request.getSession(false);
+        HttpSession session = (HttpSession) request.getSession(false);
         if (session != null) {
             User user = (User) session.getAttribute("user");
             if (user != null) {
-                session.setAttribute("user", null);
-                session.invalidate();
-                user = null;
+                session.invalidate();                
             }
         }
          

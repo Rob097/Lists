@@ -111,7 +111,7 @@ public class LoginAction extends HttpServlet {
                 //create remember me cookie
                 if(remember != null){
                     Cookie coouser = new Cookie("User",user.getEmail());
-                    coouser.setMaxAge(2*60*60*60);
+                    coouser.setMaxAge(60*5);
                     response.addCookie(coouser);                    
                 }
 
