@@ -33,17 +33,12 @@ public class LogoutAction extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        //remove cookies
-        
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if(cookie.getName().equals("User")){
-                System.out.println(cookie.getMaxAge());
-                cookie.setMaxAge(0);
-                response.addCookie(cookie);
-            }
-            
-        }
+        //remove Remember Me cookie
+        Cookie cookie = new Cookie("User", "");
+        cookie.setDomain("localhost");
+        cookie.setPath("/Lists");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
         
         //remove sessions
         HttpSession session = (HttpSession) request.getSession(false);

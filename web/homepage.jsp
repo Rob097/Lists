@@ -83,8 +83,7 @@
             ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
             Category_ProductDAO category_productdao = new JDBCCategory_ProductDAO(daoFactory.getConnection());
             CategoryDAO categorydao = new JDBCCategoryDAO(daoFactory.getConnection());
-            UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
-
+            UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());            
             String Nominativo;
             String Email;
             String Type;

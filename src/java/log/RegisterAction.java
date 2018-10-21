@@ -24,6 +24,7 @@ import database.exceptions.DAOException;
 import database.jdbc.JDBCUserDAO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -43,7 +44,6 @@ public class RegisterAction extends HttpServlet {
         }
         //assegna a userdao la connessione(costruttore) e salva la connessione in una variabile tipo Connection
         userdao = new JDBCUserDAO(daoFactory.getConnection());
-
     }
 
     protected void doPost(HttpServletRequest request,
@@ -51,6 +51,7 @@ public class RegisterAction extends HttpServlet {
 
         User user = new User();
         Boolean regResult = false;
+        HttpSession session =(HttpSession) request.getSession(false);
         // gets values of text fields
         String avatarsFolder = "/Image/AvatarImg";
         String rp = "/Image/AvatarImg";
@@ -58,8 +59,7 @@ public class RegisterAction extends HttpServlet {
         avatarsFolder = getServletContext().getRealPath(avatarsFolder);
         avatarsFolder = avatarsFolder.replace("\\build", "");
         
-        user.setEmail(request.getParameter("email"));
-        System.out.println(user.getEmail());
+        user.setEmail(request.getParameter("email"));        
         user.setNominativo(request.getParameter("nominativo")); 
         user.setPassword(request.getParameter("password")); 
         Tipostandard = request.getParameter("standard"); //txt_standard
@@ -101,14 +101,12 @@ public class RegisterAction extends HttpServlet {
         }
         if(user != null){
             regResult = true;
-            request.getSession().setAttribute("regResult", regResult);
+            session.setAttribute("regResult", regResult);
         }
 
         response.sendRedirect("homepage.jsp");
         // sets the message in request scope
 
-        // forwards to the message page
-        //getServletContext().getRequestDispatcher("/Message.jsp").forward(request, response);
     }
     
     public String uploadImg(String avatarsFolder, Part filePart1, String email) throws IOException{

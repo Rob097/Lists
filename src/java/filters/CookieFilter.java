@@ -41,13 +41,12 @@ public class CookieFilter implements Filter {
     
     private static final boolean debug = true;
     private FilterConfig filterConfig = null;
-    private UserDAO userdao = null;
-    private ListDAO listdao = null;
-    private NotificationDAO notificationdao = null;
+    UserDAO userdao = null;
+    ListDAO listdao = null;
+    NotificationDAO notificationdao = null;
     
     public CookieFilter() {
     }    
-       
 
     /**
      *
@@ -58,22 +57,21 @@ public class CookieFilter implements Filter {
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
-    public void doFilter(ServletRequest request, ServletResponse response,
-            FilterChain chain)
-            throws IOException, ServletException {
-        
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (debug) {
             log("CookieFilter:doFilter()");
-        }        
+        }
+        //get servlet request, cookies and session
         HttpServletRequest req = (HttpServletRequest) request;
         Cookie[] cookies = req.getCookies();
-        HttpSession session = (HttpSession) req.getSession(false);     
-        if(session != null){             
+        HttpSession session = (HttpSession) req.getSession(); 
+        
+        if(session != null){ 
             User user = (User) session.getAttribute("user");
-            if (cookies != null && user == null){                
+            if (cookies != null && user == null){
                 for (Cookie ck : cookies) {
-                    if (ck.getName().equals("User")) {                        
-                        try {
+                    if (ck.getName().equals("User")) {    
+                        try {                        
                             User dbuser = userdao.getByEmail(ck.getValue());
                             if(dbuser != null){
                                 session.setAttribute("user", dbuser);
@@ -151,11 +149,12 @@ public class CookieFilter implements Filter {
                 log("CookieFilter:Initializing filter");
             }
         }
-        //get database connection
-        DAOFactory daoFactory = (DAOFactory) getFilterConfig().getServletContext().getAttribute("daoFactory");
+        
+        DAOFactory daoFactory = (DAOFactory) filterConfig.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
+        
         userdao = new JDBCUserDAO(daoFactory.getConnection());        
         listdao = new JDBCShopListDAO(daoFactory.getConnection());
         notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());

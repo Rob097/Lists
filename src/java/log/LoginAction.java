@@ -7,7 +7,6 @@ package log;
 
 import Notifications.Notification;
 import database.daos.UserDAO;
-import database.daos.CategoryDAO;
 import database.daos.ListDAO;
 import database.daos.NotificationDAO;
 import database.entities.User;
@@ -63,79 +62,62 @@ public class LoginAction extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
-        if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for user storage system");
-        }
-        User user = new User();       
-        Boolean loginResult = true;
-        Boolean find = false;
-        HttpSession session = (HttpSession) request.getSession(false);        
-        ArrayList <Notification> notifiche = new ArrayList();
+            throws ServletException, IOException { 
+        int COOKIE_MAX_AGE = 60*60*24*4;
+        User user = null;       
+        Boolean loginResult = true;                
+        ArrayList <Notification> notifiche = null;
         
+        HttpSession session = (HttpSession) request.getSession(false);        
 
         try {
+            //passed parameter values
             String username = request.getParameter("email");
             String password = request.getParameter("password");
             String remember = request.getParameter("remember");
 
             //ritorna i dati dell`utente con email e password inserito
-            user = userdao.getByEmailAndPassword(username, password);
-            
+            user = userdao.getByEmailAndPassword(username, password);            
 
             if (user != null) {
-                loginResult = true;
-                find = true;
-
+                loginResult = true; 
+                
+                //database 
                 ArrayList<ShopList> li = listdao.getByEmail(user.getEmail());
                 ArrayList<ShopList> sl = listdao.getListOfShopListsThatUserLookFor(user.getEmail());
-                session.setAttribute("userLists", li);
-                session.setAttribute("sharedLists", sl);
-
-                String nominativo = user.getNominativo();
-                String tipo = user.getTipo();
-                String image = user.getImage();
-                String email = user.getEmail();
-
-                user.setEmail(email);
-                user.setImage(image);
-                user.setNominativo(nominativo);
-                user.setPassword(password);
-                user.setTipo(tipo);
-
+                notifiche = notificationdao.getAllNotifications(user.getEmail()); 
+                
+                //sesssion vars
                 session.setAttribute("Logged", "on");
                 session.setAttribute("user", user);
-                notifiche = notificationdao.getAllNotifications(user.getEmail());
+                session.setAttribute("userLists", li);
+                session.setAttribute("sharedLists", sl); 
+                session.setAttribute("notifiche", notifiche);
                 
                 //create remember me cookie
                 if(remember != null){
                     Cookie coouser = new Cookie("User",user.getEmail());
-                    coouser.setMaxAge(60*5);
+                    coouser.setMaxAge(COOKIE_MAX_AGE);
                     response.addCookie(coouser);                    
-                }
-
-               session.setAttribute("notifiche", notifiche);
-
+                } 
+                
+                //url for redirect
                 url = "homepage.jsp";
-            } else {
-                System.out.println("user=null");
+            } else {                
                 url = "homepage.jsp";
                 loginResult = false;
             }
-
         } catch (DAOException ex) {
             Logger.getLogger(LoginAction.class.getName()).log(Level.SEVERE, null, ex);
         }
         //gestisce un login non valido
         session.setAttribute("loginResult", loginResult);
-
+        //redirecting to given url
         if (url != null) {
             response.sendRedirect(url);
         } else {
             out.print("Errore Imprevisto");
         }
-
     }
 
     /**
