@@ -32,6 +32,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import org.apache.tomcat.util.codec.binary.Base64;
 
 /**
  *
@@ -71,8 +72,9 @@ public class CookieFilter implements Filter {
             if (cookies != null && user == null){
                 for (Cookie ck : cookies) {
                     if (ck.getName().equals("User")) {    
-                        try {                        
-                            User dbuser = userdao.getByEmail(ck.getValue());
+                        try {             
+                            String value = new String(Base64.decodeBase64(ck.getValue().getBytes("UTF-8")));
+                            User dbuser = userdao.getByEmail(value);
                             if(dbuser != null){
                                 session.setAttribute("user", dbuser);
 
