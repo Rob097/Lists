@@ -26,7 +26,7 @@
     if (daoFactory == null) {
         throw new ServletException("Impossible to get dao factory for user storage system");
     }
-    
+
     UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
     ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
     HttpSession s = (HttpSession) request.getSession();
@@ -36,29 +36,27 @@
     ArrayList<User> AllUsersOfCurentList = null; //ArrayList degli utenti con cui la lista è condivisa
     User u = null; //Eventuale utent
     boolean find = false;
-    
+
     //Se rileva che c'è un utente loggato imposta find = true
     if (s.getAttribute("user") != null) {
         u = (User) s.getAttribute("user");
         find = true;
     }
-    
-    
-    if(find){//Se c'è un utente loggato
-        if(s.getAttribute("shopListName") != null){//Se l'attributo di session col nome della lista non è null
+
+    if (find) {//Se c'è un utente loggato
+        if (s.getAttribute("shopListName") != null) {//Se l'attributo di session col nome della lista non è null
             shoplistName = (String) s.getAttribute("shopListName");
             li = listdao.getAllProductsOfShopList(shoplistName); //prendi tutti i prodotti della lista e mettili in li
             AllUsersOfCurentList = listdao.getUsersWithWhoTheListIsShared(shoplistName); //Prendi tutti gli utenti con cui la lista è condivisa
         }
-    }else if(s.getAttribute("guestList") != null){ //Se non è loggato nessun utente, se l'attributo di sessione contenente la lista dell'utente Guest non è nullo
-            guestList = (ShopList) s.getAttribute("guestList");
-            if(s.getAttribute("prodottiGuest") != null){
-                li = (ArrayList<Product>) s.getAttribute("prodottiGuest"); //Prendi l'attributo di sessione contenente i prodotti se non è nullo
-            }
-            shoplistName = (String) guestList.getNome();
+    } else if (s.getAttribute("guestList") != null) { //Se non è loggato nessun utente, se l'attributo di sessione contenente la lista dell'utente Guest non è nullo
+        guestList = (ShopList) s.getAttribute("guestList");
+        if (s.getAttribute("prodottiGuest") != null) {
+            li = (ArrayList<Product>) s.getAttribute("prodottiGuest"); //Prendi l'attributo di sessione contenente i prodotti se non è nullo
         }
+        shoplistName = (String) guestList.getNome();
+    }
 
-   
 
 %>
 
@@ -80,15 +78,15 @@
         <script src="js/jquery-3.3.1.min.js"></script>
         <script type="text/javascript" src="js/popper.min.js"></script>
         <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-        
+
 
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
         <style>
-            
+
             body{
                 overflow-x: unset;
             }
-            
+
             .icon-bar {
                 width: 100%;
                 background-color: #f2f2f2;
@@ -126,17 +124,25 @@
                 width: 50%;
             }
         </style>
+        <style>
+            /* Always set the map height explicitly to define the size of the div
+             * element that contains the map. */
+            #map {
+                height: 30em;
+                width: 100%;
+            }
+            /* Optional: Makes the sample page fill the window. */
+        </style>
+
 
     </head>
     <body>        
 
-        <%  
-            
-                String Nominativo = "";
-                String Email = "";
-                String Type = "";
-                String image = "";
-            if(find){
+        <%            String Nominativo = "";
+            String Email = "";
+            String Type = "";
+            String image = "";
+            if (find) {
                 //String Image = "";
                 Nominativo = u.getNominativo();
                 Email = u.getEmail();
@@ -181,7 +187,7 @@
                             </ul>
                         </div>
                     </nav>                    
-                    
+
                     <%} else {%>
                     <nav class="navbar navbar-expand-xl navbar-dark fixed-top " id="mainNav">
                         <a class="navbar-brand">
@@ -214,8 +220,8 @@
                         </div>
                     </nav>
                     <%}%>
-                    
-                                        
+
+
                     <!--============ Page Title =========================================================================-->
                     <div class="page-title">
                         <div class="container">
@@ -224,11 +230,17 @@
                                 <%System.out.println("NOME:    ====   " + shoplistName); %>
                             </h1>
                         </div>
+
+                        
+
                     </div>
                     <!--============ End Page Title =====================================================================-->
+
+
+
                 </div>
             </header>
-
+<div id="map"></div>
 
 
 
@@ -236,8 +248,11 @@
             <!--************ CONTENT ************************************************************************************-->
             <!--*********************************************************************************************************-->
             <section class="content">
+                
+
                 <section class="block">
                     <div class="container">
+                        
                         <div class="icon-bar">
                             <c:choose>
                                 <c:when test="${(not empty user) && (user.email == shoplist.creator)}">
@@ -245,20 +260,20 @@
                                     <a href="ThirdChatroom.jsp"><i class="fas fa-users"><br>ChatRoom</i></a> 
                                     <a style="cursor: pointer;" data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Share</i></a>
                                     <a style="cursor: pointer;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Delete</i></a>
-                                </c:when>
-                                <c:when test="${(not empty user) && (user.email != shoplist.creator)}">
+                                        </c:when>
+                                        <c:when test="${(not empty user) && (user.email != shoplist.creator)}">
                                     <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
                                     <a href="ThirdChatroom.jsp"><i class="fas fa-users"><br>ChatRoom</i></a>
                                     <a data-toggle="tooltip" title="Devi essere il creatore della lista per condividerla" class="disabled"><i class="fa fa-globe"><br>Share</i></a>
                                     <a data-toggle="tooltip" title="Devi essere il creatore della lista per cancellarla" class="disabled"><i class="fa fa-trash"><br>Delete</i></a> 
-                                </c:when>
-                                <c:otherwise>
+                                        </c:when>
+                                        <c:otherwise>
                                     <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
                                     <a data-toggle="tooltip" title="Devi registrarti per usare questa funzione" class="disabled"><i class="fas fa-users"><br>ChatRoom</i></a> 
                                     <a data-toggle="tooltip" title="Devi registrarti per usare questa funzione" class="disabled"><i class="fa fa-globe"><br>Share</i></a>
                                     <a style="cursor: pointer;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Delete</i></a> 
-                                </c:otherwise>
-                            </c:choose>                                    
+                                        </c:otherwise>
+                                    </c:choose>                                    
                         </div>
 
                         <hr>
@@ -267,12 +282,14 @@
 
                             <!--end col-md-3-->
                             <div class="col-md-9">
+
+                                
                                 <!--============ Section Title===================================================================-->
                                 <div class="section-title clearfix">
-                                    <%if(li != null && !li.isEmpty()){%>
-                                        <form class="float-left" method="POST" action="/Lists/removeALLProducts">
-                                            <input type="submit" class="btn btn-primary" value="Svuota la lista">
-                                        </form>
+                                    <%if (li != null && !li.isEmpty()) {%>
+                                    <form class="float-left" method="POST" action="/Lists/removeALLProducts">
+                                        <input type="submit" class="btn btn-primary" value="Svuota la lista">
+                                    </form>
                                     <%}%>
                                     <div class="float-right d-xs-none thumbnail-toggle">
                                         <a href="#" class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
@@ -336,8 +353,8 @@
                                 </div>
                                 <!--end items-->
                             </div>
-                            
-                            <%if(find){%>
+
+                            <%if (find) {%>
                             <div class = "col-md-3">
                                 <div class="panel-body">
                                     <div class="table-container">  
@@ -348,28 +365,28 @@
                                             <tbody>
                                                 <%for (User usersoflist : AllUsersOfCurentList) {%>
                                                 <tr>
-                                                    
-                                                    
-                                                        <td width="10" align="center">
-                                                            <i class="fa fa-2x fa-user fw"></i>
-                                                        </td>
-                                                        <td>
-                                                            <%=usersoflist.getNominativo()%><br>
-                                                        </td>
-                                                        <td>
-                                                            <%=usersoflist.getTipo()%>
-                                                        </td>
+
+
+                                                    <td width="10" align="center">
+                                                        <i class="fa fa-2x fa-user fw"></i>
+                                                    </td>
+                                                    <td>
+                                                        <%=usersoflist.getNominativo()%><br>
+                                                    </td>
+                                                    <td>
+                                                        <%=usersoflist.getTipo()%>
+                                                    </td>
                                                 </tr>
                                                 <%}%>
                                             </tbody>
                                         </table>
-                                            <c:if test="${user.email == shoplist.creator}">
-                                                <button type="button" class="btn btn-dark btn-block" data-toggle="modal" data-target="#DeleteShareListModal" <c:if test="${empty shoplist.sharedUsers}">disabled</c:if>>Delete Shared Users</button>
-                                            </c:if>
+                                        <c:if test="${user.email == shoplist.creator}">
+                                            <button type="button" class="btn btn-dark btn-block" data-toggle="modal" data-target="#DeleteShareListModal" <c:if test="${empty shoplist.sharedUsers}">disabled</c:if>>Delete Shared Users</button>
+                                        </c:if>
                                     </div>
                                 </div>
                             </div>
-                            <%}else{%>
+                            <%} else {%>
                             <div class = "col-md-3">
                                 <div class="panel-body">
                                     <div class="table-container">
@@ -392,14 +409,14 @@
             <!--*********************************************************************************************************-->
             <!--************ FOOTER *************************************************************************************-->
             <!--*********************************************************************************************************-->
-            
+
             <!--end footer-->
         </div>
         <!--end page-->
 
         <!--######################################################-->
-        
-        
+
+
         <!--#########################################################
                                 MODAL
         ##########################################################-->
@@ -526,8 +543,8 @@
                 </div>
             </div>
         </div>
-           
-            <!--##########################--Share Modal--############################-->
+
+        <!--##########################--Share Modal--############################-->
         <div class="modal fade" id="ShareListModal" tabindex="-1" role="dialog" aria-labelledby="ShareList" aria-hidden="true" enctype="multipart/form-data">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -566,7 +583,7 @@
                         <div class="page-title">
                             <div class="container">
                                 <h1 style="text-align: center;">Delete Shared Users</h1>
-                           
+
                                 <label>Choose users to remove</label>
                             </div>
                         </div>
@@ -590,7 +607,7 @@
             </div>
         </div>
         <!--##########################-- End Share Modal--############################-->
-        
+
         <!-- Delete Modal -->
         <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -609,7 +626,7 @@
                     <div class="modal-body">
                         <h3>Sei sicuro di voler eliminare questa lista?<br> Non potrai annullare la modifica.</h3>
                         <form class="clearfix" action="/Lists/DeleteShopList" method="POST">
-                            <%if(!find && s.getAttribute("import") != null){%>
+                            <%if (!find && s.getAttribute("import") != null) {%>
                             <input type="email" name="creator" placeholder="Email" required><br><br>
                             <%}%>
                             <button type="submit" class="btn btn-dark" id="delete">Delete</button>
@@ -653,16 +670,16 @@
                 </div>
             </div>
         </c:if>
-        
+
 
 
         <!--########################end delete modal##############################-->
-<!--###################################################################################################################################################################################################-->
+        <!--###################################################################################################################################################################################################-->
 
         <script src="js/jquery-3.3.1.min.js"></script>
         <script type="text/javascript" src="js/popper.min.js"></script>
         <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
+
         <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
         <script src="js/selectize.min.js"></script>
         <script src="js/masonry.pkgd.min.js"></script>
@@ -671,8 +688,53 @@
         <script src="js/custom.js"></script>
         <script src="js/nav.js"></script>
         <script src="js/vari.js"></script>
-        
-        
-        
+
+        <script>
+                            // Note: This example requires that you consent to location sharing when
+                            // prompted by your browser. If you see the error "The Geolocation service
+                            // failed.", it means you probably did not give permission for the browser to
+                            // locate you.
+                            var map, infoWindow;
+                            function initMap() {
+                                map = new google.maps.Map(document.getElementById('map'), {
+                                    center: {lat: -34.397, lng: 150.644},
+                                    zoom: 6
+                                });
+                                infoWindow = new google.maps.InfoWindow;
+
+                                // Try HTML5 geolocation.
+                                if (navigator.geolocation) {
+                                    navigator.geolocation.getCurrentPosition(function (position) {
+                                        var pos = {
+                                            lat: position.coords.latitude,
+                                            lng: position.coords.longitude
+                                        };
+
+                                        infoWindow.setPosition(pos);
+                                        infoWindow.setContent('Location found.');
+                                        infoWindow.open(map);
+                                        map.setCenter(pos);
+                                    }, function () {
+                                        handleLocationError(true, infoWindow, map.getCenter());
+                                    });
+                                } else {
+                                    // Browser doesn't support Geolocation
+                                    handleLocationError(false, infoWindow, map.getCenter());
+                                }
+                            }
+
+                            function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+                                infoWindow.setPosition(pos);
+                                infoWindow.setContent(browserHasGeolocation ?
+                                        'Error: The Geolocation service failed.' :
+                                        'Error: Your browser doesn\'t support geolocation.');
+                                infoWindow.open(map);
+                            }
+        </script>
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjXyXm-OQw78LLDEADIrQbl5OFKZGlam8&callback=initMap">
+        </script>
+
+
     </body>
 </html>
