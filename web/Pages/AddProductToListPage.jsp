@@ -64,7 +64,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="icon" href="img/favicon.png" sizes="16x16" type="image/png">
         <title>Products</title>
 
@@ -205,8 +206,12 @@
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                <li class="nav-item js-scroll-trigger dropdown">
+                                    <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
+                                    <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item nav-link" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                        <a class="dropdown-item nav-link" href="/Lists/foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
+                                    </div>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
@@ -236,8 +241,12 @@
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/Pages/guest/guest.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                <li class="nav-item js-scroll-trigger dropdown">
+                                    <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
+                                    <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item nav-link" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                        <a class="dropdown-item nav-link disabled" data-toggle="tooltip" title="Registrati o fai il login per usare questa funzione"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
+                                    </div>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#LoginModal" style="cursor: pointer;">
@@ -281,21 +290,18 @@
                         <div class="row">
                             <a href="/Lists/Pages/ShowUserList.jsp" id="backToList" class="btn btn-primary botButton social dispNone">Torna alla lista</a>
                             <!--end col-md-3-->
-                            <div class="col-md-12">
+                                <div class="col-md-3">
+                                    <div class="list-group">
+                                        <a href="/Lists/Pages/ShowProducts.jsp?cat=all" class="list-group-item">All</a>
+                                         <%  String prod = "";
 
-                                <div id="myBtnContainer">
-
-                                    <a style="margin: 5px;" href="/Lists/Pages/AddProductToListPage.jsp?cat=all" class="btn">Tutti</a>
-                                    <%  String prod = "";
-
-                                        for (String sprd : allCategories) {
-                                            System.out.println("sprd: " + sprd);%>
-
-                                    <a style="margin: 5px;" href="/Lists/Pages/AddProductToListPage.jsp?cat=<%=sprd%>" class="btn"><%=sprd%></a>
-
-                                    <%}%>
-
+                                            for (String sprd : allCategories) {
+                                                System.out.println("sprd: " + sprd);%>
+                                        <a href="/Lists/Pages/ShowProducts.jsp?cat=<%=sprd%>" class="list-group-item"><%=sprd%></a>
+                                        <%}%>
+                                    </div>
                                 </div>
+                                <div class="col-md-9">    
                                 <!--============ Section Title===================================================================-->
                                 <div class="section-title clearfix">
                                     <div class="float-left float-xs-none">

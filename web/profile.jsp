@@ -27,7 +27,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="icon" href="Pages/img/favicon.png" sizes="16x16" type="image/png">
         <title>Lists</title>
 
@@ -72,13 +73,12 @@
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="foreignLists.jsp">
-                                        <i class="fa fa-share-alt"></i><b>Liste condivise con me</b>
-                                    </a>
+                                <li class="nav-item js-scroll-trigger dropdown">
+                                    <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
+                                    <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item nav-link" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                        <a class="dropdown-item nav-link" href="/Lists/foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
+                                    </div>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">

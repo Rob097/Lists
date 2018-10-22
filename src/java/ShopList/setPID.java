@@ -28,13 +28,14 @@ public class setPID extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         System.out.println("\nPID\n");
         HttpSession session = request.getSession();
-        session.setAttribute("PID", request.getParameter("PID")); System.out.println("PID: " + request.getParameter("PID"));
-        session.setAttribute("LISTMODAL", true);
-        response.sendRedirect("/Lists/Pages/ShowProducts.jsp");
+        String id = request.getParameter("PID");
+        session.setAttribute("prodotto", id); System.out.println("PID: " + id + "\nSession PID: " + session.getAttribute("prodotto"));
+        
+        response.sendRedirect("/Lists/Pages/ShowProducts.jsp?PID="+id);
     }
 
     /**

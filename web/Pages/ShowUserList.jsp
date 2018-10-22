@@ -32,6 +32,7 @@
     HttpSession s = (HttpSession) request.getSession();
     String shoplistName = null; //Nome della lista
     ShopList guestList = null; //Lista dell'utente non registrato
+    ShopList lista = null;
     ArrayList<Product> li = null; //ArrayList dei prodotti della lista
     ArrayList<User> AllUsersOfCurentList = null; //ArrayList degli utenti con cui la lista è condivisa
     User u = null; //Eventuale utent
@@ -48,6 +49,7 @@
             shoplistName = (String) s.getAttribute("shopListName");
             li = listdao.getAllProductsOfShopList(shoplistName); //prendi tutti i prodotti della lista e mettili in li
             AllUsersOfCurentList = listdao.getUsersWithWhoTheListIsShared(shoplistName); //Prendi tutti gli utenti con cui la lista è condivisa
+            lista = listdao.getbyName(shoplistName);
         }
     } else if (s.getAttribute("guestList") != null) { //Se non è loggato nessun utente, se l'attributo di sessione contenente la lista dell'utente Guest non è nullo
         guestList = (ShopList) s.getAttribute("guestList");
@@ -63,7 +65,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="icon" href="img/favicon.png" sizes="16x16" type="image/png">
         <title><c:out value="${shopListName}"/></title>
         <!-- CSS personalizzati -->
@@ -171,9 +174,13 @@
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
-                                </li>                                
+                                <li class="nav-item js-scroll-trigger dropdown">
+                                    <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
+                                    <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item nav-link" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                        <a class="dropdown-item nav-link" href="/Lists/foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
+                                    </div>
+                                </li>                               
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/profile.jsp">
                                         <i class="fa fa-user"></i><b>Il mio profilo</b>
@@ -203,8 +210,12 @@
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                <li class="nav-item js-scroll-trigger dropdown">
+                                    <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
+                                    <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item nav-link" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                        <a class="dropdown-item nav-link disabled" data-toggle="tooltip" title="Registrati o fai il login per usare questa funzione"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
+                                    </div>
                                 </li>                                
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#LoginModal" style="cursor: pointer;">
@@ -229,6 +240,14 @@
                                 <%=shoplistName%>
                                 <%System.out.println("NOME:    ====   " + shoplistName); %>
                             </h1>
+                            
+                            <p class="text-center">
+                                <%if(lista != null){%>
+                                    <%=lista.getDescrizione()%>
+                                <%}else if(guestList != null){%>
+                                    <%=guestList.getDescrizione()%>
+                                <%}%>
+                            </p>
                         </div>
 
                         

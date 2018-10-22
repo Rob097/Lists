@@ -32,23 +32,23 @@
 
     HttpSession s = (HttpSession) request.getSession();
     String shoplistName = "";
-    if(s.getAttribute("shopListName") != null){
+    if (s.getAttribute("shopListName") != null) {
         shoplistName = (String) s.getAttribute("shopListName");
     }
     User u = new User();
     boolean find = false;
-    
+
     ArrayList<Product> li = productdao.getAllProducts();
     ArrayList<String> allCategories = productdao.getAllProductCategories();
     ArrayList<String> allListsOfUser = new ArrayList();
-    
+
     int PID = 0;
     String cat = null;
-    if(request.getParameter("cat") != null){
+    if (request.getParameter("cat") != null) {
         cat = request.getParameter("cat");
         System.out.println("\nCAT: " + cat);
     }
-    
+
     if (s.getAttribute("user") != null) {
         u = (User) s.getAttribute("user");
         allListsOfUser = listdao.getAllListsByCurentUser(u.getEmail());
@@ -59,7 +59,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="icon" href="img/favicon.png" sizes="16x16" type="image/png">
         <title>Products</title>
 
@@ -166,7 +167,7 @@
             String image = "";
 
             //String Image = "";
-            if(find){
+            if (find) {
                 Nominativo = u.getNominativo();
                 Email = u.getEmail();
                 Type = u.getTipo();
@@ -194,8 +195,12 @@
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                <li class="nav-item js-scroll-trigger dropdown">
+                                    <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
+                                    <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item nav-link" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                        <a class="dropdown-item nav-link" href="/Lists/foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
+                                    </div>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/Pages/<%=Type%>/foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>
@@ -228,8 +233,12 @@
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/Pages/guest/guest.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                <li class="nav-item js-scroll-trigger dropdown">
+                                    <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
+                                    <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item nav-link" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                        <a class="dropdown-item nav-link disabled" data-toggle="tooltip" title="Registrati o fai il login per usare questa funzione"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
+                                    </div>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#LoginModal" style="cursor: pointer;">
@@ -272,14 +281,14 @@
                         <div class="row">
 
                             <!--end col-md-3-->
-                            
+
                             <div class="col-md-3">
                                 <div class="list-group">
                                     <a href="/Lists/Pages/ShowProducts.jsp?cat=all" class="list-group-item">All</a>
-                                     <%  String prod = "";
+                                    <%  String prod = "";
 
-                                        for (String sprd : allCategories) {
-                                            System.out.println("sprd: " + sprd);%>
+                                         for (String sprd : allCategories) {
+                                             System.out.println("sprd: " + sprd);%>
                                     <a href="/Lists/Pages/ShowProducts.jsp?cat=<%=sprd%>" class="list-group-item"><%=sprd%></a>
                                     <%}%>
                                 </div>
@@ -288,7 +297,7 @@
 
                             <div class="col-md-9">
 
-                                
+
                                 <!--============ Section Title===================================================================-->
                                 <div class="section-title clearfix">
                                     <div class="float-left float-xs-none">
@@ -312,78 +321,76 @@
                                 </div>
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
-                                    
+
                                     <%  if (cat != null && !cat.equals("all")) {
                                             for (Product p : li) {
                                                 PID = p.getPid();
                                                 if (cat.equals(p.getCategoria_prodotto())) {
                                     %>
 
-                                                    <div class="item">
-                                                        <!--end ribbon-->
-                                                        <div class="wrapper">
-                                                            <div class="image">
-                                                                <h3>
-                                                                    <a href="#" class="tag category"><%=p.getCategoria_prodotto()%></a>
-                                                                    <a href="single-listing-1.html" class="title"><%=p.getNome()%></a>
-                                                                    <span class="tag">Offer</span>
-                                                                </h3>
-                                                                <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                                    <img src="../<%=p.getImmagine()%>" alt="">
-                                                                </a>
-                                                            </div>
-                                                            <!--end image-->
+                                    <div class="item">
+                                        <!--end ribbon-->
+                                        <div class="wrapper">
+                                            <div class="image">
+                                                <h3>
+                                                    <a href="#" class="tag category"><%=p.getCategoria_prodotto()%></a>
+                                                    <a href="single-listing-1.html" class="title"><%=p.getNome()%></a>
+                                                    <span class="tag">Offer</span>
+                                                </h3>
+                                                <a href="single-listing-1.html" class="image-wrapper background-image">
+                                                    <img src="../<%=p.getImmagine()%>" alt="">
+                                                </a>
+                                            </div>
+                                            <!--end image-->
 
-                                                            <div class="price">$<%=PID%></div>
+                                            <div class="price">$<%=PID%></div>
 
-                                                            <!--end admin-controls-->
-                                                            <div class="description">
-                                                                <p><%=p.getNote()%></p>
-                                                            </div>
-                                                            <!--end description-->
-                                                            <form class="ListModal detail text-caps underline" action="/Lists/setPID" method="post" role="form" id="ListModal" >
-                                                                <input type="submit" class="btn btn-primary" value="Add to your list">
-                                                                <input name="PID" type="hidden" value="<%=PID%>">
-                                                            </form>
-                                                            
-                                                        </div>
-                                                    </div>
+                                            <!--end admin-controls-->
+                                            <div class="description">
+                                                <p><%=p.getNote()%></p>
+                                            </div>
+                                            <!--end description-->
+                                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Aggiungi ad una lista</a>
+                                            <!--<form class="ListModal detail text-caps underline" action="/Lists/setPID" method="post" role="form" id="ListModal" >
+                                                <input type="submit" class="btn btn-primary" value="Add to your list">
+                                                <input name="PID" type="hidden" value="<%=PID%>">
+                                            </form>-->
+
+                                        </div>
+                                    </div>
                                     <%          }
-                                            }
-                                        } else if (cat == null || cat.equals("all")) {
-                                            for (Product p : li) {
+                                        }
+                                    } else if (cat == null || cat.equals("all")) {
+                                        for (Product p : li) {
                                             PID = p.getPid();
-                                            %>
-                                                <div class="item">
-                                                    <!--end ribbon-->
-                                                    <div class="wrapper">
-                                                        <div class="image">
-                                                            <h3>
-                                                                <a href="#" class="tag category"><%=p.getCategoria_prodotto()%></a>
-                                                                <a href="single-listing-1.html" class="title"><%=p.getNome()%></a>
+                                    %>
+                                    <div class="item">
+                                        <!--end ribbon-->
+                                        <div class="wrapper">
+                                            <div class="image">
+                                                <h3>
+                                                    <a href="#" class="tag category"><%=p.getCategoria_prodotto()%></a>
+                                                    <a href="single-listing-1.html" class="title"><%=p.getNome()%></a>
 
-                                                            </h3>
-                                                            <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                                <img src="../<%=p.getImmagine()%>" alt="">
-                                                            </a>
-                                                        </div>
-                                                        <!--end image-->
+                                                </h3>
+                                                <a href="single-listing-1.html" class="image-wrapper background-image">
+                                                    <img src="../<%=p.getImmagine()%>" alt="">
+                                                </a>
+                                            </div>
+                                            <!--end image-->
 
-                                                        <div class="price">$<%=PID%></div>
+                                            <div class="price">$<%=PID%></div>
 
-                                                        <!--end admin-controls-->
-                                                        <div class="description">
-                                                            <p><%=p.getNote()%></p>
-                                                        </div>
-                                                        <!--end description-->
-                                                        <form class="ListModal detail text-caps underline" action="/Lists/setPID" method="post" role="form" id="ListModal">
-                                                            <button type="submit" class="btn btn-primary">Add to your list</button>
-                                                            <input name="PID" type="hidden" value="<%=PID%>">
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            <%}
-                                        }%>
+                                            <!--end admin-controls-->
+                                            <div class="description">
+                                                <p><%=p.getNote()%></p>
+                                            </div>
+                                            <!--end description-->
+                                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Aggiungi ad una lista</a>
+                                        </div>
+                                    </div>
+                                    <%}
+                                                }%>
 
                                 </div>
                                 <!--end items-->
@@ -426,21 +433,21 @@
                     </div>
                     <div class="modal-body">
                         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
-                        
-                        
+
+
                         <%if (find) {
-                            for (String nomeLista : allListsOfUser) {%>
-                                <ul id="myUL">
-                                    <li><a class="btn btn-primary" href="/Lists/AddProductToList?shopListName=<%=nomeLista%>&prodotto=<%=s.getAttribute("PID")%>"><%=nomeLista%></a></li>
-                                </ul>
-                            <%}
-                        } else if(s.getAttribute("guestList") != null){
-                            ShopList Glist = (ShopList) s.getAttribute("guestList");%>
-                                <ul id="myUL">
-                                    <li><a href="/Lists/AddProductToList?shopListName=<%=Glist.getNome()%>&prodotto=<%=s.getAttribute("PID")%>"></a><%=Glist.getNome()%></li> 
-                                </ul> 
+                                for (String nomeLista : allListsOfUser) {%>
+                        <ul id="myUL">
+                            <li><a class="btn btn-primary" href="/Lists/AddProductToList?shopListName=<%=nomeLista%>"><%=nomeLista%></a></li>
+                        </ul>
+                        <%}
+                            } else if (s.getAttribute("guestList") != null) {
+                                ShopList Glist = (ShopList) s.getAttribute("guestList");%>
+                        <ul id="myUL">
+                            <li><a href="/Lists/AddProductToList?shopListName=<%=Glist.getNome()%>"></a><%=Glist.getNome()%></li> 
+                        </ul> 
                         <%}%>
-                                                       
+
                     </div>
                     <div style="padding: 1rem;">
                         <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >Crea una lista</a>
@@ -450,8 +457,8 @@
 
             </div>
         </div>
-         
-                     
+
+
         <!--########################## moooddaaalllll ############################-->
 
         <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
@@ -492,7 +499,7 @@
 
                             </div>
                             <!--end form-group-->
-                            <%if(find){%>
+                            <%if (find) {%>
                             <div class="form-group">
                                 <label for="Immagine" class="col-form-label required">Immagine</label>
                                 <input type="file" name="file1" required>
@@ -503,7 +510,7 @@
 
                                 <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
                                 <input type="hidden" name="showProduct" value="true">
-                                
+
                                 <%if (find == false && session.getAttribute("guestList") != null) {%>
                                 <h5>Attenzione, hai già salvato una lista. Se non sei registrato puoi salvare solo una lista alla volta. Salvando questa lista, cancellerai la lista gia salvata.</h5>
                                 <%}%>
@@ -516,34 +523,39 @@
                     </div>
                 </div>
             </div>
-                            
-        <script>
-            function myFunction() {
-                var input, filter, ul, li, a, i;
-                input = document.getElementById("myInput");
-                filter = input.value.toUpperCase();
-                ul = document.getElementById("myUL");
-                li = ul.getElementsByTagName("li");
-                for (i = 0; i < li.length; i++) {
-                    a = li[i].getElementsByTagName("a")[0];
-                    if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                        li[i].style.display = "";
-                    } else {
-                        li[i].style.display = "none";
+
+            <script>
+                function myFunction() {
+                    var input, filter, ul, li, a, i;
+                    input = document.getElementById("myInput");
+                    filter = input.value.toUpperCase();
+                    ul = document.getElementById("myUL");
+                    li = ul.getElementsByTagName("li");
+                    for (i = 0; i < li.length; i++) {
+                        a = li[i].getElementsByTagName("a")[0];
+                        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                            li[i].style.display = "";
+                        } else {
+                            li[i].style.display = "none";
+                        }
                     }
                 }
-            }
-        </script>
-        
-        <script>
-            var check = <%=s.getAttribute("LISTMODAL")%>;
-            $('document').ready(function(){
-                if (check === true) {
-                    $('\\#myModal').modal('show');
+            </script>  
+
+            <script>
+                function addProduct(id) {
+                    $.ajax({
+                        type: "GET",
+                        url: "/Lists/setPID?PID=" + id,
+                        async: true,
+                        success: function () {
+                            $('\\#myModal').modal('show');
+                        },
+                        error: function () {
+                            alert("Errore");
+                        }
+                    });
                 }
-            });
-            
-        </script>       
-        
+            </script>
     </body>
 </html>

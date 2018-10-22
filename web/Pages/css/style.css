@@ -411,6 +411,18 @@ a.disabled {
     line-height: 6rem;
     margin-left: 8rem;
 }
+
+/********
+--- D ---
+********/
+@media (max-width: 1200px) {
+    .navbar-nav .dropdown-menu {
+        background-color: #212529;
+        border: none;
+        text-align: center;
+    }
+}
+
 /********
 --- E ---
 ********/
@@ -1127,9 +1139,9 @@ a.disabled {
 .items:not(.selectize-input).grid.compact .item .wrapper {
     height: 31rem;
 }
-.items:not(.selectize-input).grid.compact .item .wrapper .detail {
+/*.items:not(.selectize-input).grid.compact .item .wrapper .detail {
     display: none;
-}
+}*/
 .items:not(.selectize-input).grid.compact .item .admin-controls {
     position: relative;
     right: inherit;
