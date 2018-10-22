@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.tomcat.util.codec.binary.Base64;
 
 /**
  *
@@ -96,7 +97,8 @@ public class LoginAction extends HttpServlet {
                 
                 //create remember me cookie
                 if(remember != null){
-                    Cookie coouser = new Cookie("User",user.getEmail());
+                    String encodedText = new String(Base64.encodeBase64(user.getEmail().getBytes("UTF-8")));
+                    Cookie coouser = new Cookie("User",encodedText);
                     coouser.setMaxAge(COOKIE_MAX_AGE);
                     response.addCookie(coouser);                    
                 } 
