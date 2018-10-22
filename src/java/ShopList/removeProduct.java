@@ -7,12 +7,14 @@ package ShopList;
 
 import database.daos.ListDAO;
 import database.daos.NotificationDAO;
+import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCNotificationsDAO;
 import database.jdbc.JDBCShopListDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -56,6 +58,28 @@ public class removeProduct extends HttpServlet {
         } catch (DAOException ex) {
             System.out.println("impossibile eliminare il prodotto "+prodotto+" dalla lista "+lista);
             Logger.getLogger(removeProduct.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //utenti con cui la lista è condivisa
+        ArrayList<User> utenti = new ArrayList();
+        try {
+            utenti = notificationdao.getUsersWithWhoTheListIsShared(lista);             
+        } catch (DAOException ex) {
+            Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        
+        if(s.getAttribute("user") != null){
+            User utente = (User) s.getAttribute("user");
+            try {
+                for(User u : utenti){
+                    //System.out.println("Nome: "+u.getNominativo() + "\nlista: " + lista);
+                    if(!u.getEmail().equals(utente.getEmail())){
+                        notificationdao.addNotification(u.getEmail(), "remove_product", lista);
+                    }
+                }
+            } catch (DAOException ex) {
+                Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
+            }            
         }
         
         response.sendRedirect("/Lists/Pages/ShowUserList.jsp");

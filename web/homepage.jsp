@@ -273,7 +273,9 @@
             <%if(find){
                 if (session.getAttribute("notifiche") != null) {
                     ArrayList <Notification> nn = (ArrayList<Notification>) session.getAttribute("notifiche");
-                    ArrayList <Notification> nProd = new ArrayList<>();
+                    ArrayList <Notification> nNewProd = new ArrayList<>();
+                    ArrayList <Notification> nRemoveProd = new ArrayList<>();
+                    ArrayList <Notification> nEmptyList = new ArrayList<>();
                     ArrayList <Notification> nUser = new ArrayList<>();
                     ArrayList <Notification> nMsg = new ArrayList<>();
                     int checkNotification = 0;
@@ -281,8 +283,26 @@
                     for(Notification nf : nn) {
                         if(nf.getUser().equals(u.getEmail())){
                             checkNotification = 1;
-                            if( nf.getType().equals("new_product")) nProd.add(nf);
+                            if( nf.getType().equals("new_product")) nNewProd.add(nf);
+                            
+                            //Se la notifica ha come tipo 'remove_product' allora se la lista è vuota dai come notifica
+                            //'lista svuotata' altrienti se non è vuota invia 'prodotto rimosso'
+                            if( nf.getType().equals("remove_product")){
+                                if(listdao.getbyName(nf.getListName()).getProducts() != null){
+                                    if(listdao.getbyName(nf.getListName()).getProducts().isEmpty()){
+                                        nEmptyList.add(nf);
+                                    }else{
+                                        nRemoveProd.add(nf);
+                                    }
+                                }else{
+                                    nEmptyList.add(nf);
+                                }
+                            }
+                            
+                            if( nf.getType().equals("empty_list")) nEmptyList.add(nf);
+                            
                             if( nf.getType().equals("new_user")) nUser.add(nf);
+                            
                             if( nf.getType().equals("new_message")){
                                 try{
                                     nMsg.add(nf);
@@ -297,11 +317,11 @@
             
             %>
                     <div class="container pt-5" id="alert">
-                        <%if(!nProd.isEmpty()){
-                            if(nProd.size() == 1){
+                        <%if(!nNewProd.isEmpty()){
+                            if(nNewProd.size() == 1){
                         %>
                                 <div class="alert alert-success text-center" role="alert">
-                                    <a href="/Lists/ShowShopList?nome=<%=nProd.get(0).getListName()%>"><strong>Nuovo prodotto!</strong> E' stato aggiunto un nuovo prodotto alla lista <%=nProd.get(0).getListName()%></a>.
+                                    <a href="/Lists/ShowShopList?nome=<%=nNewProd.get(0).getListName()%>"><strong>Nuovo prodotto!</strong> E' stato aggiunto un nuovo prodotto alla lista <%=nNewProd.get(0).getListName()%></a>.
                                 </div>
                             <%}else{%>
                                 <div class="alert alert-success text-center" role="alert">
@@ -309,18 +329,23 @@
                                 </div>
                             <%}
                         }%>
-                        <%if(!nUser.isEmpty()){
-                            if(nUser.size() == 1){
+                        <%if(!nRemoveProd.isEmpty()){
+                            if(nRemoveProd.size() == 1){
                         %>
                                 <div class="alert alert-success text-center" role="alert">
-                                    <a href="/Lists/ShowShopList?nome=<%=nUser.get(0).getListName()%>"><strong>Nuovo Utente!</strong> E' stato aggiunto un nuovo utente alla lista <%=nUser.get(0).getListName()%></a>.
+                                    <a href="/Lists/ShowShopList?nome=<%=nRemoveProd.get(0).getListName()%>"><strong>Prodotto rimosso!</strong> E' stato rimosso un prodotto dalla lista <%=nRemoveProd.get(0).getListName()%></a>.
                                 </div>
                             <%}else{%>
                                 <div class="alert alert-success text-center" role="alert">
-                                    <a href="/Lists/Pages/<%=u.getTipo()%>/foreignLists.jsp"><strong>Nuovi Utenti</strong> sono stati aggiunti alle liste.</a>
+                                    <a href="/Lists/Pages/<%=u.getTipo()%>/foreignLists.jsp"><strong>Prodotti rimossi!</strong> Sono stati rimossi dei prodotti dalle liste.</a>
                                 </div>
                             <%}
                         }%>
+                        <%if(!nEmptyList.isEmpty()){%>
+                            <div class="alert alert-success text-center" role="alert">
+                                <a href="/Lists/ShowShopList?nome=<%=nEmptyList.get(0).getListName()%>"><strong>Lista svuotata!</strong> E' stata svuotata la lista <%=nEmptyList.get(0).getListName()%></a>.
+                            </div>
+                        <%}%>
                         <%if(!nMsg.isEmpty()){
                             if(nMsg.size() == 1){
                         %>
