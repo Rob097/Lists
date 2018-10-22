@@ -13,7 +13,6 @@
         <filter-name>CookieFilter</filter-name>
         <filter-class>filters.CookieFilter</filter-class>
     </filter>
-    
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
         <url-pattern>/restricted/*</url-pattern>
@@ -21,7 +20,7 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>CookieFilter</filter-name>
-        <url-pattern>*.jsp</url-pattern>        
+        <url-pattern>*.jsp</url-pattern>
     </filter-mapping>
     <listener>
         <description>ServletContextListener</description>
@@ -99,6 +98,14 @@
         <servlet-name>importGuestList</servlet-name>
         <servlet-class>ShopList.importGuestList</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>removeProduct</servlet-name>
+        <servlet-class>ShopList.removeProduct</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>removeALLProducts</servlet-name>
+        <servlet-class>ShopList.removeALLProducts</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -170,6 +177,14 @@
     <servlet-mapping>
         <servlet-name>importGuestList</servlet-name>
         <url-pattern>/importGuestList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>removeProduct</servlet-name>
+        <url-pattern>/removeProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>removeALLProducts</servlet-name>
+        <url-pattern>/removeALLProducts</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

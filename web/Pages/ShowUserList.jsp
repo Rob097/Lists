@@ -269,7 +269,11 @@
                             <div class="col-md-9">
                                 <!--============ Section Title===================================================================-->
                                 <div class="section-title clearfix">
-
+                                    <%if(li != null && !li.isEmpty()){%>
+                                        <form class="float-left" method="POST" action="/Lists/removeALLProducts">
+                                            <input type="submit" class="btn btn-primary" value="Svuota la lista">
+                                        </form>
+                                    <%}%>
                                     <div class="float-right d-xs-none thumbnail-toggle">
                                         <a href="#" class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
                                             <i class="fa fa-th"></i>
@@ -277,8 +281,7 @@
                                         <a href="#" class="change-class active" data-change-from-class="grid" data-change-to-class="list" data-parent-class="items">
                                             <i class="fa fa-th-list"></i>
                                         </a>
-                                    </div>
-                                </div>
+                                    </div></div>
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
 
@@ -310,7 +313,7 @@
                                                 <a href="#" class="ad-hide">
                                                     <i class="fa fa-eye-slash"></i>Hide
                                                 </a>
-                                                <a href="#" class="ad-remove">
+                                                <a href="/Lists/removeProduct?prodotto=<%=p.getPid()%>" class="ad-remove">
                                                     <i class="fa fa-trash"></i>Remove
                                                 </a>
                                             </div>
