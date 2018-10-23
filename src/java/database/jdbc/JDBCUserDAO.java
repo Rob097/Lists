@@ -242,6 +242,17 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
         }
     }
 
+    @Override
+    public void changeRole(String user, String role, String list) throws DAOException {
 
-    
+        try (PreparedStatement statement = CON.prepareStatement("UPDATE User_List SET role=? WHERE user=? AND list = ? ")) {
+            statement.setString(1, role);
+            statement.setString(2, user);
+            statement.setString(3, list);
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("errore update role");
+        }
+    }
 }

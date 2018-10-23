@@ -90,6 +90,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                     u.setEmail(rs.getString("email"));
                     u.setNominativo(rs.getString("nominativo"));
                     u.setImage(rs.getString("immagine"));
+                    u.setTipo(rs.getString("tipo"));
                     userList.add(u);
                 }
 
@@ -216,7 +217,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed email or listname is null"));
         }
 
-        try (PreparedStatement stm = CON.prepareStatement("INSERT INTO User_List VALUES (?,?)")) {
+        try (PreparedStatement stm = CON.prepareStatement("INSERT INTO User_List VALUES (?,?, 'Read')")) {
             stm.setString(1, email);
             stm.setString(2, nomeLista);
 
@@ -524,6 +525,43 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
         } catch (SQLException ex) {
             Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public String checkRole(String user, String list) throws DAOException {
+        String role = "";
+        try (PreparedStatement stm = CON.prepareStatement("select * from List where nome = ?")) {
+            stm.setString(1, list);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    if(rs.getString("creator").equals(user)){
+                        role = "creator";
+                    }else {
+                        try (PreparedStatement stm1 = CON.prepareStatement("select role from User_List where user = ? AND list = ?")) {
+                            stm1.setString(1, user);
+                            stm1.setString(2, list);
+
+                            try (ResultSet rs1 = stm1.executeQuery()) {
+                                while (rs1.next()) {
+                                    role = rs1.getString("role");
+                                }
+                            } catch (SQLException ex) {
+                                Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } catch (SQLException ex) {
+                            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+            }catch (SQLException ex) {
+                Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return role;
     }
 
 }

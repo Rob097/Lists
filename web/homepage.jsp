@@ -228,7 +228,7 @@
                             </div>
                             <div class="col-md-3">
                                     <%if (find) {%>
-                                <a href="/Lists/Pages/<%=Type%>/foreignLists.jsp" class="text-caps" style="padding: 0em 4em !important; font-size: 15px;"><b><i>Liste condivise</i></b></a>
+                                <a href="/Lists/foreignLists.jsp" class="text-caps" style="padding: 0em 4em !important; font-size: 15px;"><b><i>Liste condivise</i></b></a>
                                     <%} else {%>
                                 <a class="text-caps disabled" style="padding: 0em 3em !important; font-size: 15px;" data-toggle="tooltip" title="Registrati o fai il login per usare questa funzione"><b><i>Liste condivise</i></b></a>
                                     <%}%>
@@ -282,6 +282,7 @@
                     ArrayList <Notification> nEmptyList = new ArrayList<>();
                     ArrayList <Notification> nUser = new ArrayList<>();
                     ArrayList <Notification> nMsg = new ArrayList<>();
+                    ArrayList <Notification> nRole = new ArrayList<>();
                     int checkNotification = 0;
             
                     for(Notification nf : nn) {
@@ -314,6 +315,7 @@
                                     e.printStackTrace();
                                 }
                             }
+                            if( nf.getType().equals("role_change")) nRole.add(nf);
                             
                         }
                     }
@@ -329,7 +331,7 @@
                                 </div>
                             <%}else{%>
                                 <div class="alert alert-success text-center" role="alert">
-                                    <a href="/Lists/Pages/<%=u.getTipo()%>/foreignLists.jsp"><strong>Nuovi Prodotti</strong> sono stati aggiunti alle liste.</a>
+                                    <a href="/Lists/foreignLists.jsp"><strong>Nuovi Prodotti</strong> sono stati aggiunti alle liste.</a>
                                 </div>
                             <%}
                         }%>
@@ -341,7 +343,7 @@
                                 </div>
                             <%}else{%>
                                 <div class="alert alert-success text-center" role="alert">
-                                    <a href="/Lists/Pages/<%=u.getTipo()%>/foreignLists.jsp"><strong>Prodotti rimossi!</strong> Sono stati rimossi dei prodotti dalle liste.</a>
+                                    <a href="/Lists/foreignLists.jsp"><strong>Prodotti rimossi!</strong> Sono stati rimossi dei prodotti dalle liste.</a>
                                 </div>
                             <%}
                         }%>
@@ -358,7 +360,24 @@
                                 </div>
                             <%}else{%>
                                 <div class="alert alert-success text-center" role="alert">
-                                    <a href="/Lists/Pages/<%=u.getTipo()%>/foreignLists.jsp"><strong>Nuovi Messaggi</strong> nelle liste.</a>
+                                    <a href="/Lists/foreignLists.jsp"><strong>Nuovi Messaggi</strong> nelle liste.</a>
+                                </div>
+                            <%}
+                        }%>
+                        <%if(checkNotification == 0){%>
+                            <div class="alert alert-info text-center" role="alert">
+                                <strong>Non</strong> hai nuove notifiche <%=u.getNominativo()%></a>.
+                            </div>
+                        <%}%>
+                        <%if(!nRole.isEmpty()){
+                            if(nRole.size() == 1){
+                        %>
+                                <div class="alert alert-success text-center" role="alert">
+                                    <a href="/Lists/ShowShopList?nome=<%=nRole.get(0).getListName()%>"><strong>Permessi aggiornati!</strong> Sono cambiati i tuoi permessi nella lista <%=nRole.get(0).getListName()%></a>.
+                                </div>
+                            <%}else{%>
+                                <div class="alert alert-success text-center" role="alert">
+                                    <a href="/Lists/foreignLists.jsp"><strong>Permessi aggiornati!</strong> Sono stati aggiornati i tuoi permessi nelle liste.</a>
                                 </div>
                             <%}
                         }%>

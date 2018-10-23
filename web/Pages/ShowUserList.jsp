@@ -33,6 +33,7 @@
     String shoplistName = null; //Nome della lista
     ShopList guestList = null; //Lista dell'utente non registrato
     ShopList lista = null;
+    String role = ""; String shareUserRole = "";
     ArrayList<Product> li = null; //ArrayList dei prodotti della lista
     ArrayList<User> AllUsersOfCurentList = null; //ArrayList degli utenti con cui la lista è condivisa
     User u = null; //Eventuale utent
@@ -50,6 +51,7 @@
             li = listdao.getAllProductsOfShopList(shoplistName); //prendi tutti i prodotti della lista e mettili in li
             AllUsersOfCurentList = listdao.getUsersWithWhoTheListIsShared(shoplistName); //Prendi tutti gli utenti con cui la lista è condivisa
             lista = listdao.getbyName(shoplistName);
+            role  = listdao.checkRole(u.getEmail(), shoplistName); System.out.println("\nRUOLO: " + role + "\n");
         }
     } else if (s.getAttribute("guestList") != null) { //Se non è loggato nessun utente, se l'attributo di sessione contenente la lista dell'utente Guest non è nullo
         guestList = (ShopList) s.getAttribute("guestList");
@@ -95,6 +97,9 @@
                 background-color: #f2f2f2;
                 overflow: auto;
                 margin-bottom: 4%;
+                overflow: hidden;
+                text-align: center;
+                
             }
 
             .icon-bar a {
@@ -126,6 +131,26 @@
             .user_panel {
                 width: 50%;
             }
+            .actualRole{
+                font-weight: bold;
+                font-style: italic;
+            }
+            #alert{
+                    position: fixed;
+                    z-index: 10000;
+                    max-width: -webkit-fill-available;
+                    width: -webkit-fill-available;
+                    width: -moz-available;
+                    max-width: -moz-available;
+                    bottom: 0;
+                }
+                .alert{
+                    position: relative;
+                    padding: 1.75rem 1.25rem;
+                    margin-bottom: 0;
+                    border: 1px solid transparent;
+                    border-radius: 0.25rem;
+                }
         </style>
         <style>
             /* Always set the map height explicitly to define the size of the div
@@ -249,19 +274,23 @@
                                 <%}%>
                             </p>
                         </div>
-
-                        
-
                     </div>
                     <!--============ End Page Title =====================================================================-->
 
 
-
+                    <div id="map"></div>
                 </div>
             </header>
-<div id="map"></div>
-
-
+            
+                                <%if(session.getAttribute("role") != null){%>
+                                <div class="container pt-5" id="alert">
+                                    <%if (!session.getAttribute("role").equals("same")) {%>
+                                    <div class="alert alert-success text-center" role="alert">
+                                        <strong>Permessi</strong> di <%=session.getAttribute("role")%> aggiornati correttamente.</a>.
+                                    </div>
+                                    <%session.setAttribute("role", "same");}%>
+                                </div>
+                                <%}%>
 
             <!--*********************************************************************************************************-->
             <!--************ CONTENT ************************************************************************************-->
@@ -273,28 +302,50 @@
                     <div class="container">
                         
                         <div class="icon-bar">
+                            
                             <c:choose>
-                                <c:when test="${(not empty user) && (user.email == shoplist.creator)}">
-                                    <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
-                                    <a href="ThirdChatroom.jsp"><i class="fas fa-users"><br>ChatRoom</i></a> 
-                                    <a style="cursor: pointer;" data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Share</i></a>
-                                    <a style="cursor: pointer;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Delete</i></a>
+                                <c:when test="${(not empty user)}">
+                                    <c:set var = "ruolo" value="<%=role%>"/>
+                                    <c:choose>
+                                        <c:when test="${(ruolo eq 'creator')}">
+                                            <div class="row">
+                                                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6">
+                                                    <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
+                                                </div>
+                                                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6">
+                                                    <a href="ThirdChatroom.jsp"><i class="fas fa-users"><br>ChatRoom</i></a> 
+                                                </div>
+                                                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6">
+                                                    <a style="cursor: pointer;" data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Share</i></a>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6">
+                                                    <a style="cursor: pointer;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Delete</i></a>
+                                                </div>
+                                            </div>
                                         </c:when>
-                                        <c:when test="${(not empty user) && (user.email != shoplist.creator)}">
-                                    <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
-                                    <a href="ThirdChatroom.jsp"><i class="fas fa-users"><br>ChatRoom</i></a>
-                                    <a data-toggle="tooltip" title="Devi essere il creatore della lista per condividerla" class="disabled"><i class="fa fa-globe"><br>Share</i></a>
-                                    <a data-toggle="tooltip" title="Devi essere il creatore della lista per cancellarla" class="disabled"><i class="fa fa-trash"><br>Delete</i></a> 
+                                        <c:when test="${(ruolo eq 'Write')}">
+                                            <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
+                                            <a href="ThirdChatroom.jsp"><i class="fas fa-users"><br>ChatRoom</i></a> 
+                                            <a style="cursor: pointer;" data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Share</i></a>
+                                            <a style="cursor: pointer;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Delete</i></a>
                                         </c:when>
-                                        <c:otherwise>
+                                        <c:when test="${(ruolo == 'Read')}">
+                                        <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
+                                        <a href="ThirdChatroom.jsp"><i class="fas fa-users"><br>ChatRoom</i></a>
+                                        <a data-toggle="tooltip" title="Non hai i permessi perr condividere la lista. Contatta <%=u.getNominativo()%>" class="disabled"><i class="fa fa-globe"><br>Share</i></a>
+                                        <a data-toggle="tooltip" title="Non hai i permessi perr cancellare la lista. Contatta <%=u.getNominativo()%>" class="disabled"><i class="fa fa-trash"><br>Delete</i></a> 
+                                        </c:when>
+                                    </c:choose>
+                                </c:when>
+                                <c:otherwise>
                                     <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
                                     <a data-toggle="tooltip" title="Devi registrarti per usare questa funzione" class="disabled"><i class="fas fa-users"><br>ChatRoom</i></a> 
                                     <a data-toggle="tooltip" title="Devi registrarti per usare questa funzione" class="disabled"><i class="fa fa-globe"><br>Share</i></a>
                                     <a style="cursor: pointer;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Delete</i></a> 
-                                        </c:otherwise>
-                                    </c:choose>                                    
+                                </c:otherwise>
+                            </c:choose>                                    
                         </div>
-
+                    
                         <hr>
 
                         <div class="row">
@@ -382,7 +433,11 @@
                                         </c:if>                                        
                                         <table class="table-users table" border="0">
                                             <tbody>
-                                                <%for (User usersoflist : AllUsersOfCurentList) {%>
+                                                <%for (User usersoflist : AllUsersOfCurentList) {
+                                                    shareUserRole = listdao.checkRole(usersoflist.getEmail(), shoplistName);
+                                                    System.out.println("\nNOME: " + usersoflist.getNominativo() + "\nTIPO: " + usersoflist.getTipo());
+                                                %>
+                                                <c:set var = "shareUserRole" value="<%=listdao.checkRole(usersoflist.getEmail(), shoplistName)%>"/>
                                                 <tr>
 
 
@@ -393,7 +448,29 @@
                                                         <%=usersoflist.getNominativo()%><br>
                                                     </td>
                                                     <td>
-                                                        <%=usersoflist.getTipo()%>
+                                                        <c:choose>
+                                                            <c:when test="${(ruolo eq 'creator')}">
+                                                                <div class="btn-group dropleft">
+                                                                    <a class="dropdown-toggle" style="background-color: red; padding: 4px; border-radius: 10%; color: white;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                        <%=shareUserRole%>
+                                                                    </a>
+                                                                    <div class="dropdown-menu">
+                                                                        <c:if test = "${shareUserRole eq 'Read'}">
+                                                                            <a class="dropdown-item actualRole" href="/Lists/changeRole?user=<%=usersoflist.getEmail()%>&role=<%=shareUserRole%>&new=Read&list=<%=shoplistName%>">Read</a>
+                                                                            <a class="dropdown-item" href="/Lists/changeRole?user=<%=usersoflist.getEmail()%>&role=<%=shareUserRole%>&new=Write&list=<%=shoplistName%>">Write</a>
+                                                                        </c:if>
+                                                                        <c:if test = "${shareUserRole eq 'Write'}">
+                                                                            <a class="dropdown-item" href="/Lists/changeRole?user=<%=usersoflist.getEmail()%>&role=<%=shareUserRole%>&new=Read&list=<%=shoplistName%>">Read</a>
+                                                                            <a class="dropdown-item actualRole" href="/Lists/changeRole?user=<%=usersoflist.getEmail()%>&role=<%=shareUserRole%>&new=Write&list=<%=shoplistName%>">Write</a>
+                                                                        </c:if>
+                                                                    </div>
+                                                                </div>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <%=usersoflist.getTipo()%>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                        
                                                     </td>
                                                 </tr>
                                                 <%}%>
@@ -418,6 +495,7 @@
                             <!--end col-md-9-->
                         </div>
                         <!--end row-->
+                       
                     </div>
                     <!--end container-->
                 </section>
@@ -585,8 +663,8 @@
                                     <option value="${u.email}"><c:out value="${u.email}"/></option> 
                                 </c:forEach>
                             </select>
-                            <button type="submit" class="btn btn-primary" id="delete">Save</button> 
-                            <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete-btn-no">Cancel</button> 
+                            <button type="submit" class="btn btn-primary" id="save">Save</button> 
+                            <button type="button" data-dismiss="modal" class="btn btn-primary" id=save-btn-no">Cancel</button> 
                         </form>
 
                     </div>
@@ -617,8 +695,8 @@
                                     <option value="${susers.email}"><c:out value="${susers.email}"/></option> 
                                 </c:forEach>
                             </select>
-                            <button type="submit" class="btn btn-dark" id="delete">Remove</button> 
-                            <button type="button" data-dismiss="modal" class="btn btn-dark" id="delete-btn-no">Cancel</button> 
+                            <button type="submit" class="btn btn-dark" id="deleteShare">Remove</button> 
+                            <button type="button" data-dismiss="modal" class="btn btn-dark" id="deleteShare-btn-no">Cancel</button> 
                         </form>
 
                     </div>
@@ -682,7 +760,7 @@
                                 <input type="hidden" name="descrizione" value="<%=guestList.getDescrizione()%>">
                                 <input type="hidden" name="immagine" value="<%=guestList.getImmagine()%>">
                                 <input type="submit" class="btn btn-primary btn-block" data-toggle="modal" data-target="#SaveListModal" value="Salva la lista">
-                                <button type="button" data-dismiss="modal" class="btn btn-dark" id="delete-btn-no">Cancel</button>
+                                <button type="button" data-dismiss="modal" class="btn btn-dark" id="save2-btn-no">Cancel</button>
                             </form>
                         </div>
                     </div>
@@ -695,10 +773,6 @@
         <!--########################end delete modal##############################-->
         <!--###################################################################################################################################################################################################-->
 
-        <script src="js/jquery-3.3.1.min.js"></script>
-        <script type="text/javascript" src="js/popper.min.js"></script>
-        <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-
         <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
         <script src="js/selectize.min.js"></script>
         <script src="js/masonry.pkgd.min.js"></script>
@@ -707,7 +781,20 @@
         <script src="js/custom.js"></script>
         <script src="js/nav.js"></script>
         <script src="js/vari.js"></script>
+        
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
+        
+        <script type="text/javascript">
+                $(document).ready (function(){
+                $("#alert").hide();
 
+                $("#alert").fadeTo(10000, 500).slideUp(500, function(){
+                $("#alert").slideUp(500);
+                });   
+
+                });
+            </script>
+            
         <script>
                             // Note: This example requires that you consent to location sharing when
                             // prompted by your browser. If you see the error "The Geolocation service
@@ -753,7 +840,6 @@
         <script async defer
                 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjXyXm-OQw78LLDEADIrQbl5OFKZGlam8&callback=initMap">
         </script>
-
-
+        
     </body>
 </html>

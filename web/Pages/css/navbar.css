@@ -47,6 +47,12 @@ and open the template in the editor.
     color: white;
 }
 
+#mainNav.navbar-shrink .navbar-nav .dropdown-menu {
+        background-color: #212529;
+        border: none;
+        text-align: center;
+    }
+
 #mainNav .navbar-nav .nav-item .nav-link.active, #mainNav .navbar-nav .nav-item .nav-link:hover {
     color: #ff0000;
 }
