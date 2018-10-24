@@ -25,6 +25,7 @@
             var map;
             var infowindow;
             var pos = {lat: 46.0679467, lng: 11.1502771}
+            var radius = 1000;
 
             function initMap() {
                 infowindow = new google.maps.InfoWindow();
@@ -38,13 +39,25 @@
 
                 map = new google.maps.Map(document.getElementById('map'), {
                     center: pos,
-                    zoom: 13
+                    zoom: 15
                 });
 
                 infowindow.setPosition(pos);
                 infowindow.setContent('Location found.');
                 infowindow.open(map);
                 map.setCenter(pos);
+
+                marker = new google.maps.Marker({
+                    map: map,
+                    draggable: true,
+                    animation: google.maps.Animation.DROP,
+                    position: pos,
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 10
+                    }
+                });
+
 
 
                 var cityCircle = new google.maps.Circle({
@@ -55,14 +68,14 @@
                     fillOpacity: 0.35,
                     map: map,
                     center: pos,
-                    radius: 5000
+                    radius: radius
                 });
 
 
                 var service = new google.maps.places.PlacesService(map);
                 service.nearbySearch({
                     location: pos,
-                    radius: 10000,
+                    radius: radius,
                     type: ['supermarket']
                 }, callback);
             }
