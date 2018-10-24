@@ -283,6 +283,7 @@
                     ArrayList <Notification> nUser = new ArrayList<>();
                     ArrayList <Notification> nMsg = new ArrayList<>();
                     ArrayList <Notification> nRole = new ArrayList<>();
+                    ArrayList <Notification> nStatusproduct = new ArrayList<>();
                     int checkNotification = 0;
             
                     for(Notification nf : nn) {
@@ -307,6 +308,8 @@
                             if( nf.getType().equals("empty_list")) nEmptyList.add(nf);
                             
                             if( nf.getType().equals("new_user")) nUser.add(nf);
+                            
+                            if( nf.getType().equals("change_status_product")) nStatusproduct.add(nf);
                             
                             if( nf.getType().equals("new_message")){
                                 try{
@@ -378,6 +381,18 @@
                             <%}else{%>
                                 <div class="alert alert-success text-center" role="alert">
                                     <a href="/Lists/foreignLists.jsp"><strong>Permessi aggiornati!</strong> Sono stati aggiornati i tuoi permessi nelle liste.</a>
+                                </div>
+                            <%}
+                        }%>
+                        <%if(!nStatusproduct.isEmpty()){
+                            if(nStatusproduct.size() == 1){
+                        %>
+                                <div class="alert alert-success text-center" role="alert">
+                                    <a href="/Lists/ShowShopList?nome=<%=nStatusproduct.get(0).getListName()%>"><strong>Stato prodotto cambiato!</strong> E' cambiato lo stato di un prodotto nella lista <%=nStatusproduct.get(0).getListName()%></a>.
+                                </div>
+                            <%}else{%>
+                                <div class="alert alert-success text-center" role="alert">
+                                    <a href="/Lists/foreignLists.jsp"><strong>Stato prodotti cambiati!</strong> Sono cambiati gli stati di alcuni prodotti nelle liste.</a>
                                 </div>
                             <%}
                         }%>

@@ -225,6 +225,9 @@
                                                     }
                                             %>                                                                  
                                             <div class="item">
+                                                <%if (!n.isEmpty()) {%>
+                                                    <div class="ribbon-featured">Featured</div>
+                                                <%}%>
                                                 <!--end ribbon-->
                                                 <div class="wrapper">
                                                     <div class="image">

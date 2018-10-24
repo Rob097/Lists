@@ -297,7 +297,7 @@
 
                                             for (String sprd : allCategories) {
                                                 System.out.println("sprd: " + sprd);%>
-                                        <a href="/Lists/Pages/ShowProducts.jsp?cat=<%=sprd%>" class="list-group-item"><%=sprd%></a>
+                                        <a href="/Lists/Pages/AddProductToListPage.jsp?cat=<%=sprd%>" class="list-group-item"><%=sprd%></a>
                                         <%}%>
                                     </div>
                                 </div>
@@ -354,7 +354,11 @@
                                                 <p><%=p.getNote()%></p>
                                             </div>
                                             <!--end description-->
-                                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
+                                            <%if(listdao.chckIfProductIsInTheList(p.getPid(), shoplistName)){%>
+                                                <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
+                                            <%}else{%> 
+                                                <a class="detail"><img src="img/correct.png" id="addIco"></a>
+                                            <%}%>
                                             <a class="detail"><img src="img/correct.png" id="addIco<%=p.getPid()%>" class="dispNone"></a>
                                         </div>
                                     </div>
@@ -387,7 +391,11 @@
                                                 <p><%=p.getNote()%></p>
                                             </div>
                                             <!--end description-->
-                                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
+                                            <%if(listdao.chckIfProductIsInTheList(p.getPid(), shoplistName) == false){%>
+                                                <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
+                                            <%}else{%> 
+                                                <a class="detail"><img src="img/correct.png" id="addIco"></a>
+                                            <%}%>
                                             <a class="detail"><img src="img/correct.png" id="addIco<%=p.getPid()%>" class="dispNone"></a>
                                         </div>
                                     </div>

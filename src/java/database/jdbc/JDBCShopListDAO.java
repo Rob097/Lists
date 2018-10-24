@@ -329,7 +329,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed email or listname is null"));
         }
 
-        try (PreparedStatement stm = CON.prepareStatement("INSERT INTO List_Prod VALUES (?,?,'2008-7-04','2008-7-04')")) {
+        try (PreparedStatement stm = CON.prepareStatement("INSERT INTO List_Prod VALUES (?,?,'2008-7-04','2008-7-04','daAcquistare')")) {
             stm.setString(1, lista);
             stm.setInt(2, prodotto);
 
@@ -562,6 +562,76 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
         }
         
         return role;
+    }
+
+    @Override
+    public boolean chckIfProductIsInTheList(int id, String list) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement("select * from Product where PID in (select prodotto from List_Prod where lista = ? AND PID = ?)")) {
+            
+            stm.setString(1, list);
+            stm.setInt(2, id);
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                   return true;
+                }
+
+                return false;
+            }
+        } catch (SQLException ex) {            
+            throw new DAOException("Impossible to check if product is in th list", ex);
+        }
+    }
+
+    @Override
+    public void signProductAsBuyed(int id, String tipo, String lista) throws DAOException {
+
+        try (PreparedStatement statement = CON.prepareStatement("UPDATE List_Prod SET stato=? WHERE lista=?  AND prodotto= ?")) {
+            statement.setString(1, tipo);
+            statement.setString(2, lista );
+            statement.setInt(3, id);
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("errore update product status");
+        }
+
+    }
+
+    @Override
+    public boolean checkBuyed(int id, String lista) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement("select stato from List_Prod where lista = ? AND prodotto = ?")) {
+            boolean check = false;
+            stm.setString(1, lista);
+            stm.setInt(2, id);
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    if(rs.getString("stato").equals("acquistato")) return true;
+                }
+
+                return false;
+            }
+        } catch (SQLException ex) {            
+            throw new DAOException("Impossible to check if product is in th list", ex);
+        }
+    }
+
+    @Override
+    public void changeStatusOfAllProduct(String tipo, String lista) throws DAOException {
+        ArrayList<Product> p = getAllProductsOfShopList(lista);
+        System.out.println("TIPOOOOOOO: " + tipo);
+        int id;
+        for(Product pp : p){
+            id = pp.getPid();
+            try (PreparedStatement statement = CON.prepareStatement("UPDATE List_Prod SET stato=? WHERE lista=?  AND prodotto= ?")) {
+                statement.setString(1, tipo);
+                statement.setString(2, lista );
+                statement.setInt(3, id);
+                statement.executeUpdate();
+            } catch (SQLException ex) {
+                Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("errore update product status");
+            }
+        }
     }
 
 }

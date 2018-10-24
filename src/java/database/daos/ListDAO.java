@@ -28,6 +28,7 @@ public interface ListDAO {
     public ShopList getGuestList(String email) throws DAOException;
     public ArrayList<ShopList> getListOfShopListsThatUserLookFor(String email) throws DAOException;
     public ArrayList<Product> getAllProductsOfShopList(String name)throws DAOException;
+    public boolean chckIfProductIsInTheList(int id, String list)throws DAOException;
     public ArrayList<User> getUsersWithWhoTheListIsShared(String listname) throws DAOException;
     public void insertSharedUser(String email, String nomeLista) throws DAOException;
     public void deleteList(ShopList list) throws DAOException;
@@ -40,4 +41,7 @@ public interface ListDAO {
     public ArrayList<ShopList> getAllSharedList(String email) throws DAOException;
     public void deleteSharedUser(String email, String listname)throws DAOException;
     public String checkRole(String user, String list) throws DAOException;
+    public void signProductAsBuyed(int id, String tipo, String lista) throws DAOException;
+    public void changeStatusOfAllProduct(String tipo, String lista) throws DAOException;
+    public boolean checkBuyed(int id, String lista) throws DAOException;
 }

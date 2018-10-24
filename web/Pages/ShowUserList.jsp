@@ -136,21 +136,52 @@
                 font-style: italic;
             }
             #alert{
-                    position: fixed;
-                    z-index: 10000;
-                    max-width: -webkit-fill-available;
-                    width: -webkit-fill-available;
-                    width: -moz-available;
-                    max-width: -moz-available;
-                    bottom: 0;
-                }
-                .alert{
-                    position: relative;
-                    padding: 1.75rem 1.25rem;
-                    margin-bottom: 0;
-                    border: 1px solid transparent;
-                    border-radius: 0.25rem;
-                }
+                position: fixed;
+                z-index: 10000;
+                max-width: -webkit-fill-available;
+                width: -webkit-fill-available;
+                width: -moz-available;
+                max-width: -moz-available;
+                bottom: 0;
+            }
+            .alert{
+                position: relative;
+                padding: 1.75rem 1.25rem;
+                margin-bottom: 0;
+                border: 1px solid transparent;
+                border-radius: 0.25rem;
+            }
+            .items:not(.selectize-input).list .item.itemAcquistato{
+                background-image: linear-gradient(to left, #808080d6 0%, #80808033 50%, #808080d6 100%);
+                color: black;
+                font-style: italic;
+                font-size: -webkit-xxx-large;
+                font-weight: bold; 
+            }
+            .overlayAcquistato{
+                display: -webkit-box;
+                width: -webkit-fill-available;
+                text-align: center;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                min-height: calc(100% - (0.5rem * 2));
+                position: absolute;
+            }
+            .pAcquistato{
+                margin-top: unset;
+                margin-bottom: unset;
+                width: -webkit-fill-available;
+                opacity: 1;
+            }
+            .wrapperProva{
+                z-index: -1;
+            }
+            .invisible{
+                display: none;
+            }
         </style>
         <style>
             /* Always set the map height explicitly to define the size of the div
@@ -213,7 +244,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
-                                        <i class="fa fa-sign-in"></i><b><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> </b>/ <img src= "/Lists/${user.image}" width="25px" height="25px" style="border-radius: 100%;">
+                                        <i class="fa fa-sign-out"></i><b><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> </b>/ <img src= "/Lists/${user.image}" width="25px" height="25px" style="border-radius: 100%;">
                                     </a>
                                 </li>                                
                             </ul>
@@ -278,7 +309,7 @@
                     <!--============ End Page Title =====================================================================-->
 
 
-                    <div id="map"></div>
+                    <!--<div id="map"></div>-->
                 </div>
             </header>
             
@@ -356,10 +387,48 @@
                                 
                                 <!--============ Section Title===================================================================-->
                                 <div class="section-title clearfix">
-                                    <%if (li != null && !li.isEmpty()) {%>
+                                    <%if (li != null && !li.isEmpty()) {//Controllo se la lista non è null e non è vuota%>
                                     <form class="float-left" method="POST" action="/Lists/removeALLProducts">
                                         <input type="submit" class="btn btn-primary" value="Svuota la lista">
                                     </form>
+                                    <%}%>
+                                    <%if (li != null && !li.isEmpty()) {
+                                        //se c''è aìalmeno un prodotto acquistato e almeno uno da acquistare faccio comparire entrambi i tasti e se tutti i prodotti sono da acquisttare faccio comparire solo il tasto per finire la spesa.
+                                        boolean check = false;
+                                        boolean last = false;
+                                        int size = 0;
+                                        for (Product pt : li) {
+                                            if (listdao.checkBuyed(pt.getPid(), shoplistName) == true) {
+                                                check = true;
+                                                size++;
+                                                if (li.size() == size) {
+                                                    last = true;
+                                                } else {
+                                                    last = false;
+                                                }
+
+                                            }
+                                        }%>
+
+                                    <%if (check) {
+                                            if (last) {String prova = "daAcquistare"; System.out.println("################################################################################################################################################stampa provaaaaa: " + prova );
+                                    %>
+                                    <form class="float-left" method="GET" action="/Lists/statusALLProducts?tipo=<%=prova%>" id="justRestart">
+                                        <input type="submit" class="btn btn-dark" style="margin-left: 10px;" value="Ricomincia spesa">
+                                    </form>
+                                    <%} else {%>
+                                    <form class="float-left" method="GET" action="/Lists/statusALLProducts?tipo=daAcquistare" id="Restart">
+                                        <input type="submit" class="btn btn-dark" style="margin-left: 10px;" value="Ricomincia spesa">
+                                    </form>
+                                    <form class="float-left" method="GET" action="/Lists/statusALLProducts?tipo=acquistato" id="Finish">
+                                        <input type="submit" class="btn btn-dark" style="margin-left: 10px;" value="Spesa finita">
+                                    </form>
+                                    <%}
+                                    } else {%>
+                                    <form class="float-left" method="GET" action="/Lists/statusALLProducts?tipo=acquistato" id="justFinish">
+                                        <input type="submit" class="btn btn-dark" style="margin-left: 10px;" value="Spesa finita">
+                                    </form>
+                                    <%}%>
                                     <%}%>
                                     <div class="float-right d-xs-none thumbnail-toggle">
                                         <a href="#" class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
@@ -371,13 +440,22 @@
                                     </div></div>
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
-
-                                    <%for (Product p : li) {%>
-
-                                    <div class="item">
-
+                                <%for (Product p : li) {%>
+                                    <%if(listdao.checkBuyed(p.getPid(), shoplistName) == true){%>
+                                    <div class="item itemAcquistato" id="item<%=p.getPid()%>">
+                                        <div class="overlayAcquistato" id="divProva<%=p.getPid()%>">
+                                            <p class="pAcquistato" id="pProva<%=p.getPid()%>">Già acquistato<br><a onclick="daAcquistareItem(<%=p.getPid()%>)" type="button" class="btn btn-dark" style="color: white;">Annulla</a></p>                                            
+                                        </div>
                                         <!--end ribbon-->
-                                        <div class="wrapper">
+                                        <div class="wrapper wrapperProva" id="wrapperProva<%=p.getPid()%>">
+                                    <%}else{%>
+                                    <div class="item" id="item<%=p.getPid()%>">
+                                        <div class="invisible" id="divProva<%=p.getPid()%>">
+                                            <p id="pProva<%=p.getPid()%>">Già acquistato<br><a onclick="daAcquistareItem(<%=p.getPid()%>)" type="button" class="btn btn-dark" style="color: white;">Annulla</a></p>
+                                        </div>
+                                        <!--end ribbon-->
+                                        <div class="wrapper" id="wrapperProva<%=p.getPid()%>">
+                                    <%}%>
                                             <div class="image">
                                                 <h3>
                                                     <a href="#" class="tag category"><%=p.getCategoria_prodotto()%></a>
@@ -394,13 +472,13 @@
                                             </h4>
                                             <div class="price">$80</div>
                                             <div class="admin-controls">
-                                                <a href="edit-ad.html">
-                                                    <i class="fa fa-pencil"></i>Edit
+                                                <a style="cursor: pointer;" onclick="giaAcquistatoItem(<%=p.getPid()%>)">
+                                                    <i class="fas fa-shopping-cart"></i>Acquistato
                                                 </a>
                                                 <a href="#" class="ad-hide">
                                                     <i class="fa fa-eye-slash"></i>Hide
                                                 </a>
-                                                <a href="/Lists/removeProduct?prodotto=<%=p.getPid()%>" class="ad-remove">
+                                                <a onclick="removeItem('<%=p.getPid()%>');" style="cursor: pointer;" class="ad-remove">
                                                     <i class="fa fa-trash"></i>Remove
                                                 </a>
                                             </div>
@@ -450,7 +528,7 @@
                                                     <td>
                                                         <c:choose>
                                                             <c:when test="${(ruolo eq 'creator')}">
-                                                                <div class="btn-group dropleft">
+                                                                <div class="btn-group dropleft" style="width: max-content;">
                                                                     <a class="dropdown-toggle" style="background-color: red; padding: 4px; border-radius: 10%; color: white;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                         <%=shareUserRole%>
                                                                     </a>
@@ -477,7 +555,7 @@
                                             </tbody>
                                         </table>
                                         <c:if test="${user.email == shoplist.creator}">
-                                            <button type="button" class="btn btn-dark btn-block" data-toggle="modal" data-target="#DeleteShareListModal" <c:if test="${empty shoplist.sharedUsers}">disabled</c:if>>Delete Shared Users</button>
+                                            <button style="width: max-content;" type="button" class="btn btn-dark btn-block" data-toggle="modal" data-target="#DeleteShareListModal" <c:if test="${empty shoplist.sharedUsers}">disabled</c:if>>Delete Shared Users</button>
                                         </c:if>
                                     </div>
                                 </div>
@@ -795,6 +873,64 @@
                 });
             </script>
             
+        <script>
+        var tipo;
+        function giaAcquistatoItem(id) {
+            tipo = "acquistato";
+            $.ajax({
+                type: "GET",
+                url: "/Lists/signProductAsBuyed?id="+id+"&tipo="+tipo,
+                async: false,
+                success: function () {
+                    $('#item'+id).addClass('itemAcquistato');
+                    $('#pProva'+id).addClass('pAcquistato');
+                    $('#wrapperProva'+id).addClass('wrapperProva');
+                    $('#divProva'+id).removeClass('invisible');
+                    $('#divProva'+id).addClass('overlayAcquistato');
+                },
+                error: function () {
+                   alert("Errore");
+               }
+            });
+        }
+        
+        function daAcquistareItem(id) {
+            tipo = "daAcquistare";
+            $.ajax({
+                type: "GET",
+                url: "/Lists/signProductAsBuyed?id="+id+"&tipo="+tipo,
+                async: false,
+                success: function () {
+                    $('#item'+id).removeClass('itemAcquistato');
+                    $('#pProva'+id).removeClass('pAcquistato');
+                    $('#wrapperProva'+id).removeClass('wrapperProva');
+                    $('#divProva'+id).addClass('invisible');
+                    $('#divProva'+id).removeClass('overlayAcquistato');
+                },
+                error: function () {
+                   alert("Errore");
+               }
+            });
+        }
+        </script>
+        
+         <script>
+        function removeItem(id) {
+            $.ajax({
+                type: "GET",
+                url: "/Lists/removeProduct?prodotto="+id,
+                async: false,
+                success: function () {
+                    $('#item'+id).addClass('invisible');
+                },
+                error: function () {
+                   alert("Errore");
+               }
+            });
+        }
+        </script>
+        
+        
         <script>
                             // Note: This example requires that you consent to location sharing when
                             // prompted by your browser. If you see the error "The Geolocation service
