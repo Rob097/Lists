@@ -158,6 +158,44 @@
 
         </style>
 
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            #myInput {
+                background-image: url('/css/searchicon.png');
+                background-position: 10px 12px;
+                background-repeat: no-repeat;
+                width: 100%;
+                font-size: 16px;
+                padding: 12px 20px 12px 40px;
+                border: 1px solid #ddd;
+                margin-bottom: 12px;
+            }
+
+            #myUL {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            #myUL li a {
+                border: 1px solid #ddd;
+                margin-top: -1px; /* Prevent double borders */
+                background-color: #f6f6f6;
+                padding: 12px;
+                text-decoration: none;
+                font-size: 18px;
+                color: black;
+                display: block
+            }
+
+            #myUL li a:hover:not(.header) {
+                background-color: #eee;
+            }
+        </style>
+
     </head>
     <body>        
 
@@ -287,8 +325,8 @@
                                     <a href="/Lists/Pages/ShowProducts.jsp?cat=all" class="list-group-item">All</a>
                                     <%  String prod = "";
 
-                                         for (String sprd : allCategories) {
-                                             System.out.println("sprd: " + sprd);%>
+                                        for (String sprd : allCategories) {
+                                            System.out.println("sprd: " + sprd);%>
                                     <a href="/Lists/Pages/ShowProducts.jsp?cat=<%=sprd%>" class="list-group-item"><%=sprd%></a>
                                     <%}%>
                                 </div>
@@ -300,14 +338,8 @@
 
                                 <!--============ Section Title===================================================================-->
                                 <div class="section-title clearfix">
-                                    <div class="float-left float-xs-none">
-                                        <label class="mr-3 align-text-bottom">Ordina: </label>
-                                        <select name="sorting" id="sorting" class="small width-200px" data-placeholder="Default Sorting" >
-                                            <option value="">Ultime aggiunte</option>
-                                            <option value="1">Prime aggiunte</option>
-                                            <option value="2">Costo piu basso</option>
-                                            <option value="3">Costo più alto</option>
-                                        </select>
+                                    <div class="float-left float-xs-none" style="width: 89%;">
+                                        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name of product">
 
                                     </div>
                                     <div class="float-right d-xs-none thumbnail-toggle">
@@ -390,7 +422,7 @@
                                         </div>
                                     </div>
                                     <%}
-                                                }%>
+                                        }%>
 
                                 </div>
                                 <!--end items-->
@@ -441,8 +473,8 @@
                             <li><a class="btn btn-primary" href="/Lists/AddProductToList?shopListName=<%=nomeLista%>"><%=nomeLista%></a></li>
                         </ul>
                         <%}
-                            } else if (s.getAttribute("guestList") != null) {
-                                ShopList Glist = (ShopList) s.getAttribute("guestList");%>
+                        } else if (s.getAttribute("guestList") != null) {
+                            ShopList Glist = (ShopList) s.getAttribute("guestList");%>
                         <ul id="myUL">
                             <li><a href="/Lists/AddProductToList?shopListName=<%=Glist.getNome()%>"></a><%=Glist.getNome()%></li> 
                         </ul> 
@@ -555,6 +587,29 @@
                             alert("Errore");
                         }
                     });
+                }
+            </script>
+
+            <script>
+                function myFunction() {
+                    var input, filter, items, li, a, i;
+                    input = document.getElementById("myInput");
+                    filter = input.value.toUpperCase();
+                    items = document.getElementsByClassName("item");
+                    console.log(items);
+                    
+                    var title = "";
+                    var i;
+                    for (i = 0; i<items.length;i++) {
+                        console.log(items[i]);
+                        console.log("inside cicle ");
+                        title = items[i].getElementsByClassName("title");
+                        if(title[0].innerHTML.toUpperCase().indexOf(filter)>-1){
+                            items[i].style.display = "";
+                        }else{
+                            items[i].style.display = "none";
+                        }
+                    }
                 }
             </script>
     </body>
