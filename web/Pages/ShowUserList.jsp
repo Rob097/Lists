@@ -310,16 +310,16 @@
                                         <c:when test="${(ruolo eq 'creator')}">
                                             <div class="row">
                                                 <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6">
-                                                    <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
+                                                    <a href="AddProductToListPage.jsp" style="font-size: 2.5rem; width: -webkit-fill-available;"><i class="fas fa-plus"> <br>Add products</i></a> 
                                                 </div>
                                                 <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6">
-                                                    <a href="ThirdChatroom.jsp"><i class="fas fa-users"><br>ChatRoom</i></a> 
+                                                    <a href="ThirdChatroom.jsp" style="font-size: 2.5rem; width: -webkit-fill-available;"><i class="fas fa-users"><br>ChatRoom</i></a> 
                                                 </div>
                                                 <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6">
-                                                    <a style="cursor: pointer;" data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Share</i></a>
+                                                    <a style="cursor: pointer; font-size: 2.5rem; width: -webkit-fill-available;" data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Share</i></a>
                                                 </div>
                                                 <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6">
-                                                    <a style="cursor: pointer;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Delete</i></a>
+                                                    <a style="cursor: pointer; font-size: 2.5rem; width: -webkit-fill-available;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Delete</i></a>
                                                 </div>
                                             </div>
                                         </c:when>
