@@ -13,6 +13,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -251,5 +253,37 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of users", ex);
         }
+    }
+
+    @Override
+    public ArrayList<Product> getByRange(int number, HttpServletRequest request) throws DAOException {
+        
+        HttpSession session = request.getSession();
+        ArrayList<Product> products = new ArrayList<>();
+        final int RANGE = 10;
+        int variabile = 0;
+        for(int i = number; i <= number+RANGE+variabile; i++){
+            try (PreparedStatement stm = CON.prepareStatement("select * from Product where PID = ?")) {
+                stm.setInt(1, i);
+                try (ResultSet rs = stm.executeQuery()) {
+                    while (rs.next()) {
+                        Product p = new Product();
+                        p.setPid(rs.getInt("PID"));
+                        p.setNome(rs.getString("nome"));
+                        p.setNote(rs.getString("note"));
+                        p.setCategoria_prodotto(rs.getString("categoria_prod"));
+                        p.setImmagine(rs.getString("immagine"));
+                        products.add(p);
+                    }
+                }catch(Exception ex){
+                    variabile++;
+                }
+            } catch (SQLException ex) {
+                throw new DAOException("Impossible number product", ex);
+            }
+        }
+        session.setAttribute("number", number+RANGE);
+        variabile = 0;
+        return products;
     }
 }

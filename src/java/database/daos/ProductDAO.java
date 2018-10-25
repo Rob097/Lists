@@ -9,6 +9,7 @@ import database.entities.Product;
 import database.entities.User;
 import database.exceptions.DAOException;
 import java.util.ArrayList;
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 public interface ProductDAO {
     public ArrayList<Product> getByID(Integer id) throws DAOException;
     public ArrayList<Product> getByCategory(String category) throws DAOException;
+    public ArrayList<Product> getByRange(int number, HttpServletRequest request) throws DAOException;
     public ArrayList<Product> getAllProducts() throws DAOException;
     public ArrayList<Product> getGuestsProducts(String email) throws DAOException;
     public ArrayList<String> getAllProductCategories() throws DAOException;

@@ -57,6 +57,8 @@
     if (find) {
         allListsOfUser = listdao.getAllListsByCurentUser(u.getEmail());
     }
+    
+    session.setAttribute("number", 15);
 
 
 %>
@@ -365,10 +367,10 @@
                                     <%}
                                         }
                                     } else if (request.getParameter("cat") == null || request.getParameter("cat").equals("all")) {
-                                        for (Product p : li) {%>
-
-
-
+                                        int count = 5; 
+                                        for (Product p : li) {
+                                            if(count <= 15){
+                                    %>
                                     <div class="item">
                                         <!--end ribbon-->
                                         <div class="wrapper">
@@ -376,31 +378,36 @@
                                                 <h3>
                                                     <a href="#" class="tag category"><%=p.getCategoria_prodotto()%></a>
                                                     <a href="single-listing-1.html" class="title"><%=p.getNome()%></a>
-
+                                                    <span class="tag">Offer</span>
                                                 </h3>
-                                                <a href="single-listing-1.html" class="image-wrapper background-image">
+                                                <a href="single-listing-1.html" class="image-wrapper background-image" style="background-image: url('../<%=p.getImmagine()%>')">
+                                                    <%System.out.println("IMAGINEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE: " + p.getImmagine());%>
                                                     <img src="../<%=p.getImmagine()%>" alt="">
                                                 </a>
                                             </div>
                                             <!--end image-->
 
-                                            <div class="price">$80</div>
+                                            <div class="price"><%=p.getPid()%></div>
 
                                             <!--end admin-controls-->
                                             <div class="description">
                                                 <p><%=p.getNote()%></p>
                                             </div>
                                             <!--end description-->
-                                            <%if(listdao.chckIfProductIsInTheList(p.getPid(), shoplistName) == false){%>
-                                                <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
-                                            <%}else{%> 
-                                                <a class="detail"><img src="img/correct.png" id="addIco"></a>
-                                            <%}%>
+                                            <%if (listdao.chckIfProductIsInTheList(p.getPid(), shoplistName) == false) {%>
+                                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
+                                            <%} else {%> 
+                                            <a class="detail"><img src="img/correct.png" id="addIco"></a>
+                                                <%}%>
                                             <a class="detail"><img src="img/correct.png" id="addIco<%=p.getPid()%>" class="dispNone"></a>
                                         </div>
                                     </div>
-                                    <%}
-                                        }%>
+                                    <%}count++;}%>
+                                    <div id="content-wrapper">
+                                        
+                                    </div>
+                                    <button class="btn btn-primary text-center" onclick="showProduct();">Mostra più prodotti</button>
+                                        <%}%>
 
                                 </div>
                                 <!--end items-->
@@ -468,6 +475,24 @@
                }
             });
         }
+        </script>
+        
+        <script>
+            
+            function showProduct() {
+                $.ajax({
+                type: "POST",
+                url: "/Lists/Pages/elements.jsp",
+                
+                cache: false,
+                success: function (response) {
+                    $("#content-wrapper").html($("#content-wrapper").html() + response);
+                },
+                error: function () {
+                   alert("Errore");
+               }
+            });
+            }
         </script>
 
     </body>

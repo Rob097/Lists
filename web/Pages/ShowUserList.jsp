@@ -387,48 +387,18 @@
                                 
                                 <!--============ Section Title===================================================================-->
                                 <div class="section-title clearfix">
-                                    <%if (li != null && !li.isEmpty()) {//Controllo se la lista non è null e non è vuota%>
+                                    <%if (li != null && !li.isEmpty()) {%>
                                     <form class="float-left" method="POST" action="/Lists/removeALLProducts">
-                                        <input type="submit" class="btn btn-primary" value="Svuota la lista">
+                                        <input style="margin-left: 10px; margin-bottom: 10px;" type="submit" class="btn btn-primary" value="Svuota la lista">
                                     </form>
-                                    <%}%>
-                                    <%if (li != null && !li.isEmpty()) {
-                                        //se c''è aìalmeno un prodotto acquistato e almeno uno da acquistare faccio comparire entrambi i tasti e se tutti i prodotti sono da acquisttare faccio comparire solo il tasto per finire la spesa.
-                                        boolean check = false;
-                                        boolean last = false;
-                                        int size = 0;
-                                        for (Product pt : li) {
-                                            if (listdao.checkBuyed(pt.getPid(), shoplistName) == true) {
-                                                check = true;
-                                                size++;
-                                                if (li.size() == size) {
-                                                    last = true;
-                                                } else {
-                                                    last = false;
-                                                }
-
-                                            }
-                                        }%>
-
-                                    <%if (check) {
-                                            if (last) {String prova = "daAcquistare"; System.out.println("################################################################################################################################################stampa provaaaaa: " + prova );
-                                    %>
-                                    <form class="float-left" method="GET" action="/Lists/statusALLProducts?tipo=<%=prova%>" id="justRestart">
-                                        <input type="submit" class="btn btn-dark" style="margin-left: 10px;" value="Ricomincia spesa">
+                                    <form class="float-left" method="POST" action="/Lists/statusALLProducts" id="justRestart">
+                                        <input type="submit" class="btn btn-dark" style="margin-left: 10px; margin-bottom: 10px;" value="Ricomincia spesa">
+                                        <input type="hidden" value="daAcquistare" name="tipo">
                                     </form>
-                                    <%} else {%>
-                                    <form class="float-left" method="GET" action="/Lists/statusALLProducts?tipo=daAcquistare" id="Restart">
-                                        <input type="submit" class="btn btn-dark" style="margin-left: 10px;" value="Ricomincia spesa">
-                                    </form>
-                                    <form class="float-left" method="GET" action="/Lists/statusALLProducts?tipo=acquistato" id="Finish">
+                                    <form class="float-left" method="POST" action="/Lists/statusALLProducts" id="Finish">
                                         <input type="submit" class="btn btn-dark" style="margin-left: 10px;" value="Spesa finita">
+                                        <input type="hidden" value="acquistato" name="tipo">
                                     </form>
-                                    <%}
-                                    } else {%>
-                                    <form class="float-left" method="GET" action="/Lists/statusALLProducts?tipo=acquistato" id="justFinish">
-                                        <input type="submit" class="btn btn-dark" style="margin-left: 10px;" value="Spesa finita">
-                                    </form>
-                                    <%}%>
                                     <%}%>
                                     <div class="float-right d-xs-none thumbnail-toggle">
                                         <a href="#" class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
@@ -505,11 +475,13 @@
                             <%if (find) {%>
                             <div class = "col-md-3">
                                 <div class="panel-body">
-                                    <div class="table-container">  
-                                        <c:if test="${user.email == shoplist.creator}">
-                                            <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#ShareListModal" <c:if test="${empty Users}">disabled</c:if>>Share List</button>
-                                        </c:if>                                        
+                                    <div class="table-container" style="width: -webkit-fill-available; min-width: fit-content;">                                        
                                         <table class="table-users table" border="0">
+                                            <thead>
+                                                <c:if test="${user.email == shoplist.creator}">
+                                                    <button style="width: -webkit-fill-available;" type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#ShareListModal" <c:if test="${empty Users}">disabled</c:if>>Share List</button>
+                                                </c:if> 
+                                            </thead>
                                             <tbody>
                                                 <%for (User usersoflist : AllUsersOfCurentList) {
                                                     shareUserRole = listdao.checkRole(usersoflist.getEmail(), shoplistName);
@@ -528,8 +500,8 @@
                                                     <td>
                                                         <c:choose>
                                                             <c:when test="${(ruolo eq 'creator')}">
-                                                                <div class="btn-group dropleft" style="width: max-content;">
-                                                                    <a class="dropdown-toggle" style="background-color: red; padding: 4px; border-radius: 10%; color: white;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <div class="btn-group dropleft" style="width: -webkit-fill-available;">
+                                                                    <a class="dropdown-toggle" style="background-color: red; padding: 4px; border-radius: 10%; color: white; width: -webkit-fill-available; text-align: center; min-width: max-content;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                         <%=shareUserRole%>
                                                                     </a>
                                                                     <div class="dropdown-menu">
@@ -554,9 +526,9 @@
                                                 <%}%>
                                             </tbody>
                                         </table>
-                                        <c:if test="${user.email == shoplist.creator}">
-                                            <button style="width: max-content;" type="button" class="btn btn-dark btn-block" data-toggle="modal" data-target="#DeleteShareListModal" <c:if test="${empty shoplist.sharedUsers}">disabled</c:if>>Delete Shared Users</button>
-                                        </c:if>
+                                            <c:if test="${user.email == shoplist.creator}">
+                                                <button style="width: -webkit-fill-available;" type="button" class="btn btn-dark btn-block" data-toggle="modal" data-target="#DeleteShareListModal" <c:if test="${empty shoplist.sharedUsers}">disabled</c:if>>Delete Shared Users</button>
+                                            </c:if>
                                     </div>
                                 </div>
                             </div>

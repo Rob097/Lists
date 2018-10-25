@@ -330,9 +330,12 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed email or listname is null"));
         }
 
-        try (PreparedStatement stm = CON.prepareStatement("INSERT INTO List_Prod VALUES (?,?,'2008-7-04','2008-7-04','daAcquistare')")) {
+        java.sql.Timestamp date = new java.sql.Timestamp(new java.util.Date().getTime());
+        
+        try (PreparedStatement stm = CON.prepareStatement("INSERT INTO List_Prod VALUES (?,?,'2008-7-04',?,'daAcquistare', null, null)")) {
             stm.setString(1, lista);
             stm.setInt(2, prodotto);
+            stm.setTimestamp(3, date);
 
             if (stm.executeUpdate() == 1) {
                 System.out.println("successful operation");
@@ -619,7 +622,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
     @Override
     public void changeStatusOfAllProduct(String tipo, String lista) throws DAOException {
         ArrayList<Product> p = getAllProductsOfShopList(lista);
-        System.out.println("TIPOOOOOOO: " + tipo);
+        
         int id;
         for(Product pp : p){
             id = pp.getPid();

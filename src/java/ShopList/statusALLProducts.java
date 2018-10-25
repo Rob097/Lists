@@ -38,9 +38,9 @@ public class statusALLProducts extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("\nchange status\n");
+        
         HttpSession session = request.getSession();
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
@@ -49,10 +49,9 @@ public class statusALLProducts extends HttpServlet {
         //assegna a userdao la connessione(costruttore) e salva la connessione in una variabile tipo Connection
         ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
         NotificationDAO notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
-        String tipo = (String) request.getAttribute("tipo");
+        String tipo = (String) request.getParameter("tipo");
         
         try {
-            System.out.println("TIPOOOOOOO SERVLEEET: " + tipo);
             listdao.changeStatusOfAllProduct(tipo, (String) session.getAttribute("shopListName"));
             //utenti con cui la lista è condivisa
             ArrayList<User> utenti = new ArrayList();

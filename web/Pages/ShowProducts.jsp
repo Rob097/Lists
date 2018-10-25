@@ -54,6 +54,7 @@
         allListsOfUser = listdao.getAllListsByCurentUser(u.getEmail());
         find = true;
     }
+    session.setAttribute("number", 15);
 %>
 
 <!DOCTYPE html>
@@ -392,9 +393,10 @@
                                     </div>
                                     <%          }
                                         }
-                                    } else if (cat == null || cat.equals("all")) {
+                                    } else if (request.getParameter("cat") == null || request.getParameter("cat").equals("all")) {
+                                        int count = 5; 
                                         for (Product p : li) {
-                                            PID = p.getPid();
+                                            if(count <= 15){
                                     %>
                                     <div class="item">
                                         <!--end ribbon-->
@@ -403,15 +405,16 @@
                                                 <h3>
                                                     <a href="#" class="tag category"><%=p.getCategoria_prodotto()%></a>
                                                     <a href="single-listing-1.html" class="title"><%=p.getNome()%></a>
-
+                                                    <span class="tag">Offer</span>
                                                 </h3>
-                                                <a href="single-listing-1.html" class="image-wrapper background-image">
+                                                <a href="single-listing-1.html" class="image-wrapper background-image" style="background-image: url('../<%=p.getImmagine()%>')">
+                                                    <%System.out.println("IMAGINEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE: " + p.getImmagine());%>
                                                     <img src="../<%=p.getImmagine()%>" alt="">
                                                 </a>
                                             </div>
                                             <!--end image-->
 
-                                            <div class="price">$<%=PID%></div>
+                                            <div class="price"><%=p.getPid()%></div>
 
                                             <!--end admin-controls-->
                                             <div class="description">
@@ -419,10 +422,19 @@
                                             </div>
                                             <!--end description-->
                                             <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Aggiungi ad una lista</a>
+                                            <!--<form class="ListModal detail text-caps underline" action="/Lists/setPID" method="post" role="form" id="ListModal" >
+                                                <input type="submit" class="btn btn-primary" value="Add to your list">
+                                                <input name="PID" type="hidden" value="<%=PID%>">
+                                            </form>-->
+
                                         </div>
                                     </div>
-                                    <%}
-                                        }%>
+                                    <%}count++;}%>
+                                    <div id="content-wrapper">
+                                        
+                                    </div>
+                                    <button class="btn btn-primary text-center" onclick="showProduct();">Mostra più prodotti</button>
+                                        <%}%>
 
                                 </div>
                                 <!--end items-->
@@ -612,5 +624,23 @@
                     }
                 }
             </script>
+            
+            <script>
+            
+            function showProduct() {
+                $.ajax({
+                type: "POST",
+                url: "/Lists/Pages/elements.jsp",
+                
+                cache: false,
+                success: function (response) {
+                    $("#content-wrapper").html($("#content-wrapper").html() + response);
+                },
+                error: function () {
+                   alert("Errore");
+               }
+            });
+            }
+        </script>
     </body>
 </html>
