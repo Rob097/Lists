@@ -6,6 +6,7 @@
 package database.jdbc;
 
 import database.daos.ListDAO;
+import database.entities.ListProd;
 import database.entities.Product;
 import database.entities.ShopList;
 import database.entities.User;
@@ -631,6 +632,53 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                 Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
                 System.out.println("errore update product status");
             }
+        }
+    }
+    
+    
+    /**questo metodo prende in input una lista della spesa e restituisce
+     * LsitProd: cioè i prodotto acquistati e non acquistati
+     * successivamente sarà elaborato un metodo che distingue tra i prodotti acquistati e non
+     * 
+     * lista
+     * prodotto
+     * data_scadenza
+     * data_inserimento
+     * stato
+     * data_acquisto
+     * quantita
+     * 
+     * il metodo è stato creato per verificare le preferenze di un cliente per una certa lista
+     * e con quale frequenza compra un certo prodotto
+     * 
+     * @param listaname
+     * @return
+     * @throws DAOException 
+     */
+    @Override
+    public ArrayList<ListProd> getProdList(String listaname) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM List_Prod WHERE lista = ?")) {
+            ArrayList<ListProd> listProdlink = new ArrayList<ListProd>();
+
+            stm.setString(1, listaname);
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    ListProd link = new ListProd();
+                    link.setLista(rs.getString("lista"));
+                    link.setProdotto(rs.getString("prodotto"));
+                    link.setData_scadenza(rs.getDate("data_Scadenza"));
+                    link.setData_inserimento(rs.getDate("data_inserimento"));
+                    link.setStato(rs.getString("stato"));
+                    link.setDataAcquisto(rs.getDate("data_acquisto"));
+                    link.setQuantita(rs.getString("quantita"));
+
+                    listProdlink.add(link);
+                }
+
+                return listProdlink;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of users", ex);
         }
     }
 

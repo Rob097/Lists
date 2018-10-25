@@ -5,6 +5,7 @@
  */
 package database.daos;
 
+import database.entities.ListProd;
 import database.entities.Product;
 import database.entities.ShopList;
 import database.entities.User;
@@ -44,4 +45,5 @@ public interface ListDAO {
     public void signProductAsBuyed(int id, String tipo, String lista) throws DAOException;
     public void changeStatusOfAllProduct(String tipo, String lista) throws DAOException;
     public boolean checkBuyed(int id, String lista) throws DAOException;
+    public ArrayList<ListProd> getProdList(String listaname) throws DAOException;
 }
