@@ -217,23 +217,18 @@
                     <!--============ End Page Title =====================================================================-->
                     <div class="container text-center" id="welcomeGrid">
                         <div class="row">
-                            <div class="col-md-2">
-                                
+                            <div class="col-md-4">
+                                <a href="/Lists/userlists.jsp" class="text-caps" style="font-size: 15px; font-weight: bold; font-style: italic;">Le mie liste</a>
                             </div>
-                            <div class="col-md-3">
-                                <a href="/Lists/userlists.jsp" class="text-caps" style="padding: 0em 4em !important; font-size: 15px;"><b><i>Le mie liste</i></b></a>
-                            </div>
-                            <div class="col-md-2">
+                            <div class="col-md-4">
                                 <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" style="color: white;">Crea una nuova Lista</a>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                     <%if (find) {%>
-                                <a href="/Lists/foreignLists.jsp" class="text-caps" style="padding: 0em 4em !important; font-size: 15px;"><b><i>Liste condivise</i></b></a>
+                                <a href="/Lists/foreignLists.jsp" class="text-caps" style="font-size: 15px; font-weight: bold; font-style: italic;">Liste condivise</a>
                                     <%} else {%>
-                                <a class="text-caps disabled" style="padding: 0em 3em !important; font-size: 15px;" data-toggle="tooltip" title="Registrati o fai il login per usare questa funzione"><b><i>Liste condivise</i></b></a>
+                                <a class="text-caps disabled" style="font-size: 15px; font-weight: bold; font-style: italic;" data-toggle="tooltip" title="Registrati o fai il login per usare questa funzione">Liste condivise</a>
                                     <%}%>
-                            </div>  
-                            <div class="col-md-2">                                
                             </div>
                            
                         </div>
@@ -419,7 +414,11 @@
                 <!--============ products =============================================================================-->
                 <section class="block">
                     <div class="container">
-                        <h2>Categorie di Prodotti</h2>
+                        <div class="hero" style="background-color: #f2f2f2;">
+                            <div class="page-title">
+                                <h2>Categorie di <a href="/Lists/Pages/ShowProducts.jsp" data-toggle="tooltip" title="Tutti i prodotti">Prodotti</a></h2>
+                            </div>
+                        </div>
 
                         <ul class="categories-list clearfix">
                             <%for (Category_Product p : cP) {%>

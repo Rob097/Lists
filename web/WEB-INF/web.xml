@@ -122,6 +122,10 @@
         <servlet-name>suggestions</servlet-name>
         <servlet-class>ShopList.suggestions</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProductNumbers</servlet-name>
+        <servlet-class>Products.ProductNumbers</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -217,6 +221,10 @@
     <servlet-mapping>
         <servlet-name>suggestions</servlet-name>
         <url-pattern>/suggestions</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductNumbers</servlet-name>
+        <url-pattern>/ProductNumbers</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

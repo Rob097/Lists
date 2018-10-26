@@ -42,6 +42,10 @@
     ArrayList<String> allCategories = productdao.getAllProductCategories();
     ArrayList<String> allListsOfUser = new ArrayList();
 
+    for(Product q : li){
+        s.setAttribute(q.getNome(), null);
+    }
+    
     int PID = 0;
     String cat = null;
     if (request.getParameter("cat") != null) {
@@ -341,7 +345,7 @@
                                 <div class="section-title clearfix">
                                     <div class="float-left float-xs-none" style="width: 89%;">
                                         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name of product">
-
+                                        <label style="display: none;" id="loadProducts">Carico i prodotti...</label>
                                     </div>
                                     <div class="float-right d-xs-none thumbnail-toggle">
                                         <a href="#" class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
@@ -612,14 +616,32 @@
                     
                     var title = "";
                     var i;
+                    $.ajax({
+                                type: "POST",
+                                url: "/Lists/Pages/nameContain.jsp?s="+filter,
+                                
+                                cache: false,
+                                success: function (response) {
+                                    $("#content-wrapper").html($("#content-wrapper").html() + response);
+                                },
+                                error: function () {
+                                   alert("Errore");
+                               }
+                            });
                     for (i = 0; i<items.length;i++) {
                         console.log(items[i]);
                         console.log("inside cicle ");
                         title = items[i].getElementsByClassName("title");
                         if(title[0].innerHTML.toUpperCase().indexOf(filter)>-1){
+                            
+                            items = document.getElementsByClassName("item");
+                            title = items[i].getElementsByClassName("title");
                             items[i].style.display = "";
+                            document.getElementById("loadProducts").style.display = "none";
+                            
                         }else{
                             items[i].style.display = "none";
+                            document.getElementById("loadProducts").style.display = "";
                         }
                     }
                 }

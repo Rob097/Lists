@@ -54,10 +54,15 @@
     ArrayList<Product> li = productdao.getAllProducts();
     ArrayList<String> allCategories = productdao.getAllProductCategories();
     ArrayList<String> allListsOfUser = null;
+
+    for (Product q : li) {
+        s.setAttribute(q.getNome(), null);
+    }
+
     if (find) {
         allListsOfUser = listdao.getAllListsByCurentUser(u.getEmail());
     }
-    
+
     session.setAttribute("number", 15);
 
 
@@ -292,29 +297,23 @@
                         <div class="row">
                             <a href="/Lists/Pages/ShowUserList.jsp" id="backToList" class="btn btn-primary botButton social dispNone">Torna alla lista</a>
                             <!--end col-md-3-->
-                                <div class="col-md-3">
-                                    <div class="list-group">
-                                        <a href="/Lists/Pages/ShowProducts.jsp?cat=all" class="list-group-item">All</a>
-                                         <%  String prod = "";
+                            <div class="col-md-3">
+                                <div class="list-group">
+                                    <a href="/Lists/Pages/ShowProducts.jsp?cat=all" class="list-group-item">All</a>
+                                    <%  String prod = "";
 
-                                            for (String sprd : allCategories) {
-                                                System.out.println("sprd: " + sprd);%>
-                                        <a href="/Lists/Pages/AddProductToListPage.jsp?cat=<%=sprd%>" class="list-group-item"><%=sprd%></a>
-                                        <%}%>
-                                    </div>
+                                             for (String sprd : allCategories) {
+                                                 System.out.println("sprd: " + sprd);%>
+                                    <a href="/Lists/Pages/AddProductToListPage.jsp?cat=<%=sprd%>" class="list-group-item"><%=sprd%></a>
+                                    <%}%>
                                 </div>
-                                <div class="col-md-9">    
+                            </div>
+                            <div class="col-md-9">    
                                 <!--============ Section Title===================================================================-->
                                 <div class="section-title clearfix">
-                                    <div class="float-left float-xs-none">
-                                        <label class="mr-3 align-text-bottom">Ordina: </label>
-                                        <select name="sorting" id="sorting" class="small width-200px" data-placeholder="Default Sorting" >
-                                            <option value="">Ultime aggiunte</option>
-                                            <option value="1">Prime aggiunte</option>
-                                            <option value="2">Costo piu basso</option>
-                                            <option value="3">Costo più alto</option>
-                                        </select>
-
+                                    <div class="float-left float-xs-none" style="width: 89%;">
+                                        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name of product">
+                                        <label style="display: none;" id="loadProducts">Carico i prodotti...</label>
                                     </div>
                                     <div class="float-right d-xs-none thumbnail-toggle">
                                         <a href="#" class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
@@ -356,20 +355,20 @@
                                                 <p><%=p.getNote()%></p>
                                             </div>
                                             <!--end description-->
-                                            <%if(listdao.chckIfProductIsInTheList(p.getPid(), shoplistName)){%>
-                                                <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
-                                            <%}else{%> 
-                                                <a class="detail"><img src="img/correct.png" id="addIco"></a>
-                                            <%}%>
+                                            <%if (listdao.chckIfProductIsInTheList(p.getPid(), shoplistName)) {%>
+                                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
+                                            <%} else {%> 
+                                            <a class="detail"><img src="img/correct.png" id="addIco"></a>
+                                                <%}%>
                                             <a class="detail"><img src="img/correct.png" id="addIco<%=p.getPid()%>" class="dispNone"></a>
                                         </div>
                                     </div>
                                     <%}
                                         }
                                     } else if (request.getParameter("cat") == null || request.getParameter("cat").equals("all")) {
-                                        int count = 5; 
+                                        int count = 5;
                                         for (Product p : li) {
-                                            if(count <= 15){
+                                            if (count <= 15) {
                                     %>
                                     <div class="item">
                                         <!--end ribbon-->
@@ -402,12 +401,14 @@
                                             <a class="detail"><img src="img/correct.png" id="addIco<%=p.getPid()%>" class="dispNone"></a>
                                         </div>
                                     </div>
-                                    <%}count++;}%>
+                                    <%}
+                                            count++;
+                                        }%>
                                     <div id="content-wrapper">
-                                        
+
                                     </div>
                                     <button class="btn btn-primary text-center" onclick="showProduct();">Mostra più prodotti</button>
-                                        <%}%>
+                                    <%}%>
 
                                 </div>
                                 <!--end items-->
@@ -460,38 +461,79 @@
         </div>
 
         <script>
-        function addProduct(id) {
-            $.ajax({
-                type: "GET",
-                url: "/Lists/AddProductToList?prodotto=" + id,
-                async: false,
-                success: function () {
-                    $('#addButton' + id).addClass('dispNone');
-                    $('#addIco' + id).removeClass('dispNone');
-                    $('#backToList').removeClass('dispNone');
-                },
-                error: function () {
-                   alert("Errore");
-               }
-            });
-        }
+                                        function addProduct(id) {
+                                            $.ajax({
+                                                type: "GET",
+                                                url: "/Lists/AddProductToList?prodotto=" + id,
+                                                async: false,
+                                                success: function () {
+                                                    $('#addButton' + id).addClass('dispNone');
+                                                    $('#addIco' + id).removeClass('dispNone');
+                                                    $('#backToList').removeClass('dispNone');
+                                                },
+                                                error: function () {
+                                                    alert("Errore");
+                                                }
+                                            });
+                                        }
         </script>
-        
+
         <script>
-            
+            function myFunction() {
+                var input, filter, items, li, a, i;
+                input = document.getElementById("myInput");
+                filter = input.value.toUpperCase();
+                items = document.getElementsByClassName("item");
+                console.log(items);
+
+                var title = "";
+                var i;
+                $.ajax({
+                    type: "POST",
+                    url: "/Lists/Pages/nameContain.jsp?s=" + filter,
+
+                    cache: false,
+                    success: function (response) {
+                        $("#content-wrapper").html($("#content-wrapper").html() + response);
+                    },
+                    error: function () {
+                        alert("Errore");
+                    }
+                });
+                for (i = 0; i < items.length; i++) {
+                    console.log(items[i]);
+                    console.log("inside cicle ");
+                    title = items[i].getElementsByClassName("title");
+                    if (title[0].innerHTML.toUpperCase().indexOf(filter) > -1) {
+
+                        items = document.getElementsByClassName("item");
+                        title = items[i].getElementsByClassName("title");
+                        items[i].style.display = "";
+                        document.getElementById("loadProducts").style.display = "none";
+
+                    } else {
+                        items[i].style.display = "none";
+                        document.getElementById("loadProducts").style.display = "";
+                    }
+                }
+            }
+        </script>
+
+        <script>
+
             function showProduct() {
                 $.ajax({
-                type: "POST",
-                url: "/Lists/Pages/elements.jsp",
-                
-                cache: false,
-                success: function (response) {
-                    $("#content-wrapper").html($("#content-wrapper").html() + response);
-                },
-                error: function () {
-                   alert("Errore");
-               }
-            });
+                    type: "POST",
+                    url: "/Lists/Pages/elements.jsp",
+
+                    cache: false,
+                    success: function (response) {
+                        $("#content-wrapper").html($("#content-wrapper").html() + response);
+                    },
+                    error: function () {
+                        alert("Errore");
+                    }
+                });
             }
         </script>
 

@@ -1,38 +1,37 @@
 <%-- 
-    Document   : elements
-    Created on : 25-ott-2018, 12.18.07
-    Author     : della
+    Document   : nameContain
+    Created on : 26-ott-2018, 19.09.44
+    Author     : Roberto97
 --%>
 
-<%@page import="java.util.logging.Level"%>
-<%@page import="java.util.logging.Logger"%>
-<%@page import="database.exceptions.DAOException"%>
-<%@page import="database.entities.Product"%>
-<%@page import="java.util.ArrayList"%>
 <%@page import="database.daos.ListDAO"%>
 <%@page import="database.jdbc.JDBCShopListDAO"%>
+<%@page import="database.entities.Product"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="database.jdbc.JDBCProductDAO"%>
 <%@page import="database.daos.ProductDAO"%>
 <%@page import="database.factories.DAOFactory"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
+
+<%
+    System.out.println("ELEMENTSSSSSSSSSSSSSSSSSSSSSSSSS");
+        DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
-        System.out.println("INFINITEEEEEEEEEEEE");
+        
         //assegna a userdao la connessione(costruttore) e salva la connessione in una variabile tipo Connection
         ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
         ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
+        String shoplistName = (String) request.getSession().getAttribute("shopListName");
         
-            int number;
-            if(request.getSession().getAttribute("number") == null){number = 5;}
-            else{number = (int) request.getSession().getAttribute("number");}
-            String resp = "";
-            String shoplistName = (String) request.getSession().getAttribute("shopListName");
-            ArrayList<Product> pp; Product p = null;
-            pp = productdao.getByRange(number, request);
-            for (int i = 1; i <= 10; i++) {
-                p= pp.get(i);%>
+            String s = request.getParameter("s");
+            ArrayList<Product> pp = null;
+            if(s == null || s.equals("")){
+                
+            }else{
+                pp = productdao.nameContian(s, request);
+                for(Product p : pp){%>
                 <div class="item">
                     <!--end ribbon-->
                     <div class="wrapper">
@@ -64,4 +63,6 @@
                         <a class="detail"><img src="img/correct.png" id="addIco<%=p.getPid()%>" class="dispNone"></a>
                     </div>
                 </div>
-                <%}%>
+                <%}
+            }%>
+

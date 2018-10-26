@@ -286,4 +286,19 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
         variabile = 0;
         return products;
     }
+
+    @Override
+    public ArrayList<Product> nameContian(String s, HttpServletRequest request) throws DAOException {
+        HttpSession session = request.getSession();
+        ArrayList<Product> a = getAllProducts();
+        ArrayList<Product> b = new ArrayList();
+        boolean check = false;
+        for(Product p : a){
+            if(p.getNome().toLowerCase().contains(s.toLowerCase()) && session.getAttribute(p.getNome()) == null){
+                b.add(p);
+                session.setAttribute(p.getNome(), p.getNome());
+            }
+        }
+        return b;
+    }
 }
