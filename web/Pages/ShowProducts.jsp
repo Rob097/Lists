@@ -396,8 +396,9 @@
                                         </div>
                                     </div>
                                     <%          }
-                                        }
-                                    } else if (request.getParameter("cat") == null || request.getParameter("cat").equals("all")) {
+                                        }%>
+                                        <div id="content-wrapper"></div>
+                                    <%} else if (request.getParameter("cat") == null || request.getParameter("cat").equals("all")) {
                                         int count = 5; 
                                         for (Product p : li) {
                                             if(count <= 15){
@@ -628,7 +629,9 @@
                                    alert("Errore");
                                }
                             });
+                            
                     for (i = 0; i<items.length;i++) {
+                        
                         console.log(items[i]);
                         console.log("inside cicle ");
                         title = items[i].getElementsByClassName("title");
