@@ -246,7 +246,7 @@
                                 <a href="#" class="btn btn-primary text-caps btn-rounded" style="color: white;">product-categories</a>                                
                             </div>
                             <div class="col-md-3">
-                                <a href="#" class="btn btn-primary text-caps btn-rounded" style="color: white;">list-categories</a>
+                                <a href="<%=request.getContextPath()%>/restricted/ShowCategories" class="btn btn-primary text-caps btn-rounded" style="color: white;">list-categories</a>
                             </div>  
                             <div class="col-md-2">                                
                             </div>                             

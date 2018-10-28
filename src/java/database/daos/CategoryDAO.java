@@ -17,4 +17,5 @@ import java.util.ArrayList;
 public interface CategoryDAO {
     public ArrayList<Category> getByNOME(String nome) throws DAOException;
     public ArrayList<Category> getAllCategories() throws DAOException;
+    public void createCategory(Category category) throws DAOException;
 }

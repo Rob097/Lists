@@ -12,6 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 ;
 
 
@@ -72,6 +74,22 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
             throw new DAOException("Impossible to get categories", ex);
         }
     }
+
+    @Override
+    public void createCategory(Category category) throws DAOException {
+       try(PreparedStatement statement = CON.prepareStatement("insert into Category (nome, descrizione, admin, immagine) values (?, ?, ?, ?)")){
+           statement.setString(1, category.getNome());
+           statement.setString(2, category.getDescrizione());
+           statement.setString(3, category.getAdmin());
+           statement.setString(4, category.getImmagine());
+           statement.executeUpdate();
+       } catch (SQLException ex) {
+           System.out.println("insert categoria non effetuato");
+            Logger.getLogger(JDBCCategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }
+    }
+
     
 
     

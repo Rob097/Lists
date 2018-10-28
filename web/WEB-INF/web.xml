@@ -126,6 +126,18 @@
         <servlet-name>ProductNumbers</servlet-name>
         <servlet-class>Products.ProductNumbers</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ShowCategories</servlet-name>
+        <servlet-class>Categories.ShowListCategories</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateListCategory</servlet-name>
+        <servlet-class>Categories.CreateListCategory</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteListCategory</servlet-name>
+        <servlet-class>Categories.DeleteListCategory</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -225,6 +237,18 @@
     <servlet-mapping>
         <servlet-name>ProductNumbers</servlet-name>
         <url-pattern>/ProductNumbers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowCategories</servlet-name>
+        <url-pattern>/restricted/ShowCategories</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateListCategory</servlet-name>
+        <url-pattern>/restricted/CreateListCategory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteListCategory</servlet-name>
+        <url-pattern>/restricted/DeleteListCategory</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
