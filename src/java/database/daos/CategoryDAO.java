@@ -18,4 +18,6 @@ public interface CategoryDAO {
     public ArrayList<Category> getByNOME(String nome) throws DAOException;
     public ArrayList<Category> getAllCategories() throws DAOException;
     public void createCategory(Category category) throws DAOException;
+    public Category getByName(String nome) throws DAOException;
+    public void deleteCategory(Category category) throws DAOException;
 }

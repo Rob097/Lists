@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +29,7 @@ import javax.servlet.http.Part;
  *
  * @author Martin
  */
+@MultipartConfig(maxFileSize = 16177215)
 public class CreateListCategory extends HttpServlet {
 
     CategoryDAO categorydao;
@@ -71,18 +73,12 @@ public class CreateListCategory extends HttpServlet {
         category.setAdmin(user.getEmail());
         
         try {
-            ArrayList<Category> allCategories;
             categorydao.createCategory(category);
-            allCategories = categorydao.getAllCategories();
-            session.setAttribute("allCategories", allCategories);
         } catch (DAOException ex) {
-            System.out.println("categorydao error");
             Logger.getLogger(CreateListCategory.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         response.sendRedirect("/Lists/Pages/ShowListCategories.jsp");
-        
-        
         
     }
 

@@ -260,7 +260,7 @@
                                                     <a class="tag center"><c:out value="${categoria.admin}"/></a>
                                                     <br>
                                                     <br>
-                                                    <a href="<%=request.getContextPath()%>/restricted/DeleteShopList?listname=${categoria.nome}" class="ad-remove">
+                                                    <a href="<%=request.getContextPath()%>/restricted/DeleteListCategory?listname=${categoria.nome}" class="ad-remove">
                                                         <i class="fa fa-trash"></i>Cancella
                                                     </a>
                                                 </div>                                            

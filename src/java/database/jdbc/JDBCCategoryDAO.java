@@ -90,6 +90,51 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
         }
     }
 
+    @Override
+    public Category getByName(String nome) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM Category WHERE nome = ?")) {
+            stm.setString(1, nome.toString());
+            
+            Category categoria = new Category();
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    
+                    categoria.setNome(rs.getString("nome"));
+                    categoria.setDescrizione(rs.getString("descrizione"));
+                    categoria.setAdmin(rs.getString("admin"));
+                    categoria.setImmagine(rs.getString("immagine"));
+                    
+                }
+
+                return categoria;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the category", ex);
+        }
+    }
+
+    @Override
+    public void deleteCategory(Category category) throws DAOException {
+        if (category == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed category is null"));
+        }
+
+        try (PreparedStatement statement = CON.prepareStatement("delete from Category where nome=?")) {
+            statement.setString(1, category.getNome());
+
+            if (statement.execute() == true) {
+                System.out.println("cancellato");
+            } else {
+                throw new DAOException("Impossible to cancellato the User");
+            }
+
+        } catch (SQLException ex) {
+            throw new DAOException(ex);
+
+        }
+
+    }
+
     
 
     

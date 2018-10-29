@@ -13,6 +13,14 @@
         <filter-name>CookieFilter</filter-name>
         <filter-class>filters.CookieFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>ListCategoryFilter</filter-name>
+        <filter-class>filters.ListCategoryFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ListCategoryFilter</filter-name>
+        <url-pattern>/Pages/ShowListCategories.jsp</url-pattern>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
         <url-pattern>/restricted/*</url-pattern>
@@ -127,10 +135,6 @@
         <servlet-class>Products.ProductNumbers</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ShowCategories</servlet-name>
-        <servlet-class>Categories.ShowListCategories</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>CreateListCategory</servlet-name>
         <servlet-class>Categories.CreateListCategory</servlet-class>
     </servlet>
@@ -237,10 +241,6 @@
     <servlet-mapping>
         <servlet-name>ProductNumbers</servlet-name>
         <url-pattern>/ProductNumbers</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ShowCategories</servlet-name>
-        <url-pattern>/restricted/ShowCategories</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CreateListCategory</servlet-name>
