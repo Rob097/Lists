@@ -357,7 +357,7 @@
                                     </div>
                                 </div>
                                 <!--============ Items ==========================================================================-->
-                                <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
+                                <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items" id="content-wrapper">
 
                                     <%  if (cat != null && !cat.equals("all")) {
                                             for (Product p : li) {
@@ -396,9 +396,8 @@
                                         </div>
                                     </div>
                                     <%          }
-                                        }%>
-                                        <div id="content-wrapper"></div>
-                                    <%} else if (request.getParameter("cat") == null || request.getParameter("cat").equals("all")) {
+                                        }
+                                    } else if (request.getParameter("cat") == null || request.getParameter("cat").equals("all")) {
                                         int count = 5; 
                                         for (Product p : li) {
                                             if(count <= 15){
@@ -435,9 +434,6 @@
                                         </div>
                                     </div>
                                     <%}count++;}%>
-                                    <div id="content-wrapper">
-                                        
-                                    </div>
                                     <button class="btn btn-primary text-center" onclick="showProduct();">Mostra più prodotti</button>
                                         <%}%>
 
@@ -623,7 +619,7 @@
                                 
                                 cache: false,
                                 success: function (response) {
-                                    $("#content-wrapper").html($("#content-wrapper").html() + response);
+                                    $("#content-wrapper").html(response);
                                 },
                                 error: function () {
                                    alert("Errore");
