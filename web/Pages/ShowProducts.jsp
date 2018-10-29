@@ -300,9 +300,15 @@
                     <!--============ Page Title =========================================================================-->
                     <div class="page-title">
                         <div class="container">
+                            <%if(request.getParameter("cat") != null && request.getParameter("cat") != "" && !request.getParameter("cat").equals("all")){%>
                             <h1 class="opacity-60 center">
-                                You are looking for all products list
+                                <%=request.getParameter("cat")%>
                             </h1>
+                            <%}else{%>
+                            <h1 class="opacity-60 center">
+                                Tutti i prodotti
+                            </h1>
+                            <%}%>
                         </div>
                         <!--end container-->
                     </div>
@@ -469,6 +475,136 @@
         <script src="js/jquery.validate.min.js"></script>
         <script src="js/custom.js"></script>
         <script src="js/nav.js"></script>
+        
+        <!--#########################################################
+                                MODAL
+        ##########################################################-->
+
+        <!-- Login Modal -->
+        <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+
+                        <div class="page-title">
+                            <div class="container">
+                                <h1>Sign In</h1>
+                            </div>
+                            <!--end container-->
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>            
+
+                    </div>
+                    <div class="modal-body">
+                        <c:if test="${loginResult==false}">
+                            <div class="alert alert-danger">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>Login Failed!</strong> <br> Please try again or <a data-toggle="modal" href="#RegisterModal" class="alert-link"><u>Sign up!</u></a>
+
+                            </div>
+                        </c:if>
+                        <!-- Form per il login -->
+                        <form class="form clearfix" id="login-form" action="/Lists/LoginAction" method="post" role="form">
+                            <div class="form-group">
+                                <label for="email" class="col-form-label required">Email</label>
+                                <input type="text" name="email" id="emaillogin" tabindex="1" class="form-control" placeholder="Email" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="password" class="col-form-label required">Password</label>
+                                <input type="password" name="password" id="passwordlogin" tabindex="2" class="form-control" placeholder="Password" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <div class="form-group text-center">
+                                    <label>
+                                        <input type="checkbox" name="remember" value="1">
+                                        Remember Me
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Sign In</button>
+                            </div>
+
+                        </form>
+                        <hr>
+                        <p>
+                            Troubles with signing? <a href="#RegisterModal" data-toggle="modal" class="link">Click here.</a>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--######################################################-->
+
+        <!-- Register Modal -->
+        <div class="modal fade" id="RegisterModal" tabindex="-1" role="dialog" aria-labelledby="RegisterModal" aria-hidden="true" enctype="multipart/form-data">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1>Register</h1>
+                            </div>
+                            <!--end container-->
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form per il login -->
+                        <form class="form clearfix" id="register-form" action="/Lists/RegisterAction" method="post" enctype="multipart/form-data" onsubmit="return checkCheckBoxes(this);">
+                            <div class="form-group">
+                                <label for="email" class="col-form-label">Email</label>
+                                <input type="email" name="email" id="emailRegister" tabindex="1" class="form-control" placeholder="Email" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="nominativo" class="col-form-label">Nome</label>
+                                <input type="text" name="nominativo" id="nominativoRegister" tabindex="1" class="form-control" placeholder="Nome" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="password" class="col-form-label">Password</label>
+                                <input type="password" name="password" id="passwordRegister" tabindex="2" class="form-control" placeholder="Password" required>
+                            </div>
+
+                            <!--end form-group-->
+
+                            <div class="form-group">
+                                <label for="image" class="col-form-label required">Avatar</label>
+                                <input type="file" name="file1" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <div class="form-group text-center">
+                                    <input type="checkbox" tabindex="3" class="" name="standard" id="standard">
+                                    <label for="standard">Standard</label>
+                                    <input type="checkbox" tabindex="3" class="" name="amministratore" id="amministratore">
+                                    <label for="amministratore">Amministratore</label>
+                                </div>
+                                <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Register Now</button>
+                            </div>
+                        </form>
+                        <hr>
+                        <p>
+                            By clicking "Register Now" button, you agree with our <a href="#" class="link">Terms & Conditions.</a>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--######################################################-->
 
         <div class="modal fade" id="myModal" role="dialog">
             <div class="modal-dialog">

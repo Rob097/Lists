@@ -362,11 +362,6 @@
                                 </div>
                             <%}
                         }%>
-                        <%if(checkNotification == 0){%>
-                            <div class="alert alert-info text-center" role="alert">
-                                <strong>Non</strong> hai nuove notifiche <%=u.getNominativo()%></a>.
-                            </div>
-                        <%}%>
                         <%if(!nRole.isEmpty()){
                             if(nRole.size() == 1){
                         %>
@@ -397,12 +392,6 @@
                             </div>
                         <%}%>
                     </div>
-                <%}else{%>
-                <div class="container pt-5" id="alert">
-                    <div class="alert alert-info text-center" role="alert">
-                        <strong>Non</strong> hai nuove notifiche <%=u.getNominativo()%></a>.
-                    </div>
-                </div>
                 <%}
             }%>
             <!-- FINE DELLE NOTIFICHE -->
@@ -511,20 +500,8 @@
                 <section class="block">
                     <div class="container">
                         <div class="d-flex align-items-center justify-content-around">
-                            <a href="#">
-                                <img src="Pages/img/partner-1.png" alt="">
-                            </a>
-                            <a href="#">
-                                <img src="Pages/img/partner-2.png" alt="">
-                            </a>
-                            <a href="#">
-                                <img src="Pages/img/partner-3.png" alt="">
-                            </a>
-                            <a href="#">
-                                <img src="Pages/img/partner-4.png" alt="">
-                            </a>
-                            <a href="#">
-                                <img src="Pages/img/partner-5.png" alt="">
+                            <a href="#" style="font-weight: bold; font-style: italic; color: #f00;">
+                                <h1 style="font-size: 6rem;">LISTS</h1>
                             </a>
                         </div>
                     </div>
