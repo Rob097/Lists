@@ -3,12 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ShopList;
+package Products;
 
 import database.daos.ListDAO;
 import database.daos.ProductDAO;
 import database.entities.Product;
-import database.entities.ShopList;
 import database.entities.User;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCProductDAO;
@@ -16,7 +15,6 @@ import database.jdbc.JDBCShopListDAO;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.regex.Pattern;
@@ -62,8 +60,7 @@ public class AddNewProductToDataBase extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("=============================SERVLET ADD NEW PRODUCT===================");
-        HttpSession s = request.getSession();
+        HttpSession s =(HttpSession) request.getSession();
         Product nuovoProdotto = new Product();
 
         int pid = 0;
@@ -86,10 +83,6 @@ public class AddNewProductToDataBase extends HttpServlet {
             System.out.println("ERRROREEEEE CATCH");
         }
 
-        System.out.println(nome);
-        System.out.println(note);
-        System.out.println(categoria_prodotto);
-
         if (s.getAttribute("user") != null) {
             User temp = (User) s.getAttribute("user");
             creator = temp.getEmail();
@@ -108,8 +101,6 @@ public class AddNewProductToDataBase extends HttpServlet {
 
             String extension = Paths.get(filePart1.getSubmittedFileName()).getFileName().toString().split(Pattern.quote("."))[1];;
             String nomeIMG = Integer.toString(pid);
-            
-            System.out.println("NOME DELLIMMAGINE PRODOTTO: " + nomeIMG);
 
             filename1 = nomeIMG + "." + extension;
             filename1 = filename1.replaceAll("\\s+", "");
@@ -135,7 +126,7 @@ public class AddNewProductToDataBase extends HttpServlet {
             System.out.println("EEEEEEEERRRRRRRROOEEEEEEEEEEEEEEEE");
         }
 
-        response.sendRedirect("/Lists/Pages/AdminPages/AdminProducts.jsp");
+        response.sendRedirect(request.getContextPath() + "/Pages/ShowProducts.jsp");
 
     }
 

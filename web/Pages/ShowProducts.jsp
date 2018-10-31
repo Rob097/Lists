@@ -4,6 +4,9 @@
     Author     : Roberto97
 --%>
 
+<%@page import="database.jdbc.JDBCCategory_ProductDAO"%>
+<%@page import="database.daos.Category_ProductDAO"%>
+<%@page import="database.entities.Category_Product"%>
 <%@page import="database.entities.Product"%>
 <%@page import="database.jdbc.JDBCProductDAO"%>
 <%@page import="database.daos.ProductDAO"%>
@@ -29,6 +32,7 @@
     UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
     ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
     ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
+    Category_ProductDAO category_productdao = new JDBCCategory_ProductDAO(daoFactory.getConnection());
 
     HttpSession s = (HttpSession) request.getSession();
     String shoplistName = "";
@@ -41,6 +45,8 @@
     ArrayList<Product> li = productdao.getAllProducts();
     ArrayList<String> allCategories = productdao.getAllProductCategories();
     ArrayList<String> allListsOfUser = new ArrayList();
+    ArrayList<Category_Product> cP = category_productdao.getAllCategories();
+    s.setAttribute("catProd", cP);
 
     for(Product q : li){
         s.setAttribute(q.getNome(), null);
@@ -235,6 +241,11 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarResponsive">
                             <ul class="navbar-nav text-uppercase ml-auto text-center">
+                                <c:if test="${not empty user and user.tipo=='amministratore'}">
+                                    <li class="nav-item">
+                                    <a data-toggle="modal" data-target="#CreateProductModal" class="btn btn-primary text-caps btn-rounded" >+ Crea un prodotto</a>
+                                </li>
+                                </c:if>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
@@ -641,8 +652,64 @@
 
             </div>
         </div>
+         <!--########################## moooddaaalllll ############################-->
+         <c:if test="${not empty user and user.tipo=='amministratore'}">
+          <div class="modal fade" id="CreateProductModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1 style="text-align: center;">Crea un nuovo prodotto</h1>
+                            </div>
+                            <!--end container-->
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form per il login -->
+                        <form class="form clearfix" id="CreateShopListform" action="/Lists/AddNewProductToDataBase"  method="post" role="form" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="Nome" class="col-form-label">Nome del prodotto</label>
+                                <input type="text" name="NomeProdotto" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="Descrizione" class="col-form-label">Note prodotto</label>
+                                <input type="text" name="NoteProdotto" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="Categoria" class="col-form-label">Categoria</label>
+                                <select name="CategoriaProdotto" id="Categoria" tabindex="1" size="5" >
+                                    <c:forEach items="${catProd}" var="prodcat">
+                                        <option value="${prodcat.nome}"><c:out value="${prodcat.nome}"/></option> 
+                                    </c:forEach>
+                                </select>
 
-
+                            </div>
+                            <div class="form-group">
+                                <label for="Immagine" class="col-form-label required">Immagine</label>
+                                <input type="file" name="ImmagineProdotto" required>
+                            </div>
+                            
+                            <!--end form-group-->
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea Prodotto</button>
+                                <input type="hidden" name="showProduct" value="true">
+                            </div>
+                        </form>
+                        <hr>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+          </div>
+          </c:if>
         <!--########################## moooddaaalllll ############################-->
 
         <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
@@ -707,6 +774,7 @@
                     </div>
                 </div>
             </div>
+        </div>
 
             <script>
                 function myFunction() {

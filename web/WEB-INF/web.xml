@@ -84,7 +84,7 @@
     </servlet>
     <servlet>
         <servlet-name>AddNewProductToDataBase</servlet-name>
-        <servlet-class>ShopList.AddNewProductToDataBase</servlet-class>
+        <servlet-class>Products.AddNewProductToDataBase</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteProduct</servlet-name>

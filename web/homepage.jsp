@@ -105,6 +105,7 @@
             ArrayList<Product> prod = productdao.getAllProducts();
             ArrayList<Category_Product> cP = category_productdao.getAllCategories();
             request.getSession().setAttribute("categorie", li);
+            request.getSession().setAttribute("catProd", cP);
 
         %>
         <!--###############################################################################################################################-->
