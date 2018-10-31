@@ -178,6 +178,11 @@
                                     </div>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="ShowListCategories.jsp">
+                                        <i class="fa fa-bookmark"></i><b>Categorie Liste</b>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="../profile.jsp">
                                         <i class="fa fa-user"></i><b>Il mio profilo</b>
                                     </a>
@@ -244,7 +249,7 @@
                                                 </h4>
 
                                                 <div class="admin-controls">
-                                                    <a href="<%=request.getContextPath()%>/restricted/DeleteListCategory?listname=${Pcategoria.nome}" class="ad-remove disabled">
+                                                    <a href="<%=request.getContextPath()%>/restricted/DeleteProductCategory?listname=${Pcategoria.nome}" class="ad-remove">
                                                         <i class="fa fa-trash"></i>Cancella
                                                     </a>
                                                 </div>                                            

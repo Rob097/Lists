@@ -18,5 +18,7 @@ public interface Category_ProductDAO {
     public ArrayList<Category_Product> getByNOME(String nome) throws DAOException;
     public ArrayList<Category_Product> getAllCategories() throws DAOException;
     public void insertProdCategory(Category_Product catProd) throws DAOException;
+    public Category_Product getByName(String nome) throws DAOException;
+    public void deleteProductCategory(Category_Product catProd) throws DAOException;
     
 }

@@ -87,5 +87,49 @@ public class JDBCCategory_ProductDAO extends JDBCDAO implements Category_Product
             
         }
     }
+
+    @Override
+    public Category_Product getByName(String nome) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM Category_Product WHERE nome = ?")) {
+            stm.setString(1, nome.toString());
+            
+            Category_Product categoria = new Category_Product();
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    
+                    categoria.setNome(rs.getString("nome"));
+                    categoria.setDescrizione(rs.getString("descrizione"));
+                    categoria.setAdmin(rs.getString("admin"));
+                    categoria.setImmagine(rs.getString("immagine"));
+                    
+                }
+
+                return categoria;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the category", ex);
+        }
+    }
+
+    @Override
+    public void deleteProductCategory(Category_Product catProd) throws DAOException {
+       if (catProd == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed category is null"));
+        }
+
+        try (PreparedStatement statement = CON.prepareStatement("delete from Category_Product where nome=?")) {
+            statement.setString(1, catProd.getNome());
+
+            if (statement.execute() == true) {
+                System.out.println("cancellato");
+            } else {
+                throw new DAOException("Impossible to delete CategoryProduct");
+            }
+
+        } catch (SQLException ex) {
+            throw new DAOException(ex);
+
+        }
+    }
     
 }

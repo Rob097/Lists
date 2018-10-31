@@ -158,6 +158,12 @@
                                         <i class="fa fa-recycle"></i>Tutti i Prodotti
                                     </a>
                                     <c:if test="${user.tipo=='amministratore'}">
+                                        <a class="nav-link icon" href="Pages/ShowProductCategories.jsp">
+                                            <i class="fa fa-bookmark"></i>Tutte le categorie per prodotti
+                                        </a>
+                                        <a class="nav-link icon" href="Pages/ShowListCategories.jsp">
+                                            <i class="fa fa-bookmark"></i>Tutte le categorie per liste
+                                        </a> 
                                         <a class="nav-link icon" href="/Lists/Pages/AdminPages/adminPage.jsp">
                                             <i class="fa fa-users"></i>User list
                                         </a>
@@ -168,8 +174,9 @@
                             <div class="col-md-9">
                                 <!--============ Section Title===================================================================-->
                                 <div class="section-title clearfix">
-                                    <div class="float-left float-xs-none">
-                                        <a data-toggle="modal" data-target="#SearchListModal" class="btn btn-primary text-caps btn-rounded" >Search List</a>
+                                    <div class="float-left float-xs-none" style="width: 89%;">
+                                        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name of product">
+                                        <label style="display: none;" id="loadProducts">Carico le categorie...</label>
                                     </div>
                                     <div class="float-right d-xs-none thumbnail-toggle">
                                         <a href="#" class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
@@ -355,83 +362,63 @@
         <script src="Pages/js/jquery.validate.min.js"></script>
         <script src="Pages/js/custom.js"></script>        
         <script type="text/javascript" src="Pages/js/datatables.js" ></script>
-
-        <script>
-            var data = [
-            <c:forEach varStatus="status" items="${sharedLists}" var="list"  >
-            [
-                    "1",
-                    "<a href=\"/Lists/restricted/ShowShopList?nome=${list.nome}\">${list.nome}</a>",
-                    "${list.descrizione}",
-                    "${list.creator}",
-                    "${list.categoria}",
-            [
-                <c:forEach items="${list.sharedUsers}" var="user" varStatus="userStatus">
-            ' ${user.email}'
-                    <c:if test="${!userStatus.last}">
-            ,
-                    </c:if>
-                </c:forEach>
-            ]
-
-            ]<c:if test="${!status.last}">
-            ,
-                </c:if>
-            </c:forEach>
-
-            ];
-
-            $(function () {
-                $('#shareTable').DataTable({
-                    data: data
-
-                });
-            });
-        </script> 
-
-            <!--########################## modal search ############################-->
-            <div class="modal fade" id="SearchListModal" tabindex="-1" role="dialog" aria-labelledby="SearchList" aria-hidden="true" enctype="multipart/form-data">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <div class="page-title">
-                                <div class="container">
-                                    <h1 style="text-align: center;">Search List</h1>
-                                </div>
-                                <!--end container-->
-                            </div>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="table-responsive">
-                                <table id="shareTable" class="dataTable cell-border compact display order-column" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th scope="col">Nome</th>
-                                            <th scope="col">Descrizione</th>
-                                            <th scope="col">Creator</th>
-                                            <th scope="col">Categoria</th>
-                                            <th scope="col">Shared With</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>CARICA I DATI DELLA TABELLA</td>                                          
-                                        </tr>
-
-                                    </tbody>
-                                </table> 
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!--########################## end modal search ############################-->
+            <script>
+                function myFunction() {
+                    var input, filter, ul, li, a, i;
+                    input = document.getElementById("myInput");
+                    filter = input.value.toUpperCase();
+                    ul = document.getElementById("myUL");
+                    li = ul.getElementsByTagName("li");
+                    for (i = 0; i < li.length; i++) {
+                        a = li[i].getElementsByTagName("a")[0];
+                        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                            li[i].style.display = "";
+                        } else {
+                            li[i].style.display = "none";
+                        }
+                    }
+                }
+            </script>
+            <script>
+                function myFunction() {
+                    var input, filter, items, li, a, i;
+                    input = document.getElementById("myInput");
+                    filter = input.value.toUpperCase();
+                    items = document.getElementsByClassName("item");
+                    console.log(items);
+                    
+                    var title = "";
+                    var i;
+                    $.ajax({
+                                type: "POST",
+                                url: "/Lists/Pages/nameContain.jsp?s="+filter,
+                                
+                                cache: false,
+                                success: function (response) {
+                                    $("#content-wrapper").html($("#content-wrapper").html() + response);
+                                },
+                                error: function () {
+                                   alert("Errore");
+                               }
+                            });
+                    for (i = 0; i<items.length;i++) {
+                        console.log(items[i]);
+                        console.log("inside cicle ");
+                        title = items[i].getElementsByClassName("title");
+                        if(title[0].innerHTML.toUpperCase().indexOf(filter)>-1){
+                            
+                            items = document.getElementsByClassName("item");
+                            title = items[i].getElementsByClassName("title");
+                            items[i].style.display = "";
+                            document.getElementById("loadProducts").style.display = "none";
+                            
+                        }else{
+                            items[i].style.display = "none";
+                            document.getElementById("loadProducts").style.display = "";
+                        }
+                    }
+                }
+            </script>
 
             <script src="Pages/js/nav.js"></script>
     </body>

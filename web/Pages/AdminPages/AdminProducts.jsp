@@ -71,7 +71,7 @@
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="../css/user.css">
 
-        <title>Craigs - Easy Buy & Sell Listing HTML Template</title>
+        <title>Adminpage Products</title>
 
         <style>
 
@@ -129,14 +129,23 @@
                                     <a data-toggle="modal" data-target="#AddProductModal" class="btn btn-primary text-caps btn-rounded" >+ Product</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="../amministratore/amministratore.jsp"><b>my Lists</b></a>
+                                    <a class="nav-link js-scroll-trigger"  href="../../homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
+                                </li> 
+                                <li class="nav-item js-scroll-trigger dropdown">
+                                    <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
+                                    <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item nav-link" href="../../userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                        <a class="dropdown-item nav-link" href="../../foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
+                                    </div>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
+                                    <a class="nav-link js-scroll-trigger" href="../../profile.jsp">
+                                        <i class="fa fa-user"></i><b>Il mio profilo</b>
+                                    </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
-                                        <i class="fa fa-sign-in"></i><b><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> </b>/ <img src= "../../${user.image}" width="25px" height="25px" style="border-radius: 100%;">
+                                        <i class="fa fa-sign-out"></i><b><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> </b>/ <img src= "/Lists/${user.image}" width="25px" height="25px" style="border-radius: 100%;">
                                     </a>
                                 </li>                              
                             </ul>
@@ -181,7 +190,20 @@
                             <!--end col-md-3-->
                             <div class="col-md-12">
                                 <!--============ Section Title===================================================================-->
-
+                                  <div class="section-title clearfix">                                    
+                                        <div class="float-left float-xs-none" style="width: 89%;">
+                                            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name of product">
+                                            <label style="display: none;" id="loadProducts">Carico i prodotti...</label>
+                                        </div>                                                                       
+                                    <div class="float-right d-xs-none thumbnail-toggle">
+                                        <a href="#" class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
+                                            <i class="fa fa-th"></i>
+                                        </a>
+                                        <a href="#" class="change-class active" data-change-from-class="grid" data-change-to-class="list" data-parent-class="items">
+                                            <i class="fa fa-th-list"></i>
+                                        </a>
+                                    </div>
+                                </div>
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
 
@@ -316,6 +338,63 @@
         <script src="../js/jquery.validate.min.js"></script>
         <script src="../js/custom.js"></script>
             <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
+            <script>
+                function myFunction() {
+                    var input, filter, ul, li, a, i;
+                    input = document.getElementById("myInput");
+                    filter = input.value.toUpperCase();
+                    ul = document.getElementById("myUL");
+                    li = ul.getElementsByTagName("li");
+                    for (i = 0; i < li.length; i++) {
+                        a = li[i].getElementsByTagName("a")[0];
+                        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                            li[i].style.display = "";
+                        } else {
+                            li[i].style.display = "none";
+                        }
+                    }
+                }
+            </script>
+            <script>
+                function myFunction() {
+                    var input, filter, items, li, a, i;
+                    input = document.getElementById("myInput");
+                    filter = input.value.toUpperCase();
+                    items = document.getElementsByClassName("item");
+                    console.log(items);
+                    
+                    var title = "";
+                    var i;
+                    $.ajax({
+                                type: "POST",
+                                url: "/Lists/Pages/nameContain.jsp?s="+filter,
+                                
+                                cache: false,
+                                success: function (response) {
+                                    $("#content-wrapper").html($("#content-wrapper").html() + response);
+                                },
+                                error: function () {
+                                   alert("Errore");
+                               }
+                            });
+                    for (i = 0; i<items.length;i++) {
+                        console.log(items[i]);
+                        console.log("inside cicle ");
+                        title = items[i].getElementsByClassName("title");
+                        if(title[0].innerHTML.toUpperCase().indexOf(filter)>-1){
+                            
+                            items = document.getElementsByClassName("item");
+                            title = items[i].getElementsByClassName("title");
+                            items[i].style.display = "";
+                            document.getElementById("loadProducts").style.display = "none";
+                            
+                        }else{
+                            items[i].style.display = "none";
+                            document.getElementById("loadProducts").style.display = "";
+                        }
+                    }
+                }
+            </script>
             
             <script src="../js/vari.js"></script>
             <script src="../js/nav.js"></script>

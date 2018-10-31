@@ -178,6 +178,11 @@
                                     </div>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link js-scroll-trigger" href="ShowProductCategories.jsp">
+                                        <i class="fa fa-bookmark"></i><b>Categorie Prodotti</b>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="../profile.jsp">
                                         <i class="fa fa-user"></i><b>Il mio profilo</b>
                                     </a>

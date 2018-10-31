@@ -131,6 +131,12 @@
                                         <i class="fa fa-share-alt"></i>Liste condivise
                                     </a>
                                     <c:if test="${user.tipo=='amministratore'}">
+                                        <a class="nav-link icon" href="Pages/ShowProductCategories.jsp">
+                                            <i class="fa fa-bookmark"></i>Tutte le categorie per prodotti
+                                        </a>
+                                        <a class="nav-link icon" href="Pages/ShowListCategories.jsp">
+                                            <i class="fa fa-bookmark"></i>Tutte le categorie per liste
+                                        </a> 
                                         <a class="nav-link icon" href="/Lists/Pages/AdminPages/adminPage.jsp">
                                             <i class="fa fa-users"></i>Lista Utenti
                                         </a>

@@ -154,6 +154,10 @@
         <servlet-name>CreateProductCategory</servlet-name>
         <servlet-class>Categories.CreateProductCategory</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteProductCategory</servlet-name>
+        <servlet-class>Categories.DeleteProductCategory</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -265,6 +269,10 @@
     <servlet-mapping>
         <servlet-name>CreateProductCategory</servlet-name>
         <url-pattern>/restricted/CreateProductCategory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteProductCategory</servlet-name>
+        <url-pattern>/restricted/DeleteProductCategory</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

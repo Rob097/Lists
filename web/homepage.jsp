@@ -240,13 +240,13 @@
                             <div class="col-md-2">                                
                             </div>
                             <div class="col-md-3">
-                                <a href="/Lists/Pages/AdminPages/AdminProducts.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">Product List</a>
+                                <a href="Pages/ShowProducts.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">Lista prodotti</a>
                             </div>
                             <div class="col-md-2">
-                                <a href="Pages/ShowProductCategories.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">product-categories</a>                                
+                                <a href="Pages/ShowProductCategories.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">Categorie prodotti</a>                                
                             </div>
                             <div class="col-md-3">
-                                <a href="Pages/ShowListCategories.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">list-categories</a>
+                                <a href="Pages/ShowListCategories.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">Categorie lista</a>
                             </div>  
                             <div class="col-md-2">                                
                             </div>                             

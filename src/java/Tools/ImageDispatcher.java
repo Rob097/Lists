@@ -24,7 +24,7 @@ public class ImageDispatcher {
      * @param fileName questo è il percorso completo dell'immagine dal
      * cancellare
      */
-    public void DeleteImgFromDirectory(String fileName) {
+    public static void DeleteImgFromDirectory(String fileName) {
         // Creo un oggetto file
         File f = new File(fileName);
 

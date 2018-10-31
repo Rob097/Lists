@@ -181,10 +181,16 @@
                                         <a class="nav-link active icon" href="foreignLists.jsp">
                                             <i class="fa fa-share-alt"></i>Liste condivise
                                         </a>
-                                        <a class="nav-link icon" href="/Lists/Pages/ShowProducts.jsp">
+                                        <a class="nav-link icon" href="Pages/ShowProducts.jsp">
                                             <i class="fa fa-recycle"></i>Tutti i Prodotti
                                         </a>
                                         <c:if test="${user.tipo=='amministratore'}">
+                                            <a class="nav-link icon" href="Pages/ShowProductCategories.jsp">
+                                                <i class="fa fa-bookmark"></i>Tutte le categorie per prodotti
+                                            </a>
+                                            <a class="nav-link icon" href="Pages/ShowListCategories.jsp">
+                                                <i class="fa fa-bookmark"></i>Tutte le categorie per liste
+                                            </a>                                        
                                             <a class="nav-link icon" href="/Lists/Pages/AdminPages/adminPage.jsp">
                                                 <i class="fa fa-users"></i>Lista Utenti
                                             </a>
@@ -197,8 +203,9 @@
                                 <!--============ Section Title===================================================================-->
                                 <div class="section-title clearfix">
                                     <c:if test="${not empty user}">
-                                        <div class="float-left float-xs-none">
-                                            <a data-toggle="modal" data-target="#SearchListModal" class="btn btn-primary text-caps btn-rounded" >Search List</a>
+                                        <div class="float-left float-xs-none" style="width: 89%;">
+                                            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name of product">
+                                            <label style="display: none;" id="loadProducts">Carico le categorie...</label>
                                         </div>
                                     </c:if>                                    
                                     <div class="float-right d-xs-none thumbnail-toggle">
@@ -429,42 +436,65 @@
         <script src="Pages/js/jquery.validate.min.js"></script>
         <script src="Pages/js/custom.js"></script>        
         <script type="text/javascript" src="Pages/js/datatables.js" ></script>
-        <c:if test="${not empty user}">
+        <c:if test="${not empty user}">             
             <script>
-                var data = [
-                <c:forEach varStatus="status" items="${userLists}" var="list"  >
-                [
-                        "<a href=\"/Lists/restricted/ShowShopList?nome=${list.nome}\">♣</a>",
-                        "<a href=\"/Lists/restricted/ShowShopList?nome=${list.nome}\">${list.nome}</a>",
-                        "<a href=\"/Lists/restricted/ShowShopList?nome=${list.nome}\">${list.descrizione}</a>",
-                        "<a href=\"/Lists/restricted/ShowShopList?nome=${list.nome}\">${list.creator}</a>",
-                        "<a href=\"/Lists/restricted/ShowShopList?nome=${list.nome}\">${list.categoria}</a>",
-                [
-                    <c:forEach items="${list.sharedUsers}" var="user" varStatus="userStatus">
-                ' ${user.email}'
-                        <c:if test="${!userStatus.last}">
-                ,
-                        </c:if>
-                    </c:forEach>
-                ]
-
-                ]<c:if test="${!status.last}">
-                ,
-                    </c:if>
-                </c:forEach>
-
-                ];
-
-                $(document).ready(function () {
-                    $('#listTable').DataTable({
-                        data: data
-
-                    });
-                });
-            </script> 
-        </c:if>
-
-            
+                function myFunction() {
+                    var input, filter, ul, li, a, i;
+                    input = document.getElementById("myInput");
+                    filter = input.value.toUpperCase();
+                    ul = document.getElementById("myUL");
+                    li = ul.getElementsByTagName("li");
+                    for (i = 0; i < li.length; i++) {
+                        a = li[i].getElementsByTagName("a")[0];
+                        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                            li[i].style.display = "";
+                        } else {
+                            li[i].style.display = "none";
+                        }
+                    }
+                }
+            </script>
+            <script>
+                function myFunction() {
+                    var input, filter, items, li, a, i;
+                    input = document.getElementById("myInput");
+                    filter = input.value.toUpperCase();
+                    items = document.getElementsByClassName("item");
+                    console.log(items);
+                    
+                    var title = "";
+                    var i;
+                    $.ajax({
+                                type: "POST",
+                                url: "/Lists/Pages/nameContain.jsp?s="+filter,
+                                
+                                cache: false,
+                                success: function (response) {
+                                    $("#content-wrapper").html($("#content-wrapper").html() + response);
+                                },
+                                error: function () {
+                                   alert("Errore");
+                               }
+                            });
+                    for (i = 0; i<items.length;i++) {
+                        console.log(items[i]);
+                        console.log("inside cicle ");
+                        title = items[i].getElementsByClassName("title");
+                        if(title[0].innerHTML.toUpperCase().indexOf(filter)>-1){
+                            
+                            items = document.getElementsByClassName("item");
+                            title = items[i].getElementsByClassName("title");
+                            items[i].style.display = "";
+                            document.getElementById("loadProducts").style.display = "none";
+                            
+                        }else{
+                            items[i].style.display = "none";
+                            document.getElementById("loadProducts").style.display = "";
+                        }
+                    }
+                }
+            </script>
+        </c:if>           
             
         <!-- Login Modal -->
         <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModal" aria-hidden="true">
@@ -663,51 +693,7 @@
                 </div>
             </div>
         </div>
-        <c:if test="${not empty user}">
-            <!--########################## modal search ############################-->
-            <div class="modal fade" id="SearchListModal" tabindex="-1" role="dialog" aria-labelledby="SearchList" aria-hidden="true" enctype="multipart/form-data">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <div class="page-title">
-                                <div class="container">
-                                    <h1 style="text-align: center;">Search List</h1>
-                                </div>
-                                <!--end container-->
-                            </div>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="table-responsive">
-                                <table id="listTable" class="dataTable cell-border compact display order-column" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th scope="col">Nome</th>
-                                            <th scope="col">Descrizione</th>
-                                            <th scope="col">Creator</th>
-                                            <th scope="col">Categoria</th>
-                                            <th scope="col">Shared With</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>CARICA I DATI DELLA TABELLA</td>                                          
-                                        </tr>
-
-                                    </tbody>
-                                </table> 
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--########################## end modal search ############################-->
-        </c:if>
-
+        <!--##############################-->
         <div class="modal fade" id="import-list" tabindex="-1" role="dialog" aria-labelledby="import-list" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
