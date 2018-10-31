@@ -14,6 +14,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -68,6 +70,21 @@ public class JDBCCategory_ProductDAO extends JDBCDAO implements Category_Product
             }
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get categories", ex);
+        }
+    }
+
+    @Override
+    public void insertProdCategory(Category_Product catProd) throws DAOException {
+         try(PreparedStatement statement = CON.prepareStatement("insert into Category_Product (nome, descrizione, admin, immagine) values (?, ?, ?, ?)")){
+           statement.setString(1, catProd.getNome());
+           statement.setString(2, catProd.getDescrizione());
+           statement.setString(3, catProd.getAdmin());
+           statement.setString(4, catProd.getImmagine());
+           statement.executeUpdate();
+       } catch (SQLException ex) {
+           System.out.println("insert categoria prodotto non effetuato");
+            Logger.getLogger(JDBCCategory_ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
     }
     

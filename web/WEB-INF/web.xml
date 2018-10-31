@@ -17,6 +17,14 @@
         <filter-name>ListCategoryFilter</filter-name>
         <filter-class>filters.ListCategoryFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>ProductCategoryFilter</filter-name>
+        <filter-class>filters.ProductCategoryFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ProductCategoryFilter</filter-name>
+        <url-pattern>/Pages/ShowProductCategories.jsp</url-pattern>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>ListCategoryFilter</filter-name>
         <url-pattern>/Pages/ShowListCategories.jsp</url-pattern>
@@ -142,6 +150,10 @@
         <servlet-name>DeleteListCategory</servlet-name>
         <servlet-class>Categories.DeleteListCategory</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateProductCategory</servlet-name>
+        <servlet-class>Categories.CreateProductCategory</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -249,6 +261,10 @@
     <servlet-mapping>
         <servlet-name>DeleteListCategory</servlet-name>
         <url-pattern>/restricted/DeleteListCategory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateProductCategory</servlet-name>
+        <url-pattern>/restricted/CreateProductCategory</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

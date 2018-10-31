@@ -243,7 +243,7 @@
                                 <a href="/Lists/Pages/AdminPages/AdminProducts.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">Product List</a>
                             </div>
                             <div class="col-md-2">
-                                <a href="#" class="btn btn-primary text-caps btn-rounded" style="color: white;">product-categories</a>                                
+                                <a href="Pages/ShowProductCategories.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">product-categories</a>                                
                             </div>
                             <div class="col-md-3">
                                 <a href="Pages/ShowListCategories.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">list-categories</a>

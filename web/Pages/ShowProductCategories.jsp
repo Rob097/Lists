@@ -1,6 +1,6 @@
 <%-- 
-    Document   : ShowListCategories
-    Created on : 27.10.2018, 17:32:59
+    Document   : ShowProductCategories
+    Created on : 31.10.2018, 10:54:03
     Author     : Martin
 --%>
 
@@ -18,7 +18,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="icon" href="img/favicon.png" sizes="16x16" type="image/png">
-        <title>Categorie Lista</title>
+        <title>Categorie Prodotto</title>
 
         <!-- CSS personalizzati -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
@@ -193,7 +193,7 @@
                     <div class="page-title">
                         <div class="container">
                             <h1 class="opacity-60 center">
-                                Lista con tutte le categorie per <i>liste</i>
+                                Lista con tutte le categorie per <i>prodotti</i>
                             </h1>
                         </div>                        
                     </div>
@@ -225,27 +225,26 @@
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
 
-                                    <c:forEach items="${allCategories}" var="categoria">                                       
+                                    <c:forEach items="${allPrcategories}" var="Pcategoria">                                       
                                         <div class="item">
                                             <div class="wrapper">
                                                 <div class="image">
                                                     <h3>
-                                                        
-                                                        <a class="title"><c:out value="${categoria.nome}"/></a> 
-                                                        <a class="tag category"><c:out value="${categoria.admin}"/></a>
-                                                        
+                                                        <a class="title"><c:out value="${Pcategoria.nome}"/></a><br> 
+                                                        <a class="tag category"><c:out value="${Pcategoria.admin}"/></a>
                                                     </h3>
                                                     <div class="text-caps">
                                                         <a >
-                                                               <img src="../${categoria.immagine}" alt="" class="image-wrapper background-image img-fluid"> 
+                                                               <img src="../${Pcategoria.immagine}" alt="" class="image-wrapper background-image img-fluid"> 
                                                         </a>
                                                     </div>
                                                 </div>
-                                                <h4 class="description">
-                                                    <a><c:out value="${categoria.descrizione}"/></a>                                                    
+                                                <h4 class="description">                                                                                                 
+                                                    <a><c:out value="${Pcategoria.descrizione}"/></a>                                                     
                                                 </h4>
+
                                                 <div class="admin-controls">
-                                                    <a href="<%=request.getContextPath()%>/restricted/DeleteListCategory?listname=${categoria.nome}" class="ad-remove">
+                                                    <a href="<%=request.getContextPath()%>/restricted/DeleteListCategory?listname=${Pcategoria.nome}" class="ad-remove disabled">
                                                         <i class="fa fa-trash"></i>Cancella
                                                     </a>
                                                 </div>                                            
@@ -338,7 +337,7 @@
                     <div class="modal-header">
                         <div class="page-title">
                             <div class="container">
-                                <h1 style="text-align: center;">Crea una categoria</h1>
+                                <h1 style="text-align: center;">Crea una categoria per i prodotti</h1>
                             </div>
                             <!--end container-->
                         </div>
@@ -348,7 +347,7 @@
                     </div>
                     <div class="modal-body">
                         <!-- Form per il login -->
-                        <form class="form clearfix" id="CreateShopListform" action="<%=request.getContextPath()%>/restricted/CreateListCategory"  method="post" role="form" enctype="multipart/form-data">
+                        <form class="form clearfix" id="CreateShopListform" action="<%=request.getContextPath()%>/restricted/CreateProductCategory"  method="post" role="form" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="Nome" class="col-form-label">Nome della categoria</label>
                                 <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
@@ -379,3 +378,4 @@
                
     </body>
 </html>
+

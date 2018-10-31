@@ -7,14 +7,13 @@ package Categories;
 
 import Tools.ImageDispatcher;
 import static Tools.ImageDispatcher.getImageExtension;
-import database.daos.CategoryDAO;
-import database.entities.Category;
+import database.daos.Category_ProductDAO;
+import database.entities.Category_Product;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
-import database.jdbc.JDBCCategoryDAO;
+import database.jdbc.JDBCCategory_ProductDAO;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -30,9 +29,9 @@ import javax.servlet.http.Part;
  * @author Martin
  */
 @MultipartConfig(maxFileSize = 16177215)
-public class CreateListCategory extends HttpServlet {
+public class CreateProductCategory extends HttpServlet {
 
-    CategoryDAO categorydao;
+    Category_ProductDAO catproddao = null;
     @Override
     public void init() throws ServletException {
         //carica la Connessione inizializzata in JDBCDAOFactory, quindi ritorna il Class.for() e la connessione
@@ -41,45 +40,43 @@ public class CreateListCategory extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         //assegna a userdao la connessione(costruttore) e salva la connessione in una variabile tipo Connection
-        categorydao = new JDBCCategoryDAO(daoFactory.getConnection());
+        catproddao = new JDBCCategory_ProductDAO(daoFactory.getConnection());
     }
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //inizializza variabili
+        //inizializza variabili di base
         HttpSession session = (HttpSession) request.getSession(false);
-        Category category = new Category();
+        Category_Product catProduct = new Category_Product();
         User user = (User) session.getAttribute("user");
         
-        //set category
-        String nome = request.getParameter("Nome");
-        String descrizione = request.getParameter("Descrizione");
+        //set prod-category
+        catProduct.setNome(request.getParameter("Nome"));
+        catProduct.setDescrizione(request.getParameter("Descrizione"));
+        catProduct.setAdmin(user.getEmail());
         Part filePart1 = request.getPart("file1");
         
-        //salva immagine
+        //immagine
         if(filePart1!=null){
-            String relativeListFolderPath = "/Image/CategoryIco";
+             String relativeListFolderPath = "/Image/CategoryIco";
             String listsFolder = ObtainRootFolderPath(relativeListFolderPath);
             String extension = getImageExtension(filePart1);
-            String imagineName =  category.getNome() + "." + extension;
+            String imagineName =  catProduct.getNome() + "." + extension;
             ImageDispatcher.InsertImgIntoDirectory(listsFolder, imagineName, filePart1);
             
             String immagine = ImageDispatcher.savePathImgInDatabsae(relativeListFolderPath, imagineName);
-            category.setImmagine(immagine);
+            catProduct.setImmagine(immagine);
         }
-        category.setNome(nome);
-        category.setDescrizione(descrizione);
-        category.setAdmin(user.getEmail());
         
         try {
-            categorydao.createCategory(category);
+            catproddao.insertProdCategory(catProduct);
         } catch (DAOException ex) {
-            Logger.getLogger(CreateListCategory.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CreateProductCategory.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        response.sendRedirect(request.getContextPath() +"Pages/ShowListCategories.jsp");
-        
+        response.sendRedirect(request.getContextPath() +"/Pages/ShowProductCategories.jsp");
+       
     }
 
     /**
