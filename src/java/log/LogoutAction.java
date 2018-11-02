@@ -36,7 +36,7 @@ public class LogoutAction extends HttpServlet {
         //remove Remember Me cookie
         Cookie cookie = new Cookie("User", "");
         cookie.setDomain("localhost");
-        cookie.setPath("/Lists");
+        cookie.setPath(request.getContextPath());
         cookie.setMaxAge(0);
         response.addCookie(cookie);
         

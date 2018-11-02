@@ -19,6 +19,7 @@ import database.entities.User;
 import database.exceptions.DAOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -48,10 +49,10 @@ public class deleteUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        User user =(User) request.getSession().getAttribute("user");
+        HttpSession session = (HttpSession) request.getSession();
+        User user =(User) session.getAttribute("user");
         System.out.println("DeleteUser opening####################");
         
-        Cookie[] cookies = null;
         String Image = "";
         Image = user.getImage();
         
@@ -86,13 +87,15 @@ public class deleteUser extends HttpServlet {
         }
         
          // Get an array of Cookies associated with the this domain
-        cookies = request.getCookies();
-        //delete Cookies
-        if (cookies != null){
-            for (Cookie cookie : cookies) {
-                cookie.setMaxAge(0);
-                response.addCookie(cookie);
-            }
+        //remove Remember Me cookie
+        Cookie cookie = new Cookie("User", "");
+        cookie.setDomain("localhost");
+        cookie.setPath(request.getContextPath());
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        
+        if (session != null) {
+                session.invalidate();                
         }
 
         response.setHeader("Refresh", "0; URL=/Lists/homepage.jsp");
