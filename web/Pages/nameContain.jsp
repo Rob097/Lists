@@ -14,7 +14,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-    System.out.println("ELEMENTSSSSSSSSSSSSSSSSSSSSSSSSS");
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
             throw new ServletException("Impossible to get dao factory for user storage system");
@@ -42,7 +41,7 @@
                                 <span class="tag">Offer</span>
                             </h3>
                             <a href="single-listing-1.html" class="image-wrapper background-image" style="background-image: url('../<%=p.getImmagine()%>')">
-                                <%System.out.println("IMAGINEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE: " + p.getImmagine());%>
+                                
                                 <img src="../<%=p.getImmagine()%>" alt="">
                             </a>
                         </div>

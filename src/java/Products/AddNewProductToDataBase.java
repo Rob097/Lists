@@ -60,7 +60,7 @@ public class AddNewProductToDataBase extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession s =(HttpSession) request.getSession();
+        HttpSession s =(HttpSession) request.getSession(false);
         Product nuovoProdotto = new Product();
 
         int pid = 0;

@@ -187,7 +187,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
     @Override
     public void Delete(Product l) throws DAOException {
         if (l == null) {
-            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed user is null"));
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed product is null"));
         }
 
         String qry = "delete from Product where PID=?";
@@ -195,10 +195,10 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
         try (PreparedStatement statement = CON.prepareStatement(qry)) {
             statement.setInt(1, l.getPid());
 
-            if (statement.execute() == true) {
-                System.out.println("inserito");
+            if (statement.executeUpdate() > 0) {
+                System.out.println("cancellato");
             } else {
-                throw new DAOException("Impossible to update the User");
+                throw new DAOException("Impossible to delete the product");
             }
 
         } catch (SQLException ex) {
@@ -289,7 +289,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
 
     @Override
     public ArrayList<Product> nameContian(String s, HttpServletRequest request) throws DAOException {
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         ArrayList<Product> a = getAllProducts();
         ArrayList<Product> b = new ArrayList();
         boolean check = false;
@@ -301,4 +301,5 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
         }
         return b;
     }
+
 }

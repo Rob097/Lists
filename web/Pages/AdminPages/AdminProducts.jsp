@@ -14,57 +14,19 @@
 <%@page import="java.sql.Blob"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%
-
-    DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
-    if (daoFactory == null) {
-        throw new ServletException("Impossible to get dao factory for user storage system");
-    }
-    UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
-    ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
-    ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
-
-    HttpSession s = (HttpSession) request.getSession();
-    String shoplistName = (String) s.getAttribute("shopListName");
-    User u = new User();
-    boolean find = false;
-    if (s.getAttribute("user") != null) {
-        u = (User) s.getAttribute("user");
-    }
-
-    if (u.getTipo() != null) {
-        if (u.getTipo().equals("standard")) {
-            find = true;
-        }
-    }
-
-    ArrayList<Product> li = productdao.getAllProducts();
-    ArrayList<String> allCategories = productdao.getAllProductCategories();
-    //ArrayList<String> allListsOfUser = listdao.getAllListsByCurentUser(u.getEmail());
-    ArrayList<User> allUsers = userdao.getAllUsers();
-
-%>
-
-
 <!doctype html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="author" content="ThemeStarz">
-
-        
-        
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
-          
         <link rel="stylesheet" href="../css/navbar.css"> 
         <link rel="stylesheet" href="../css/datatables.css" type="text/css"> 
         <link rel="icon" href="../img/favicon.png" sizes="16x16" type="image/png">
         <script src="../js/jquery-3.3.1.min.js"></script>
         <script type="text/javascript" src="../js/popper.min.js"></script>
-        <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
-        
-        
+        <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>        
         <link rel="stylesheet" href="../bootstrap/css/bootstrap.css" type="text/css">
         <link rel="stylesheet" href="../fonts/font-awesome.css" type="text/css">
         <link rel="stylesheet" href="../css/selectize.css" type="text/css">
@@ -74,7 +36,6 @@
         <title>Adminpage Products</title>
 
         <style>
-
             body{
                 overflow-x: unset;
             }
@@ -96,11 +57,7 @@
                 min-height: 0rem;
             }
         </style>
-
-
         <style>
-
-
             .avatar {
                 vertical-align: middle;
                 width: 140px;
@@ -126,7 +83,7 @@
                         <div class="collapse navbar-collapse" id="navbarResponsive">
                             <ul class="navbar-nav text-uppercase ml-auto text-center">
                                 <li class="nav-item">
-                                    <a data-toggle="modal" data-target="#AddProductModal" class="btn btn-primary text-caps btn-rounded" >+ Product</a>
+                                    <a data-toggle="modal" data-target="#CreateProductModal" class="btn btn-primary text-caps btn-rounded" >+ Crea un prodotto</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger"  href="../../homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
@@ -154,8 +111,8 @@
                     <!--============ Secondary Navigation ===============================================================-->
    
                     <div class="page-title">
-                        <div class="container">
-                            <h1>All Products</h1>
+                        <div class="container text-center">
+                            <h1>Tutti i prodotti</h1>
                         </div>
                         <!--end container-->
                     </div>
@@ -163,22 +120,16 @@
                     <div class="background"></div>
 
                     <div class="container text-center" id="welcomeGrid">
-                        <a data-toggle="modal" data-target="#AddProductModal" class="btn btn-primary text-caps btn-rounded" style="color: white;">Add new product</a>
+                        <a data-toggle="modal" data-target="#CreateProductModal" class="btn btn-primary text-caps btn-framed btn-block" >Aggiungi un nuovo prodotto</a>
 
                     </div
 
                     <!--end background-->
                 </div>
 
-                >
-
                 <!--end hero-wrapper-->
             </header>
             <!--end hero-->
-
-
-
-
             <!--*********************************************************************************************************-->
             <!--************ CONTENT ************************************************************************************-->
             <!--*********************************************************************************************************-->
@@ -207,21 +158,20 @@
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
 
-                                    <%for (Product elem : li) {%>
-
+                                    <c:forEach items="${products}" var="product">
                                     <div class="item">
                                         <div class="wrapper">
                                             <div class="image">
                                                 <h3>
-                                                    <a href="#" class="tag category"><%=elem.getCategoria_prodotto()%></a>
-                                                    <a href="single-listing-1.html" class="title"><%=elem.getNome()%></a>                           
+                                                    <a href="#" class="tag category">${product.categoria_prodotto}</a>
+                                                    <a href="single-listing-1.html" class="title">${product.nome}</a>                           
                                                 </h3>
                                                 <a href="single-listing-1.html" >
-                                                    <img src="../../<%=elem.getImmagine()%>" alt="" class="avatar">
+                                                    <img src="../../${product.immagine}" alt="" class="avatar">
                                                 </a>
                                             </div>
                                             <h4 class="location">
-                                                <a href="#"><%=elem.getNote()%></a>
+                                                <a href="#">${product.note}</a>
                                             </h4>
 
                                             <div class="admin-controls">
@@ -231,14 +181,14 @@
                                                 <a href="#" class="ad-hide">
                                                     <i class="fa fa-eye-slash"></i>Hide
                                                 </a>
-                                                <a href="/Lists/DeleteProduct?PID=<%=elem.getPid()%>" class="ad-remove">
+                                                <a href="<%=request.getContextPath()%>/DeleteProduct?PID=<c:out value="${product.pid}"/>" class="ad-remove">
                                                     <i class="fa fa-trash"></i>Remove
                                                 </a>
                                             </div>
 
                                         </div>
                                     </div>
-                                    <%}%>
+                                    </c:forEach>
 
                                 </div>
                             </div>
@@ -262,15 +212,15 @@
             <!--*********************************************************************************************************-->
 
         </div>
-        <!--end page-->
-
-        <div class="modal fade" id="AddProductModal" tabindex="-1" role="dialog" aria-labelledby="AddProductModal" aria-hidden="true" enctype="multipart/form-data">
+        
+        <!--Create Product Modal-->
+        <div class="modal fade" id="CreateProductModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="page-title">
                             <div class="container">
-                                <h1>Aggiungi prodotto</h1>
+                                <h1 style="text-align: center;">Crea un nuovo prodotto</h1>
                             </div>
                             <!--end container-->
                         </div>
@@ -280,52 +230,45 @@
                     </div>
                     <div class="modal-body">
                         <!-- Form per il login -->
-                        <form class="form clearfix" id="register-form" action="/Lists/AddNewProductToDataBase" method="post" enctype="multipart/form-data">
+                        <form class="form clearfix" id="CreateShopListform" action="/Lists/AddNewProductToDataBase"  method="post" role="form" enctype="multipart/form-data">
                             <div class="form-group">
-                                <label for="NomeProdotto" class="col-form-label">Nome Prodotto</label>
-                                <input type="text" name="NomeProdotto" id="NomeProdotto" tabindex="1" class="form-control" placeholder="Email" value="" required>
+                                <label for="Nome" class="col-form-label">Nome del prodotto</label>
+                                <input type="text" name="NomeProdotto" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
                             </div>
                             <!--end form-group-->
                             <div class="form-group">
-                                <label for="NoteProdotto" class="col-form-label">Note Prodotto</label>
-                                <input type="text" name="NoteProdotto" id="NoteProdotto" tabindex="1" class="form-control" placeholder="Nome" value="" required>
+                                <label for="Descrizione" class="col-form-label">Note prodotto</label>
+                                <input type="text" name="NoteProdotto" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
                             </div>
                             <!--end form-group-->
-                            
-                            
                             <div class="form-group">
-                                <label for="CategoriaProdotto" class="col-form-label">Categoria</label>
+                                <label for="Categoria" class="col-form-label">Categoria</label>
                                 <select name="CategoriaProdotto" id="Categoria" tabindex="1" size="5" >
-
-                                    <c:forEach items="${categorie}" var="categoria">
-                                        <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
+                                    <c:forEach items="${catProd}" var="prodcat">
+                                        <option value="${prodcat.nome}"><c:out value="${prodcat.nome}"/></option> 
                                     </c:forEach>
-                                </select><!--<input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>-->
+                                </select>
 
                             </div>
-
-                            <!--end form-group-->
-
                             <div class="form-group">
-                                <label for="image" class="col-form-label required">Immagine Prodotto</label>
+                                <label for="Immagine" class="col-form-label required">Immagine</label>
                                 <input type="file" name="ImmagineProdotto" required>
                             </div>
                             
-                            <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Aggiungi</button>
                             <!--end form-group-->
-
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea Prodotto</button>
+                                <input type="hidden" name="showProduct" value="true">
+                            </div>
                         </form>
                         <hr>
-                        <p>
-                            By clicking "Register Now" button, you agree with our <a href="#" class="link">Terms & Conditions.</a>
-                        </p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
-        </div>
+          </div>
 
 
         <script src="../js/jquery-3.3.1.min.js"></script>

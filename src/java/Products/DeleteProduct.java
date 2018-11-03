@@ -13,7 +13,6 @@ import database.jdbc.JDBCProductDAO;
 import database.jdbc.JDBCUserDAO;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -53,31 +52,29 @@ public class DeleteProduct extends HttpServlet {
 
         String PID = request.getParameter("PID");
         
-        System.out.println("PID" + PID);
         Product p  =null;
         try {
             p = productdao.getProductByID(Integer.parseInt(PID));
         } catch (Exception e) {
+            System.out.println("error get product");
         }
         
-        System.out.println("PID CLASSE PRDODOTTO");
-
-        System.out.println("PID integer " + Integer.parseInt(PID));
+        if(p.getImmagine() != null && !(p.getImmagine().equals(""))){  
+            String listsFolder = "";
+            listsFolder = getServletContext().getRealPath(listsFolder);
+            listsFolder = listsFolder.replace("\\build", "");
+            String imgfolder = p.getImmagine().replace("/Image/ProductImg", "");
+            DeleteImgFromDirectory(listsFolder + imgfolder); 
+        }
+        
+        
         try {
-            System.out.println("SONO NEL TRY DI CALNCELLA PRODOTTO");
             productdao.Delete(p);
         } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("delete product error");
         }
-
-        String listsFolder = "";
-        String rp = "/Image/ProductImg";
-        listsFolder = getServletContext().getRealPath(listsFolder);
-        listsFolder = listsFolder.replace("\\build", "");
-        String imgfolder = p.getImmagine().replace("/Image/ProductImg", "");
-        System.out.println("FOLDER DELL IMMAGINE ============== " + imgfolder);
         
-        DeleteImgFromDirectory(listsFolder + imgfolder);
-
         response.sendRedirect("/Lists/Pages/AdminPages/AdminProducts.jsp");
     }
 

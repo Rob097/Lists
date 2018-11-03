@@ -164,9 +164,6 @@
                                         <a class="nav-link icon" href="Pages/ShowListCategories.jsp">
                                             <i class="fa fa-bookmark"></i>Tutte le categorie per liste
                                         </a> 
-                                        <a class="nav-link icon" href="/Lists/Pages/AdminPages/adminPage.jsp">
-                                            <i class="fa fa-users"></i>User list
-                                        </a>
                                     </c:if>                                                                      
                                 </nav>
                             </div>

@@ -131,8 +131,8 @@
                                 <li class="nav-item js-scroll-trigger dropdown">
                                     <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
                                     <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item nav-link" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
-                                        <a class="dropdown-item nav-link" href="/Lists/foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
+                                        <a class="dropdown-item nav-link" href="userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                        <a class="dropdown-item nav-link" href="foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
                                     </div>
                                 </li>
                                 <li class="nav-item">
@@ -242,7 +242,7 @@
                             <div class="col-md-2">                                
                             </div>
                             <div class="col-md-3">
-                                <a href="Pages/ShowProducts.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">Lista prodotti</a>
+                                <a href="Pages/AdminPages/AdminProducts.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">Lista prodotti</a>
                             </div>
                             <div class="col-md-2">
                                 <a href="Pages/ShowProductCategories.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">Categorie prodotti</a>                                
