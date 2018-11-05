@@ -5,6 +5,7 @@
  */
 package users;
 
+import Tools.ImageDispatcher;
 import database.daos.UserDAO;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -57,75 +58,75 @@ public class updateUser extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        HttpSession s = request.getSession();
-        User user = new User();
+        HttpSession session = (HttpSession) request.getSession(false);
+        User user = (User) session.getAttribute("user");
         Boolean updateResult = false;
         User cgeUser = new User();
-        user = (User) s.getAttribute("user");
         
-        //Creazione variabili per l'immagine
+        //Creazione variabili 
         String email = request.getParameter("email");
         String nominativo = request.getParameter("nominativo");
         String password = request.getParameter("password");
         String url = null;
-        String nomeIMG = user.getImage();
-        String immagine = "";
-       
-        // IMMAGINE
-            String imageFolder = "/Image/AvatarImg";
-            String rp = "/Image/AvatarImg";
-            imageFolder = getServletContext().getRealPath("");
-            imageFolder = imageFolder.replace("\\build", "");
-            File uploadDirFile = new File(imageFolder);
-            
-            //Controllo se l'immagine esiste già e in uesto caso la cancello col etodo DeleteImgFromDirectory
-            if (uploadDirFile.exists()) {
-                try {
-                    DeleteImgFromDirectory(imageFolder + "/" + nomeIMG);
-                } catch (Exception ex1) {
-                    System.out.println("Causa Errore: ");
-                    ex1.printStackTrace();
-                }
-            }
+        Part filePart1 = request.getPart("file1");
+
         
-            
-            String filename1 = "";
-            Part filePart1 = request.getPart("file1"); //File di upload
-            if ((filePart1 != null) && (filePart1.getSize() > 0)) {
-                
-                //Estensione
-                String extension = Paths.get(filePart1.getSubmittedFileName()).getFileName().toString().split(Pattern.quote("."))[1];;
-                
-                
-                filename1 = nomeIMG;
+        //IMMAGINE  ################################################################################
+       /* String immagine;
+        String nomeIMG = user.getImage();
+        String imageFolder = "/Image/AvatarImg";
+        imageFolder = getServletContext().getRealPath(imageFolder);
+        imageFolder = imageFolder.replace("\\build", "");
+        
+        // obtains the upload file part in this multipart request
+        File uploadDirFile = new File(imageFolder);
+        //Controllo se l'immagine esiste già e in uesto caso la cancello col etodo DeleteImgFromDirectory
+        if (uploadDirFile.exists() && nomeIMG !=null) {
+            try {
+                ImageDispatcher.DeleteImgFromDirectory(imageFolder + "/" + nomeIMG);
+            } catch (Exception ex1) {
+                System.out.println("Causa Errore: ");
+                ex1.printStackTrace();
+            }
+        }
+        
+        String filename1 = "";
+         //File di upload
+        if ((filePart1 != null) && (filePart1.getSize() > 0)) {
+
+            String extension = Paths.get(filePart1.getSubmittedFileName()).getFileName().toString().split(Pattern.quote("."))[1];
+            filename1 = nomeIMG;
+            if(filename1 != null && !filename1.equals("")){    
                 filename1 = filename1.replaceAll("\\s+","");
-
-                //Tolgo il primo /Image/AvatarImg
+            //Tolgo il primo /Image/AvatarImg
                 filename1 = filename1.replaceFirst("/Image/AvatarImg", "");
-                
-                
-                File file1 = new File(uploadDirFile, filename1);
-                try (InputStream fileContent = filePart1.getInputStream()) {
-                    String s1 = file1.toPath().toString().replaceFirst("/Image/AvatarImg", "");
-                    File f = new File(s1);
-                    
-                    Files.copy(fileContent, f.toPath());
-                }catch(Exception imgexception) {
-                System.out.println("exception image #1");
-                s.setAttribute("erroreIMG", "Esiste già una lista sul duo account con questo nome!");
+            }else{            
+                filename1 = ImageDispatcher.SetImgName(email, extension);
             }
-            }
-            immagine = rp + "/" + filename1;
-            immagine = immagine.replaceFirst("/", ""); 
-            immagine = immagine.replaceAll("\\s+","");
-            cgeUser.setImage(immagine);
-            //FINE IMMAGINE
-            
-            //Aggiornamento dei campi nominativo, email, e password
-            cgeUser.setEmail(email);
-            cgeUser.setNominativo(nominativo);
-            cgeUser.setPassword(password);
 
+            File file1 = new File(uploadDirFile, filename1);
+            try (InputStream fileContent = filePart1.getInputStream()) {
+                String s1 = file1.toPath().toString().replaceFirst("/Image/AvatarImg", "");
+                File f = new File(s1);
+
+                Files.copy(fileContent, f.toPath());
+            }catch(Exception imgexception) {
+                System.out.println("exception image #1");
+                session.setAttribute("erroreIMG", "Esiste già una lista sul duo account con questo nome!");
+            }
+        }
+        immagine = "/" + filename1;
+        immagine = immagine.replaceFirst("/", ""); 
+        immagine = immagine.replaceAll("\\s+","");
+        cgeUser.setImage(immagine);
+        //Immagine ##############################
+        */
+
+        //Aggiornamento dei campi nominativo, email, e password
+        cgeUser.setEmail(email);
+        cgeUser.setNominativo(nominativo);
+        cgeUser.setPassword(password);
+            
         try {
             user = userdao.changeUser(cgeUser, user);
         } catch (DAOException ex) {
@@ -134,13 +135,12 @@ public class updateUser extends HttpServlet {
 
         if (user != null) {
             updateResult = true;
-            request.getSession().setAttribute("user", user);
-            request.getSession().setAttribute("updateResult", updateResult);
+            session.setAttribute("user", user);
+            session.setAttribute("updateResult", updateResult);
         }
-
-        
+            
         //Redirect
-        if (s.getAttribute("user") != null) {
+        if (session.getAttribute("user") != null) {
             url = "/Lists/profile.jsp";
         } else {
             url = "homepage.jsp";
@@ -161,35 +161,6 @@ public class updateUser extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    public void DeleteImgFromDirectory(String fileName) {
-        // Creo un oggetto file
-        File f = new File(fileName);
-
-        // Mi assicuro che il file esista
-        if (!f.exists()) {
-            throw new IllegalArgumentException("Il File o la Directory non esiste: " + fileName);
-        }
-
-        // Mi assicuro che il file sia scrivibile
-        if (!f.canWrite()) {
-            throw new IllegalArgumentException("Non ho il permesso di scrittura: " + fileName);
-        }
-
-        // Se è una cartella verifico che sia vuota
-        if (f.isDirectory()) {
-            String[] files = f.list();
-            if (files.length > 0) {
-                throw new IllegalArgumentException("La Directory non è vuota: " + fileName);
-            }
-        }
-
-        // Profo a cancellare
-        boolean success = f.delete();
-
-        // Se si è verificato un errore...
-        if (!success) {
-            throw new IllegalArgumentException("Cancellazione fallita");
-        }
-    }
+   
 
 }

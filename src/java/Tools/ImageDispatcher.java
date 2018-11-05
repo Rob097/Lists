@@ -104,6 +104,17 @@ public class ImageDispatcher {
         immagine = immagine.replaceAll("\\s+", "");
         return immagine;
     }
+    
+    public static String SetImgName(String name, String extension){
+        
+        String s;
+        s = name;
+        s = s.trim();
+        s = s.replace("@", "");
+        s = s.replace(".", "");
+       
+        return s + "." + extension;
+    }
             
 
 }

@@ -33,28 +33,44 @@
         <title>Lists</title>
 
         <!-- CSS personalizzati -->
+        
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
         <link rel="stylesheet" href="Pages/bootstrap/css/bootstrap.css" type="text/css">
         <link rel="stylesheet" href="Pages/fonts/font-awesome.css" type="text/css">
         <link rel="stylesheet" href="Pages/css/selectize.css" type="text/css">
-        <link rel="stylesheet" href="Pages/css/style.css">
-        <link rel="stylesheet" href="Pages/css/user.css">
+        <link rel="stylesheet" href="Pages/css/style.css">    
         <link rel="stylesheet" href="Pages/css/navbar.css">
-    </head>
-    <body>
-        <%
-            String Nominativo = "";
-            String Email = "";
-            String Type = "";
-            String image = "../../";
+        <style>
+            .btn-file {
+                position: relative;
+                overflow: hidden;
+               
+            }
+            .btn-file input[type=file] {
+                position: absolute;
+                top: 0;
+                right: 0;
+                min-width: 100%;
+                min-height: 100%;
+                font-size: 100px;
+                text-align: right;
+                filter: alpha(opacity=0);
+                opacity: 0;
+                outline: none;
+                background: white;
+                cursor: inherit;
+                display: block;
+            }
 
-            //String Image = "";
-            Nominativo = u.getNominativo();
-            Email = u.getEmail();
-            Type = u.getTipo();
-            image = u.getImage();
-        %>
+            #img-upload{
+                width: 100%;
+                border-radius: 50%;
+            }
+        </style>
         
+        
+    </head>
+    <body>        
         <div class="page home-page">
             <header class="hero">
                 <div class="hero-wrapper">
@@ -137,8 +153,7 @@
                                         <a class="nav-link icon" href="Pages/ShowListCategories.jsp">
                                             <i class="fa fa-bookmark"></i>Tutte le categorie per liste
                                         </a> 
-                                    </c:if>
-                                                                        
+                                    </c:if>                                                                        
                                 </nav>
                             </div>
                             <!--end col-md-3-->
@@ -146,7 +161,7 @@
                                 <form class="form clearfix" id="login-form" action="/Lists/restricted/updateUser" method="post" enctype="multipart/form-data" onsubmit="return checkCheckBoxes(this);">
                                     <div class="row">
                                         <div class="col-md-8">
-                                            <h2>Personal Information</h2>
+                                            <h2>Informazioni personali</h2>
                                             <section>
                                                 <div class="form-group">
                                                     <label for="email" class="col-form-label">Email</label>
@@ -160,28 +175,47 @@
                                                     <label for="nominativo" class="col-form-label">Nome</label>
                                                     <input type="text" name="nominativo" id="nominativo" tabindex="1" class="form-control" placeholder="Nome" value="${user.nominativo}" >
                                                 </div>
-
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="row">
+                                                            <div>
+                                                                <span class="input-group-btn">                                                                    
+                                                                    <input type="text" class="form-control" readonly>
+                                                                    <span class="btn btn-block btn-file btn-framed btn-primary">
+                                                                        scegli immagine...<input type="file" id="imgInp" name="file1">                                                                        
+                                                                    </span>
+                                                                </span>                                                                
+                                                            </div>
+                                                            <div class="col-md-7">
+                                                                 <img id='img-upload'/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>                                                 
                                                 <!--end form-group-->
 
                                             </section>
                                             <section class="clearfix">
-                                                <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary float-right">Save Changes</button>
+                                                <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary float-right">Salva cambiamenti</button>
                                             </section>
                                             <section class="clearfix">
-                                                <button type="button" class="btn btn-dark float-right" id="delete" data-toggle="modal" data-target="#delete-modal">Delete profile</button>
+                                                <button type="button" class="btn btn-dark float-right" id="delete" data-toggle="modal" data-target="#delete-modal">Cancella profilo</button>
                                             </section>
                                         </div>
                                         <!--end col-md-8--> 
                                         <div class="col-md-4">
                                             <div class="profile-image">
                                                 <div class="image background-image">
-                                                    <img src="/Lists/${user.image}" alt="">
+                                                    <img src="${user.image}" alt="">
+                                                </div> 
+                                                <br>
+                                                <div class="text-center">
+                                                    <c:out value="${user.nominativo}"/>
                                                 </div>
-                                                <div class="single-file-input">
-                                                    <input type="file" name="file1" >
-                                                    <div class="btn btn-framed btn-primary small">Upload a picture</div>
+                                                <div class="text-center">
+                                                    Tipo utente: <c:out value="${user.tipo}"/>
                                                 </div>
-                                            </div>
+                                            </div>                                                                                  
                                         </div>
                                         <!--end col-md-3-->
                                     </div>
@@ -325,68 +359,7 @@
             </div>
         </div>
         
-        <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="page-title">
-                            <div class="container">
-                                <h1 style="text-align: center;">Create list</h1>
-                            </div>
-                            <!--end container-->
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Form per il login -->
-                        <form class="form clearfix" id="CreateShopListform" action="/Lists/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
-                            <div class="form-group">
-                                <label for="Nome" class="col-form-label">Nome della lista</label>
-                                <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="Descrizione" class="col-form-label">Descrizione</label>
-                                <input type="text" name="Descrizione" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="Categoria" class="col-form-label">Categoria</label>
-                                <select name="Categoria" id="Categoria" tabindex="1" size="5" >
 
-                                    <c:forEach items="${categorie}" var="categoria">
-                                        <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
-                                    </c:forEach>
-                                </select><!--<input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>-->
-
-                            </div>
-                            <!--end form-group-->
-                            <%if(find){%>
-                            <div class="form-group">
-                                <label for="Immagine" class="col-form-label required">Immagine</label>
-                                <input type="file" name="file1" required>
-                            </div>
-                            <%}%>
-                            <!--end form-group-->
-                            <div class="d-flex justify-content-between align-items-baseline">
-
-                                <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
-
-                                <%if (find == false && session.getAttribute("guestList") != null) {%>
-                                <h5>Attenzione, hai già salvato una lista. Se non sei registrato puoi salvare solo una lista alla volta. Salvando questa lista, cancellerai la lista gia salvata.</h5>
-                                <%}%>
-                            </div>
-                        </form>
-                        <hr>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
         <!--######################################################-->
 
         <script src="Pages/js/jquery-3.3.1.min.js"></script>
@@ -400,6 +373,44 @@
         <script src="Pages/js/jquery.validate.min.js"></script>
         <script src="Pages/js/custom.js"></script>
         <script src="Pages/js/nav.js"></script>
+        <script src="Pages/js/userimage.js"></script>
+        <script>
+            $(document).ready( function() {
+    	$(document).on('change', '.btn-file :file', function() {
+		var input = $(this),
+			label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+		input.trigger('fileselect', [label]);
+		});
+
+		$('.btn-file :file').on('fileselect', function(event, label) {
+		    
+		    var input = $(this).parents('.input-group').find(':text'),
+		        log = label;
+		    
+		    if( input.length ) {
+		        input.val(log);
+		    } else {
+		        if( log ) alert(log);
+		    }
+	    
+		});
+		function readURL(input) {
+		    if (input.files && input.files[0]) {
+		        var reader = new FileReader();
+		        
+		        reader.onload = function (e) {
+		            $('#img-upload').attr('src', e.target.result);
+		        }
+		        
+		        reader.readAsDataURL(input.files[0]);
+		    }
+		}
+
+		$("#imgInp").change(function(){
+		    readURL(this);
+		}); 	
+	});
+        </script>
 
     </body>
 </html>
