@@ -21,12 +21,14 @@
         <title>Categorie Lista</title>
 
         <!-- CSS personalizzati -->
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
         <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css">
         <link rel="stylesheet" href="fonts/font-awesome.css" type="text/css">
         <link rel="stylesheet" href="css/selectize.css" type="text/css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/user.css">
+        
         <link rel="stylesheet" href="css/navbar.css">
         <title>Categorie Lista</title>
         <style>
@@ -234,17 +236,26 @@
                                         <div class="item">
                                             <div class="wrapper">
                                                 <div class="image">
-                                                    <h3>
-                                                        
+                                                    <h3>                                                        
                                                         <a class="title"><c:out value="${categoria.nome}"/></a> 
-                                                        <a class="tag category"><c:out value="${categoria.admin}"/></a>
-                                                        
+                                                        <!--<a class="tag category"><c:out value="${categoria.admin}"/></a>-->                                                      
                                                     </h3>
-                                                    <div class="text-caps">
-                                                        <a >
-                                                               <img src="../${categoria.immagine}" alt="" class="image-wrapper background-image img-fluid"> 
-                                                        </a>
-                                                    </div>
+                                                    <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+                                                        <div class="carousel-inner">
+                                                          <div class="carousel-item active">
+                                                            <a data-toggle="modal" data-target="#imageModal">
+                                                              <img height="150" src="../${categoria.immagine}" alt="immagine categoria" class=" background-image">
+                                                            </a>
+                                                          </div>
+                                                          <div class="carousel-item">
+                                                              <img height="150" class="background-image" src="https://mdbootstrap.com/img/Photos/Slides/img%20(33).jpg">
+                                                          </div>
+                                                          <div class="carousel-item">
+                                                            <img class="background-image" src="https://mdbootstrap.com/img/Photos/Slides/img%20(31).jpg">
+                                                          </div>
+                                                        </div>
+                                                      </div>                                                    
+                                                       <!-- <img src="../${categoria.immagine}" alt="immagine categoria" class=" background-image">-->
                                                 </div>
                                                 <h4 class="description">
                                                     <a><c:out value="${categoria.descrizione}"/></a>                                                    
@@ -267,6 +278,8 @@
         </div>
 
         <!--#####################################################################################-->
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
         <script src="js/jquery-3.3.1.min.js"></script>
         <script type="text/javascript" src="js/popper.min.js"></script>
         <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
@@ -337,6 +350,7 @@
             </script>
 
         <!--######################Modals#############################################-->
+        <!--create category modal-->
         <div class="modal fade" id="CreateCategoryModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -379,7 +393,46 @@
                 </div>
             </div>
         </div>
-        
+                            
+        <!--image popup modal-->
+        <div id="imageModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+              <div class="item active">
+               <img class="img-responsive" src="http://placehold.it/1200x600/555/000&text=One" alt="...">
+                <div class="carousel-caption">
+                  One Image
+                </div>
+              </div>
+              <div class="item">
+                <img class="img-responsive" src="http://placehold.it/1200x600/fffccc/000&text=Two" alt="...">
+                <div class="carousel-caption">
+                  Another Image
+                </div>
+              </div>
+               <div class="item">
+                <img class="img-responsive" src="http://placehold.it/1200x600/fcf00c/000&text=Three" alt="...">
+                <div class="carousel-caption">
+                  Another Image
+                </div>
+              </div>
+            </div>
+
+            <!-- Controls -->
+            <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+              <span class="glyphicon glyphicon-chevron-left"></span>
+            </a>
+            <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+              <span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
+          </div>
+              </div>
+            </div>
+          </div>
+          </div>
         <!--######################Modals#############################################-->
                
     </body>

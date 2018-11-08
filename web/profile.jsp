@@ -164,8 +164,8 @@
                                             <h2>Informazioni personali</h2>
                                             <section>
                                                 <div class="form-group">
-                                                    <label for="email" class="col-form-label">Email</label>
-                                                    <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" value="${user.email}" >
+                                                    <label for="email" class="col-form-label">Email(non modificabile)</label>
+                                                    <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" value="${user.email}"  disabled>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="password" class="col-form-label">Password</label>
