@@ -21,7 +21,7 @@ public class JDBCDAOFactory implements DAOFactory{
     private static final String DBURL = "jdbc:mysql://ourlists.ddns.net:3306/ourlists?zeroDateTimeBehavior=convertToNull";
     private final  String USERNAME = "user";
     private final String PASSWORD ="the_password";
-    private final transient Connection CON;
+    private transient Connection CON;
     private static JDBCDAOFactory instance;
     
     //ritorna un istanza di questa Classe
@@ -59,6 +59,27 @@ public class JDBCDAOFactory implements DAOFactory{
     //ritorna una connessione
     @Override
     public Connection getConnection(){
+        try {
+            if(CON.isValid(0)){
+                System.out.println("CON IS VALID");
+            }else{
+                try {
+                    Class.forName(DRIVER);
+                    CON = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
+                    System.out.println("CONNESSIONE");
+                } catch (SQLException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }catch (SQLException ex) {
+            try {
+                Class.forName(DRIVER);
+                CON = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
+                System.out.println("CONNESSIONE IN CATCH");
+            } catch (SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
         return CON;
     }
     
