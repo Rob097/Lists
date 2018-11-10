@@ -14,6 +14,9 @@ import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCCategoryDAO;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -29,7 +32,7 @@ import javax.servlet.http.Part;
  * @author Martin
  */
 @MultipartConfig(maxFileSize = 16177215)
-public class CreateListCategory extends HttpServlet {
+public class AddCategoryImage extends HttpServlet {
 
     CategoryDAO categorydao;
     @Override
@@ -42,42 +45,39 @@ public class CreateListCategory extends HttpServlet {
         //assegna a userdao la connessione(costruttore) e salva la connessione in una variabile tipo Connection
         categorydao = new JDBCCategoryDAO(daoFactory.getConnection());
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //inizializza variabili
+      //inizializza variabili
         HttpSession session = (HttpSession) request.getSession(false);
         Category category = new Category();
         User user = (User) session.getAttribute("user");
+        category.setNome(request.getParameter("category"));
+        System.out.println(category.getNome());
         
-        //set category
-        String nome = request.getParameter("Nome");
-        String descrizione = request.getParameter("Descrizione");
-        /*Part filePart1 = request.getPart("file1");
+        Part filePart1 = request.getPart("file1");
         
-        //salva immagine
-        if(filePart1!=null){
+        
+        if(filePart1!=null && filePart1.getSize()>0){
             String relativeListFolderPath = "/Image/CategoryIco";
             String listsFolder = ObtainRootFolderPath(relativeListFolderPath);
+            DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+            Date date = new Date();
             String extension = getImageExtension(filePart1);
-            String imagineName =  category.getNome() + "." + extension;
+            String imagineName =  category.getNome()+ dateFormat.format(date) + "." + extension;
             ImageDispatcher.InsertImgIntoDirectory(listsFolder, imagineName, filePart1);
             String immagine = ImageDispatcher.savePathImgInDatabsae(relativeListFolderPath, imagineName);
             category.setImmagine(immagine);
-        }*/
-        category.setNome(nome);
-        category.setDescrizione(descrizione);
-        category.setAdmin(user.getEmail());
         
-        try {
-            categorydao.createCategory(category);
-        } catch (DAOException ex) {
-            Logger.getLogger(CreateListCategory.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                categorydao.insertImmagine(category);
+            } catch (DAOException ex) {
+                System.out.println("non effetuato");
+                Logger.getLogger(AddCategoryImage.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        
         response.sendRedirect(request.getContextPath() +"/Pages/ShowListCategories.jsp");
-        
     }
 
     /**
@@ -90,7 +90,7 @@ public class CreateListCategory extends HttpServlet {
         return "Short description";
     }// </editor-fold>
     
-    public String ObtainRootFolderPath(String relativePath) {
+     public String ObtainRootFolderPath(String relativePath) {
         String folder = "";
         folder = relativePath;
         folder = getServletContext().getRealPath(folder);

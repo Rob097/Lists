@@ -20,4 +20,5 @@ public interface CategoryDAO {
     public void createCategory(Category category) throws DAOException;
     public Category getByName(String nome) throws DAOException;
     public void deleteCategory(Category category) throws DAOException;
+    public void insertImmagine(Category categoria) throws DAOException;
 }

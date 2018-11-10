@@ -166,6 +166,14 @@
         <servlet-name>DeleteProductCategory</servlet-name>
         <servlet-class>Categories.DeleteProductCategory</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddCategoryImage</servlet-name>
+        <servlet-class>Categories.AddCategoryImage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteCategoryImage</servlet-name>
+        <servlet-class>Categories.DeleteCategoryImage</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -281,6 +289,14 @@
     <servlet-mapping>
         <servlet-name>DeleteProductCategory</servlet-name>
         <url-pattern>/restricted/DeleteProductCategory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddCategoryImage</servlet-name>
+        <url-pattern>/restricted/AddCategoryImage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCategoryImage</servlet-name>
+        <url-pattern>/restricted/DeleteCategoryImage</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

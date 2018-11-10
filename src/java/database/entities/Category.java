@@ -5,6 +5,8 @@
  */
 package database.entities;
 
+import java.util.List;
+
 /**
  *
  * @author Martin
@@ -14,6 +16,7 @@ public class Category {
     private String descrizione;
     private String admin;
     public String immagine;
+    private List<String> immagini;
 
     public String getNome() {
         return nome;
@@ -46,6 +49,15 @@ public class Category {
     public void setImmagine(String immagine) {
         this.immagine = immagine;
     }
+
+    public List<String> getImmagini() {
+        return immagini;
+    }
+
+    public void setImmagini(List<String> immagini) {
+        this.immagini = immagini;
+    }
+    
     
     
 }

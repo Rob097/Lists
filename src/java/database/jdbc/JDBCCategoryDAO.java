@@ -12,11 +12,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-;
-
-
 
 
 /**
@@ -42,7 +41,7 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
                     p.setNome(rs.getString("nome"));
                     p.setDescrizione(rs.getString("descrizione"));
                     p.setAdmin(rs.getString("admin"));
-                    p.setImmagine(rs.getString("immagine"));
+                    p.setImmagini(getImmagini(p));
                     categorie.add(p);
                 }
 
@@ -64,7 +63,10 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
                     p.setNome(rs.getString("nome"));
                     p.setDescrizione(rs.getString("descrizione"));
                     p.setAdmin(rs.getString("admin"));
-                    p.setImmagine(rs.getString("immagine"));
+                    p.setImmagini(getImmagini(p));
+                    if(!p.getImmagini().isEmpty()){
+                         p.setImmagine(p.getImmagini().remove(0));
+                    }
                     categorie.add(p);
                 }
 
@@ -77,16 +79,14 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
 
     @Override
     public void createCategory(Category category) throws DAOException {
-       try(PreparedStatement statement = CON.prepareStatement("insert into Category (nome, descrizione, admin, immagine) values (?, ?, ?, ?)")){
+       try(PreparedStatement statement = CON.prepareStatement("insert into Category (nome, descrizione, admin) values (?, ?, ?)")){
            statement.setString(1, category.getNome());
            statement.setString(2, category.getDescrizione());
            statement.setString(3, category.getAdmin());
-           statement.setString(4, category.getImmagine());
            statement.executeUpdate();
        } catch (SQLException ex) {
            System.out.println("insert categoria non effetuato");
             Logger.getLogger(JDBCCategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-            
         }
     }
 
@@ -102,8 +102,7 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
                     categoria.setNome(rs.getString("nome"));
                     categoria.setDescrizione(rs.getString("descrizione"));
                     categoria.setAdmin(rs.getString("admin"));
-                    categoria.setImmagine(rs.getString("immagine"));
-                    
+                    categoria.setImmagini(getImmagini(categoria));   
                 }
 
                 return categoria;
@@ -125,14 +124,41 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
             if (statement.execute() == true) {
                 System.out.println("cancellato");
             } else {
-                throw new DAOException("Impossible to cancellato the User");
+                throw new DAOException("Impossible to delete Category");
             }
 
         } catch (SQLException ex) {
             throw new DAOException(ex);
-
         }
+    }
+    
+    @Override
+    public void insertImmagine(Category categoria) throws DAOException{
+        try(PreparedStatement statement = CON.prepareStatement("insert into Category_Image (categoria, immagine) values (?, ?)")){
+           statement.setString(1, categoria.getNome());
+           statement.setString(2, categoria.getImmagine());
+           statement.executeUpdate();
+       } catch (SQLException ex) {
+           System.out.println("insert immagine non effetuato");
+            Logger.getLogger(JDBCCategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public List<String> getImmagini(Category categoria) throws DAOException{
+        try (PreparedStatement stm = CON.prepareStatement("SELECT categoria,immagine FROM Category_Image WHERE categoria = ?")) {
+            stm.setString(1, categoria.getNome());
+            
+            List<String> immagini = new LinkedList<>();
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    immagini.add(rs.getString("immagine"));
+                }
 
+                return immagini;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the immages", ex);
+        }
     }
 
     

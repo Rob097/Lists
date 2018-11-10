@@ -108,47 +108,48 @@
                 font-size: 18px;
                 color: black;
                 display: block
+            }            
+            .btn-file {
+                position: relative;
+                overflow: hidden;
+               
+            }
+            .btn-file input[type=file] {
+                position: absolute;
+                top: 0;
+                right: 0;
+                min-width: 100%;
+                min-height: 100%;
+                font-size: 100px;
+                text-align: right;
+                filter: alpha(opacity=0);
+                opacity: 0;
+                outline: none;
+                background: white;
+                cursor: inherit;
+                display: block;
             }
 
-            #myUL li a:hover:not(.header) {
-                background-color: #eee;
+            #img-upload{
+                width: 100%;
+                border-radius: 50%;
+            }
+            .modal-dialog{
+                position: relative;
+                display: table; /* This is important */ 
+                overflow-y: auto;    
+                overflow-x: auto;
+                width: auto;
+                min-width: 800px;
+                max-height: 530px;
+            }
+            .modal-body {
+                position: relative;
+                overflow-y: auto;
+                max-height: 800px;
+                padding: 15px;
             }
             
-            * {
-                box-sizing: border-box;
-            }
-
-            #myInput {
-                background-image: url('/css/searchicon.png');
-                background-position: 10px 12px;
-                background-repeat: no-repeat;
-                width: 100%;
-                font-size: 16px;
-                padding: 12px 20px 12px 40px;
-                border: 1px solid #ddd;
-                margin-bottom: 12px;
-            }
-
-            #myUL {
-                list-style-type: none;
-                padding: 0;
-                margin: 0;
-            }
-
-            #myUL li a {
-                border: 1px solid #ddd;
-                margin-top: -1px; /* Prevent double borders */
-                background-color: #f6f6f6;
-                padding: 12px;
-                text-decoration: none;
-                font-size: 18px;
-                color: black;
-                display: block
-            }
-
-            #myUL li a:hover:not(.header) {
-                background-color: #eee;
-            }
         </style>
     </head>
     <body>
@@ -237,30 +238,34 @@
                                             <div class="wrapper">
                                                 <div class="image">
                                                     <h3>                                                        
-                                                        <a class="title"><c:out value="${categoria.nome}"/></a> 
+                                                        <a class="title"><div>"<c:out value="${categoria.nome}"/></div></a> 
                                                         <!--<a class="tag category"><c:out value="${categoria.admin}"/></a>-->                                                      
                                                     </h3>
                                                     <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
                                                         <div class="carousel-inner">
-                                                          <div class="carousel-item active">
-                                                            <a data-toggle="modal" data-target="#imageModal">
-                                                              <img height="150" src="../${categoria.immagine}" alt="immagine categoria" class=" background-image">
-                                                            </a>
-                                                          </div>
-                                                          <div class="carousel-item">
-                                                              <img height="150" class="background-image" src="https://mdbootstrap.com/img/Photos/Slides/img%20(33).jpg">
-                                                          </div>
-                                                          <div class="carousel-item">
-                                                            <img class="background-image" src="https://mdbootstrap.com/img/Photos/Slides/img%20(31).jpg">
-                                                          </div>
+                                                            <div class="carousel-item active">
+                                                                <a data-toggle="modal" data-target="#imageModal">
+                                                                  <img src="../${categoria.immagine}" alt="immagine categoria" class="img-fluid background-image">
+                                                                </a>
+                                                            </div>
+                                                              <c:forEach items="${categoria.immagini}" var="immagine">
+                                                                    <a class="carousel-item" data-toggle="modal" data-target="#imageModal">
+                                                                        <img src="../${immagine}" alt="immagine categoria" class=" background-image">
+                                                                    </a>
+                                                              </c:forEach>
                                                         </div>
-                                                      </div>                                                    
-                                                       <!-- <img src="../${categoria.immagine}" alt="immagine categoria" class=" background-image">-->
+                                                      </div>                                                   
                                                 </div>
                                                 <h4 class="description">
                                                     <a><c:out value="${categoria.descrizione}"/></a>                                                    
                                                 </h4>
                                                 <div class="admin-controls">
+                                                    <a data-toggle="modal" href="#AddImageModal" class="ad-remove">
+                                                        <i class="fa fa-picture-o"></i>+ immagine
+                                                    </a>                                                  
+                                                    <a data-toggle="modal" href="#deleteImageModal" class="ad-remove">
+                                                        <i class="fa fa-remove"></i>- immagine
+                                                    </a>
                                                     <a href="<%=request.getContextPath()%>/restricted/DeleteListCategory?listname=${categoria.nome}" class="ad-remove">
                                                         <i class="fa fa-trash"></i>Cancella
                                                     </a>
@@ -308,6 +313,7 @@
                     }
                 }
             </script>
+            
             <script>
                 function myFunction() {
                     var input, filter, items, li, a, i;
@@ -347,7 +353,45 @@
                         }
                     }
                 }
-            </script>
+            </script>            
+            <script>                
+            $(document).ready( function() {
+    	$(document).on('change', '.btn-file :file', function() {
+		var input = $(this),
+			label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+		input.trigger('fileselect', [label]);
+		});
+
+		$('.btn-file :file').on('fileselect', function(event, label) {
+		    
+		    var input = $(this).parents('.input-group').find(':text'),
+		        log = label;
+		    
+		    if( input.length ) {
+		        input.val(log);
+		    } else {
+		        if( log ) alert(log);
+		    }
+	    
+		});
+		function readURL(input) {
+		    if (input.files && input.files[0]) {
+		        var reader = new FileReader();
+		        
+		        reader.onload = function (e) {
+		            $('#img-upload').attr('src', e.target.result);
+		        }
+		        
+		        reader.readAsDataURL(input.files[0]);
+		    }
+		}
+
+		$("#imgInp").change(function(){
+		    readURL(this);
+		}); 	
+	});
+        </script>
+            
 
         <!--######################Modals#############################################-->
         <!--create category modal-->
@@ -359,7 +403,6 @@
                             <div class="container">
                                 <h1 style="text-align: center;">Crea una categoria</h1>
                             </div>
-                            <!--end container-->
                         </div>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -367,7 +410,7 @@
                     </div>
                     <div class="modal-body">
                         <!-- Form per il login -->
-                        <form class="form clearfix" id="CreateShopListform" action="<%=request.getContextPath()%>/restricted/CreateListCategory"  method="post" role="form" enctype="multipart/form-data">
+                        <form class="form clearfix" id="CreateShopListform" action="<%=request.getContextPath()%>/restricted/CreateListCategory"  method="post" role="form">
                             <div class="form-group">
                                 <label for="Nome" class="col-form-label">Nome della categoria</label>
                                 <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
@@ -376,10 +419,6 @@
                             <div class="form-group">
                                 <label for="Descrizione" class="col-form-label">Descrizione</label>
                                 <input type="text" name="Descrizione" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="Immagine" class="col-form-label">Immagine</label>
-                                <input type="file" name="file1" required>
                             </div>
                             <div class="d-flex justify-content-between align-items-baseline">
                                 <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Crea categoria</button>
@@ -391,6 +430,101 @@
                         <hr>
                     </div>                    
                 </div>
+            </div>
+        </div>
+        <!--adimageModal-->
+        <div class="modal fade" id="AddImageModal" tabindex="-1" role="dialog"aria-hidden="true" enctype="multipart/form-data">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1 class="text-center">Aggiungi un immagine</h1>
+                            </div>                             
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div> 
+                    <div class="modal-body">
+                        <form class="form clearfix" action="<%=request.getContextPath()%>/restricted/AddCategoryImage"  method="post" role="form" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="hidden" name="category" id="hiddenfield" value="Farmacia" >
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <span class="input-group-btn">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <input type="text" class="form-control" readonly>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <span class="btn btn-file btn-primary">
+                                                            scegli immagine...<input type="file" id="imgInp" name="file1">                                                                        
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </span>                                                                
+                                        </div>
+                                        <div class="col-6">
+                                             <img id='img-upload'/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="row">
+                                <div class="col-4">
+                                     <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Submit</button>
+                                </div>
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>  
+                                <div class="col-3">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>                
+            </div>
+        </div>
+        <!--deleteimageModal-->
+        <div class="modal fade" id="deleteImageModal" tabindex="-1" role="dialog"aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1 class="text-center">Quale immagine vuoi cancellare</h1>
+                            </div>                             
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div> 
+                    <div class="modal-body">
+                        <form class="form clearfix" action="<%=request.getContextPath()%>/restricted/DeleteCategoryImage"  method="post" role="form" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="row">
+                                <div class="col-4">
+                                     <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Submit</button>
+                                </div>
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>  
+                                <div class="col-3">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>                
             </div>
         </div>
                             
@@ -434,6 +568,4 @@
           </div>
           </div>
         <!--######################Modals#############################################-->
-               
-    </body>
 </html>

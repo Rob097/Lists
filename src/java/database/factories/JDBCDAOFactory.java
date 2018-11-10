@@ -61,7 +61,6 @@ public class JDBCDAOFactory implements DAOFactory{
     public Connection getConnection(){
         try {
             if(CON.isValid(0)){
-                System.out.println("CON IS VALID");
             }else{
                 try {
                     Class.forName(DRIVER);
