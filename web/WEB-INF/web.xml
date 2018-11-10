@@ -184,7 +184,6 @@
     <servlet>
         <servlet-name>DeleteCategoryImage</servlet-name>
         <servlet-class>Categories.DeleteCategoryImage</servlet-class>
-
     </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
