@@ -177,6 +177,14 @@
     <servlet>
         <servlet-name>changePassword</servlet-name>
         <servlet-class>users.changePassword</servlet-class>
+
+        <servlet-name>AddCategoryImage</servlet-name>
+        <servlet-class>Categories.AddCategoryImage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteCategoryImage</servlet-name>
+        <servlet-class>Categories.DeleteCategoryImage</servlet-class>
+
     </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
@@ -295,6 +303,7 @@
         <url-pattern>/restricted/DeleteProductCategory</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+
         <servlet-name>RegisterEmail</servlet-name>
         <url-pattern>/RegisterEmail</url-pattern>
     </servlet-mapping>
@@ -305,6 +314,14 @@
     <servlet-mapping>
         <servlet-name>changePassword</servlet-name>
         <url-pattern>/changePassword</url-pattern>
+
+        <servlet-name>AddCategoryImage</servlet-name>
+        <url-pattern>/restricted/AddCategoryImage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCategoryImage</servlet-name>
+        <url-pattern>/restricted/DeleteCategoryImage</url-pattern>
+
     </servlet-mapping>
     <session-config>
         <session-timeout>
