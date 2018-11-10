@@ -166,6 +166,18 @@
         <servlet-name>DeleteProductCategory</servlet-name>
         <servlet-class>Categories.DeleteProductCategory</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RegisterEmail</servlet-name>
+        <servlet-class>log.RegisterEmail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>restorePassword</servlet-name>
+        <servlet-class>log.restorePassword</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>changePassword</servlet-name>
+        <servlet-class>users.changePassword</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -281,6 +293,18 @@
     <servlet-mapping>
         <servlet-name>DeleteProductCategory</servlet-name>
         <url-pattern>/restricted/DeleteProductCategory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegisterEmail</servlet-name>
+        <url-pattern>/RegisterEmail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>restorePassword</servlet-name>
+        <url-pattern>/restorePassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>changePassword</servlet-name>
+        <url-pattern>/changePassword</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

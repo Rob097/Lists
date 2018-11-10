@@ -32,4 +32,6 @@ public interface UserDAO{
     public ArrayList<User> getAllUsers() throws DAOException;
     
     public void changeRole (String user, String role, String list) throws DAOException;
+    
+    public void changePassword (String email, String password) throws DAOException;
 }

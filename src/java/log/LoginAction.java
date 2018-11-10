@@ -70,7 +70,8 @@ public class LoginAction extends HttpServlet {
         ArrayList <Notification> notifiche = null;
         
         HttpSession session = (HttpSession) request.getSession(false);        
-
+        session.setAttribute("errore", null);
+        session.setAttribute("messaggio", null);
         try {
             //passed parameter values
             String username = request.getParameter("email");
@@ -79,7 +80,7 @@ public class LoginAction extends HttpServlet {
 
             //ritorna i dati dell`utente con email e password inserito
             user = userdao.getByEmailAndPassword(username, password);            
-
+            //System.out.println(user.getNominativo());
             if (user != null) {
                 loginResult = true; 
                 

@@ -38,6 +38,7 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
        try (PreparedStatement stm = CON.prepareStatement("Select * from User where email=? and password=?")) {
             stm.setString(1, email);
             stm.setString(2, password);
+            
             try (ResultSet rs = stm.executeQuery()) {
 
                 int count = 0;
@@ -47,7 +48,6 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
                         throw new DAOException("Unique constraint violated! There are more than one user with the same email! WHY???");
                     }
                     User user = new User();
-                   
                     user.setEmail(rs.getString("email"));
                     user.setPassword(rs.getString("password"));
                     user.setNominativo(rs.getString("nominativo"));
@@ -249,6 +249,18 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
             statement.setString(1, role);
             statement.setString(2, user);
             statement.setString(3, list);
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("errore update role");
+        }
+    }
+
+    @Override
+    public void changePassword(String email, String password) throws DAOException {
+        try (PreparedStatement statement = CON.prepareStatement("update User set password = ? where email = ? ")) {
+            statement.setString(1, password);
+            statement.setString(2, email);
             statement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);

@@ -64,7 +64,7 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
                     p.setNome(rs.getString("nome"));
                     p.setDescrizione(rs.getString("descrizione"));
                     p.setAdmin(rs.getString("admin"));
-                    p.setImmagine(rs.getString("immagine"));
+                    //p.setImmagine(rs.getString("immagine"));
                     categorie.add(p);
                 }
 

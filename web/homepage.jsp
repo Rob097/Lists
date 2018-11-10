@@ -185,15 +185,16 @@
                     <!--######################################################################################### 
                                     check dell'eventuale messaggio da visualizzare
                     ######################################################################################### -->
+                    
                     <c:if test="${regResult==true}">
-                        <div class="alert alert-success" id="alert">
+                        <div class="alert alert-success text-center" id="alert">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            <strong>Successful Registration!</strong> You can now log in in your account.
+                            <strong>Registrazione avvenuta con successo</strong> Adesso puoi fare il login al tuo account!
                         </div>
                         <%session.setAttribute("regResult", null); %>
                     </c:if>
                     <c:if test="${erroreIMG!=null}">
-                        <div class="alert alert-warning" id="alert">
+                        <div class="alert alert-warning text-center" id="alert">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                             <strong>Attenzione!</strong> ${erroreIMG}
                         </div>
@@ -396,6 +397,28 @@
                     </div>
                 <%}
             }%>
+            
+            
+            <!--ERRORI-->
+            <%if(session.getAttribute("errore") != null){%>
+                <div class="container pt-5" id="alert">
+                    <div class="alert alert-danger text-center" role="alert">
+                        <strong><%=session.getAttribute("errore")%></strong>
+                    </div>
+                </div>
+            <%  //session.setAttribute("errore", null);
+            }%>
+            
+            <!--MESSAGGI-->
+            <%if(session.getAttribute("messaggio") != null){%>
+                <div class="container pt-5" id="alert">
+                    <div class="alert alert-success text-center" role="alert">
+                        <strong><%=session.getAttribute("messaggio")%></strong>
+                    </div>
+                </div>
+            <%  //session.setAttribute("errore", null);
+            }%>
+            
             <!-- FINE DELLE NOTIFICHE -->
 
             <!--*********************************************************************************************************-->
@@ -648,7 +671,7 @@
                             </div>
                             <!--end form-group-->
                             <div class="form-group">
-                                <label for="password" class="col-form-label required">Password</label>
+                                <label for="password" class="col-form-label required" style="width: 100%">Password</label>
                                 <input type="password" name="password" id="passwordlogin" tabindex="2" class="form-control" placeholder="Password" required>
                             </div>
                             <!--end form-group-->
@@ -665,7 +688,7 @@
                         </form>
                         <hr>
                         <p>
-                            Troubles with signing? <a href="#RegisterModal" data-toggle="modal" class="link">Click here.</a>
+                            Hai dimenticato la password? <a data-dismiss="modal" href="#" data-toggle="modal" data-target="#restorePassword" class="link">Recuperala.</a>
                         </p>
                     </div>
                     <div class="modal-footer">
@@ -848,6 +871,80 @@
 
 
         <!--######################################################-->
+        
+        <!-- restore password Modal -->
+        <div class="modal fade" id="restorePassword" tabindex="-1" role="dialog" aria-labelledby="restorePassword" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+
+                        <div class="page-title">
+                            <div class="container">
+                                <h1>Recupera la password</h1>
+                            </div>
+                            <!--end container-->
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>            
+
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form per il login -->
+                        <form class="form clearfix" id="login-form" action="/Lists/restorePassword" method="post" role="form">
+                            <div class="form-group">
+                                <label for="email" class="col-form-label required">Email</label>
+                                <input type="text" name="email" id="emaillogin" tabindex="1" class="form-control" placeholder="Email" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <button style="float: left;" type="submit" class="btn btn-primary">Recupera password</button>
+                                <button style="float: right;" type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--######################################################-->
+        
+        <!-- new password Modal -->
+        <div class="modal fade" id="newPassword" tabindex="-1" role="dialog" aria-labelledby="newPassword" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+
+                        <div class="page-title">
+                            <div class="container">
+                                <h1>Nuova password</h1>
+                            </div>
+                            <!--end container-->
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>            
+
+                    </div>
+                    <div class="modal-body">
+                        <h5>Nuova passworrd per <%=request.getParameter("restorePasswordOf")%></h5>
+                        <!-- Form per il login -->
+                        <form class="form clearfix" id="login-form" action="/Lists/changePassword" method="post" role="form">
+                            <div class="form-group">
+                                <label for="password" class="col-form-label required">Password</label>
+                                <input type="password" name="password" id="emaillogin" tabindex="1" class="form-control" placeholder="Password" value="" required>
+                                <input type="hidden" name="email" value="<%=request.getParameter("restorePasswordOf")%>">
+                            </div>
+                            <!--end form-group-->
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <button style="float: left;" type="submit" class="btn btn-primary">Recupera password</button>
+                                <button style="float: right;" type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--######################################################-->
 
 
         <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
@@ -933,6 +1030,15 @@
 
                 });
             </script>
+            
+            <script>
+                 $(document).ready (function(){
+                <%if(request.getParameter("restorePasswordOf") != null){%>
+                    $('#newPassword').modal('show'); 
+                <%}%>
+                });
+            </script>
+            
 
             <!--###############################################################################################################################
                                 CHIUSURA DATABASE
