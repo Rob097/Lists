@@ -71,7 +71,7 @@ public class LoginAction extends HttpServlet {
         
         HttpSession session = (HttpSession) request.getSession(false);        
         session.setAttribute("errore", null);
-        session.setAttribute("messaggio", null);
+        session.setAttribute("errore", null);
         try {
             //passed parameter values
             String username = request.getParameter("email");

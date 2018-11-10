@@ -61,6 +61,7 @@ public class ListCategoryFilter implements Filter {
                           try {
                               ArrayList<Category> allCategories = categorydao.getAllCategories();
                               session.setAttribute("allCategories", allCategories);
+            
                           } catch (DAOException ex) {
                               System.out.println("don't get all categories form database");
                               Logger.getLogger(ListCategoryFilter.class.getName()).log(Level.SEVERE, null, ex);

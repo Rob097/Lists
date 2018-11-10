@@ -13,6 +13,7 @@ import database.factories.DAOFactory;
 import database.jdbc.JDBCCategoryDAO;
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -52,13 +53,16 @@ public class DeleteListCategory extends HttpServlet {
             Logger.getLogger(DeleteListCategory.class.getName()).log(Level.SEVERE, null, ex);
         }        
             
-        if(category.getImmagine() != null){
+        if(category.getImmagini() != null){
             String listsFolder = "";
-            String rp = "/Image/CategoryIco";
             listsFolder = getServletContext().getRealPath(listsFolder);
             listsFolder = listsFolder.replace("\\build", "");
-            String imgfolder = category.getImmagine().replace("/Image/CategoryIco", "");
-            ImageDispatcher.DeleteImgFromDirectory(listsFolder + imgfolder);            
+            Iterator i = category.getImmagini().iterator();
+            while(i.hasNext()){
+                String img = (String) i.next();
+                String imgfolder = img.replace("/Image/CategoryIco", "");
+                ImageDispatcher.DeleteImgFromDirectory(listsFolder + imgfolder);
+            }
         }
         
         try {
