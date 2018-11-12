@@ -260,11 +260,9 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
         
         HttpSession session = request.getSession();
         ArrayList<Product> products = new ArrayList<>();
-        final int RANGE = 10;
-        int variabile = 0;
-        for(int i = number; i <= number+RANGE+variabile; i++){
-            try (PreparedStatement stm = CON.prepareStatement("select * from Product where PID = ?")) {
-                stm.setInt(1, i);
+        
+            try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM Product ORDER BY PID LIMIT 10 OFFSET ?;")) {
+                stm.setInt(1, number);
                 try (ResultSet rs = stm.executeQuery()) {
                     while (rs.next()) {
                         Product p = new Product();
@@ -274,16 +272,16 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
                         p.setCategoria_prodotto(rs.getString("categoria_prod"));
                         p.setImmagine(rs.getString("immagine"));
                         products.add(p);
+                        session.setAttribute(p.getNome(), p.getNome());
                     }
                 }catch(Exception ex){
-                    variabile++;
+                    ex.printStackTrace();
                 }
             } catch (SQLException ex) {
                 throw new DAOException("Impossible number product", ex);
             }
-        }
-        session.setAttribute("number", number+RANGE);
-        variabile = 0;
+        
+        session.setAttribute("number", number+10);
         return products;
     }
 

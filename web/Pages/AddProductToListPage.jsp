@@ -65,7 +65,6 @@
 
     session.setAttribute("number", 15);
 
-
 %>
 
 <!DOCTYPE html>
@@ -368,7 +367,7 @@
                                     } else if (request.getParameter("cat") == null || request.getParameter("cat").equals("all")) {
                                         int count = 5;
                                         for (Product p : li) {
-                                            if (count <= 15) {
+                                            if (count <= 15) {  session.setAttribute(p.getNome(), p.getNome());
                                     %>
                                     <div class="item">
                                         <!--end ribbon-->

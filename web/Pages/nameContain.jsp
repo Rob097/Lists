@@ -55,7 +55,7 @@
                         </div>
                         <!--end description-->
                         <%if (listdao.chckIfProductIsInTheList(p.getPid(), shoplistName) == false) {%>
-                        <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
+                        <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Aggiungi ad una lista</a>
                         <%} else {%> 
                         <a class="detail"><img src="img/correct.png" id="addIco"></a>
                             <%}%>

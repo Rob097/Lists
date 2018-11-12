@@ -25,14 +25,13 @@
         ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
         
             int number;
-            if(request.getSession().getAttribute("number") == null){number = 5;}
+            if(request.getSession().getAttribute("number") == null){number = 0;}
             else{number = (int) request.getSession().getAttribute("number");}
             String resp = "";
             String shoplistName = (String) request.getSession().getAttribute("shopListName");
-            ArrayList<Product> pp; Product p = null;
+            ArrayList<Product> pp;
             pp = productdao.getByRange(number, request);
-            for (int i = 1; i <= 10; i++) {
-                p= pp.get(i);%>
+            for (Product p : pp) {%>
                 <div class="item">
                     <!--end ribbon-->
                     <div class="wrapper">
@@ -57,7 +56,7 @@
                         </div>
                         <!--end description-->
                         <%if (listdao.chckIfProductIsInTheList(p.getPid(), shoplistName) == false) {%>
-                        <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
+                        <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Aggiungi ad una lista</a>
                         <%} else {%> 
                         <a class="detail"><img src="img/correct.png" id="addIco"></a>
                             <%}%>
