@@ -8,6 +8,7 @@ package database.daos;
 import database.entities.Category;
 import database.exceptions.DAOException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -21,4 +22,6 @@ public interface CategoryDAO {
     public Category getByName(String nome) throws DAOException;
     public void deleteCategory(Category category) throws DAOException;
     public void insertImmagine(Category categoria) throws DAOException;
+    public List<String> getAllImagesbyName(String name) throws DAOException;
+    public void deleteImage(String image) throws DAOException;
 }

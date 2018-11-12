@@ -160,6 +160,44 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
             throw new DAOException("Impossible to get the immages", ex);
         }
     }
+    
+    @Override
+    public void deleteImage(String image) throws DAOException {
+       if (image == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed image is null"));
+        }
+
+        try (PreparedStatement statement = CON.prepareStatement("delete from Category_Image where immagine=?")) {
+            statement.setString(1, image);
+
+            if (statement.executeUpdate() > 0) {
+                System.out.println("cancellato");
+            } else {
+                throw new DAOException("Impossible to delete the image");
+            }
+
+        } catch (SQLException ex) {
+            throw new DAOException(ex);
+        }
+    }
+
+    @Override
+    public List<String> getAllImagesbyName(String name) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT immagine FROM Category_Image WHERE categoria = ?")) {
+            stm.setString(1, name);
+            
+            List<String> immagini = new LinkedList<>();
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    immagini.add(rs.getString("immagine"));
+                }
+
+                return immagini;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the immages", ex);
+        }
+    }
 
     
 

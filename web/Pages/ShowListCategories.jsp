@@ -31,6 +31,8 @@
         
         <link rel="stylesheet" href="css/navbar.css">
         <title>Categorie Lista</title>
+        
+        
         <style>
             body{
                 overflow-x: unset;
@@ -146,11 +148,12 @@
             .modal-body {
                 position: relative;
                 overflow-y: auto;
-                max-height: 800px;
+                max-height: 530px;
                 padding: 15px;
             }
             
         </style>
+            
     </head>
     <body>
         <div class="page home-page">
@@ -238,20 +241,22 @@
                                             <div class="wrapper">
                                                 <div class="image">
                                                     <h3>                                                        
-                                                        <a class="title"><div>"<c:out value="${categoria.nome}"/></div></a> 
+                                                        <a class="title"><div><c:out value="${categoria.nome}"/></div></a> 
                                                         <!--<a class="tag category"><c:out value="${categoria.admin}"/></a>-->                                                      
                                                     </h3>
                                                     <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
                                                         <div class="carousel-inner">
                                                             <div class="carousel-item active">
-                                                                <a data-toggle="modal" data-target="#imageModal">
+                                                                <a href="<%=request.getContextPath()%>/restricted/NewCategoryNameAttribute?listname=${categoria.nome}&link=show" class="ad-remove">
                                                                   <img src="../${categoria.immagine}" alt="immagine categoria" class="img-fluid background-image">
                                                                 </a>
                                                             </div>
                                                               <c:forEach items="${categoria.immagini}" var="immagine">
-                                                                    <a class="carousel-item" data-toggle="modal" data-target="#imageModal">
-                                                                        <img src="../${immagine}" alt="immagine categoria" class=" background-image">
-                                                                    </a>
+                                                                    <div class="carousel-item">
+                                                                        <a href="<%=request.getContextPath()%>/restricted/NewCategoryNameAttribute?listname=${categoria.nome}&link=show" class="ad-remove">
+                                                                            <img src="../${immagine}" alt="immagine categoria" class=" background-image">
+                                                                        </a>
+                                                                    </div>
                                                               </c:forEach>
                                                         </div>
                                                       </div>                                                   
@@ -260,10 +265,10 @@
                                                     <a><c:out value="${categoria.descrizione}"/></a>                                                    
                                                 </h4>
                                                 <div class="admin-controls">
-                                                    <a data-toggle="modal" href="#AddImageModal" class="ad-remove">
+                                                    <a href="<%=request.getContextPath()%>/restricted/NewCategoryNameAttribute?listname=${categoria.nome}&link=add" class="ad-remove">
                                                         <i class="fa fa-picture-o"></i>+ immagine
                                                     </a>                                                  
-                                                    <a data-toggle="modal" href="#deleteImageModal" class="ad-remove">
+                                                    <a href="<%=request.getContextPath()%>/restricted/NewCategoryNameAttribute?listname=${categoria.nome}&link=delete" class="ad-remove">
                                                         <i class="fa fa-remove"></i>- immagine
                                                     </a>
                                                     <a href="<%=request.getContextPath()%>/restricted/DeleteListCategory?listname=${categoria.nome}" class="ad-remove">
@@ -289,13 +294,14 @@
         <script type="text/javascript" src="js/popper.min.js"></script>
         <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
-        <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
         <script src="js/selectize.min.js"></script>
         <script src="js/masonry.pkgd.min.js"></script>
         <script src="js/icheck.min.js"></script>
         <script src="js/jquery.validate.min.js"></script>
         <script src="js/custom.js"></script>
         <script src="js/nav.js"></script>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
+
         <script>
                 function myFunction() {
                     var input, filter, ul, li, a, i;
@@ -433,24 +439,21 @@
             </div>
         </div>
         <!--adimageModal-->
-        <div class="modal fade" id="AddImageModal" tabindex="-1" role="dialog"aria-hidden="true" enctype="multipart/form-data">
+        <div class="modal fade" id="AddImageModal" tabindex="-1" role="dialog" aria-labelledby="AddImageModal" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="page-title">
                             <div class="container">
-                                <h1 class="text-center">Aggiungi un immagine</h1>
+                                <h1 class="text-center">Aggiungi un immagine</h1> <h3>per la categoria <c:out value="${listname}"/></h3>
                             </div>                             
                         </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
                     </div> 
                     <div class="modal-body">
                         <form class="form clearfix" action="<%=request.getContextPath()%>/restricted/AddCategoryImage"  method="post" role="form" enctype="multipart/form-data">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type="hidden" name="category" id="hiddenfield" value="Farmacia" >
+                                    <input type="hidden" name="category" id="hiddenfield" value="<c:out value="${listname}"/>" >
                                     <div class="row">
                                         <div class="col-6">
                                             <span class="input-group-btn">
@@ -479,7 +482,7 @@
                                      <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Submit</button>
                                 </div>
                                 <div class="col-6">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                   <a href="<%=request.getContextPath()%>/restricted/NewCategoryNameAttribute?listname=NO" class="btn btn-dark">Close</a>
                                 </div>  
                                 <div class="col-3">
                                 </div>
@@ -490,69 +493,61 @@
             </div>
         </div>
         <!--deleteimageModal-->
-        <div class="modal fade" id="deleteImageModal" tabindex="-1" role="dialog"aria-hidden="true">
+        <div class="modal fade" id="deleteImageModal" tabindex="-1" role="dialog" aria-labelledby="deleteImageModal" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="page-title">
                             <div class="container">
-                                <h1 class="text-center">Quale immagine vuoi cancellare</h1>
+                                <h1 class="text-center">Quale immagine vuoi cancellare</h1><h2>Categoria: <c:out value="${listname}"/></h2>
                             </div>                             
                         </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
                     </div> 
-                    <div class="modal-body">
-                        <form class="form clearfix" action="<%=request.getContextPath()%>/restricted/DeleteCategoryImage"  method="post" role="form" enctype="multipart/form-data">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <div class="row">
-                                <div class="col-4">
-                                     <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Submit</button>
-                                </div>
-                                <div class="col-6">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>  
-                                <div class="col-3">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                    <div class="modal-body">                        
+                            <div class="row">  
+                                <c:forEach items="${Immagini}" var="immagine">
+                                    <div class="col-md-4">
+                                        <div class="thumbnail">
+                                          <a href="<%=request.getContextPath()%>/restricted/DeleteCategoryImage?image=${immagine}">
+                                            <img src="../${immagine}" alt="immagini categoria ${listname}">
+                                          </a>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div> 
+                            <a href="<%=request.getContextPath()%>/restricted/NewCategoryNameAttribute?listname=NO" class="btn btn-dark">Close</a> 
+                        </form>
+                    </div>
                 </div>                
             </div>
         </div>
                             
+                            
         <!--image popup modal-->
         <div id="imageModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog" style="min-width: 100px;">
               <div class="modal-content">
                 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
-              <div class="item active">
-               <img class="img-responsive" src="http://placehold.it/1200x600/555/000&text=One" alt="...">
-                <div class="carousel-caption">
-                  One Image
-                </div>
-              </div>
-              <div class="item">
-                <img class="img-responsive" src="http://placehold.it/1200x600/fffccc/000&text=Two" alt="...">
-                <div class="carousel-caption">
-                  Another Image
-                </div>
-              </div>
-               <div class="item">
-                <img class="img-responsive" src="http://placehold.it/1200x600/fcf00c/000&text=Three" alt="...">
-                <div class="carousel-caption">
-                  Another Image
-                </div>
-              </div>
+                <div class="carousel-item active">
+                    <a href="<%=request.getContextPath()%>/restricted/NewCategoryNameAttribute?listname=NO" class="btn btn-framed btn-block">
+                    <img class="img-responsive" src="../${firstImg}" alt="img">
+                     <div class="carousel-caption">
+                         Close 
+                     </div>
+                    </a>
+                   </div>
+                <c:forEach items="${Immagini}" var="immagine">
+                    <div class="carousel-item">
+                    <a href="<%=request.getContextPath()%>/restricted/NewCategoryNameAttribute?listname=NO" class="btn btn-framed btn-block">
+                    <img class="img-responsive text-center" src="../${immagine}" alt="...">
+                     <div class="carousel-caption">
+                         Close
+                     </div>
+                      </a>
+                   </div>
+                </c:forEach>
             </div>
 
             <!-- Controls -->
@@ -566,6 +561,28 @@
               </div>
             </div>
           </div>
-          </div>
         <!--######################Modals#############################################-->
+        <c:if test="${modalImage==true}">
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $("#AddImageModal").modal('show');
+                });
+            </script>
+        </c:if>
+        <c:if test="${deleteImage==true}">
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $("#deleteImageModal").modal('show');
+                });
+            </script>
+        </c:if>
+        <c:if test="${showImage==true}">
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $("#imageModal").modal('show');
+                });
+            </script>
+        </c:if>
+        
+</body>
 </html>
