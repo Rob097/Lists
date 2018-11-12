@@ -69,6 +69,12 @@
                     padding: 15px;
                     overflow:scroll;
                 }
+                .deleteNotification{
+                    float: right;
+                    font-weight: bolder;
+                    color: red !important;
+                    cursor: pointer;
+                }
             </style>
     </head>
     <body>
@@ -327,65 +333,90 @@
                         <%if(!nNewProd.isEmpty()){
                             if(nNewProd.size() == 1){
                         %>
-                                <div class="alert alert-success text-center" role="alert">
+                                <div class="alert alert-success text-center" role="alert" id="nNewProdSingle">
                                     <a href="/Lists/ShowShopList?nome=<%=nNewProd.get(0).getListName()%>"><strong>Nuovo prodotto!</strong> E' stato aggiunto un nuovo prodotto alla lista <%=nNewProd.get(0).getListName()%></a>.
+                                    <a onclick="deleteFromArray('nNewProdSingle', 'new_product');" class="deleteNotification">X</a>
                                 </div>
-                            <%}else{%>
-                                <div class="alert alert-success text-center" role="alert">
+                            <% }else{ %>
+                                <div class="alert alert-success text-center" role="alert" id="nNewProdMultiple">
                                     <a href="/Lists/foreignLists.jsp"><strong>Nuovi Prodotti</strong> sono stati aggiunti alle liste.</a>
+                                    <a onclick="deleteFromArray('nNewProdMultiple', 'new_product');" class="deleteNotification">X</a>
                                 </div>
                             <%}
                         }%>
                         <%if(!nRemoveProd.isEmpty()){
                             if(nRemoveProd.size() == 1){
                         %>
-                                <div class="alert alert-success text-center" role="alert">
+                                <div class="alert alert-success text-center" role="alert" id="nRemoveProdSingle">
                                     <a href="/Lists/ShowShopList?nome=<%=nRemoveProd.get(0).getListName()%>"><strong>Prodotto rimosso!</strong> E' stato rimosso un prodotto dalla lista <%=nRemoveProd.get(0).getListName()%></a>.
+                                    <a onclick="deleteFromArray('nRemoveProdSingle', 'remove_product');" class="deleteNotification">X</a>
                                 </div>
                             <%}else{%>
-                                <div class="alert alert-success text-center" role="alert">
+                                <div class="alert alert-success text-center" role="alert" id="nRemoveProdMultiple">
                                     <a href="/Lists/foreignLists.jsp"><strong>Prodotti rimossi!</strong> Sono stati rimossi dei prodotti dalle liste.</a>
+                                    <a onclick="deleteFromArray('nRemoveProdMultiple', 'remove_product');" class="deleteNotification">X</a>
                                 </div>
                             <%}
                         }%>
                         <%if(!nEmptyList.isEmpty()){%>
-                            <div class="alert alert-success text-center" role="alert">
+                            <div class="alert alert-success text-center" role="alert" id="nEmptyListSingle">
                                 <a href="/Lists/ShowShopList?nome=<%=nEmptyList.get(0).getListName()%>"><strong>Lista svuotata!</strong> E' stata svuotata la lista <%=nEmptyList.get(0).getListName()%></a>.
+                                <a onclick="deleteFromArray('nEmptyListSingle', 'empty_list');" class="deleteNotification">X</a>
                             </div>
                         <%}%>
                         <%if(!nMsg.isEmpty()){
                             if(nMsg.size() == 1){
                         %>
-                                <div class="alert alert-success text-center" role="alert">
+                                <div class="alert alert-success text-center" role="alert" id="nMsgSingle">
                                     <a href="/Lists/ShowShopList?nome=<%=nMsg.get(0).getListName()%>"><strong>Nuovo Messaggio!</strong> Hai un nuovo messaggio nella lista <%=nMsg.get(0).getListName()%></a>.
+                                    <a onclick="deleteFromArray('nMsgSingle', 'new_message');" class="deleteNotification">X</a>
                                 </div>
                             <%}else{%>
-                                <div class="alert alert-success text-center" role="alert">
+                                <div class="alert alert-success text-center" role="alert" id="nMsgMultiple">
                                     <a href="/Lists/foreignLists.jsp"><strong>Nuovi Messaggi</strong> nelle liste.</a>
+                                    <a onclick="deleteFromArray('nMsgMultiple', 'new_message');" class="deleteNotification">X</a>
                                 </div>
                             <%}
                         }%>
                         <%if(!nRole.isEmpty()){
                             if(nRole.size() == 1){
                         %>
-                                <div class="alert alert-success text-center" role="alert">
+                                <div class="alert alert-success text-center" role="alert" id="nRoleSingle">
                                     <a href="/Lists/ShowShopList?nome=<%=nRole.get(0).getListName()%>"><strong>Permessi aggiornati!</strong> Sono cambiati i tuoi permessi nella lista <%=nRole.get(0).getListName()%></a>.
+                                    <a onclick="deleteFromArray('nRoleSingle', 'role_change');" class="deleteNotification">X</a>
                                 </div>
                             <%}else{%>
-                                <div class="alert alert-success text-center" role="alert">
+                                <div class="alert alert-success text-center" role="alert" id="nRoleMultiple">
                                     <a href="/Lists/foreignLists.jsp"><strong>Permessi aggiornati!</strong> Sono stati aggiornati i tuoi permessi nelle liste.</a>
+                                    <a onclick="deleteFromArray('nRoleMultiple', 'role_change');" class="deleteNotification">X</a>
                                 </div>
                             <%}
                         }%>
                         <%if(!nStatusproduct.isEmpty()){
                             if(nStatusproduct.size() == 1){
                         %>
-                                <div class="alert alert-success text-center" role="alert">
+                                <div class="alert alert-success text-center" role="alert" id="nStatusproductSingle">
                                     <a href="/Lists/ShowShopList?nome=<%=nStatusproduct.get(0).getListName()%>"><strong>Stato prodotto cambiato!</strong> E' cambiato lo stato di un prodotto nella lista <%=nStatusproduct.get(0).getListName()%></a>.
+                                    <a onclick="deleteFromArray('nStatusproductSingle', 'change_status_product');" class="deleteNotification">X</a>
                                 </div>
                             <%}else{%>
-                                <div class="alert alert-success text-center" role="alert">
+                                <div class="alert alert-success text-center" role="alert" id="nStatusproductMultiple">
                                     <a href="/Lists/foreignLists.jsp"><strong>Stato prodotti cambiati!</strong> Sono cambiati gli stati di alcuni prodotti nelle liste.</a>
+                                    <a onclick="deleteFromArray('nStatusproductMultiple', 'change_status_product');" class="deleteNotification">X</a>
+                                </div>
+                            <%}
+                        }%>
+                        <%if(!nUser.isEmpty()){
+                            if(nUser.size() == 1){
+                        %>
+                                <div class="alert alert-success text-center" role="alert" id="nUserSingle">
+                                    <a href="/Lists/ShowShopList?nome=<%=nUser.get(0).getListName()%>"><strong>Utente aggiunto alla lista!</strong> E' stato aggiunto un nuovo utente alla lista <%=nStatusproduct.get(0).getListName()%></a>.
+                                    <a onclick="deleteFromArray('nUserSingle', 'new_user');" class="deleteNotification">X</a>
+                                </div>
+                            <%}else{%>
+                                <div class="alert alert-success text-center" role="alert" id="nUserMultiple">
+                                    <a href="/Lists/foreignLists.jsp"><strong>Nuovi utenti nelle liste!</strong> Sono stati aggiunti nuovi utenti nelle liste.</a>
+                                    <a onclick="deleteFromArray('nUserMultiple', 'new_user');" class="deleteNotification">X</a>
                                 </div>
                             <%}
                         }%>
@@ -1039,7 +1070,25 @@
                 });
             </script>
             
+            <script>
 
+            function deleteFromArray(idDiv, array){
+                $.ajax({
+                    type: "POST",
+                    url: "/Lists/deleteNotificationsFromArray",
+                    cache: false,
+                    data: { "array": array, "user": '<%=u.getEmail()%>' },
+                    success: function () {
+                        $("#"+idDiv).hide();
+                    },
+                    error: function () {
+                        alert("Errore notificationArray");
+                    }
+                });
+            }
+        </script>
+            
+            
             <!--###############################################################################################################################
                                 CHIUSURA DATABASE
             ###############################################################################################################################-->            

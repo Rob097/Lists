@@ -10,6 +10,7 @@ import database.daos.NotificationDAO;
 import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
+import database.factories.DAOFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,6 +18,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -162,6 +165,28 @@ public class JDBCNotificationsDAO extends JDBCDAO implements NotificationDAO{
             Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Problems with deleting shared user");
         }
+    }
+
+    @Override
+    public void deleteNotificationFromArray(String tipo, String email, DAOFactory daoFactory, HttpServletRequest request) throws DAOException {
+        ArrayList<Notification> notifiche = new ArrayList<>();
+        HttpSession s = (HttpSession) request.getSession(false);
+        if (daoFactory == null) {
+            System.out.println("Impossible to get dao factory for user storage system");
+        }
+        NotificationDAO notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
+        try (PreparedStatement stm = CON.prepareStatement("DELETE FROM Notifications WHERE Type = ? AND User = ?")) {
+            stm.setString(1, tipo);
+            stm.setString(2, email);
+            System.out.println("FUNZIONE: array: " + tipo + " user: " + email);
+            stm.executeUpdate();
+            notifiche = notificationdao.getAllNotifications(email);
+            s.setAttribute("notifiche", notifiche);
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Problems with deleting shared user");
+        }
+
     }
     
 }

@@ -186,6 +186,10 @@
         <servlet-name>DeleteCategoryImage</servlet-name>
         <servlet-class>Categories.DeleteCategoryImage</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>deleteNotificationsFromArray</servlet-name>
+        <servlet-class>Notifications.deleteNotificationsFromArray</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -321,6 +325,10 @@
     <servlet-mapping>
         <servlet-name>DeleteCategoryImage</servlet-name>
         <url-pattern>/restricted/DeleteCategoryImage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>deleteNotificationsFromArray</servlet-name>
+        <url-pattern>/deleteNotificationsFromArray</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
