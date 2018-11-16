@@ -51,7 +51,7 @@
             find = true;
         }
     }
-    ArrayList<Product> li = productdao.getAllProducts();
+    ArrayList<Product> li = productdao.getallAdminProducts();
     ArrayList<String> allCategories = productdao.getAllProductCategories();
     ArrayList<String> allListsOfUser = null;
 

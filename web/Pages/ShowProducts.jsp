@@ -42,7 +42,7 @@
     User u = new User();
     boolean find = false;
 
-    ArrayList<Product> li = productdao.getAllProducts();
+    ArrayList<Product> li = productdao.getallAdminProducts();
     ArrayList<String> allCategories = productdao.getAllProductCategories();
     ArrayList<String> allListsOfUser = new ArrayList();
     ArrayList<Category_Product> cP = category_productdao.getAllCategories();
