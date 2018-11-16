@@ -15,6 +15,7 @@ public class Product {
     private String note;
     private String categoria_prodotto;
     private String immagine;
+    private String creator;
 
     public String getImmagine() {
         return immagine;
@@ -58,6 +59,15 @@ public class Product {
     public void setCategoria_prodotto(String categoria_prodotto) {
         this.categoria_prodotto = categoria_prodotto;
     }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+    
     
     
 }

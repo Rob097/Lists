@@ -65,7 +65,7 @@ public class updateUser extends HttpServlet {
         User cgeUser = new User();
         
         //Creazione variabili 
-        String email = request.getParameter("email");
+        String email = user.getEmail();
         String nominativo = request.getParameter("nominativo");
         String password = request.getParameter("password");
         String url = null;

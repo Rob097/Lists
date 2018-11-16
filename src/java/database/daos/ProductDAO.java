@@ -29,4 +29,5 @@ public interface ProductDAO {
     public void Delete(Product l) throws DAOException;
     public Product getProductByID(int id) throws DAOException;
     public ArrayList<Product> nameContian(String s, HttpServletRequest request) throws DAOException;
+    public ArrayList<Product> getallAdminProducts() throws DAOException;
 }
