@@ -134,7 +134,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
             statement.setString(4, l.getImmagine());
             statement.setString(5, l.getCreator());
 
-            if (statement.execute() == true) {
+            if (statement.executeUpdate()>0) {
                 System.out.println("inserito");
             } else {
                 throw new DAOException("Impossible to update the User");
@@ -331,6 +331,24 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
             }
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of adminproducts", ex);
+        }
+    }
+
+    @Override
+    public int LastPIDforInsert(Product p) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT PID FROM Product WHERE nome = ? AND creator = ? ORDER BY PID DESC LIMIT 1")) {
+            stm.setString(1, p.getNome());
+            stm.setString(2, p.getCreator());
+            
+            int pid = 0;
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    pid = rs.getInt("PID");
+                }
+                return pid;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get bt category", ex);
         }
     }
 

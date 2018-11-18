@@ -197,7 +197,8 @@
     </head>
     <body>        
 
-        <%            String Nominativo = "";
+        <%            
+            String Nominativo = "";
             String Email = "";
             String Type = "";
             String image = "";
@@ -226,7 +227,10 @@
                             <i class="fa fa-bars"></i>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarResponsive">
-                            <ul class="navbar-nav text-uppercase ml-auto text-center">  
+                            <ul class="navbar-nav text-uppercase ml-auto text-center">
+                                <li class="nav-item">
+                                    <a data-toggle="modal" data-target="#CreateAddProductModal" class="btn btn-primary text-caps btn-rounded" >Crea e aggiungi prodotto</a>
+                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
@@ -784,6 +788,62 @@
                 </div>
             </div>
         </div>
+        <!--createAndAddProductModal-->
+        <div class="modal fade" id="CreateAddProductModal" tabindex="-1" role="dialog" aria-labelledby="CreateAddProductModal" aria-hidden="true" enctype="multipart/form-data">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1 style="text-align: center;">Crea un nuovo prodotto</h1>
+                            </div>
+                            <!--end container-->
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form per il login -->
+                        <form class="form clearfix" id="CreateShopListform" action="<%=request.getContextPath()%>/restricted/CreateAndAddProduct"  method="post" role="form" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="Nome" class="col-form-label">Nome del prodotto</label>
+                                <input type="text" name="NomeProdotto" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="Descrizione" class="col-form-label">Note prodotto</label>
+                                <input type="text" name="NoteProdotto" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="Categoria" class="col-form-label">Categoria</label>
+                                <select name="CategoriaProdotto" id="Categoria" tabindex="1" size="5" >
+                                    <c:forEach items="${catProd}" var="prodcat">
+                                        <option value="${prodcat.nome}"><c:out value="${prodcat.nome}"/></option> 
+                                    </c:forEach>
+                                </select>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="Immagine" class="col-form-label required">Immagine</label>
+                                <input type="file" name="ImmagineProdotto" required>
+                            </div>
+                            
+                            <!--end form-group-->
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea Prodotto</button>
+                                <input type="hidden" name="showProduct" value="true">
+                            </div>
+                        </form>
+                        <hr>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+          </div>
         <!-- Save Modal -->
         <c:if test="${not empty guestList}">
             <div class="modal fade" id="save-modal" tabindex="-1" role="dialog" aria-labelledby="save-modal" aria-hidden="true">

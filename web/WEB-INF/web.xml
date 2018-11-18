@@ -194,6 +194,10 @@
         <servlet-name>NewCategoryNameAttribute</servlet-name>
         <servlet-class>Categories.NewCategoryNameAttribute</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateAndAddProduct</servlet-name>
+        <servlet-class>Products.CreateAndAddProduct</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -337,6 +341,10 @@
     <servlet-mapping>
         <servlet-name>NewCategoryNameAttribute</servlet-name>
         <url-pattern>/restricted/NewCategoryNameAttribute</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateAndAddProduct</servlet-name>
+        <url-pattern>/restricted/CreateAndAddProduct</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
