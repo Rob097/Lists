@@ -62,6 +62,7 @@ public class AddNewProductToDataBase extends HttpServlet {
             throws ServletException, IOException {
         HttpSession s =(HttpSession) request.getSession(false);
         Product nuovoProdotto = new Product();
+        User user = (User) s.getAttribute("user");
 
         int pid = 0;
         String nome = "";
@@ -83,9 +84,12 @@ public class AddNewProductToDataBase extends HttpServlet {
             System.out.println("ERRROREEEEE CATCH");
         }
 
-        if (s.getAttribute("user") != null) {
-            User temp = (User) s.getAttribute("user");
-            creator = temp.getEmail();
+        if (user != null) {
+            if(user.getTipo().equals("amministratore")){
+                nuovoProdotto.setCreator(user.getTipo());
+            }else{
+                nuovoProdotto.setCreator(user.getEmail());
+            } 
         } else {
             creator = "ospite@lists.it";
         }

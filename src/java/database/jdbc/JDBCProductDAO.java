@@ -41,6 +41,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
                     p.setNote(rs.getString("note"));
                     p.setCategoria_prodotto(rs.getString("categoria_prod"));
                     p.setImmagine(rs.getString("immagine"));
+                    p.setCreator(rs.getString("creator"));
                     productLists.add(p);
                 }
 
@@ -51,6 +52,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
         }
     }
 
+    @Override
     public ArrayList<Product> getAllProducts() throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM Product")) {
             ArrayList<Product> productLists = new ArrayList<>();
@@ -63,13 +65,14 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
                     p.setNote(rs.getString("note"));
                     p.setCategoria_prodotto(rs.getString("categoria_prod"));
                     p.setImmagine(rs.getString("immagine"));
+                    p.setCreator(rs.getString("creator"));
                     productLists.add(p);
                 }
 
                 return productLists;
             }
         } catch (SQLException ex) {
-            throw new DAOException("Impossible to get the list of users", ex);
+            throw new DAOException("Impossible to get the list of products", ex);
         }
     }
 
@@ -87,6 +90,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
                     p.setNote(rs.getString("note"));
                     p.setCategoria_prodotto(rs.getString("categoria_prod"));
                     p.setImmagine(rs.getString("immagine"));
+                    p.setCreator("creator");
                     productLists.add(p);
                 }
 
@@ -97,6 +101,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
         }
     }
 
+    @Override
     public ArrayList<String> getAllProductCategories() throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement("SELECT nome FROM Category_Product")) {
 
@@ -119,16 +124,17 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed user is null"));
         }
 
-        String qry = "insert into Product(nome,note,categoria_prod,immagine) "
-                + "values(?,?,?,?)";
+        String qry = "insert into Product(nome,note,categoria_prod,immagine,creator) "
+                + "values(?,?,?,?,?)";
 
         try (PreparedStatement statement = CON.prepareStatement(qry)) {
             statement.setString(1, l.getNome());
             statement.setString(2, l.getNote());
             statement.setString(3, l.getCategoria_prodotto());
             statement.setString(4, l.getImmagine());
+            statement.setString(5, l.getCreator());
 
-            if (statement.execute() == true) {
+            if (statement.executeUpdate()>0) {
                 System.out.println("inserito");
             } else {
                 throw new DAOException("Impossible to update the User");
@@ -167,6 +173,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
 
     }
 
+    @Override
     public int LastPIDOfProducts() throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement("SELECT PID FROM Product ORDER BY PID DESC LIMIT 1")) {
 
@@ -223,6 +230,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
                     p.setNote(rs.getString("note"));
                     p.setCategoria_prodotto(rs.getString("categoria_prod"));
                     p.setImmagine(rs.getString("immagine"));
+                    p.setCreator(rs.getString("creator"));
                 }
 
                 return p;
@@ -271,6 +279,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
                         p.setNote(rs.getString("note"));
                         p.setCategoria_prodotto(rs.getString("categoria_prod"));
                         p.setImmagine(rs.getString("immagine"));
+                        p.setCreator(rs.getString("creator"));
                         products.add(p);
                         session.setAttribute(p.getNome(), p.getNome());
                     }
@@ -298,6 +307,49 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
             }
         }
         return b;
+    }
+
+    @Override
+    public ArrayList<Product> getallAdminProducts() throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM Product where creator = ?")) {
+            stm.setString(1, "amministratore");
+            
+            ArrayList<Product> productLists = new ArrayList<>();
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    Product p = new Product();
+                    p.setPid(rs.getInt("PID"));
+                    p.setNome(rs.getString("nome"));
+                    p.setNote(rs.getString("note"));
+                    p.setCategoria_prodotto(rs.getString("categoria_prod"));
+                    p.setImmagine(rs.getString("immagine"));
+                    p.setCreator(rs.getString("creator"));
+                    productLists.add(p);
+                }
+
+                return productLists;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of adminproducts", ex);
+        }
+    }
+
+    @Override
+    public int LastPIDforInsert(Product p) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT PID FROM Product WHERE nome = ? AND creator = ? ORDER BY PID DESC LIMIT 1")) {
+            stm.setString(1, p.getNome());
+            stm.setString(2, p.getCreator());
+            
+            int pid = 0;
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    pid = rs.getInt("PID");
+                }
+                return pid;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get bt category", ex);
+        }
     }
 
 }

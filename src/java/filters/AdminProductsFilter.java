@@ -55,7 +55,7 @@ public class AdminProductsFilter implements Filter {
                 if(user!=null){
                     if(user.getTipo().equals("amministratore")){
                           try {
-                            ArrayList<Product> li = productdao.getAllProducts();
+                            ArrayList<Product> li = productdao.getallAdminProducts();
                             session.setAttribute("products", li);
      
                           } catch (DAOException ex) { 
