@@ -29,6 +29,7 @@
         <link rel="stylesheet" href="Pages/css/user.css">  
         <link rel="stylesheet" href="Pages/css/navbar.css"> 
         <link rel="stylesheet" href="Pages/css/datatables.css" type="text/css"> 
+        <link rel="stylesheet" href="Pages/css/notificationCss.css" type="text/css"> 
         <link rel="icon" href="Pages/img/favicon.png" sizes="16x16" type="image/png">
         <script src="Pages/js/jquery-3.3.1.min.js"></script>
         <script type="text/javascript" src="Pages/js/popper.min.js"></script>
@@ -45,41 +46,11 @@
             </script>
         </c:if>  
         <c:set var="privacy" scope="session" value="false"/>
-            <style>
-                #alert{
-                    position: fixed;
-                    z-index: 10000;
-                    max-width: -webkit-fill-available;
-                    width: -webkit-fill-available;
-                    width: -moz-available;
-                    max-width: -moz-available;
-                    bottom: 0;
-                }
-                .alert{
-                    position: relative;
-                    padding: 1.75rem 1.25rem;
-                    margin-bottom: 0;
-                    border: 1px solid transparent;
-                    border-radius: 0.25rem;
-                }
-                .modal-body-pcy {
-                    position: relative;
-                    overflow-y: auto;
-                    max-height: 450px;
-                    padding: 15px;
-                    overflow:scroll;
-                }
-                .deleteNotification{
-                    float: right;
-                    font-weight: bolder;
-                    color: red !important;
-                    cursor: pointer;
-                }
-            </style>
+        
     </head>
     <body>
 
-        <%                
+        <%
             HttpSession s = (HttpSession) request.getSession(false);
             DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
             if (daoFactory == null) {
@@ -89,7 +60,7 @@
             ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
             Category_ProductDAO category_productdao = new JDBCCategory_ProductDAO(daoFactory.getConnection());
             CategoryDAO categorydao = new JDBCCategoryDAO(daoFactory.getConnection());
-            UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());            
+            UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
             String Nominativo;
             String Email;
             String Type;
@@ -117,7 +88,7 @@
         %>
         <!--###############################################################################################################################-->
 
-        
+
         <div class="page home-page">
             <header class="hero">
                 <div class="hero-wrapper">
@@ -191,7 +162,7 @@
                     <!--######################################################################################### 
                                     check dell'eventuale messaggio da visualizzare
                     ######################################################################################### -->
-                    
+
                     <c:if test="${regResult==true}">
                         <div class="alert alert-success text-center" id="alert">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -207,7 +178,7 @@
                         <%session.setAttribute("erroreIMG", null); %>
                     </c:if>
                     <!--#########################################################################################-->
-            
+
                     <!--============ Page Title =========================================================================-->
                     <div class="page-title" id="home">
                         <div class="container pt-5">
@@ -233,38 +204,38 @@
                                 <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" style="color: white;">Crea una nuova Lista</a>
                             </div>
                             <div class="col-md-4">
-                                    <%if (find) {%>
+                                <%if (find) {%>
                                 <a href="/Lists/foreignLists.jsp" class="text-caps" style="font-size: 15px; font-weight: bold; font-style: italic;">Liste condivise</a>
-                                    <%} else {%>
+                                <%} else {%>
                                 <a class="text-caps disabled" style="font-size: 15px; font-weight: bold; font-style: italic;" data-toggle="tooltip" title="Registrati o fai il login per usare questa funzione">Liste condivise</a>
-                                    <%}%>
+                                <%}%>
                             </div>
-                           
+
                         </div>
-                            <br>
-                            
+                        <br>
+
                         <div class="row">
                             <c:if test="${not empty user}">
-                        <c:if test="${user.tipo == 'amministratore'}">
-                            <div class="col-md-2">                                
-                            </div>
-                            <div class="col-md-3">
-                                <a href="Pages/AdminPages/AdminProducts.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">Lista prodotti</a>
-                            </div>
-                            <div class="col-md-2">
-                                <a href="Pages/ShowProductCategories.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">Categorie prodotti</a>                                
-                            </div>
-                            <div class="col-md-3">
-                                <a href="Pages/ShowListCategories.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">Categorie lista</a>
-                            </div>  
-                            <div class="col-md-2">                                
-                            </div>                             
-                        </c:if>
-                    </c:if>
+                                <c:if test="${user.tipo == 'amministratore'}">
+                                    <div class="col-md-2">                                
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a href="Pages/AdminPages/AdminProducts.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">Lista prodotti</a>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <a href="Pages/ShowProductCategories.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">Categorie prodotti</a>                                
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a href="Pages/ShowListCategories.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">Categorie lista</a>
+                                    </div>  
+                                    <div class="col-md-2">                                
+                                    </div>                             
+                                </c:if>
+                            </c:if>
                         </div>
                     </div>
-       
-                    
+
+
                     <div class="background">
                         <div class="background-image">
                             <img src="Pages/img/hero-background-image-02.jpg" alt="">
@@ -276,180 +247,152 @@
                 <!--end hero-wrapper-->
             </header>
             <!--end hero-->
-            
+
             <!-- SISTEMA PER LE NOTIFICHE -->
-            <%if(find){
+
+            <%
+            //Guardo se esiste un utente loggato, guardo se l'utente loggato ha delle notifiche, per notifica guardo il tipo e la lista e ne salvo una mentre le altre uguali non le salvo. poi le visualizzo
+            if (find) {
                 if (session.getAttribute("notifiche") != null) {
-                    ArrayList <Notification> nn = (ArrayList<Notification>) session.getAttribute("notifiche");
-                    ArrayList <Notification> nNewProd = new ArrayList<>();
-                    ArrayList <Notification> nRemoveProd = new ArrayList<>();
-                    ArrayList <Notification> nEmptyList = new ArrayList<>();
-                    ArrayList <Notification> nUser = new ArrayList<>();
-                    ArrayList <Notification> nMsg = new ArrayList<>();
-                    ArrayList <Notification> nRole = new ArrayList<>();
-                    ArrayList <Notification> nStatusproduct = new ArrayList<>();
-                    int checkNotification = 0;
-            
-                    for(Notification nf : nn) {
-                        if(nf.getUser().equals(u.getEmail())){
-                            checkNotification = 1;
-                            if( nf.getType().equals("new_product")) nNewProd.add(nf);
-                            
-                            //Se la notifica ha come tipo 'remove_product' allora se la lista è vuota dai come notifica
-                            //'lista svuotata' altrienti se non è vuota invia 'prodotto rimosso'
-                            if( nf.getType().equals("remove_product")){
-                                if(listdao.getbyName(nf.getListName()).getProducts() != null){
-                                    if(listdao.getbyName(nf.getListName()).getProducts().isEmpty()){
-                                        nEmptyList.add(nf);
-                                    }else{
-                                        nRemoveProd.add(nf);
-                                    }
-                                }else{
-                                    nEmptyList.add(nf);
-                                }
+                    ArrayList<Notification> allN = (ArrayList<Notification>) session.getAttribute("notifiche");
+                    ArrayList<Notification> filteredN = new ArrayList<>();
+                    boolean check = false;
+                    //filteredN.add(allN.get(0));
+                    for(Notification n : allN){
+                        check = false;
+                        for(Notification nn : filteredN){
+                            if(n.getListName().equals(nn.getListName()) && n.getType().equals(nn.getType())){
+                                check = true;
+                                break;
+                            }else{
+                                check = false;
                             }
-                            
-                            if( nf.getType().equals("empty_list")) nEmptyList.add(nf);
-                            
-                            if( nf.getType().equals("new_user")) nUser.add(nf);
-                            
-                            if( nf.getType().equals("change_status_product")) nStatusproduct.add(nf);
-                            
-                            if( nf.getType().equals("new_message")){
-                                try{
-                                    nMsg.add(nf);
-                                }catch(Exception e){
-                                    e.printStackTrace();
-                                }
-                            }
-                            if( nf.getType().equals("role_change")) nRole.add(nf);
-                            
+                        }
+                        if(check == false){
+                            filteredN.add(n);
+                        }else{
+                            System.out.println("Notifica già presente");
                         }
                     }
-            
-            
             %>
-                    <div class="container pt-5" id="alert">
-                        <%if(!nNewProd.isEmpty()){
-                            if(nNewProd.size() == 1){
+            <li class="dropdown" id="notificationsLI">
+                <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
+                    <h3 style="width: 20px; position: absolute; background: yellow; border-radius: 50%; height: 20px; text-align: center;"><%=filteredN.size()%></h3>
+                    <img style="width: 5rem;" src="Image/Icons/notification.svg">
+                </a>
+
+                <ul class="dropdown-menu notifications" role="menu" aria-labelledby="dLabel">
+
+                    <div class="notification-heading"><h4 class="menu-title">Notifications</h4><h4 class="menu-title pull-right">View all<i class="glyphicon glyphicon-circle-arrow-right"></i></h4>
+                    </div> 
+                    <div class="notifications-wrapper"> 
+                        <% for (Notification nf : filteredN) {
+                            if(nf.getType().equals("new_product")){
                         %>
-                                <div class="alert alert-success text-center" role="alert" id="nNewProdSingle">
-                                    <a href="/Lists/ShowShopList?nome=<%=nNewProd.get(0).getListName()%>"><strong>Nuovo prodotto!</strong> E' stato aggiunto un nuovo prodotto alla lista <%=nNewProd.get(0).getListName()%></a>.
-                                    <a onclick="deleteFromArray('nNewProdSingle', 'new_product');" class="deleteNotification">X</a>
-                                </div>
-                            <% }else{ %>
-                                <div class="alert alert-success text-center" role="alert" id="nNewProdMultiple">
-                                    <a href="/Lists/foreignLists.jsp"><strong>Nuovi Prodotti</strong> sono stati aggiunti alle liste.</a>
-                                    <a onclick="deleteFromArray('nNewProdMultiple', 'new_product');" class="deleteNotification">X</a>
-                                </div>
-                            <%}
+                            <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
+                                <div class="notification-item" id="<%=nf.getType()%>ID">
+                                    <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
+                                    <h4 class="item-title">Nuovi prodotti! <small> Sono stati aggiunti nuoi prodotti alla lista <%=nf.getListName()%></small></h4>
+                                    <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
+                                </div>  
+                            </a>
+                        <%  }else if(nf.getType().equals("empty_list")){%>
+                            <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
+                                <div class="notification-item" id="<%=nf.getType()%>ID">
+                                    <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
+                                    <h4 class="item-title">Lista svuotata! <small> E' stata svuotata la lista <%=nf.getListName()%></small></h4>
+                                    <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
+                                </div>  
+                            </a>
+                            <%}else if(nf.getType().equals("new_user")){%>
+                            <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
+                                <div class="notification-item" id="<%=nf.getType()%>ID">
+                                    <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
+                                    <h4 class="item-title">Utenti aggiunti alla lista! <small> Nuovi utenti nella lista <%=nf.getListName()%></small></h4>
+                                    <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
+                                </div>  
+                            </a>
+                            <%}else if(nf.getType().equals("change_status_product")){%>
+                            <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
+                                <div class="notification-item" id="<%=nf.getType()%>ID">
+                                    <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
+                                    <h4 class="item-title">Stato prodotti cambiato! <small> E' cambiato lo stato dei prodotti nella lista <%=nf.getListName()%></small></h4>
+                                    <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
+                                </div>  
+                            </a>
+                            <%}else if(nf.getType().equals("new_message")){%>
+                            <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
+                                <div class="notification-item" id="<%=nf.getType()%>ID">
+                                    <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
+                                    <h4 class="item-title">Nuovi Messaggi! <small> Ci sono dei nuovi messaggi nella lista <%=nf.getListName()%></small></h4>
+                                    <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
+                                </div>  
+                            </a>
+                            <%}else if(nf.getType().equals("role_change")){%>
+                            <a class="content" href="ShowShopList?<%=nf.getListName()%>" > 
+                                <div class="notification-item" id="<%=nf.getType()%>ID">
+                                    <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
+                                    <h4 class="item-title">Permessi aggiornati! <small> Sono cambiati i tuoi permessi nella lista <%=nf.getListName()%></small></h4>
+                                    <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
+                                </div>  
+                            </a>
+                            <%}else if(nf.getType().equals("remove_product")){
+                                    if (listdao.getbyName(nf.getListName()).getProducts() != null) {
+                                        if (listdao.getbyName(nf.getListName()).getProducts().isEmpty()) {%>
+                                            <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
+                                                <div class="notification-item" id="<%=nf.getType()%>ID">
+                                                    <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
+                                                    <h4 class="item-title">Lista svuotata! <small> E' stata svuotata la lista <%=nf.getListName()%></small></h4>
+                                                    <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
+                                                </div>  
+                                            </a>
+                                        <%} else {%>
+                                            <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
+                                                <div class="notification-item" id="<%=nf.getType()%>ID">
+                                                    <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
+                                                    <h4 class="item-title">Prodotti rimossi! <small> Sono stati rimossi dei prodotti dalla lista <%=nf.getListName()%></small></h4>
+                                                    <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
+                                                </div>  
+                                            </a>
+                                        <%}
+                                    } else {%>
+                                        <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
+                                            <div class="notification-item" id="<%=nf.getType()%>ID">
+                                                <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
+                                                <h4 class="item-title">Lista svuotata! <small> E' stata svuotata la lista <%=nf.getListName()%></small></h4>
+                                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
+                                            </div>  
+                                        </a>
+                                    <%}
+                            }
                         }%>
-                        <%if(!nRemoveProd.isEmpty()){
-                            if(nRemoveProd.size() == 1){
-                        %>
-                                <div class="alert alert-success text-center" role="alert" id="nRemoveProdSingle">
-                                    <a href="/Lists/ShowShopList?nome=<%=nRemoveProd.get(0).getListName()%>"><strong>Prodotto rimosso!</strong> E' stato rimosso un prodotto dalla lista <%=nRemoveProd.get(0).getListName()%></a>.
-                                    <a onclick="deleteFromArray('nRemoveProdSingle', 'remove_product');" class="deleteNotification">X</a>
-                                </div>
-                            <%}else{%>
-                                <div class="alert alert-success text-center" role="alert" id="nRemoveProdMultiple">
-                                    <a href="/Lists/foreignLists.jsp"><strong>Prodotti rimossi!</strong> Sono stati rimossi dei prodotti dalle liste.</a>
-                                    <a onclick="deleteFromArray('nRemoveProdMultiple', 'remove_product');" class="deleteNotification">X</a>
-                                </div>
-                            <%}
-                        }%>
-                        <%if(!nEmptyList.isEmpty()){%>
-                            <div class="alert alert-success text-center" role="alert" id="nEmptyListSingle">
-                                <a href="/Lists/ShowShopList?nome=<%=nEmptyList.get(0).getListName()%>"><strong>Lista svuotata!</strong> E' stata svuotata la lista <%=nEmptyList.get(0).getListName()%></a>.
-                                <a onclick="deleteFromArray('nEmptyListSingle', 'empty_list');" class="deleteNotification">X</a>
-                            </div>
-                        <%}%>
-                        <%if(!nMsg.isEmpty()){
-                            if(nMsg.size() == 1){
-                        %>
-                                <div class="alert alert-success text-center" role="alert" id="nMsgSingle">
-                                    <a href="/Lists/ShowShopList?nome=<%=nMsg.get(0).getListName()%>"><strong>Nuovo Messaggio!</strong> Hai un nuovo messaggio nella lista <%=nMsg.get(0).getListName()%></a>.
-                                    <a onclick="deleteFromArray('nMsgSingle', 'new_message');" class="deleteNotification">X</a>
-                                </div>
-                            <%}else{%>
-                                <div class="alert alert-success text-center" role="alert" id="nMsgMultiple">
-                                    <a href="/Lists/foreignLists.jsp"><strong>Nuovi Messaggi</strong> nelle liste.</a>
-                                    <a onclick="deleteFromArray('nMsgMultiple', 'new_message');" class="deleteNotification">X</a>
-                                </div>
-                            <%}
-                        }%>
-                        <%if(!nRole.isEmpty()){
-                            if(nRole.size() == 1){
-                        %>
-                                <div class="alert alert-success text-center" role="alert" id="nRoleSingle">
-                                    <a href="/Lists/ShowShopList?nome=<%=nRole.get(0).getListName()%>"><strong>Permessi aggiornati!</strong> Sono cambiati i tuoi permessi nella lista <%=nRole.get(0).getListName()%></a>.
-                                    <a onclick="deleteFromArray('nRoleSingle', 'role_change');" class="deleteNotification">X</a>
-                                </div>
-                            <%}else{%>
-                                <div class="alert alert-success text-center" role="alert" id="nRoleMultiple">
-                                    <a href="/Lists/foreignLists.jsp"><strong>Permessi aggiornati!</strong> Sono stati aggiornati i tuoi permessi nelle liste.</a>
-                                    <a onclick="deleteFromArray('nRoleMultiple', 'role_change');" class="deleteNotification">X</a>
-                                </div>
-                            <%}
-                        }%>
-                        <%if(!nStatusproduct.isEmpty()){
-                            if(nStatusproduct.size() == 1){
-                        %>
-                                <div class="alert alert-success text-center" role="alert" id="nStatusproductSingle">
-                                    <a href="/Lists/ShowShopList?nome=<%=nStatusproduct.get(0).getListName()%>"><strong>Stato prodotto cambiato!</strong> E' cambiato lo stato di un prodotto nella lista <%=nStatusproduct.get(0).getListName()%></a>.
-                                    <a onclick="deleteFromArray('nStatusproductSingle', 'change_status_product');" class="deleteNotification">X</a>
-                                </div>
-                            <%}else{%>
-                                <div class="alert alert-success text-center" role="alert" id="nStatusproductMultiple">
-                                    <a href="/Lists/foreignLists.jsp"><strong>Stato prodotti cambiati!</strong> Sono cambiati gli stati di alcuni prodotti nelle liste.</a>
-                                    <a onclick="deleteFromArray('nStatusproductMultiple', 'change_status_product');" class="deleteNotification">X</a>
-                                </div>
-                            <%}
-                        }%>
-                        <%if(!nUser.isEmpty()){
-                            if(nUser.size() == 1){
-                        %>
-                                <div class="alert alert-success text-center" role="alert" id="nUserSingle">
-                                    <a href="/Lists/ShowShopList?nome=<%=nUser.get(0).getListName()%>"><strong>Utente aggiunto alla lista!</strong> E' stato aggiunto un nuovo utente alla lista <%=nStatusproduct.get(0).getListName()%></a>.
-                                    <a onclick="deleteFromArray('nUserSingle', 'new_user');" class="deleteNotification">X</a>
-                                </div>
-                            <%}else{%>
-                                <div class="alert alert-success text-center" role="alert" id="nUserMultiple">
-                                    <a href="/Lists/foreignLists.jsp"><strong>Nuovi utenti nelle liste!</strong> Sono stati aggiunti nuovi utenti nelle liste.</a>
-                                    <a onclick="deleteFromArray('nUserMultiple', 'new_user');" class="deleteNotification">X</a>
-                                </div>
-                            <%}
-                        }%>
-                        <%if(checkNotification == 0){%>
-                            <div class="alert alert-info text-center" role="alert">
-                                <strong>Non</strong> hai nuove notifiche <%=u.getNominativo()%></a>.
-                            </div>
-                        <%}%>
-                    </div>
-                <%}
-            }%>
-            
-            
+                    </div> 
+                </ul>
+            </li>
+            <%}
+                }%>
+
+
             <!--ERRORI-->
-            <%if(session.getAttribute("errore") != null){%>
-                <div class="container pt-5" id="alert">
-                    <div class="alert alert-danger text-center" role="alert">
-                        <strong><%=session.getAttribute("errore")%></strong>
-                    </div>
+            <%if (session.getAttribute("errore") != null) {%>
+            <div class="container pt-5" id="alert">
+                <div class="alert alert-danger text-center" role="alert">
+                    <strong><%=session.getAttribute("errore")%></strong>
                 </div>
+            </div>
             <%  //session.setAttribute("errore", null);
-            }%>
-            
+                }%>
+
             <!--MESSAGGI-->
-            <%if(session.getAttribute("messaggio") != null){%>
-                <div class="container pt-5" id="alert">
-                    <div class="alert alert-success text-center" role="alert">
-                        <strong><%=session.getAttribute("messaggio")%></strong>
-                    </div>
+            <%if (session.getAttribute("messaggio") != null) {%>
+            <div class="container pt-5" id="alert">
+                <div class="alert alert-success text-center" role="alert">
+                    <strong><%=session.getAttribute("messaggio")%></strong>
                 </div>
+            </div>
             <%  //session.setAttribute("errore", null);
-            }%>
-            
+                }%>
+
             <!-- FINE DELLE NOTIFICHE -->
 
             <!--*********************************************************************************************************-->
@@ -779,7 +722,7 @@
                                 </div>
                                 <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Register Now</button>
                             </div>
-                            
+
                             <div class="form-group">
                                 Per andare avanti accenta la nostra <a data-toggle="modal" href="#PrivacyModal" class="link">Privacy Policy</a><br>                
                                 <label for="privacy">Ho letto e acceto l'informativa sulla Privacy</label>         
@@ -802,237 +745,95 @@
                         <h1 class="title">Informativa sulla Privacy</h1>
                     </div>
                     <div class="modal-body-pcy">                                
-                                <p>Data di entrata in vigore: November 02, 2018</p>
-                                <p>myLists ("noi" o "nostro") gestisce il http://localhost:8080 sito web (in appresso il "Servizio").</p>
-                                <p>Questa pagina vi informa delle nostre politiche riguardanti la raccolta, l'uso e la divulgazione dei dati personali quando usate il nostro Servizio e le scelte che avete associato a quei dati. <a href="https://www.freeprivacypolicy.com/free-privacy-policy-generator.php">Informativa sulla Privacy via Free Privacy Policy</a>.</p>
-                                <p>Utilizziamo i vostri dati per fornire e migliorare il Servizio. Utilizzando il Servizio, accettate la raccolta e l'utilizzo delle informazioni in conformità con questa informativa. Se non diversamente definito nella presente Informativa sulla privacy, i termini utilizzati nella presente Informativa hanno la stessa valenza dei nostri Termini e condizioni, accessibili da http://localhost:8080</p>
-                                <h2>Definizioni</h2>
-                                <ul>
-                                    <li>
-                                        <p><strong>Servizio</strong></p>
-                                        <p>Il Servizio è il sito http://localhost:8080 gestito da myLists</p>
-                                    </li>
-                                    <li>
-                                        <p><strong>Dati personali</strong></p>
-                                        <p>I Dati personali sono i dati di un individuo vivente che può essere identificato da quei dati (o da quelli e altre informazioni in nostro possesso o che potrebbero venire in nostro possesso).</p>
-                                    </li>
-                                    <li>
-                                        <p><strong>Dati di utilizzo</strong></p>
-                                        <p>I dati di utilizzo sono i dati raccolti automaticamente generati dall'utilizzo del Servizio o dall'infrastruttura del Servizio stesso (ad esempio, la durata della visita di una pagina).</p>
-                                    </li>
-                                    <li>
-                                        <p><strong>Cookies</strong></p>
-                                        <p>I cookie sono piccoli file memorizzati sul vostro dispositivo (computer o dispositivo mobile).</p>
-                                    </li>
-                                </ul>
+                        <p>Data di entrata in vigore: November 02, 2018</p>
+                        <p>myLists ("noi" o "nostro") gestisce il http://localhost:8080 sito web (in appresso il "Servizio").</p>
+                        <p>Questa pagina vi informa delle nostre politiche riguardanti la raccolta, l'uso e la divulgazione dei dati personali quando usate il nostro Servizio e le scelte che avete associato a quei dati. <a href="https://www.freeprivacypolicy.com/free-privacy-policy-generator.php">Informativa sulla Privacy via Free Privacy Policy</a>.</p>
+                        <p>Utilizziamo i vostri dati per fornire e migliorare il Servizio. Utilizzando il Servizio, accettate la raccolta e l'utilizzo delle informazioni in conformità con questa informativa. Se non diversamente definito nella presente Informativa sulla privacy, i termini utilizzati nella presente Informativa hanno la stessa valenza dei nostri Termini e condizioni, accessibili da http://localhost:8080</p>
+                        <h2>Definizioni</h2>
+                        <ul>
+                            <li>
+                                <p><strong>Servizio</strong></p>
+                                <p>Il Servizio è il sito http://localhost:8080 gestito da myLists</p>
+                            </li>
+                            <li>
+                                <p><strong>Dati personali</strong></p>
+                                <p>I Dati personali sono i dati di un individuo vivente che può essere identificato da quei dati (o da quelli e altre informazioni in nostro possesso o che potrebbero venire in nostro possesso).</p>
+                            </li>
+                            <li>
+                                <p><strong>Dati di utilizzo</strong></p>
+                                <p>I dati di utilizzo sono i dati raccolti automaticamente generati dall'utilizzo del Servizio o dall'infrastruttura del Servizio stesso (ad esempio, la durata della visita di una pagina).</p>
+                            </li>
+                            <li>
+                                <p><strong>Cookies</strong></p>
+                                <p>I cookie sono piccoli file memorizzati sul vostro dispositivo (computer o dispositivo mobile).</p>
+                            </li>
+                        </ul>
 
-                                <h2>Raccolta e uso delle informazioni</h2>
-                                <p>Raccogliamo diversi tipi di informazioni per vari scopi, per fornire e migliorare il nostro servizio.</p>
+                        <h2>Raccolta e uso delle informazioni</h2>
+                        <p>Raccogliamo diversi tipi di informazioni per vari scopi, per fornire e migliorare il nostro servizio.</p>
 
-                                <h3>Tipologie di Dati raccolti</h3>
+                        <h3>Tipologie di Dati raccolti</h3>
 
-                                <h4>Dati personali</h4>
-                                <p>Durante l'utilizzo del nostro Servizio, potremmo chiedervi di fornirci alcune informazioni di identificazione personale che possono essere utilizzate per contattarvi o identificarvi ("Dati personali"). Le informazioni di identificazione personale possono includere, ma non sono limitate a:</p>
+                        <h4>Dati personali</h4>
+                        <p>Durante l'utilizzo del nostro Servizio, potremmo chiedervi di fornirci alcune informazioni di identificazione personale che possono essere utilizzate per contattarvi o identificarvi ("Dati personali"). Le informazioni di identificazione personale possono includere, ma non sono limitate a:</p>
 
-                                <ul>
-                                    <li>Indirizzo email</li>    <li>Nome e cognome</li>            <li>Cookie e dati di utilizzo</li>
-                                </ul>
+                        <ul>
+                            <li>Indirizzo email</li>    <li>Nome e cognome</li>            <li>Cookie e dati di utilizzo</li>
+                        </ul>
 
-                                <h4>Dati di utilizzo</h4>
+                        <h4>Dati di utilizzo</h4>
 
-                                <p>Potremmo anche raccogliere informazioni su come l'utente accede e utilizza il Servizio ("Dati di utilizzo"). Questi Dati di utilizzo possono includere informazioni quali l'indirizzo del protocollo Internet del computer (ad es. Indirizzo IP), il tipo di browser, la versione del browser, le pagine del nostro servizio che si visita, l'ora e la data della visita, il tempo trascorso su tali pagine, identificatore unico del dispositivo e altri dati diagnostici.</p>
+                        <p>Potremmo anche raccogliere informazioni su come l'utente accede e utilizza il Servizio ("Dati di utilizzo"). Questi Dati di utilizzo possono includere informazioni quali l'indirizzo del protocollo Internet del computer (ad es. Indirizzo IP), il tipo di browser, la versione del browser, le pagine del nostro servizio che si visita, l'ora e la data della visita, il tempo trascorso su tali pagine, identificatore unico del dispositivo e altri dati diagnostici.</p>
 
-                                <h4>Tracciamento; dati dei cookie</h4>
-                                <p>Utilizziamo cookie e tecnologie di tracciamento simili per tracciare l'attività sul nostro Servizio e conservare determinate informazioni.</p>
-                                <p>I cookie sono file con una piccola quantità di dati che possono includere un identificatore univoco anonimo. I cookie vengono inviati al vostro browser da un sito web e memorizzati sul vostro dispositivo. Altre tecnologie di tracciamento utilizzate sono anche beacon, tag e script per raccogliere e tenere traccia delle informazioni e per migliorare e analizzare il nostro Servizio.</p>
-                                <p>Potete chiedere al vostro browser di rifiutare tutti i cookie o di indicare quando viene inviato un cookie. Tuttavia, se non si accettano i cookie, potrebbe non essere possibile utilizzare alcune parti del nostro Servizio.</p>
-                                <p>Esempi di cookie che utilizziamo:</p>
-                                <ul>
-                                    <li><strong>Cookie di sessione.</strong> Utilizziamo i cookie di sessione per gestire il nostro servizio.</li>
-                                    <li><strong>Cookie di preferenza.</strong> Utilizziamo i cookie di preferenza per ricordare le vostre preferenze e varie impostazioni.</li>
-                                    <li><strong>Cookie di sicurezza.</strong> Utilizziamo i cookie di sicurezza per motivi di sicurezza.</li>
-                                </ul>
+                        <h4>Tracciamento; dati dei cookie</h4>
+                        <p>Utilizziamo cookie e tecnologie di tracciamento simili per tracciare l'attività sul nostro Servizio e conservare determinate informazioni.</p>
+                        <p>I cookie sono file con una piccola quantità di dati che possono includere un identificatore univoco anonimo. I cookie vengono inviati al vostro browser da un sito web e memorizzati sul vostro dispositivo. Altre tecnologie di tracciamento utilizzate sono anche beacon, tag e script per raccogliere e tenere traccia delle informazioni e per migliorare e analizzare il nostro Servizio.</p>
+                        <p>Potete chiedere al vostro browser di rifiutare tutti i cookie o di indicare quando viene inviato un cookie. Tuttavia, se non si accettano i cookie, potrebbe non essere possibile utilizzare alcune parti del nostro Servizio.</p>
+                        <p>Esempi di cookie che utilizziamo:</p>
+                        <ul>
+                            <li><strong>Cookie di sessione.</strong> Utilizziamo i cookie di sessione per gestire il nostro servizio.</li>
+                            <li><strong>Cookie di preferenza.</strong> Utilizziamo i cookie di preferenza per ricordare le vostre preferenze e varie impostazioni.</li>
+                            <li><strong>Cookie di sicurezza.</strong> Utilizziamo i cookie di sicurezza per motivi di sicurezza.</li>
+                        </ul>
 
-                                <h2>Uso dei dati</h2> 
-                                <p>myLists utilizza i dati raccolti per vari scopi:</p>    
-                                <ul>
-                                    <li>Per fornire e mantenere il nostro Servizio</li>
-                                    <li>Per comunicare agli utenti variazioni apportate al servizio che offriamo</li>
-                                    <li>Per permettere agli utenti di fruire, a propria discrezione, di funzioni interattive del nostro servizio</li>
-                                    <li>Per fornire un servizio ai clienti</li>
-                                    <li>Per raccogliere analisi o informazioni preziose in modo da poter migliorare il nostro Servizio</li>
-                                    <li>Per monitorare l'utilizzo del nostro Servizio</li>
-                                    <li>Per rilevare, prevenire e affrontare problemi tecnici</li>
-                                </ul>
-                                <h2>Trasferimento dei dati</h2>
-                                <p>Le vostre informazioni, compresi i Dati personali, possono essere trasferite a - e mantenute su - computer situati al di fuori del vostro stato, provincia, nazione o altra giurisdizione governativa dove le leggi sulla protezione dei dati possono essere diverse da quelle della vostra giurisdizione.</p>
-                                <p>Se ci si trova al di fuori di Italy e si sceglie di fornire informazioni a noi, si ricorda che trasferiamo i dati, compresi i dati personali, in Italy e li elaboriamo lì.</p>
-                                <p>Il vostro consenso alla presente Informativa sulla privacy seguito dall'invio di tali informazioni rappresenta il vostro consenso al trasferimento.</p>
-                                <p>myLists adotterà tutte le misure ragionevolmente necessarie per garantire che i vostri dati siano trattati in modo sicuro e in conformità con la presente Informativa sulla privacy e nessun trasferimento dei vostri Dati Personali sarà effettuato a un'organizzazione o a un paese a meno che non vi siano controlli adeguati dei vostri dati e altre informazioni personali.</p>
-                                <h2>Divulgazione di dati</h2>
-                                <h3>Prescrizioni di legge</h3>
-                                <p>myLists può divulgare i vostri Dati personali in buona fede, ritenendo che tale azione sia necessaria per:</p>
-                                <ul>
-                                    <li>Rispettare un obbligo legale</li>
-                                    <li>Proteggere e difendere i diritti o la proprietà di myLists</li>
-                                    <li>Prevenire o investigare possibili illeciti in relazione al Servizio</li>
-                                    <li>Proteggere la sicurezza personale degli utenti del Servizio o del pubblico</li>
-                                    <li>Proteggere contro la responsabilità legale</li>
-                                </ul>
-                                <h2>Sicurezza dei dati</h2>
-                                <p>La sicurezza dei vostri dati è importante per noi, ma ricordate che nessun metodo di trasmissione su Internet o metodo di archiviazione elettronica è sicuro al 100%. Pertanto, anche se adotteremo ogni mezzo commercialmente accettabile per proteggere i vostri Dati personali, non possiamo garantirne la sicurezza assoluta.</p>
-                                <h2>Fornitori di servizi</h2>
-                                <p>Potremmo impiegare società e individui di terze parti per facilitare il nostro Servizio ("Fornitori di servizi"), per fornire il Servizio per nostro conto, per eseguire servizi relativi ai Servizi o per aiutarci ad analizzare come viene utilizzato il nostro Servizio.</p>
-                                <p>Le terze parti hanno accesso ai vostri Dati personali solo per eseguire queste attività per nostro conto e sono obbligate a non rivelarle o utilizzarle per altri scopi.</p>
-                                <h2>Privacy dei minori</h2>
-                                <p>Il nostro servizio non si rivolge a minori di 18 anni ("Bambini").</p>
-                                <p>Non raccogliamo consapevolmente informazioni personali relative a utenti di età inferiore a 18 anni. Se siete un genitore o tutore e siete consapevoli che vostro figlio ci ha fornito Dati personali, vi preghiamo di contattarci. Se veniamo a conoscenza del fatto che abbiamo raccolto Dati personali da minori senza la verifica del consenso dei genitori, adotteremo provvedimenti per rimuovere tali informazioni dai nostri server.</p>
-                                <h2>Modifiche alla presente informativa sulla privacy</h2>
-                                <p>Potremmo aggiornare periodicamente la nostra Informativa sulla privacy. Ti informeremo di eventuali modifiche pubblicando la nuova Informativa sulla privacy in questa pagina.</p>
-                                <p>Vi informeremo via e-mail e / o un avviso di rilievo sul nostro Servizio, prima che la modifica diventi effettiva e aggiorneremo la "data di validità" nella parte superiore di questa Informativa sulla privacy.</p>
-                                <p>Si consiglia di rivedere periodicamente la presente Informativa sulla privacy per eventuali modifiche. Le modifiche a tale informativa sulla privacy entrano in vigore nel momento in cui vengono pubblicate su questa pagina.</p>
-                        </div>
-                    <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <!--######################################################-->
-        
-        <!-- restore password Modal -->
-        <div class="modal fade" id="restorePassword" tabindex="-1" role="dialog" aria-labelledby="restorePassword" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-
-                        <div class="page-title">
-                            <div class="container">
-                                <h1>Recupera la password</h1>
-                            </div>
-                            <!--end container-->
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>            
-
-                    </div>
-                    <div class="modal-body">
-                        <!-- Form per il login -->
-                        <form class="form clearfix" id="login-form" action="/Lists/restorePassword" method="post" role="form">
-                            <div class="form-group">
-                                <label for="email" class="col-form-label required">Email</label>
-                                <input type="text" name="email" id="emaillogin" tabindex="1" class="form-control" placeholder="Email" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="d-flex justify-content-between align-items-baseline">
-                                <button style="float: left;" type="submit" class="btn btn-primary">Recupera password</button>
-                                <button style="float: right;" type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--######################################################-->
-        
-        <!-- new password Modal -->
-        <div class="modal fade" id="newPassword" tabindex="-1" role="dialog" aria-labelledby="newPassword" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-
-                        <div class="page-title">
-                            <div class="container">
-                                <h1>Nuova password</h1>
-                            </div>
-                            <!--end container-->
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>            
-
-                    </div>
-                    <div class="modal-body">
-                        <h5>Nuova passworrd per <%=request.getParameter("restorePasswordOf")%></h5>
-                        <!-- Form per il login -->
-                        <form class="form clearfix" id="login-form" action="/Lists/changePassword" method="post" role="form">
-                            <div class="form-group">
-                                <label for="password" class="col-form-label required">Password</label>
-                                <input type="password" name="password" id="emaillogin" tabindex="1" class="form-control" placeholder="Password" value="" required>
-                                <input type="hidden" name="email" value="<%=request.getParameter("restorePasswordOf")%>">
-                            </div>
-                            <!--end form-group-->
-                            <div class="d-flex justify-content-between align-items-baseline">
-                                <button style="float: left;" type="submit" class="btn btn-primary">Recupera password</button>
-                                <button style="float: right;" type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--######################################################-->
-
-
-        <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="page-title">
-                            <div class="container">
-                                <h1 style="text-align: center;">Create list</h1>
-                            </div>
-                            <!--end container-->
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Form per il login -->
-                        <form class="form clearfix" id="CreateShopListform" action="/Lists/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
-                            <div class="form-group">
-                                <label for="Nome" class="col-form-label">Nome della lista</label>
-                                <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="Descrizione" class="col-form-label">Descrizione</label>
-                                <input type="text" name="Descrizione" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="Categoria" class="col-form-label">Categoria</label>
-                                <select name="Categoria" id="Categoria" tabindex="1" size="5" >
-
-                                    <c:forEach items="${categorie}" var="categoria">
-                                        <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
-                                    </c:forEach>
-                                </select><!--<input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>-->
-
-                            </div>
-                            <!--end form-group-->
-                            <%if(find){%>
-                            <div class="form-group">
-                                <label for="Immagine" class="col-form-label required">Immagine</label>
-                                <input type="file" name="file1" required>
-                            </div>
-                            <%}%>
-                            <!--end form-group-->
-                            <div class="d-flex justify-content-between align-items-baseline">
-
-                                <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
-
-                                <%if (find == false && session.getAttribute("guestList") != null) {%>
-                                <h5>Attenzione, hai già salvato una lista. Se non sei registrato puoi salvare solo una lista alla volta. Salvando questa lista, cancellerai la lista gia salvata.</h5>
-                                <%}%>
-                            </div>
-                        </form>
-                        <hr>
+                        <h2>Uso dei dati</h2> 
+                        <p>myLists utilizza i dati raccolti per vari scopi:</p>    
+                        <ul>
+                            <li>Per fornire e mantenere il nostro Servizio</li>
+                            <li>Per comunicare agli utenti variazioni apportate al servizio che offriamo</li>
+                            <li>Per permettere agli utenti di fruire, a propria discrezione, di funzioni interattive del nostro servizio</li>
+                            <li>Per fornire un servizio ai clienti</li>
+                            <li>Per raccogliere analisi o informazioni preziose in modo da poter migliorare il nostro Servizio</li>
+                            <li>Per monitorare l'utilizzo del nostro Servizio</li>
+                            <li>Per rilevare, prevenire e affrontare problemi tecnici</li>
+                        </ul>
+                        <h2>Trasferimento dei dati</h2>
+                        <p>Le vostre informazioni, compresi i Dati personali, possono essere trasferite a - e mantenute su - computer situati al di fuori del vostro stato, provincia, nazione o altra giurisdizione governativa dove le leggi sulla protezione dei dati possono essere diverse da quelle della vostra giurisdizione.</p>
+                        <p>Se ci si trova al di fuori di Italy e si sceglie di fornire informazioni a noi, si ricorda che trasferiamo i dati, compresi i dati personali, in Italy e li elaboriamo lì.</p>
+                        <p>Il vostro consenso alla presente Informativa sulla privacy seguito dall'invio di tali informazioni rappresenta il vostro consenso al trasferimento.</p>
+                        <p>myLists adotterà tutte le misure ragionevolmente necessarie per garantire che i vostri dati siano trattati in modo sicuro e in conformità con la presente Informativa sulla privacy e nessun trasferimento dei vostri Dati Personali sarà effettuato a un'organizzazione o a un paese a meno che non vi siano controlli adeguati dei vostri dati e altre informazioni personali.</p>
+                        <h2>Divulgazione di dati</h2>
+                        <h3>Prescrizioni di legge</h3>
+                        <p>myLists può divulgare i vostri Dati personali in buona fede, ritenendo che tale azione sia necessaria per:</p>
+                        <ul>
+                            <li>Rispettare un obbligo legale</li>
+                            <li>Proteggere e difendere i diritti o la proprietà di myLists</li>
+                            <li>Prevenire o investigare possibili illeciti in relazione al Servizio</li>
+                            <li>Proteggere la sicurezza personale degli utenti del Servizio o del pubblico</li>
+                            <li>Proteggere contro la responsabilità legale</li>
+                        </ul>
+                        <h2>Sicurezza dei dati</h2>
+                        <p>La sicurezza dei vostri dati è importante per noi, ma ricordate che nessun metodo di trasmissione su Internet o metodo di archiviazione elettronica è sicuro al 100%. Pertanto, anche se adotteremo ogni mezzo commercialmente accettabile per proteggere i vostri Dati personali, non possiamo garantirne la sicurezza assoluta.</p>
+                        <h2>Fornitori di servizi</h2>
+                        <p>Potremmo impiegare società e individui di terze parti per facilitare il nostro Servizio ("Fornitori di servizi"), per fornire il Servizio per nostro conto, per eseguire servizi relativi ai Servizi o per aiutarci ad analizzare come viene utilizzato il nostro Servizio.</p>
+                        <p>Le terze parti hanno accesso ai vostri Dati personali solo per eseguire queste attività per nostro conto e sono obbligate a non rivelarle o utilizzarle per altri scopi.</p>
+                        <h2>Privacy dei minori</h2>
+                        <p>Il nostro servizio non si rivolge a minori di 18 anni ("Bambini").</p>
+                        <p>Non raccogliamo consapevolmente informazioni personali relative a utenti di età inferiore a 18 anni. Se siete un genitore o tutore e siete consapevoli che vostro figlio ci ha fornito Dati personali, vi preghiamo di contattarci. Se veniamo a conoscenza del fatto che abbiamo raccolto Dati personali da minori senza la verifica del consenso dei genitori, adotteremo provvedimenti per rimuovere tali informazioni dai nostri server.</p>
+                        <h2>Modifiche alla presente informativa sulla privacy</h2>
+                        <p>Potremmo aggiornare periodicamente la nostra Informativa sulla privacy. Ti informeremo di eventuali modifiche pubblicando la nuova Informativa sulla privacy in questa pagina.</p>
+                        <p>Vi informeremo via e-mail e / o un avviso di rilievo sul nostro Servizio, prima che la modifica diventi effettiva e aggiorneremo la "data di validità" nella parte superiore di questa Informativa sulla privacy.</p>
+                        <p>Si consiglia di rivedere periodicamente la presente Informativa sulla privacy per eventuali modifiche. Le modifiche a tale informativa sulla privacy entrano in vigore nel momento in cui vengono pubblicate su questa pagina.</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -1040,61 +841,203 @@
                 </div>
             </div>
         </div>
+    </div>
 
-            <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
-            <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
-            <script src="Pages/js/selectize.min.js"></script>
-            <script src="Pages/js/masonry.pkgd.min.js"></script>
-            <script src="Pages/js/icheck.min.js"></script>
-            <script src="Pages/js/jquery.validate.min.js"></script>
-            <script src="Pages/js/custom.js"></script>
-            <script src="Pages/js/vari.js"></script>
-            <script src="Pages/js/nav.js"></script>
 
-            <script type="text/javascript">
-                $(document).ready (function(){
-                $("#alert").hide();
+    <!--######################################################-->
 
-                $("#alert").fadeTo(10000, 500).slideUp(500, function(){
-                $("#alert").slideUp(500);
-                });   
+    <!-- restore password Modal -->
+    <div class="modal fade" id="restorePassword" tabindex="-1" role="dialog" aria-labelledby="restorePassword" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
 
-                });
-            </script>
-            
-            <script>
-                 $(document).ready (function(){
-                <%if(request.getParameter("restorePasswordOf") != null){%>
-                    $('#newPassword').modal('show'); 
-                <%}%>
-                });
-            </script>
-            
-            <script>
+                    <div class="page-title">
+                        <div class="container">
+                            <h1>Recupera la password</h1>
+                        </div>
+                        <!--end container-->
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>            
 
-            function deleteFromArray(idDiv, array){
-                $.ajax({
-                    type: "POST",
-                    url: "/Lists/deleteNotificationsFromArray",
-                    cache: false,
-                    data: { "array": array, "user": '<%=u.getEmail()%>' },
-                    success: function () {
-                        $("#"+idDiv).hide();
-                    },
-                    error: function () {
-                        alert("Errore notificationArray");
-                    }
-                });
-            }
-        </script>
-            
-            
-            <!--###############################################################################################################################
-                                CHIUSURA DATABASE
-            ###############################################################################################################################-->            
-   
-            <!--###############################################################################################################################-->
+                </div>
+                <div class="modal-body">
+                    <!-- Form per il login -->
+                    <form class="form clearfix" id="login-form" action="/Lists/restorePassword" method="post" role="form">
+                        <div class="form-group">
+                            <label for="email" class="col-form-label required">Email</label>
+                            <input type="text" name="email" id="emaillogin" tabindex="1" class="form-control" placeholder="Email" value="" required>
+                        </div>
+                        <!--end form-group-->
+                        <div class="d-flex justify-content-between align-items-baseline">
+                            <button style="float: left;" type="submit" class="btn btn-primary">Recupera password</button>
+                            <button style="float: right;" type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--######################################################-->
 
-    </body>
+    <!-- new password Modal -->
+    <div class="modal fade" id="newPassword" tabindex="-1" role="dialog" aria-labelledby="newPassword" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <div class="page-title">
+                        <div class="container">
+                            <h1>Nuova password</h1>
+                        </div>
+                        <!--end container-->
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>            
+
+                </div>
+                <div class="modal-body">
+                    <h5>Nuova passworrd per <%=request.getParameter("restorePasswordOf")%></h5>
+                    <!-- Form per il login -->
+                    <form class="form clearfix" id="login-form" action="/Lists/changePassword" method="post" role="form">
+                        <div class="form-group">
+                            <label for="password" class="col-form-label required">Password</label>
+                            <input type="password" name="password" id="emaillogin" tabindex="1" class="form-control" placeholder="Password" value="" required>
+                            <input type="hidden" name="email" value="<%=request.getParameter("restorePasswordOf")%>">
+                        </div>
+                        <!--end form-group-->
+                        <div class="d-flex justify-content-between align-items-baseline">
+                            <button style="float: left;" type="submit" class="btn btn-primary">Recupera password</button>
+                            <button style="float: right;" type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--######################################################-->
+
+
+    <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="page-title">
+                        <div class="container">
+                            <h1 style="text-align: center;">Create list</h1>
+                        </div>
+                        <!--end container-->
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form per il login -->
+                    <form class="form clearfix" id="CreateShopListform" action="/Lists/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="Nome" class="col-form-label">Nome della lista</label>
+                            <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
+                        </div>
+                        <!--end form-group-->
+                        <div class="form-group">
+                            <label for="Descrizione" class="col-form-label">Descrizione</label>
+                            <input type="text" name="Descrizione" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
+                        </div>
+                        <!--end form-group-->
+                        <div class="form-group">
+                            <label for="Categoria" class="col-form-label">Categoria</label>
+                            <select name="Categoria" id="Categoria" tabindex="1" size="5" >
+
+                                <c:forEach items="${categorie}" var="categoria">
+                                    <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
+                                </c:forEach>
+                            </select><!--<input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>-->
+
+                        </div>
+                        <!--end form-group-->
+                        <%if (find) {%>
+                        <div class="form-group">
+                            <label for="Immagine" class="col-form-label required">Immagine</label>
+                            <input type="file" name="file1" required>
+                        </div>
+                        <%}%>
+                        <!--end form-group-->
+                        <div class="d-flex justify-content-between align-items-baseline">
+
+                            <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
+
+                            <%if (find == false && session.getAttribute("guestList") != null) {%>
+                            <h5>Attenzione, hai già salvato una lista. Se non sei registrato puoi salvare solo una lista alla volta. Salvando questa lista, cancellerai la lista gia salvata.</h5>
+                            <%}%>
+                        </div>
+                    </form>
+                    <hr>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
+    <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
+    <script src="Pages/js/selectize.min.js"></script>
+    <script src="Pages/js/masonry.pkgd.min.js"></script>
+    <script src="Pages/js/icheck.min.js"></script>
+    <script src="Pages/js/jquery.validate.min.js"></script>
+    <script src="Pages/js/custom.js"></script>
+    <script src="Pages/js/vari.js"></script>
+    <script src="Pages/js/nav.js"></script>
+
+    <script type="text/javascript">
+                            $(document).ready(function () {
+                                $("#alert").hide();
+
+                                $("#alert").fadeTo(10000, 500).slideUp(500, function () {
+                                    $("#alert").slideUp(500);
+                                });
+
+                            });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+        <%if (request.getParameter("restorePasswordOf") != null) {%>
+            $('#newPassword').modal('show');
+        <%}%>
+        });
+    </script>
+
+    <script>
+
+        function deleteFromArray(idDiv, array) {
+            $.ajax({
+                type: "POST",
+                url: "/Lists/deleteNotificationsFromArray",
+                cache: false,
+                data: {"array": array, "user": '<%=u.getEmail()%>'},
+                success: function () {
+                    $("#" + idDiv).hide();
+                },
+                error: function () {
+                    alert("Errore notificationArray");
+                }
+            });
+        }
+    </script>
+
+
+    <!--###############################################################################################################################
+                        CHIUSURA DATABASE
+    ###############################################################################################################################-->            
+
+    <!--###############################################################################################################################-->
+
+</body>
 </html>
 
