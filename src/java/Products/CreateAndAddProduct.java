@@ -111,7 +111,6 @@ public class CreateAndAddProduct extends HttpServlet {
             utenti = notificationdao.getUsersWithWhoTheListIsShared(list.getNome());
             pid = productdao.LastPIDforInsert(newProduct);
             listdao.insertProductToList(pid, list.getNome());
-            System.out.println("++++"+pid+"+++++");
             for(User u : utenti){
                 if(!u.getEmail().equals(user.getEmail())){
                     notificationdao.addNotification(u.getEmail(), "new_product", list.getNome());

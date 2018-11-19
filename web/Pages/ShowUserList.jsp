@@ -438,6 +438,7 @@
                                                 </h3>
                                                 <a href="single-listing-1.html" class="image-wrapper background-image">
                                                     <img src="../<%=p.getImmagine()%>" alt="">
+                                                    <%System.out.println(p.getImmagine());%>
                                                 </a>
                                             </div>
                                             <!--end image-->

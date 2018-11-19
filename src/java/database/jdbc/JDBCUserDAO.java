@@ -193,18 +193,6 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
              System.out.println("errore update email");
             }   
         }
-        
-        if(newUser.getEmail() != null && newUser.getEmail() != "" && newUser.getEmail() != oldUser.getEmail()){
-            try (PreparedStatement statement = CON.prepareStatement("UPDATE User SET email=? WHERE email=? ")){
-            statement.setString(1, newUser.getEmail());
-            statement.setString(2, oldUser.getEmail());
-            statement.executeUpdate();
-            finalUser.setEmail(newUser.getEmail());
-            } catch (SQLException ex) {
-             Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
-             System.out.println("errore update email");
-            }   
-        }
                 
             return finalUser;
     }

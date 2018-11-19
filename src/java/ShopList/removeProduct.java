@@ -5,15 +5,18 @@
  */
 package ShopList;
 
+import Tools.ImageDispatcher;
 import database.daos.ListDAO;
 import database.daos.NotificationDAO;
+import database.daos.ProductDAO;
+import database.entities.Product;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCNotificationsDAO;
+import database.jdbc.JDBCProductDAO;
 import database.jdbc.JDBCShopListDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,15 +49,29 @@ public class removeProduct extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
+        ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
         NotificationDAO notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
         HttpSession s = (HttpSession) request.getSession();
-        int prodotto = 0; String lista = "";
+        int prodotto = 0; String lista = ""; 
         
         if(request.getParameter("prodotto") != null) prodotto = Integer.parseInt(request.getParameter("prodotto"));
         if(s.getAttribute("shopListName") != null) lista = (String) "" + s.getAttribute("shopListName");
         
         try {
-            listdao.removeProductToList(prodotto, lista);
+           listdao.removeProductToList(prodotto, lista);
+           Product product =  productdao.getProductByID(prodotto);
+            
+            if(!product.getCreator().equals("amministratore")){
+                productdao.Delete(product);
+                if(product.getImmagine() != null && !(product.getImmagine().equals(""))){  
+                    String listsFolder = "";
+                    listsFolder = getServletContext().getRealPath(listsFolder);
+                    listsFolder = listsFolder.replace("\\build", "");
+                    String imgfolder = product.getImmagine().replace("/Image/ProductImg", "");
+                    ImageDispatcher.DeleteImgFromDirectory(listsFolder + imgfolder); 
+                }
+            }
+            
         } catch (DAOException ex) {
             System.out.println("impossibile eliminare il prodotto "+prodotto+" dalla lista "+lista);
             Logger.getLogger(removeProduct.class.getName()).log(Level.SEVERE, null, ex);
