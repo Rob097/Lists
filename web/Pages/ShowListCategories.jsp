@@ -21,15 +21,19 @@
         <title>Categorie Lista</title>
 
         <!-- CSS personalizzati -->
-        <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
         <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" type="text/css">
         <link rel="stylesheet" href="fonts/font-awesome.css" type="text/css">
         <link rel="stylesheet" href="css/selectize.css" type="text/css">
         <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/user.css">
-        
-        <link rel="stylesheet" href="css/navbar.css">
+        <link rel="stylesheet" href="css/user.css">  
+        <link rel="stylesheet" href="css/navbar.css"> 
+        <link rel="stylesheet" href="css/datatables.css" type="text/css"> 
+        <link rel="icon" href="img/favicon.png" sizes="16x16" type="image/png">
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="js/popper.min.js"></script>
+        <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
         <title>Categorie Lista</title>
         
         
@@ -288,40 +292,18 @@
         </div>
 
         <!--#####################################################################################-->
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-        <script src="js/jquery-3.3.1.min.js"></script>
-        <script type="text/javascript" src="js/popper.min.js"></script>
-        <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
+        <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
         <script src="js/selectize.min.js"></script>
         <script src="js/masonry.pkgd.min.js"></script>
         <script src="js/icheck.min.js"></script>
         <script src="js/jquery.validate.min.js"></script>
         <script src="js/custom.js"></script>
+        <script src="js/vari.js"></script>
         <script src="js/nav.js"></script>
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
-
-        <script>
-                function myFunction() {
-                    var input, filter, ul, li, a, i;
-                    input = document.getElementById("myInput");
-                    filter = input.value.toUpperCase();
-                    ul = document.getElementById("myUL");
-                    li = ul.getElementsByTagName("li");
-                    for (i = 0; i < li.length; i++) {
-                        a = li[i].getElementsByTagName("a")[0];
-                        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                            li[i].style.display = "";
-                        } else {
-                            li[i].style.display = "none";
-                        }
-                    }
-                }
-            </script>
-            
+                    
             <script>
-                function myFunction() {
+               function myFunction() {
                     var input, filter, items, li, a, i;
                     input = document.getElementById("myInput");
                     filter = input.value.toUpperCase();
