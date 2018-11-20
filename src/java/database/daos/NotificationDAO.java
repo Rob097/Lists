@@ -27,4 +27,5 @@ public interface NotificationDAO {
     public ArrayList<Notification> getAllNotifications(String userName) throws DAOException;
     public void deleteNotification(String email, String listname) throws DAOException;
     public void deleteNotificationFromArray(String tipo, String email, DAOFactory daoFactory, HttpServletRequest request) throws DAOException;
+    public void deleteALLNotification(String email) throws DAOException;
 }

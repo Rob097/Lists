@@ -148,14 +148,15 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
     }
     
     @Override
-    public void GuestInsert(int Pid, String creator, String nomeLista) throws DAOException {
-        try (PreparedStatement stm = CON.prepareStatement("insert into guestListProd(creator, prodotto, nomeLista) values(?,?,?)")){
+    public void GuestInsert(int Pid, String creator, String nomeLista, String status) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement("insert into guestListProd(creator, prodotto, nomeLista, status) values(?,?,?,?)")){
             
             
             try{
                 stm.setString(1, creator);
                 stm.setInt(2, Pid);
                 stm.setString(3, nomeLista);
+                stm.setString(4, status);
                 
                 if (stm.executeUpdate() == 1) {
                     System.out.println("INSERITO");
@@ -242,7 +243,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
 
     @Override
     public ArrayList<Product> getGuestsProducts(String email) throws DAOException {
-        try (PreparedStatement stm = CON.prepareStatement("select * from Product where PID in (select prodotto from guestListProd where creator = ?);")) {
+        try (PreparedStatement stm = CON.prepareStatement("select * from Product INNER JOIN guestListProd ON Product.PID=guestListProd.prodotto where guestListProd.creator = ?")) {
             ArrayList<Product> productLists = new ArrayList<>();
             stm.setString(1, email);
             try (ResultSet rs = stm.executeQuery()) {
@@ -253,6 +254,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
                     p.setNote(rs.getString("note"));
                     p.setCategoria_prodotto(rs.getString("categoria_prod"));
                     p.setImmagine(rs.getString("immagine"));
+                    p.setStatus(rs.getString("status"));
                     productLists.add(p);
                 }
 

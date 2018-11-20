@@ -11,7 +11,9 @@ import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
 import java.util.ArrayList;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -38,12 +40,13 @@ public interface ListDAO {
     public void insertProductToList(int prodotto, String lista) throws DAOException;
     public void removeProductToList(int prodotto, String lista) throws DAOException;
     public void removeALLProductToList(String lista) throws DAOException;
-    public void insertProductToGuestList(int prodotto, HttpServletRequest request) throws DAOException;
+    public void insertProductToGuestList(int prodotto, String status, HttpServletRequest request) throws DAOException;
     public ArrayList<ShopList> getAllSharedList(String email) throws DAOException;
     public void deleteSharedUser(String email, String listname)throws DAOException;
     public String checkRole(String user, String list) throws DAOException;
     public void signProductAsBuyed(int id, String tipo, String lista) throws DAOException;
+    public void changeGuestProductsStatus(int id, String tipo, HttpServletRequest request) throws DAOException;
     public void changeStatusOfAllProduct(String tipo, String lista) throws DAOException;
-    public boolean checkBuyed(int id, String lista) throws DAOException;
+    public boolean checkBuyed(int id, String lista, HttpSession request) throws DAOException;
     public ArrayList<ListProd> getProdList(String listaname) throws DAOException;
 }

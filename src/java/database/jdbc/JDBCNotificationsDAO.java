@@ -188,5 +188,21 @@ public class JDBCNotificationsDAO extends JDBCDAO implements NotificationDAO{
         }
 
     }
+
+    @Override
+    public void deleteALLNotification(String email) throws DAOException {
+        if (email == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed email or listname is null"));
+        }
+        
+        try(PreparedStatement statement = CON.prepareStatement("DELETE FROM Notifications WHERE User=?")){
+            statement.setString(1, email);
+            
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Problems with deleting shared user");
+        }
+    }
     
 }

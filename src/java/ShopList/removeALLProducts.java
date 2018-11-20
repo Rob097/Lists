@@ -52,33 +52,39 @@ public class removeALLProducts extends HttpServlet {
         
         if(s.getAttribute("shopListName") != null) lista = (String) "" + s.getAttribute("shopListName");
         
-        try {
-            listdao.removeALLProductToList(lista);
-        } catch (DAOException ex) {
-            System.out.println("impossibile eliminare i prodotti dalla lista "+lista);
-            Logger.getLogger(removeProduct.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        //utenti con cui la lista è condivisa
-        ArrayList<User> utenti = new ArrayList();
-        try {
-            utenti = notificationdao.getUsersWithWhoTheListIsShared(lista);             
-        } catch (DAOException ex) {
-            Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        
         if(s.getAttribute("user") != null){
-            User utente = (User) s.getAttribute("user");
             try {
-                for(User u : utenti){
-                    //System.out.println("Nome: "+u.getNominativo() + "\nlista: " + lista);
-                    if(!u.getEmail().equals(utente.getEmail())){
-                        notificationdao.addNotification(u.getEmail(), "empty_list", lista);
-                    }
-                }
+                listdao.removeALLProductToList(lista);
+            } catch (DAOException ex) {
+                System.out.println("impossibile eliminare i prodotti dalla lista "+lista);
+                Logger.getLogger(removeProduct.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            //utenti con cui la lista è condivisa
+            ArrayList<User> utenti = new ArrayList();
+            try {
+                utenti = notificationdao.getUsersWithWhoTheListIsShared(lista);             
             } catch (DAOException ex) {
                 Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
-            }            
+            } 
+
+            if(s.getAttribute("user") != null){
+                User utente = (User) s.getAttribute("user");
+                try {
+                    for(User u : utenti){
+                        //System.out.println("Nome: "+u.getNominativo() + "\nlista: " + lista);
+                        if(!u.getEmail().equals(utente.getEmail())){
+                            notificationdao.addNotification(u.getEmail(), "empty_list", lista);
+                        }
+                    }
+                } catch (DAOException ex) {
+                    Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
+                }            
+            }
+        }else{
+            if(s.getAttribute("prodottiGuest") != null){
+                s.setAttribute("prodottiGuest", null);
+            }
         }
         
         response.sendRedirect("/Lists/Pages/ShowUserList.jsp");

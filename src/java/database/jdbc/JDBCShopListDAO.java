@@ -348,7 +348,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
     }
     
     @Override
-    public void insertProductToGuestList(int prodotto, HttpServletRequest request) throws DAOException {
+    public void insertProductToGuestList(int prodotto, String status, HttpServletRequest request) throws DAOException {
         
         try (PreparedStatement stm = CON.prepareStatement("select * from Product where PID = ?")) {
             
@@ -368,6 +368,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                     sL.setPid(rs.getInt("PID"));
                     sL.setNote(rs.getString("note"));
                     sL.setImmagine(rs.getString("immagine"));
+                    sL.setStatus(status);
                     productLists.add(sL);
                     s.setAttribute("prodottiGuest", productLists);
                 }
@@ -602,20 +603,39 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
     }
 
     @Override
-    public boolean checkBuyed(int id, String lista) throws DAOException {
-        try (PreparedStatement stm = CON.prepareStatement("select stato from List_Prod where lista = ? AND prodotto = ?")) {
-            boolean check = false;
-            stm.setString(1, lista);
-            stm.setInt(2, id);
-            try (ResultSet rs = stm.executeQuery()) {
-                while (rs.next()) {
-                    if(rs.getString("stato").equals("acquistato")) return true;
-                }
+    public boolean checkBuyed(int id, String lista, HttpSession s) throws DAOException {
+        
+        ArrayList<Product> p = new ArrayList<>();
+        boolean check = false;
+        
+        if(s.getAttribute("user") != null){
+            try (PreparedStatement stm = CON.prepareStatement("select stato from List_Prod where lista = ? AND prodotto = ?")) {
+                
+                stm.setString(1, lista);
+                stm.setInt(2, id);
+                try (ResultSet rs = stm.executeQuery()) {
+                    while (rs.next()) {
+                        if(rs.getString("stato").equals("acquistato")) return true;
+                    }
 
-                return false;
+                    return false;
+                }
+            } catch (SQLException ex) {            
+                throw new DAOException("Impossible to check if product is in th list", ex);
             }
-        } catch (SQLException ex) {            
-            throw new DAOException("Impossible to check if product is in th list", ex);
+        }else{
+            if (s.getAttribute("prodottiGuest") != null) {
+                p = (ArrayList<Product>) s.getAttribute("prodottiGuest");
+            }
+            for(Product pp : p){
+                if(pp.getPid() == id){
+                    System.out.println("stato: " + pp.getStatus());
+                    if(pp.getStatus() != null){
+                        if(pp.getStatus().equals("acquistato")) return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 
@@ -682,6 +702,20 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             }
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of users", ex);
+        }
+    }
+
+    @Override
+    public void changeGuestProductsStatus(int id, String tipo, HttpServletRequest request) throws DAOException {
+        HttpSession s = (HttpSession) request.getSession();
+        ArrayList<Product> p = new ArrayList<>();
+        if(s.getAttribute("prodottiGuest") != null){
+            p = (ArrayList<Product>) s.getAttribute("prodottiGuest");
+        }
+        for(Product pp : p){
+            if(pp.getPid() == id){
+                pp.setStatus(tipo);
+            }
         }
     }
 

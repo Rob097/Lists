@@ -58,6 +58,7 @@
             }
             ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
             ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
+            NotificationDAO notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
             Category_ProductDAO category_productdao = new JDBCCategory_ProductDAO(daoFactory.getConnection());
             CategoryDAO categorydao = new JDBCCategoryDAO(daoFactory.getConnection());
             UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
@@ -66,6 +67,8 @@
             String Type;
             String image;
 
+            ArrayList <Notification> notifiche = null; 
+            
             User u = new User();
             boolean find = false;
             if (s.getAttribute("user") != null) {
@@ -75,6 +78,8 @@
                 Email = u.getEmail();
                 Type = u.getTipo();
                 image = u.getImage();
+                notifiche = notificationdao.getAllNotifications(u.getEmail());
+                session.setAttribute("notifiche", notifiche);
             } else {
                 Type = "guest";
             }
@@ -277,16 +282,17 @@
             %>
             <li class="dropdown" id="notificationsLI">
                 <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
-                    <h3 style="width: 20px; position: absolute; background: yellow; border-radius: 50%; height: 20px; text-align: center;"><%=filteredN.size()%></h3>
+                    <h3 style="width: 20px; position: absolute; background: yellow; border-radius: 50%; height: 20px; text-align: center;" id="notificationsSize"><%=filteredN.size()%></h3>
                     <img style="width: 5rem;" src="Image/Icons/notification.svg">
                 </a>
 
                 <ul class="dropdown-menu notifications" role="menu" aria-labelledby="dLabel">
 
-                    <div class="notification-heading"><h4 class="menu-title">Notifications</h4><h4 class="menu-title pull-right">View all<i class="glyphicon glyphicon-circle-arrow-right"></i></h4>
+                    <div class="notification-heading"><h4 class="menu-title">Notifiche</h4><h4 class="menu-title pull-right"><a onclick="deleteALLNotifications();" style="cursor: pointer;">Cancella tutto</a><i class="glyphicon glyphicon-circle-arrow-right"></i></h4>
                     </div> 
-                    <div class="notifications-wrapper"> 
-                        <% for (Notification nf : filteredN) {
+                    <div class="notifications-wrapper" id="NotificationsWrapper"> 
+                        <% if(!filteredN.isEmpty()){
+                            for (Notification nf : filteredN) {
                             if(nf.getType().equals("new_product")){
                         %>
                             <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
@@ -365,7 +371,10 @@
                                         </a>
                                     <%}
                             }
-                        }%>
+                        }
+                        }else{%>
+                            <h4>Non ci sono notifiche!</h4>
+                        <%}%>
                     </div> 
                 </ul>
             </li>
@@ -1026,6 +1035,23 @@
                 },
                 error: function () {
                     alert("Errore notificationArray");
+                }
+            });
+        }
+    </script>
+    <script>
+
+        function deleteALLNotifications() {
+            $.ajax({
+                type: "POST",
+                url: "/Lists/Pages/deleteALLNotifications.jsp",
+                cache: false,
+                success: function (response) {
+                    $("#NotificationsWrapper").html(response);
+                    $("#notificationsSize").html(0);
+                },
+                error: function () {
+                    alert("Errore notificationALL");
                 }
             });
         }

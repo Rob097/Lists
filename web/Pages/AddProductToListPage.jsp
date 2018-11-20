@@ -32,25 +32,31 @@
 
     HttpSession s = (HttpSession) request.getSession();
     String shoplistName = "";
-    if (s.getAttribute("shopListName") != null) {
-        shoplistName = (String) s.getAttribute("shopListName");
-    }
-    if (request.getParameter("shopListName") != null) {
-        shoplistName = (String) request.getParameter("shopListName");
-        s.setAttribute("shopListName", shoplistName);
-
-    }
+    ShopList guestList;
+    ArrayList<Product> guestProducts = new ArrayList<>();
     User u = new User();
     boolean find = false;
     if (s.getAttribute("user") != null) {
         u = (User) s.getAttribute("user");
-    }
-
-    if (u.getTipo() != null) {
-        if (u.getTipo().equals("standard") || u.getTipo().equals("amministratore")) {
-            find = true;
+        find = true;
+        if (s.getAttribute("shopListName") != null) {
+            shoplistName = (String) s.getAttribute("shopListName");
+        }
+        if (request.getParameter("shopListName") != null) {
+            shoplistName = (String) request.getParameter("shopListName");
+            s.setAttribute("shopListName", shoplistName);
+        }
+    } else {
+        if (s.getAttribute("guestList") != null) {
+            System.out.println("\nqui");
+            guestList = (ShopList) s.getAttribute("guestList");
+            shoplistName = guestList.getNome();
+        }
+        if (s.getAttribute("prodottiGuest") != null) {
+            guestProducts = (ArrayList<Product>) s.getAttribute("prodottiGuest");
         }
     }
+
     ArrayList<Product> li = productdao.getallAdminProducts();
     ArrayList<String> allCategories = productdao.getAllProductCategories();
     ArrayList<String> allListsOfUser = null;
@@ -298,11 +304,11 @@
                             <!--end col-md-3-->
                             <div class="col-md-3">
                                 <div class="list-group">
-                                    <a href="/Lists/Pages/ShowProducts.jsp?cat=all" class="list-group-item">All</a>
+                                    <a href="/Lists/Pages/AddProductToListPage.jsp?cat=all" class="list-group-item">All</a>
                                     <%  String prod = "";
 
-                                             for (String sprd : allCategories) {
-                                                 System.out.println("sprd: " + sprd);%>
+                                        for (String sprd : allCategories) {
+                                            System.out.println("sprd: " + sprd);%>
                                     <a href="/Lists/Pages/AddProductToListPage.jsp?cat=<%=sprd%>" class="list-group-item"><%=sprd%></a>
                                     <%}%>
                                 </div>
@@ -344,7 +350,7 @@
                                                 <a href="single-listing-1.html" class="image-wrapper background-image">
                                                     <img src="../<%=p.getImmagine()%>" alt="">
                                                 </a>
-                                            </div>\
+                                            </div>
                                             <!--end image-->
 
                                             <div class="price">$80</div>
@@ -354,11 +360,27 @@
                                                 <p><%=p.getNote()%></p>
                                             </div>
                                             <!--end description-->
-                                            <%if (listdao.chckIfProductIsInTheList(p.getPid(), shoplistName)) {%>
+                                            <%if (find) {%>
+                                            <%if (listdao.chckIfProductIsInTheList(p.getPid(), shoplistName) == false) {%>
                                             <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
                                             <%} else {%> 
                                             <a class="detail"><img src="img/correct.png" id="addIco"></a>
                                                 <%}%>
+                                                <%} else if (guestProducts != null && !guestProducts.isEmpty()) {
+                                                    boolean check = false;%>
+                                                <%for (Product t : guestProducts) {
+                                                        if (t.getPid() == p.getPid()) {
+                                                            check = true;
+                                                        }
+                                                    }%>
+                                                <%if (check == true) {%>
+                                            <a class="detail"><img src="img/correct.png" id="addIco"></a>
+                                                <%} else {%>
+                                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
+                                            <%}%>                                               
+                                            <%} else {%>
+                                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
+                                            <%}%>
                                             <a class="detail"><img src="img/correct.png" id="addIco<%=p.getPid()%>" class="dispNone"></a>
                                         </div>
                                     </div>
@@ -367,7 +389,8 @@
                                     } else if (request.getParameter("cat") == null || request.getParameter("cat").equals("all")) {
                                         int count = 5;
                                         for (Product p : li) {
-                                            if (count <= 15) {  session.setAttribute(p.getNome(), p.getNome());
+                                            if (count <= 15) {
+                                                session.setAttribute(p.getNome(), p.getNome());
                                     %>
                                     <div class="item">
                                         <!--end ribbon-->
@@ -392,11 +415,27 @@
                                                 <p><%=p.getNote()%></p>
                                             </div>
                                             <!--end description-->
+                                            <%if (find) {%>
                                             <%if (listdao.chckIfProductIsInTheList(p.getPid(), shoplistName) == false) {%>
                                             <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
                                             <%} else {%> 
                                             <a class="detail"><img src="img/correct.png" id="addIco"></a>
                                                 <%}%>
+                                                <%} else if (guestProducts != null && !guestProducts.isEmpty()) {
+                                                    boolean check = false;%>
+                                                <%for (Product t : guestProducts) {
+                                                        if (t.getPid() == p.getPid()) {
+                                                            check = true;
+                                                        }
+                                                    }%>
+                                                <%if (check == true) {%>
+                                            <a class="detail"><img src="img/correct.png" id="addIco"></a>
+                                                <%} else {%>
+                                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
+                                            <%}%>                                               
+                                            <%} else {%>
+                                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
+                                            <%}%>
                                             <a class="detail"><img src="img/correct.png" id="addIco<%=p.getPid()%>" class="dispNone"></a>
                                         </div>
                                     </div>

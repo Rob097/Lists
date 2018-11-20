@@ -80,9 +80,7 @@
         <link rel="stylesheet" href="css/user.css">
         <link rel="stylesheet" href="css/navbar.css">
         <link rel="stylesheet" href="css/datatables.css" type="text/css"> 
-        <script src="js/jquery-3.3.1.min.js"></script>
-        <script type="text/javascript" src="js/popper.min.js"></script>
-        <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+        
 
 
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
@@ -414,8 +412,9 @@
                                     </div></div>
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
-                                <%for (Product p : li) {%>
-                                    <%if(listdao.checkBuyed(p.getPid(), shoplistName) == true){%>
+                                <%if(li != null){
+                                    for (Product p : li) {%>
+                                    <%if(listdao.checkBuyed(p.getPid(), shoplistName, s) == true){%>
                                     <div class="item itemAcquistato" id="item<%=p.getPid()%>">
                                         <div class="overlayAcquistato" id="divProva<%=p.getPid()%>">
                                             <p class="pAcquistato" id="pProva<%=p.getPid()%>">Già acquistato<br><a onclick="daAcquistareItem(<%=p.getPid()%>)" type="button" class="btn btn-dark" style="color: white;">Annulla</a></p>                                            
@@ -465,7 +464,8 @@
                                             <a href="single-listing-1.html" class="detail text-caps underline">Detail</a>
                                         </div>
                                     </div>
-                                    <%}%>
+                                    <%}
+                                }%>
                                     <!--end item-->
 
                                     <!--end item-->
@@ -885,6 +885,9 @@
         <!--###################################################################################################################################################################################################-->
 
         <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="js/popper.min.js"></script>
+        <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
         <script src="js/selectize.min.js"></script>
         <script src="js/masonry.pkgd.min.js"></script>
         <script src="js/icheck.min.js"></script>
@@ -893,7 +896,8 @@
         <script src="js/nav.js"></script>
         <script src="js/vari.js"></script>
         
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
+        
+        <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>-->
         
         <script type="text/javascript">
                 $(document).ready (function(){
@@ -964,7 +968,7 @@
         </script>
         
         
-        <script>
+        <!--<script>
                             // Note: This example requires that you consent to location sharing when
                             // prompted by your browser. If you see the error "The Geolocation service
                             // failed.", it means you probably did not give permission for the browser to
@@ -1008,7 +1012,7 @@
         </script>
         <script async defer
                 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjXyXm-OQw78LLDEADIrQbl5OFKZGlam8&callback=initMap">
-        </script>
+        </script>-->
         
     </body>
 </html>

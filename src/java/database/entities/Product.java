@@ -16,6 +16,7 @@ public class Product {
     private String categoria_prodotto;
     private String immagine;
     private String creator;
+    private String status;
 
     public String getImmagine() {
         return immagine;
@@ -66,6 +67,14 @@ public class Product {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
     
     

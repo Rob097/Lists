@@ -7,6 +7,7 @@ package ShopList;
 
 import database.daos.ListDAO;
 import database.daos.NotificationDAO;
+import database.entities.Product;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
@@ -50,36 +51,47 @@ public class statusALLProducts extends HttpServlet {
         ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
         NotificationDAO notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
         String tipo = (String) request.getParameter("tipo");
+        ArrayList<Product> prodottiGuest = new ArrayList<>();
         
-        try {
-            listdao.changeStatusOfAllProduct(tipo, (String) session.getAttribute("shopListName"));
-            //utenti con cui la lista è condivisa
-            ArrayList<User> utenti = new ArrayList();
+        if (session.getAttribute("user") != null) {
             try {
-                utenti = notificationdao.getUsersWithWhoTheListIsShared((String) session.getAttribute("shopListName"));
-            } catch (DAOException e1x) {
-                Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, e1x);
-            } 
-        
-            //Inserimento del prodotto nel database
-            //Invio della nootifica ad ogni utente della lista
-            if(session.getAttribute("user") != null){
-                User utente = (User) session.getAttribute("user");
+                listdao.changeStatusOfAllProduct(tipo, (String) session.getAttribute("shopListName"));
+                //utenti con cui la lista è condivisa
+                ArrayList<User> utenti = new ArrayList();
                 try {
-                    for(User u : utenti){
-                        //System.out.println("Nome: "+u.getNominativo() + "\nlista: " + lista);
-                        if(!u.getEmail().equals(utente.getEmail())){
-                            notificationdao.addNotification(u.getEmail(), "change_status_product", (String) session.getAttribute("shopListName"));
-                        }
-                    }
-                } catch (DAOException ex) {
-                    Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
+                    utenti = notificationdao.getUsersWithWhoTheListIsShared((String) session.getAttribute("shopListName"));
+                } catch (DAOException e1x) {
+                    Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, e1x);
                 }
-            }
+
+                //Inserimento del prodotto nel database
+                //Invio della nootifica ad ogni utente della lista
+                if (session.getAttribute("user") != null) {
+                    User utente = (User) session.getAttribute("user");
+                    try {
+                        for (User u : utenti) {
+                            //System.out.println("Nome: "+u.getNominativo() + "\nlista: " + lista);
+                            if (!u.getEmail().equals(utente.getEmail())) {
+                                notificationdao.addNotification(u.getEmail(), "change_status_product", (String) session.getAttribute("shopListName"));
+                            }
+                        }
+                    } catch (DAOException ex) {
+                        Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             } catch (DAOException ex) {
                 System.out.println("Errore sign as buyed servlet");
                 Logger.getLogger(signProductAsBuyed.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }else{
+            if(session.getAttribute("prodottiGuest") != null){
+                prodottiGuest = (ArrayList<Product>) session.getAttribute("prodottiGuest"); 
+            }
+            for(Product p : prodottiGuest){
+                p.setStatus(tipo);
+            }
+            session.setAttribute("prodottiGuest", prodottiGuest);
+        }
         response.sendRedirect("/Lists/Pages/ShowUserList.jsp");
     }
 

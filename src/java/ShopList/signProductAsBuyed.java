@@ -48,38 +48,45 @@ public class signProductAsBuyed extends HttpServlet {
         //assegna a userdao la connessione(costruttore) e salva la connessione in una variabile tipo Connection
         ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
         NotificationDAO notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
-        
-        try {
-            listdao.signProductAsBuyed(Integer.parseInt(request.getParameter("id")), request.getParameter("tipo"), (String) session.getAttribute("shopListName"));
-            //utenti con cui la lista è condivisa
-            ArrayList<User> utenti = new ArrayList();
+
+        if (session.getAttribute("user") != null) {
             try {
-                utenti = notificationdao.getUsersWithWhoTheListIsShared((String) session.getAttribute("shopListName"));
-            } catch (DAOException e1x) {
-                Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, e1x);
-            } 
-        
-            //Inserimento del prodotto nel database
-            //Invio della nootifica ad ogni utente della lista
-            if(session.getAttribute("user") != null){
-                User utente = (User) session.getAttribute("user");
+                listdao.signProductAsBuyed(Integer.parseInt(request.getParameter("id")), request.getParameter("tipo"), (String) session.getAttribute("shopListName"));
+                //utenti con cui la lista è condivisa
+                ArrayList<User> utenti = new ArrayList();
                 try {
-                    for(User u : utenti){
-                        //System.out.println("Nome: "+u.getNominativo() + "\nlista: " + lista);
-                        if(!u.getEmail().equals(utente.getEmail())){
-                            notificationdao.addNotification(u.getEmail(), "change_status_product", (String) session.getAttribute("shopListName"));
-                        }
-                    }
-                } catch (DAOException ex) {
-                    Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
+                    utenti = notificationdao.getUsersWithWhoTheListIsShared((String) session.getAttribute("shopListName"));
+                } catch (DAOException e1x) {
+                    Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, e1x);
                 }
-            }
+
+                //Inserimento del prodotto nel database
+                //Invio della nootifica ad ogni utente della lista
+                if (session.getAttribute("user") != null) {
+                    User utente = (User) session.getAttribute("user");
+                    try {
+                        for (User u : utenti) {
+                            //System.out.println("Nome: "+u.getNominativo() + "\nlista: " + lista);
+                            if (!u.getEmail().equals(utente.getEmail())) {
+                                notificationdao.addNotification(u.getEmail(), "change_status_product", (String) session.getAttribute("shopListName"));
+                            }
+                        }
+                    } catch (DAOException ex) {
+                        Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             } catch (DAOException ex) {
                 System.out.println("Errore sign as buyed servlet");
                 Logger.getLogger(signProductAsBuyed.class.getName()).log(Level.SEVERE, null, ex);
             }
-        
-        
+        }else if(session.getAttribute("prodottiGuest") != null){
+            try {
+                listdao.changeGuestProductsStatus(Integer.parseInt(request.getParameter("id")), request.getParameter("tipo"), request);
+            } catch (DAOException ex) {
+                Logger.getLogger(signProductAsBuyed.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
     }
 
     /**

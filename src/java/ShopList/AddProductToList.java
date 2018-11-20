@@ -96,7 +96,7 @@ public class AddProductToList extends HttpServlet {
             }            
         }else{
             try {
-                listdao.insertProductToGuestList(Integer.parseInt(prodotto), request);
+                listdao.insertProductToGuestList(Integer.parseInt(prodotto), "daAcquistare", request);
             } catch (DAOException ex) {
                 Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
             }
