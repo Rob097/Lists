@@ -21,6 +21,7 @@
         <title>Categorie Lista</title>
 
         <!-- CSS personalizzati -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
         <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css">
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" type="text/css">
@@ -145,17 +146,31 @@
                 display: table; /* This is important */ 
                 overflow-y: auto;    
                 overflow-x: auto;
-                width: auto;
-                min-width: 800px;
-                max-height: 530px;
-            }
+                width: auto; 
+           }
             .modal-body {
                 position: relative;
                 overflow-y: auto;
-                max-height: 530px;
                 padding: 15px;
             }
-            
+            .container .img-responsive {
+                display: block;
+                height: auto;
+                max-width: 100%;
+            }  
+            /*To */
+
+            .container  .img-responsive {
+                display: block;
+                width: auto;
+                max-height: 100%;
+            }
+            .thumbnail img {
+                height:150px;
+                width:100%;
+                border: 5px lightgray solid; 
+                margin-bottom: 10px;
+            }
         </style>
             
     </head>
@@ -464,7 +479,7 @@
                                      <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Submit</button>
                                 </div>
                                 <div class="col-6">
-                                   <a href="<%=request.getContextPath()%>/restricted/NewCategoryNameAttribute?listname=NO" class="btn btn-dark">Close</a>
+                                   <a href="<%=request.getContextPath()%>/restricted/NewCategoryNameAttribute?listname=NO" class="btn btn-dark pull-right">Close</a>
                                 </div>  
                                 <div class="col-3">
                                 </div>
@@ -475,7 +490,7 @@
             </div>
         </div>
         <!--deleteimageModal-->
-        <div class="modal fade" id="deleteImageModal" tabindex="-1" role="dialog" aria-labelledby="deleteImageModal" aria-hidden="true">
+        <div class="modal fade" id="deleteImageModal" tabindex="-1" role="dialog" aria-labelledby="deleteImageModal" aria-hidden="true" style="width: auto;">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -486,19 +501,18 @@
                         </div>
                     </div> 
                     <div class="modal-body">                        
-                            <div class="row">  
-                                <c:forEach items="${Immagini}" var="immagine">
-                                    <div class="col-md-4">
-                                        <div class="thumbnail">
-                                          <a href="<%=request.getContextPath()%>/restricted/DeleteCategoryImage?image=${immagine}">
+                        <div class="row">  
+                            <c:forEach items="${Immagini}" var="immagine">
+                                <div class = "col-6"> 
+                                    <div class="thumbnail">
+                                        <a href="<%=request.getContextPath()%>/restricted/DeleteCategoryImage?image=${immagine}">
                                             <img src="../${immagine}" alt="immagini categoria ${listname}">
-                                          </a>
-                                        </div>
+                                        </a>   
                                     </div>
-                                </c:forEach>
-                            </div> 
-                            <a href="<%=request.getContextPath()%>/restricted/NewCategoryNameAttribute?listname=NO" class="btn btn-dark">Close</a> 
-                        </form>
+                                </div>
+                            </c:forEach>
+                        </div>                        
+                        <a href="<%=request.getContextPath()%>/restricted/NewCategoryNameAttribute?listname=NO" class="btn btn-dark">Close</a>                         
                     </div>
                 </div>                
             </div>
@@ -506,9 +520,10 @@
                             
                             
         <!--image popup modal-->
-        <div id="imageModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog" style="min-width: 100px;">
+        <div id="imageModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" >
+            <div class="modal-dialog" >
               <div class="modal-content">
+                  <div class="container">
                 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
@@ -533,14 +548,25 @@
             </div>
 
             <!-- Controls -->
-            <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-              <span class="glyphicon glyphicon-chevron-left"></span>
-            </a>
-            <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-              <span class="glyphicon glyphicon-chevron-right"></span>
-            </a>
+            <div class="row">
+                <div class="col-6">
+                    <div class="pull-left">
+                        <button class="left carousel-control btn-outline-secondary" href="#carousel-example-generic"  data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left">Prev</span>
+                        </button>
+                    </div>                    
+                </div>
+                <div class="col-6">
+                    <div class="pull-right">
+                       <button class="right carousel-control btn-outline-secondary" href="#carousel-example-generic" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right">Next</span>
+                        </button> 
+                    </div>                    
+                </div>
+            </div>
           </div>
               </div>
+            </div>
             </div>
           </div>
         <!--######################Modals#############################################-->
