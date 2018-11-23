@@ -25,7 +25,14 @@
     boolean find = false;
     ShopList lista = null;
     ArrayList<Notification> notifiche = null;
-
+    
+        DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
+        if (daoFactory == null) {
+            throw new ServletException("Impossible to get dao factory for user storage system");
+        }
+        ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
+        
+        
     if(s.getAttribute("user") != null){
         u = (User) s.getAttribute("user");
     }
@@ -35,11 +42,7 @@
             lista = (ShopList) s.getAttribute("guestList");
         }
     } else {
-        DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
-        if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for user storage system");
-        }
-        ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
+        
         li = listdao.getByEmail(u.getEmail());
         notifiche = new ArrayList();
         if (session.getAttribute("notifiche") != null) {
@@ -246,7 +249,7 @@
                                                     </div>
 
                                                     <!--end image-->
-                                                    <div class="price">$80</div>
+                                                    <div class="price"><%=listdao.getAllProductsOfShopList(l.getNome()).size()%></div>
                                                     <div class="admin-controls">
                                                         <a href="/Lists/ShowShopList?nome=<%=l.getNome()%>">
                                                             <i class="fa fa-pencil"></i>Edit
@@ -286,7 +289,7 @@
                                                         </a>
                                                     </div>
                                                     <!--end image-->
-                                                    <div class="price">$80</div>
+                                                    <div class="price"><%=lista.getProducts().size()%></div>
                                                     <div class="admin-controls">
                                                         <a href="/Lists/restricted/ShowShopList?nome=<%=lista.getNome()%>">
                                                             <i class="fa fa-pencil"></i>Edit

@@ -213,7 +213,7 @@
                                                 </a>
                                             </div>
                                             <!--end image-->
-                                            <div class="price">$80</div>
+                                            <div class="price"><%=listdao.getAllProductsOfShopList(l.getNome()).size()%></div>
                                             <div class="admin-controls">
                                                 <a href="/Lists/ShowShopList?nome=<%=l.getNome()%>">
                                                     <i class="fa fa-pencil"></i>Edit

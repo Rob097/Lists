@@ -189,7 +189,7 @@
                         <div class="container pt-5">
                             <%if (find) {%>
                             <h1 class="opacity-60 center">
-                                Bentornato <a href="/Lists/profile.jsp" data-toggle="tooltip" title="Il mio profilo"><%=u.getNominativo()%></a>
+                                Ciao <a href="/Lists/profile.jsp" data-toggle="tooltip" title="Il mio profilo"><%=u.getNominativo()%>!</a>
                             </h1><br>
                             <%} else {%>
                             <h1 class="opacity-60 center">

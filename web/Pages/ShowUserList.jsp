@@ -972,11 +972,11 @@
         
         <script>
         function updateQuantity(id) {
-            var lista = <%=shoplistName%>;
+            var lista = '<%=shoplistName%>';
             var quantita = $('#'+id+'Quantity').val();
             $.ajax({
                 type: "POST",
-                url: "updateQuantity",
+                url: "/Lists/updateQuantity",
                 data: jQuery.param({id: id, lista: lista, quantita: quantita}),
                 async: false,
                 success: function () {
