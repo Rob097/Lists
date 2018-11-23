@@ -158,7 +158,7 @@
                             </div>
                             <!--end col-md-3-->
                             <div class="col-md-9">
-                                <form class="form clearfix" id="login-form" action="/Lists/restricted/updateUser" method="post" enctype="multipart/form-data" onsubmit="return checkCheckBoxes(this);">
+                                <form class="form clearfix" id="login-form" action="/Lists/restricted/updateUser" method="post" enctype="multipart/form-data" onsubmit="return validate();">
                                     <div class="row">
                                         <div class="col-md-8">
                                             <h2>Informazioni personali</h2>
@@ -166,14 +166,16 @@
                                                 <div class="form-group">
                                                     <label for="email" class="col-form-label">Email(non modificabile)</label>
                                                     <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" value="${user.email}"  disabled>
+                                                </div>                                                
+                                                <div class="form-group">
+                                                    <label for="nominativo" class="col-form-label">Nome</label>
+                                                    <input type="text" name="nominativo" id="nominativo" tabindex="1" class="form-control" placeholder="Nome" value="${user.nominativo}" >                                                    
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="password" class="col-form-label">Password</label>
                                                     <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password"  value="${user.password}">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="nominativo" class="col-form-label">Nome</label>
-                                                    <input type="text" name="nominativo" id="nominativo" tabindex="1" class="form-control" placeholder="Nome" value="${user.nominativo}" >
+                                                    <label for="pswrt2" class="col-form-label">Conferma Password</label>
+                                                    <input type="password" name="pswrt2" id="pswrt2" tabindex="2" class="form-control" placeholder="Password"  value="${user.password}">
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="input-group">
@@ -411,6 +413,20 @@
 		}); 	
 	});
         </script>
+        <script type="text/javascript">
+            function validate(){
+                var n1 = document.getElementById("password");
+                var n2 = document.getElementById("pswrt2");
+                if(n1.value != "" && n2.value != ""){
+                    if((n1.value == n2.value)){
+                        return true;
+                    }
+                }
+                alert("La password non può essere vuota e deve essere uguale");
+                return false;
+            }
+        </script>
+        
 
     </body>
 </html>
