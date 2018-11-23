@@ -4,6 +4,8 @@
     Author     : Roberto97
 --%>
 
+<%@page import="database.jdbc.JDBCProductDAO"%>
+<%@page import="database.daos.ProductDAO"%>
 <%@page import="database.entities.Product"%>
 <%@page import="database.jdbc.JDBCShopListDAO"%>
 <%@page import="java.util.ArrayList"%>
@@ -29,6 +31,7 @@
 
     UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
     ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
+    ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
     HttpSession s = (HttpSession) request.getSession();
     String shoplistName = null; //Nome della lista
     ShopList guestList = null; //Lista dell'utente non registrato
@@ -444,7 +447,7 @@
                                             <h4 class="location">
                                                 <a href="#"><%=p.getPid()%></a>
                                             </h4>
-                                            <div class="price">$80</div>
+                                                <input id="<%=p.getPid()%>Quantity" class="price" onchange="updateQuantity(<%=p.getPid()%>);" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" name="quantity" min="1" max="99" value="<%=productdao.getQuantity(p.getPid(), shoplistName)%>"></input>
                                             <div class="admin-controls">
                                                 <a style="cursor: pointer;" onclick="giaAcquistatoItem(<%=p.getPid()%>)">
                                                     <i class="fas fa-shopping-cart"></i>Acquistato
@@ -959,6 +962,25 @@
                 async: false,
                 success: function () {
                     $('#item'+id).addClass('invisible');
+                },
+                error: function () {
+                   alert("Errore");
+               }
+            });
+        }
+        </script>
+        
+        <script>
+        function updateQuantity(id) {
+            var lista = <%=shoplistName%>;
+            var quantita = $('#'+id+'Quantity').val();
+            $.ajax({
+                type: "POST",
+                url: "updateQuantity",
+                data: jQuery.param({id: id, lista: lista, quantita: quantita}),
+                async: false,
+                success: function () {
+                    
                 },
                 error: function () {
                    alert("Errore");

@@ -300,7 +300,7 @@
                 <section class="block">
                     <div class="container">
                         <div class="row">
-                            <a href="/Lists/Pages/ShowUserList.jsp" id="backToList" class="btn btn-primary botButton social dispNone">Torna alla lista</a>
+                            <a href="/Lists/Pages/ShowUserList.jsp" id="backToList" class="btn btn-primary botButton social">Torna alla lista</a>
                             <!--end col-md-3-->
                             <div class="col-md-3">
                                 <div class="list-group">
@@ -507,7 +507,7 @@
                                                 success: function () {
                                                     $('#addButton' + id).addClass('dispNone');
                                                     $('#addIco' + id).removeClass('dispNone');
-                                                    $('#backToList').removeClass('dispNone');
+                                                    //$('#backToList').removeClass('dispNone');
                                                 },
                                                 error: function () {
                                                     alert("Errore");

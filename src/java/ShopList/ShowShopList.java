@@ -86,7 +86,6 @@ public class ShowShopList extends HttpServlet {
                 session.setAttribute("shoplist", shoplist);
             } catch (DAOException ex) {
                 System.out.println("try error showShopList.java\n");
-                Logger.getLogger(ShowShopList.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             try {

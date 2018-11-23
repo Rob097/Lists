@@ -198,6 +198,10 @@
         <servlet-name>CreateAndAddProduct</servlet-name>
         <servlet-class>Products.CreateAndAddProduct</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>updateQuantity</servlet-name>
+        <servlet-class>Products.updateQuantity</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -345,6 +349,10 @@
     <servlet-mapping>
         <servlet-name>CreateAndAddProduct</servlet-name>
         <url-pattern>/restricted/CreateAndAddProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateQuantity</servlet-name>
+        <url-pattern>/updateQuantity</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

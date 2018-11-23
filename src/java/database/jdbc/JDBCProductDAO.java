@@ -271,8 +271,9 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
         HttpSession session = request.getSession();
         ArrayList<Product> products = new ArrayList<>();
         
-            try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM Product ORDER BY PID LIMIT 10 OFFSET ?;")) {
-                stm.setInt(1, number);
+            try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM Product WHERE creator = ? ORDER BY PID LIMIT 10 OFFSET ?;")) {
+                stm.setString(1, "amministratore");
+                stm.setInt(2, number);
                 try (ResultSet rs = stm.executeQuery()) {
                     while (rs.next()) {
                         Product p = new Product();
@@ -299,7 +300,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
     @Override
     public ArrayList<Product> nameContian(String s, HttpServletRequest request) throws DAOException {
         HttpSession session = request.getSession(false);
-        ArrayList<Product> a = getAllProducts();
+        ArrayList<Product> a = getallAdminProducts();
         ArrayList<Product> b = new ArrayList();
         boolean check = false;
         for(Product p : a){
@@ -351,6 +352,47 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
             }
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get bt category", ex);
+        }
+    }
+
+    @Override
+    public int getQuantity(int idProd, String listName) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement("select quantita from List_Prod where prodotto = ? and lista = ?")) {
+            stm.setInt(1, idProd);
+            stm.setString(2, listName);
+            int quantita = 1;
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    quantita = rs.getInt("quantita");
+                }
+                return quantita;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get bt category", ex);
+        }
+    }
+
+    @Override
+    public void updateQuantity(int quantita, int idProd, String listName) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement("update List_Prod set quantita = ? where prodotto = ? and lista = ?")){
+          
+            try{
+                stm.setInt(1, quantita);
+                stm.setInt(2, idProd);
+                stm.setString(3, listName);
+                
+                if (stm.executeUpdate() == 1) {
+                    System.out.println("Qty Updt");
+                } else {
+                    throw new DAOException("Impossible to update quantity");
+                }
+
+            } catch (SQLException ex) {
+                throw new DAOException(ex);
+            }
+            
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to update quantity #2", ex);
         }
     }
 

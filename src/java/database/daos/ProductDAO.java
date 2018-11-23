@@ -31,4 +31,6 @@ public interface ProductDAO {
     public ArrayList<Product> nameContian(String s, HttpServletRequest request) throws DAOException;
     public ArrayList<Product> getallAdminProducts() throws DAOException;
     public int LastPIDforInsert(Product p) throws DAOException;
+    public int getQuantity(int idProd, String listName) throws DAOException;
+    public void updateQuantity(int quantita, int idProd, String listName) throws DAOException;
 }

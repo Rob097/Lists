@@ -332,7 +332,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
 
         java.sql.Timestamp date = new java.sql.Timestamp(new java.util.Date().getTime());
         
-        try (PreparedStatement stm = CON.prepareStatement("INSERT INTO List_Prod VALUES (?,?,'2008-7-04',null,'daAcquistare', null, null)")) {
+        try (PreparedStatement stm = CON.prepareStatement("INSERT INTO List_Prod VALUES (?,?,'2008-7-04',null,'daAcquistare', 1, null)")) {
             stm.setString(1, lista);
             stm.setInt(2, prodotto);
             //stm.setTimestamp(3, date);
