@@ -289,7 +289,11 @@
                                                         </a>
                                                     </div>
                                                     <!--end image-->
+                                                    <%if(lista.getProducts() != null){%>
                                                     <div class="price"><%=lista.getProducts().size()%></div>
+                                                    <%}else{%>
+                                                    <div class="price">0</div>
+                                                    <%}%>
                                                     <div class="admin-controls">
                                                         <a href="/Lists/restricted/ShowShopList?nome=<%=lista.getNome()%>">
                                                             <i class="fa fa-pencil"></i>Edit
@@ -709,36 +713,15 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="/Lists/importGuestList" action="POST">
-                            <input type="email" name="creator" placeholder="Email" required><br><br>
-                            <input type="submit" class="btn btn-primary" value="Importa">
-                        </form>
-
-                    </div>                    
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="import-list" tabindex="-1" role="dialog" aria-labelledby="import-list" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="page-title">
-                            <div class="container">
-                                <h1 style="text-align: center;">Importa la tua lista</h1>
-                            </div>
-                            <!--end container-->
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
                         <!-- Form per il login -->
                         <form class="form clearfix" id="ImportShopListform" action="/Lists/importGuestList"  method="get" role="form">
                             <div class="form-group">
                                 <label for="Nome" class="col-form-label">Email</label>
                                 <input type="email" name="creator" id="creator" tabindex="1" class="form-control" placeholder="Email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="col-form-label">Password</label>
+                                <input type="password" name="password" id="passwordGuest" tabindex="1" class="form-control" placeholder="Password" required>
                             </div>
                             <!--end form-group-->
                             <button type="submit" name="import-submit" id="import-list-submit" tabindex="4" class="btn btn-primary">Importa lista</button>
