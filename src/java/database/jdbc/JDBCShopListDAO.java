@@ -133,20 +133,21 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
     }
     
     @Override
-    public ShopList GuestSave(ShopList l, String creator) throws DAOException{
+    public ShopList GuestSave(ShopList l, String creator, String password) throws DAOException{
         if (l == null) {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed user is null"));
         }
 
-        String qry = "insert into guestLists(nome,descrizione,immagine,creator,categoria) "
-                + "values(?,?,?,?,?)";
+        String qry = "insert into guestLists(nome,descrizione,immagine,creator,password,categoria) "
+                + "values(?,?,?,?,?,?)";
 
         try (PreparedStatement statement = CON.prepareStatement(qry)) {
             statement.setString(1, l.getNome());
             statement.setString(2, l.getDescrizione());
             statement.setString(3, l.getImmagine());
             statement.setString(4, creator);
-            statement.setString(5, l.getCategoria());
+            statement.setString(5, password);
+            statement.setString(6, l.getCategoria());
 
             if (statement.executeUpdate() == 1) {
                 return l;
@@ -426,11 +427,12 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
     }
 
     @Override
-    public ShopList getGuestList(String email) throws DAOException {
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM guestLists WHERE creator =?")) {
+    public ShopList getGuestList(String email, String password) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM guestLists WHERE creator =? and password = ?")) {
             ShopList shoppingLists = new ShopList();
 
             stm.setString(1, email);
+            stm.setString(2, password);
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     shoppingLists.setNome(rs.getString("nome"));
@@ -448,11 +450,12 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
     }
 
     @Override
-    public void checkIfGuestListExistInDatabase(String creator) throws DAOException {
+    public void checkIfGuestListExistInDatabase(String creator, String password) throws DAOException {
         
         boolean check = false;
-        try (PreparedStatement stm = CON.prepareStatement("select * from guestLists where creator = ?")) {
+        try (PreparedStatement stm = CON.prepareStatement("select * from guestLists where creator = ? and password = ?")) {
             stm.setString(1, creator);
+            stm.setString(2, password);
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
@@ -463,9 +466,10 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             }
             
             if(check){
-                try (PreparedStatement stm1 = CON.prepareStatement("DELETE FROM guestLists WHERE creator=?")) {
+                try (PreparedStatement stm1 = CON.prepareStatement("DELETE FROM guestLists WHERE creator=? and password = ?")) {
                     
                     stm1.setString(1, creator);
+                    stm.setString(2, password);
                     if (stm1.executeUpdate() == 1) {
                         System.out.println("successful delete GuestList");
                     } else {

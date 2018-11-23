@@ -25,10 +25,10 @@ public interface ListDAO {
     public ArrayList<ShopList> getByEmail(String email) throws DAOException;
     public ArrayList<User> getUsersWithWhoTheListIsShared(ShopList l) throws DAOException;
     public ShopList Insert(ShopList l) throws DAOException;
-    public ShopList GuestSave(ShopList l, String creator) throws DAOException;
+    public ShopList GuestSave(ShopList l, String creator, String password) throws DAOException;
     public void deleteGuestListFromDB(String creator) throws DAOException;
-    public void checkIfGuestListExistInDatabase(String creator) throws DAOException;
-    public ShopList getGuestList(String email) throws DAOException;
+    public void checkIfGuestListExistInDatabase(String creator, String password) throws DAOException;
+    public ShopList getGuestList(String email, String password) throws DAOException;
     public ArrayList<ShopList> getListOfShopListsThatUserLookFor(String email) throws DAOException;
     public ArrayList<Product> getAllProductsOfShopList(String name)throws DAOException;
     public boolean chckIfProductIsInTheList(int id, String list)throws DAOException;

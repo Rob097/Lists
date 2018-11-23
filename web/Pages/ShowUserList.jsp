@@ -869,6 +869,7 @@
                             <h4>Iserisci un indirizzo email:</h4>
                             <form action="/Lists/SaveGuestList" method="POST">
                                 <input type="email" name="creator" required>
+                                <input type="password" name="password" required>
                                 <input type="hidden" name="nome" value="<%=shoplistName%>">
                                 <input type="hidden" name="categoria" value="<%=guestList.getCategoria()%>">
                                 <input type="hidden" name="descrizione" value="<%=guestList.getDescrizione()%>">

@@ -61,14 +61,15 @@ public class SaveGuestList extends HttpServlet {
         HttpSession s = request.getSession();
         ShopList lista = (ShopList) s.getAttribute("guestList");
         String creator = request.getParameter("creator");
+        String password = request.getParameter("password");
         ArrayList<Product> prodotti = new ArrayList<>();
         if (s.getAttribute("prodottiGuest") != null) {
             prodotti = (ArrayList<Product>) s.getAttribute("prodottiGuest"); //Prendi l'attributo di sessione contenente i prodotti se non è nullo
         }
         boolean check = false;
         try {
-            listdao.checkIfGuestListExistInDatabase(creator);
-            listdao.GuestSave(lista, creator);
+            listdao.checkIfGuestListExistInDatabase(creator, password);
+            listdao.GuestSave(lista, creator, password);
             check = true;
         } catch (DAOException ex) {
             check = false;

@@ -58,10 +58,11 @@ public class importGuestList extends HttpServlet {
         ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
         
         String email = request.getParameter("creator");
+        String password = request.getParameter("password");
         ShopList s = new ShopList();
         ArrayList<Product> pp = new ArrayList<>();
         try {
-            s = listdao.getGuestList(email);
+            s = listdao.getGuestList(email, password);
             pp = productdao.getGuestsProducts(email);
         } catch (DAOException ex) {
             System.out.println("ERRORE");
