@@ -699,7 +699,7 @@
                     </div>
                     <div class="modal-body">
                         <!-- Form per il login -->
-                        <form class="form clearfix" id="register-form" action="/Lists/RegisterAction" method="post" enctype="multipart/form-data" onsubmit="return checkCheckBoxes(this);">
+                        <form class="form clearfix" id="register-form" action="/Lists/RegisterAction" method="post" enctype="multipart/form-data" onsubmit="return (checkCheckBoxes(this) && validate()); ">
                             <div class="form-group">
                                 <label for="email" class="col-form-label">Email</label>
                                 <input type="email" name="email" id="emailRegister" tabindex="1" class="form-control" placeholder="Email" value="" required>
@@ -712,7 +712,9 @@
                             <!--end form-group-->
                             <div class="form-group">
                                 <label for="password" class="col-form-label">Password</label>
-                                <input type="password" name="password" id="passwordRegister" tabindex="2" class="form-control" placeholder="Password" required>
+                                <input type="password" name="password" id="passwordRegister" tabindex="2" class="form-control" placeholder="Password" required><br>
+                                <label for="pswrt2" class="col-form-label">Conferma Password</label>
+                                <input type="password" name="pswrt2" id="pswrt2" tabindex="2" class="form-control" placeholder="Password"  value="${user.password}">
                             </div>
 
                             <!--end form-group-->
@@ -1056,6 +1058,22 @@
             });
         }
     </script>
+    <script type="text/javascript">
+            function validate(){
+                var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+                var n1 = document.getElementById("passwordRegister");
+                var n2 = document.getElementById("pswrt2");
+                if(n1.value != "" && n2.value != ""){
+                    if((n1.value == n2.value)){
+                        if(n1.value.match(passw)){
+                           return true; 
+                        }                        
+                    }
+                }
+                alert("password can't be empty and has to be equal to Conferma Password, 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter");
+                return false;
+            }
+        </script>
 
 
     <!--###############################################################################################################################
