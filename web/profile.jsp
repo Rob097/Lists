@@ -419,10 +419,10 @@
                 var n2 = document.getElementById("pswrt2");
                 if(n1.value != "" && n2.value != ""){
                     if((n1.value == n2.value)){
-                        return true;
+                        return true;                       
                     }
                 }
-                alert("La password non può essere vuota e deve essere uguale");
+                alert("password can't be empty and has to be equal to Conferma Password");
                 return false;
             }
         </script>
