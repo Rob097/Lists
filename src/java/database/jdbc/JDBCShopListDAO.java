@@ -34,10 +34,15 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
 
     @Override
     public ArrayList<ShopList> getByEmail(String email) throws DAOException {
+        if(email==null){
+          throw new DAOException("Email is a mandatory fields", new NullPointerException("email is null"));
+        }
+        
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM List WHERE creator = ?")) {
-            ArrayList<ShopList> shoppingLists = new ArrayList<>();
-
             stm.setString(1, email);
+            
+            ArrayList<ShopList> shoppingLists = new ArrayList<>();
+            
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     ShopList sL = new ShopList();
@@ -54,16 +59,20 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                 return shoppingLists;
             }
         } catch (SQLException ex) {
-            throw new DAOException("Impossible to get the list of users", ex);
+            throw new DAOException("Impossible to get the shoppinglist", ex);
         }
     }
 
     @Override
-    public ArrayList<User> getUsersWithWhoTheListIsShared(ShopList l) throws DAOException {
+    public ArrayList<User> getUsersWithWhoTheListIsShared(ShopList list) throws DAOException {
+        if(list==null){
+          throw new DAOException("Shoppinglist is a mandatory fields", new NullPointerException("list is null"));
+        }
         try (PreparedStatement stm = CON.prepareStatement("select email from User where email in (select user from User_List where list = ?)")) {
+            stm.setString(1, list.getNome());
+            
             ArrayList<User> userList = new ArrayList<>();
-
-            stm.setString(1, l.getNome());
+            
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     User u = new User();
@@ -75,16 +84,20 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                 return userList;
             }
         } catch (SQLException ex) {
-            throw new DAOException("Impossible to get the list of users", ex);
+            throw new DAOException("Impossible to get shared users", ex);
         }
     }
 
     @Override
     public ArrayList<User> getUsersWithWhoTheListIsShared(String listname) throws DAOException {
+        if(listname==null){
+          throw new DAOException("listname is a mandatory fields", new NullPointerException("listname is null"));
+        }
         try (PreparedStatement stm = CON.prepareStatement("select * from User where email in (select user from User_List where list = ?)")) {
-            ArrayList<User> userList = new ArrayList<>();
-
             stm.setString(1, listname);
+            
+            ArrayList<User> userList = new ArrayList<>();
+            
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     User u = new User();
@@ -103,10 +116,9 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
     }
 
     @Override
-    public ShopList Insert(ShopList l) throws DAOException {
-
-        if (l == null) {
-            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed user is null"));
+    public ShopList Insert(ShopList list) throws DAOException {
+        if (list == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed shoppinglist is null"));
         }
 
         String qry = "insert into List(nome,descrizione,immagine,creator,categoria) "
@@ -115,27 +127,26 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                 + "(select nome from Category where nome = ?))";
 
         try (PreparedStatement statement = CON.prepareStatement(qry)) {
-            statement.setString(1, l.getNome());
-            statement.setString(2, l.getDescrizione());
-            statement.setString(3, l.getImmagine());
-            statement.setString(4, l.getCreator());
-            statement.setString(5, l.getCategoria());
+            statement.setString(1, list.getNome());
+            statement.setString(2, list.getDescrizione());
+            statement.setString(3, list.getImmagine());
+            statement.setString(4, list.getCreator());
+            statement.setString(5, list.getCategoria());
 
             if (statement.executeUpdate() == 1) {
-                return l;
+                return list;
             } else {
                 throw new DAOException("Impossible to insert the List");
             }
         } catch (SQLException ex) {
             throw new DAOException(ex);
-
         }
     }
     
     @Override
     public ShopList GuestSave(ShopList l, String creator, String password) throws DAOException{
-        if (l == null) {
-            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed user is null"));
+        if (l == null || creator == null || password == null) {
+            throw new DAOException("parameters not valid", new IllegalArgumentException("The passed list or creator or password is null"));
         }
 
         String qry = "insert into guestLists(nome,descrizione,immagine,creator,password,categoria) "
@@ -156,16 +167,20 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             }
         } catch (SQLException ex) {
             throw new DAOException(ex);
-
         }
     }
 
     @Override
     public ArrayList<ShopList> getListOfShopListsThatUserLookFor(String email) throws DAOException {
+        if (email == null) {
+            throw new DAOException("parameters not valid", new IllegalArgumentException("The passed email is null"));
+        }
+        
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM List WHERE nome IN (SELECT list FROM User_List where user = ?)")) {
-            ArrayList<ShopList> shoppingLists = new ArrayList<>();
-
             stm.setString(1, email);
+            
+            ArrayList<ShopList> shoppingLists = new ArrayList<>();
+            
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     ShopList sL = new ShopList();
@@ -182,16 +197,21 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                 return shoppingLists;
             }
         } catch (SQLException ex) {
-            throw new DAOException("Impossible to get the list of users", ex);
+            throw new DAOException("Impossible to get the list of Lists", ex);
         }
     }
 
     @Override
     public ArrayList<Product> getAllProductsOfShopList(String name) throws DAOException {
-
+        if (name == null) {
+            throw new DAOException("parameters not valid", new IllegalArgumentException("The passed name is null"));
+        }
+        
         try (PreparedStatement stm = CON.prepareStatement("select * from Product where PID in (select prodotto from List_Prod where lista = ?)")) {
-            ArrayList<Product> productLists = new ArrayList<>();
             stm.setString(1, name);
+            
+            ArrayList<Product> productLists = new ArrayList<>();
+            
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
 
@@ -209,7 +229,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                 return productLists;
             }
         } catch (SQLException ex) {
-            throw new DAOException("Impossible to get the list of users", ex);
+            throw new DAOException("Impossible to get the list of products", ex);
         }
     }
 
@@ -224,9 +244,9 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             stm.setString(2, nomeLista);
 
             if (stm.executeUpdate() == 1) {
-                System.out.println("successful operation");
+                return;
             } else {
-                throw new DAOException("Impossible to insert the query");
+                throw new DAOException("Impossible to insert the user");
             }
         } catch (SQLException ex) {
             Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -238,9 +258,15 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
         if (list == null) {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed list is null"));
         }
+        
         try (PreparedStatement stm = CON.prepareStatement("DELETE FROM User_List WHERE list=?")) {
             stm.setString(1, list.getNome().replace(" ", ""));
-            stm.executeUpdate();
+            
+            if(stm.executeUpdate()>0){
+                
+            }else{
+                throw new DAOException("Impossible to delete the list");
+            }
             
         } catch (SQLException ex) {
             Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -249,17 +275,24 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
         try (PreparedStatement stm = CON.prepareStatement("DELETE FROM List_Prod WHERE lista=?")) {
             stm.setString(1, list.getNome());
             
+            if (stm.executeUpdate() >0) {
+                
+            } else {
+                throw new DAOException("Impossible to Delete the List");
+            }
+            
         } catch (SQLException ex) {
             Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         try (PreparedStatement stm = CON.prepareStatement("DELETE FROM List WHERE nome=?")) {
             stm.setString(1, list.getNome());
-            if (stm.executeUpdate() == 1) {
-
+            
+            if (stm.executeUpdate() >0) {
+                
             } else {
                 throw new DAOException("Impossible to Delete the List");
-            }
+            }            
         } catch (SQLException ex) {
             Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -270,17 +303,21 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
         if (nome == null) {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed name is null"));
         }
+        
         ShopList sL = new ShopList();
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM List where nome=?")) {
             stm.setString(1, nome);
+            
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
+                    
                     sL.setNome(rs.getString("nome"));
                     sL.setDescrizione(rs.getString("descrizione"));
                     sL.setImmagine(rs.getString("immagine"));
                     sL.setCreator(rs.getString("creator"));
                     sL.setCategoria("categoria");
                     sL.setSharedUsers(getUsersWithWhoTheListIsShared(sL));
+                    
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -296,12 +333,16 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
         if (nome == null) {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed name is null"));
         }
+        
         ArrayList<String> liste = new ArrayList<>();
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM List where creator=?")) {
             stm.setString(1, nome);
+            
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
+                    
                     liste.add(rs.getString("nome"));
+                    
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -312,9 +353,12 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
 
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM User_List where user=?")) {
             stm.setString(1, nome);
+            
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
+                    
                     liste.add(rs.getString("list"));
+                    
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -339,9 +383,9 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             //stm.setTimestamp(3, date);
 
             if (stm.executeUpdate() == 1) {
-                System.out.println("successful operation");
+               return;
             } else {
-                throw new DAOException("Impossible to insert the query");
+                throw new DAOException("Impossible to insert the product");
             }
         } catch (SQLException ex) {
             Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -350,18 +394,22 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
     
     @Override
     public void insertProductToGuestList(int prodotto, String status, HttpServletRequest request) throws DAOException {
+        if (status == null || request == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed status or request is null"));
+        }
         
         try (PreparedStatement stm = CON.prepareStatement("select * from Product where PID = ?")) {
+            stm.setInt(1, prodotto);
             
-            HttpSession s = (HttpSession) request.getSession();
+            HttpSession s = (HttpSession) request.getSession(false);
             ArrayList <Product> productLists = new ArrayList();
             if(s.getAttribute("prodottiGuest") != null){
                 productLists = (ArrayList<Product>) s.getAttribute("prodottiGuest");
-            }
-            stm.setInt(1, prodotto);
+            }            
             
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
+                    
                     Product sL = new Product();
                     String n = rs.getString("nome");
                     sL.setNome(n);
@@ -372,25 +420,29 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                     sL.setStatus(status);
                     productLists.add(sL);
                     s.setAttribute("prodottiGuest", productLists);
+                    
                 }
             }catch (SQLException ex) {
                 throw new DAOException("Impossible to insert the product in the guest list", ex);
-            }
-            
+            }            
         } catch (SQLException ex) {
             Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+        }        
     }
 
     @Override
     public ArrayList<ShopList> getAllSharedList(String email) throws DAOException {
+        if (email == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed email is null"));
+        }
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM User_List INNER JOIN List ON User_List.list=List.nome where user = ?")) {
-            ArrayList<ShopList> shoppingLists = new ArrayList<>();
-
             stm.setString(1, email);
+            
+            ArrayList<ShopList> shoppingLists = new ArrayList<>();
+            
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
+                    
                     ShopList sL = new ShopList();
                     sL.setNome(rs.getString("nome"));
                     sL.setDescrizione(rs.getString("descrizione"));
@@ -401,11 +453,10 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
 
                     shoppingLists.add(sL);
                 }
-
                 return shoppingLists;
             }
         } catch (SQLException ex) {
-            throw new DAOException("Impossible to get the list of users", ex);
+            throw new DAOException("Impossible to get the shared lists", ex);
         }
     }
 
@@ -419,7 +470,11 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             statement.setString(1, email);
             statement.setString(2, listname);
             
-            statement.executeUpdate();
+            if(statement.executeUpdate() > 0){
+                return;
+            }else{
+                throw new DAOException("Impossible to delete the user");
+            }
         } catch (SQLException ex) {
             Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Problems with deleting shared user");
@@ -428,29 +483,38 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
 
     @Override
     public ShopList getGuestList(String email, String password) throws DAOException {
+        if (email == null || password == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed email or password is null"));
+        }
+        
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM guestLists WHERE creator =? and password = ?")) {
-            ShopList shoppingLists = new ShopList();
-
             stm.setString(1, email);
             stm.setString(2, password);
+            
+            ShopList shoppingLists = new ShopList();
+            
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
+                    
                     shoppingLists.setNome(rs.getString("nome"));
                     shoppingLists.setDescrizione(rs.getString("descrizione"));
                     shoppingLists.setImmagine(rs.getString("immagine"));
                     shoppingLists.setCreator(rs.getString("creator"));
                     shoppingLists.setCategoria("categoria");
+                    
                 }
-
                 return shoppingLists;
             }
         } catch (SQLException ex) {
-            throw new DAOException("Impossible to get the list of users", ex);
+            throw new DAOException("Impossible to get the GuestList", ex);
         }
     }
 
     @Override
     public void checkIfGuestListExistInDatabase(String creator, String password) throws DAOException {
+        if (creator == null || password == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed creator or password is null"));
+        }
         
         boolean check = false;
         try (PreparedStatement stm = CON.prepareStatement("select * from guestLists where creator = ? and password = ?")) {
@@ -466,18 +530,37 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             }
             
             if(check){
-                try (PreparedStatement stm1 = CON.prepareStatement("DELETE FROM guestLists WHERE creator=? and password = ?")) {
-                    
+                try (PreparedStatement stm1 = CON.prepareStatement("DELETE FROM guestLists WHERE creator=? and password = ?")) {                    
                     stm1.setString(1, creator);
                     stm.setString(2, password);
+                    
                     if (stm1.executeUpdate() == 1) {
-                        System.out.println("successful delete GuestList");
+                        
                     } else {
                         throw new DAOException("Impossible to delete the GuestList");
                     }         
                 } catch (SQLException ex) {
                     Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }            
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void deleteGuestListFromDB(String creator) throws DAOException {
+        if (creator == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed creator is null"));
+        }
+        
+        try (PreparedStatement stm = CON.prepareStatement("DELETE FROM guestLists WHERE creator=?")) {
+            stm.setString(1, creator);
+            
+            if(stm.executeUpdate() >0){
+                return;
+            }else{
+                throw new DAOException("impossible to delete guest list");
             }
             
         } catch (SQLException ex) {
@@ -486,21 +569,9 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
     }
 
     @Override
-    public void deleteGuestListFromDB(String creator) throws DAOException {
-        
-        try (PreparedStatement stm = CON.prepareStatement("DELETE FROM guestLists WHERE creator=?")) {
-            stm.setString(1, creator);
-            stm.executeUpdate();
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    @Override
     public void removeProductToList(int prodotto, String lista) throws DAOException {
-        if (lista == null) {
-            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed email or listname is null"));
+        if (lista == null || prodotto ==0) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed product or list is null"));
         }
 
         try (PreparedStatement stm = CON.prepareStatement("DELETE FROM List_Prod WHERE lista = ? AND prodotto = ?")) {
@@ -510,8 +581,9 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             if (stm.executeUpdate() == 1) {
                 System.out.println("successful operation");
             } else {
-                throw new DAOException("Impossible to insert the query");
+                throw new DAOException("Impossible to delete the product from a list");
             }
+            
         } catch (SQLException ex) {
             Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -520,17 +592,18 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
     @Override
     public void removeALLProductToList(String lista) throws DAOException {
         if (lista == null) {
-            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed email or listname is null"));
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed list is null"));
         }
 
         try (PreparedStatement stm = CON.prepareStatement("DELETE FROM List_Prod WHERE lista = ?")) {
             stm.setString(1, lista);
 
             if (stm.executeUpdate() == 1) {
-                System.out.println("successful operation");
+                return;
             } else {
-                throw new DAOException("Impossible to insert the query");
+                throw new DAOException("Impossible to remove all products");
             }
+            
         } catch (SQLException ex) {
             Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -538,6 +611,10 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
 
     @Override
     public String checkRole(String user, String list) throws DAOException {
+        if (list == null || user == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed list or user is null"));
+        }
+        
         String role = "";
         try (PreparedStatement stm = CON.prepareStatement("select * from List where nome = ?")) {
             stm.setString(1, list);
@@ -575,15 +652,18 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
 
     @Override
     public boolean chckIfProductIsInTheList(int id, String list) throws DAOException {
-        try (PreparedStatement stm = CON.prepareStatement("select * from Product where PID in (select prodotto from List_Prod where lista = ? AND PID = ?)")) {
-            
+        if (list == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed list is null"));
+        }
+        
+        try (PreparedStatement stm = CON.prepareStatement("select * from Product where PID in (select prodotto from List_Prod where lista = ? AND PID = ?)")) {            
             stm.setString(1, list);
             stm.setInt(2, id);
+            
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                    return true;
                 }
-
                 return false;
             }
         } catch (SQLException ex) {            
@@ -593,30 +673,40 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
 
     @Override
     public void signProductAsBuyed(int id, String tipo, String lista) throws DAOException {
-
+        if (tipo == null || lista == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed list or type is null"));
+        }
+        
         try (PreparedStatement statement = CON.prepareStatement("UPDATE List_Prod SET stato=? WHERE lista=?  AND prodotto= ?")) {
             statement.setString(1, tipo);
             statement.setString(2, lista );
             statement.setInt(3, id);
-            statement.executeUpdate();
+            
+            if(statement.executeUpdate() >0){
+                return;
+            }else{
+                throw new DAOException("impossible to sign product as buyed");
+            }
         } catch (SQLException ex) {
             Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("errore update product status");
         }
-
     }
 
     @Override
     public boolean checkBuyed(int id, String lista, HttpSession s) throws DAOException {
+        if (lista == null || s == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed list or session is null"));
+        }
         
         ArrayList<Product> p = new ArrayList<>();
         boolean check = false;
         
         if(s.getAttribute("user") != null){
             try (PreparedStatement stm = CON.prepareStatement("select stato from List_Prod where lista = ? AND prodotto = ?")) {
-                
                 stm.setString(1, lista);
                 stm.setInt(2, id);
+                
                 try (ResultSet rs = stm.executeQuery()) {
                     while (rs.next()) {
                         if(rs.getString("stato").equals("acquistato")) return true;
@@ -645,6 +735,10 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
 
     @Override
     public void changeStatusOfAllProduct(String tipo, String lista) throws DAOException {
+        if (tipo == null || lista == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed type or list is null"));
+        }
+        
         ArrayList<Product> p = getAllProductsOfShopList(lista);
         
         int id;
@@ -654,7 +748,12 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                 statement.setString(1, tipo);
                 statement.setString(2, lista );
                 statement.setInt(3, id);
-                statement.executeUpdate();
+                
+                if(statement.executeUpdate() >0){
+                    return;
+                }else{
+                    throw new DAOException("impossible to change status of the products");
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
                 System.out.println("errore update product status");
@@ -684,12 +783,18 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
      */
     @Override
     public ArrayList<ListProd> getProdList(String listaname) throws DAOException {
+        if (listaname == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed listname is null"));
+        }
+        
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM List_Prod WHERE lista = ?")) {
-            ArrayList<ListProd> listProdlink = new ArrayList<ListProd>();
-
             stm.setString(1, listaname);
+            
+            ArrayList<ListProd> listProdlink = new ArrayList<ListProd>();
+            
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
+                    
                     ListProd link = new ListProd();
                     link.setLista(rs.getString("lista"));
                     link.setProdotto(rs.getString("prodotto"));
@@ -705,13 +810,17 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                 return listProdlink;
             }
         } catch (SQLException ex) {
-            throw new DAOException("Impossible to get the list of users", ex);
+            throw new DAOException("Impossible to get the list of products", ex);
         }
     }
 
     @Override
     public void changeGuestProductsStatus(int id, String tipo, HttpServletRequest request) throws DAOException {
-        HttpSession s = (HttpSession) request.getSession();
+        if (tipo == null || request == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed type or request is null"));
+        }
+        
+        HttpSession s = (HttpSession) request.getSession(false);
         ArrayList<Product> p = new ArrayList<>();
         if(s.getAttribute("prodottiGuest") != null){
             p = (ArrayList<Product>) s.getAttribute("prodottiGuest");

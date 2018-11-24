@@ -66,7 +66,6 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
     //implementa il metodo update di Userdao che aggiunge un nuovo utente nel database
     @Override
     public User update(User user) throws DAOException {
-     
         if (user == null) {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed user is null"));
         }
@@ -80,7 +79,7 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
             if (statement.executeUpdate() == 1) {
                 return user;
             } else {
-                throw new DAOException("Impossible to update the User");
+                throw new DAOException("Impossible to insert the user");
             }
         } catch (SQLException ex) {
             throw new DAOException(ex);
@@ -92,21 +91,18 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
     public User getByEmail(String email) throws DAOException {
        if(email==null){
            throw new DAOException("Email is a mandatory fields", new NullPointerException("email is null"));
-       }
-       
+       }       
        try(PreparedStatement statement = CON.prepareStatement("Select * from User where email=?")){
            statement.setString(1, email);
             try (ResultSet rs = statement.executeQuery()) {
 
-                int count = 0;
-                
+                int count = 0;                
                 while (rs.next()) {
                     count++;
                     if (count > 1) {
                         throw new DAOException("Unique constraint violated! There are more than one user with the same email! WHY???");
                     }
-                    User user = new User();
-                   
+                    User user = new User();                   
                     user.setEmail(rs.getString("email"));
                     user.setPassword(rs.getString("password"));
                     user.setNominativo(rs.getString("nominativo"));
@@ -118,7 +114,7 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
                 return null;
             }
         } catch (SQLException ex) {
-            throw new DAOException("Impossible to get the list of users", ex);
+            throw new DAOException("Impossible to get the user", ex);
         }
     }
 
@@ -126,15 +122,15 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
     public void deleteUser(User user) throws DAOException {
        if (user == null) {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed user is null"));
-        }
-       
+        }       
        try (PreparedStatement statement = CON.prepareStatement("DELETE FROM User WHERE email= ?")){
         statement.setString(1, user.getEmail());
+        
         statement.executeUpdate(); 
        
         }catch (SQLException ex) {
             Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Errore eliminazione utente");
+            System.out.println("Error delete user");
         }
     }
 
@@ -143,8 +139,7 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
         if (newUser == null || oldUser==null) {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed old or new user is null"));
         }
-        User finalUser = new User();
-        finalUser = oldUser;
+        User finalUser = oldUser; 
 
         if(newUser.getPassword() != null && newUser.getPassword() != "" && newUser.getPassword() != oldUser.getPassword()){
             try (PreparedStatement statement = CON.prepareStatement("UPDATE User SET password=? WHERE email=? ")){
@@ -190,18 +185,18 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
             finalUser.setEmail(newUser.getTipo());
             } catch (SQLException ex) {
              Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
-             System.out.println("errore update email");
+             System.out.println("errore update usertype");
             }   
         }
                 
-            return finalUser;
+        return finalUser;
     }
     
     
     @Override
     public ArrayList<User> getAllUsers() throws DAOException {
        
-       ArrayList<User> listOfAllUsers = new ArrayList<User>();
+       ArrayList<User> listOfAllUsers = new ArrayList<>();
         
        try(PreparedStatement statement = CON.prepareStatement("select * from User")){
            
@@ -209,17 +204,13 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
 
                 while (rs.next()) {
                     
-                    User user = new User();
-                   
+                    User user = new User();                   
                     user.setEmail(rs.getString("email"));
                     user.setPassword(rs.getString("password"));
                     user.setNominativo(rs.getString("nominativo"));
                     user.setTipo(rs.getString("tipo"));
                     user.setImage(rs.getString("immagine"));
-                    
-                    System.out.println(user.getEmail());
-                    System.out.println(user.getNominativo());
-                    
+
                     listOfAllUsers.add(user);                    
                 }
                 
@@ -232,12 +223,20 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
 
     @Override
     public void changeRole(String user, String role, String list) throws DAOException {
+        if(user==null || role == null || list == null){
+          throw new DAOException("Parameters are mandatory fields", new NullPointerException("user, role or list is null"));
+        }
 
         try (PreparedStatement statement = CON.prepareStatement("UPDATE User_List SET role=? WHERE user=? AND list = ? ")) {
             statement.setString(1, role);
             statement.setString(2, user);
             statement.setString(3, list);
-            statement.executeUpdate();
+            
+            if (statement.executeUpdate() == 1) {
+                return;
+            } else {
+                throw new DAOException("Impossible to change the role");
+            }            
         } catch (SQLException ex) {
             Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("errore update role");
@@ -246,13 +245,22 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
 
     @Override
     public void changePassword(String email, String password) throws DAOException {
+        if(email==null || password == null){
+          throw new DAOException("Parameters are mandatory fields", new NullPointerException("email or password is null"));
+        }
+        
         try (PreparedStatement statement = CON.prepareStatement("update User set password = ? where email = ? ")) {
             statement.setString(1, password);
             statement.setString(2, email);
-            statement.executeUpdate();
+            
+            if(statement.executeUpdate()==1){
+                return;
+            }else{
+                throw new DAOException("Impossible to change password");
+            }
         } catch (SQLException ex) {
             Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("errore update role");
+            System.out.println("errore chande password");
         }
     }
 }
