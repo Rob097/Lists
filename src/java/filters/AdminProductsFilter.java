@@ -50,14 +50,15 @@ public class AdminProductsFilter implements Filter {
         if(request instanceof HttpServletRequest){
             ServletContext servletContext = ((HttpServletRequest) request).getServletContext();
             HttpSession session = ((HttpServletRequest)request).getSession(false);
-            if(session!=null){
+            if(session != null){
                 User user = (User) session.getAttribute("user");
-                if(user!=null){
+                if(user != null){
                     if(user.getTipo().equals("amministratore")){
                           try {
+                              
                             ArrayList<Product> li = productdao.getallAdminProducts();
                             session.setAttribute("products", li);
-     
+                            
                           } catch (DAOException ex) { 
                             Logger.getLogger(AdminProductsFilter.class.getName()).log(Level.SEVERE, null, ex);
                         } 
@@ -82,35 +83,9 @@ public class AdminProductsFilter implements Filter {
                 }
                 ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "homepage.jsp"));
             }
-        }
-        
+        }        
     }    
     
-    private void doAfterProcessing(ServletRequest request, ServletResponse response)
-            throws IOException, ServletException {
-        if (debug) {
-            log("AdminProductsFilter:DoAfterProcessing");
-        }
-
-        // Write code here to process the request and/or response after
-        // the rest of the filter chain is invoked.
-        // For example, a logging filter might log the attributes on the
-        // request object after the request has been processed. 
-        /*
-	for (Enumeration en = request.getAttributeNames(); en.hasMoreElements(); ) {
-	    String name = (String)en.nextElement();
-	    Object value = request.getAttribute(name);
-	    log("attribute: " + name + "=" + value.toString());
-
-	}
-         */
-        // For example, a filter might append something to the response.
-        /*
-	PrintWriter respOut = new PrintWriter(response.getWriter());
-	respOut.println("<P><B>This has been appended by an intrusive filter.</B>");
-         */
-    }
-
     /**
      *
      * @param request The servlet request we are processing
@@ -122,8 +97,7 @@ public class AdminProductsFilter implements Filter {
      */
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
-            throws IOException, ServletException {
-        
+            throws IOException, ServletException {        
         if (debug) {
             log("AdminProductsFilter:doFilter()");
         }
@@ -140,8 +114,6 @@ public class AdminProductsFilter implements Filter {
             problem = t;
             t.printStackTrace();
         }
-        
-        doAfterProcessing(request, response);
 
         // If there was a problem, we want to rethrow it if it is
         // a known type, otherwise log it.

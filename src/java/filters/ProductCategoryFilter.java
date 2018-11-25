@@ -60,12 +60,14 @@ public class ProductCategoryFilter implements Filter {
                 contextPath += "/";
             }
             HttpSession session = ((HttpServletRequest)request).getSession(false);
-            if(session!=null){
+            if(session != null){
                 User user =(User) session.getAttribute("user");
-                if(user!=null && user.getTipo().equals("amministratore")){
+                if(user != null && user.getTipo().equals("amministratore")){
                     try {
+                        
                         ArrayList<Category_Product> allPrcategories = catproddao.getAllCategories();
                         session.setAttribute("allPrcategories", allPrcategories);
+                        
                     } catch(DAOException ex){
                         System.out.println("don't get all product-categories form database");
                         Logger.getLogger(ProductCategoryFilter.class.getName()).log(Level.SEVERE, null, ex);

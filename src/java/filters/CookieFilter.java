@@ -150,13 +150,11 @@ public class CookieFilter implements Filter {
             if (debug) {                
                 log("CookieFilter:Initializing filter");
             }
-        }
-        
+        }        
         DAOFactory daoFactory = (DAOFactory) filterConfig.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
             throw new ServletException("Impossible to get dao factory for user storage system");
-        }
-        
+        }        
         userdao = new JDBCUserDAO(daoFactory.getConnection());        
         listdao = new JDBCShopListDAO(daoFactory.getConnection());
         notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());

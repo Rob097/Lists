@@ -54,9 +54,9 @@ public class ListCategoryFilter implements Filter {
         if(request instanceof HttpServletRequest){
             ServletContext servletContext = ((HttpServletRequest) request).getServletContext();
             HttpSession session = ((HttpServletRequest)request).getSession(false);
-            if(session!=null){
+            if(session != null){
                 User user = (User) session.getAttribute("user");
-                if(user!=null){
+                if(user != null){
                     if(user.getTipo().equals("amministratore")){
                           try {
                               ArrayList<Category> allCategories = categorydao.getAllCategories();
@@ -92,13 +92,6 @@ public class ListCategoryFilter implements Filter {
             }
         }
     }    
-    
-    private void doAfterProcessing(ServletRequest request, ServletResponse response)
-            throws IOException, ServletException {
-        if (debug) {
-            log("ListCategoryFilter:DoAfterProcessing");
-        }
-    }
 
     /**
      *
@@ -130,8 +123,6 @@ public class ListCategoryFilter implements Filter {
             t.printStackTrace();
         }
         
-        doAfterProcessing(request, response);
-
         // If there was a problem, we want to rethrow it if it is
         // a known type, otherwise log it.
         if (problem != null) {

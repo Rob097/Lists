@@ -17,9 +17,9 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import database.entities.User;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -41,34 +41,24 @@ public class AuthenticationFilter implements Filter {
             throws IOException, ServletException {
         if (debug) {
             log("AutenticationFilter:DoBeforeProcessing");
-        }
-        
+        }        
         if(request instanceof HttpServletRequest){
             ServletContext servletContext = ((HttpServletRequest) request).getServletContext();
             HttpSession session = ((HttpServletRequest)request).getSession(false);
-            User user =null;
+            User user = null;
             if(session != null){
                 user = (User) session.getAttribute("user");
             }
-            /*if(user==null){
+            if(user == null){
                 String contextPath = servletContext.getContextPath();
                 if(!contextPath.endsWith("/")){
                     contextPath += "/";
                 }
                 ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "homepage.jsp"));
                 return;
-            }*/
-            
-            
+            }
         }
     }    
-    
-    private void doAfterProcessing(ServletRequest request, ServletResponse response)
-            throws IOException, ServletException {
-        if (debug) {
-            log("AutenticationFilter:DoAfterProcessing");
-        }
-    }
 
     /**
      *
@@ -100,8 +90,6 @@ public class AuthenticationFilter implements Filter {
             t.printStackTrace();
         }
         
-        doAfterProcessing(request, response);
-
         // If there was a problem, we want to rethrow it if it is
         // a known type, otherwise log it.
         if (problem != null) {
