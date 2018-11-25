@@ -6,7 +6,6 @@
 package database.jdbc;
 
 import database.daos.Category_ProductDAO;
-import database.entities.Category;
 import database.entities.Category_Product;
 import database.exceptions.DAOException;
 import java.sql.Connection;
@@ -29,6 +28,10 @@ public class JDBCCategory_ProductDAO extends JDBCDAO implements Category_Product
 
     @Override
     public ArrayList<Category_Product> getByNOME(String nome) throws DAOException {
+        if(nome == null ){
+          throw new DAOException("nome is a mandatory field", new NullPointerException("nome is null"));
+        }
+        
        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM Category_Product WHERE nome = ?")) {
             ArrayList<Category_Product> categorie_prodotti = new ArrayList<>();
 
@@ -75,12 +78,21 @@ public class JDBCCategory_ProductDAO extends JDBCDAO implements Category_Product
 
     @Override
     public void insertProdCategory(Category_Product catProd) throws DAOException {
+        if(catProd == null ){
+          throw new DAOException("catProd is a mandatory field", new NullPointerException("product-category is null"));
+        }
+        
          try(PreparedStatement statement = CON.prepareStatement("insert into Category_Product (nome, descrizione, admin, immagine) values (?, ?, ?, ?)")){
            statement.setString(1, catProd.getNome());
            statement.setString(2, catProd.getDescrizione());
            statement.setString(3, catProd.getAdmin());
            statement.setString(4, catProd.getImmagine());
-           statement.executeUpdate();
+           
+           if(statement.executeUpdate() == 1){
+               return;               
+           }else{
+               throw new DAOException("Impossible to insert product-category");
+           }
        } catch (SQLException ex) {
            System.out.println("insert categoria prodotto non effetuato");
             Logger.getLogger(JDBCCategory_ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -90,6 +102,10 @@ public class JDBCCategory_ProductDAO extends JDBCDAO implements Category_Product
 
     @Override
     public Category_Product getByName(String nome) throws DAOException {
+        if(nome == null ){
+          throw new DAOException("nome is a mandatory field", new NullPointerException("nome is null"));
+        }
+        
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM Category_Product WHERE nome = ?")) {
             stm.setString(1, nome.toString());
             
@@ -120,16 +136,14 @@ public class JDBCCategory_ProductDAO extends JDBCDAO implements Category_Product
         try (PreparedStatement statement = CON.prepareStatement("delete from Category_Product where nome=?")) {
             statement.setString(1, catProd.getNome());
 
-            if (statement.execute() == true) {
-                System.out.println("cancellato");
+            if (statement.executeUpdate() > 0) {
+                return;
             } else {
                 throw new DAOException("Impossible to delete CategoryProduct");
             }
 
         } catch (SQLException ex) {
             throw new DAOException(ex);
-
         }
-    }
-    
+    }    
 }

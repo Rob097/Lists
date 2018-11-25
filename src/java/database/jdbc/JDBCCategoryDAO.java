@@ -31,6 +31,10 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
     
     @Override
     public ArrayList<Category> getByNOME(String nome) throws DAOException {
+        if(nome == null ){
+          throw new DAOException("nome is a mandatory field", new NullPointerException("nome is null"));
+        }
+        
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM Category WHERE nome = ?")) {
             ArrayList<Category> categorie = new ArrayList<>();
 
@@ -79,11 +83,20 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
 
     @Override
     public void createCategory(Category category) throws DAOException {
+        if(category == null){
+          throw new DAOException("category is a mandatory field", new NullPointerException("category is null"));
+       }
+        
        try(PreparedStatement statement = CON.prepareStatement("insert into Category (nome, descrizione, admin) values (?, ?, ?)")){
            statement.setString(1, category.getNome());
            statement.setString(2, category.getDescrizione());
            statement.setString(3, category.getAdmin());
-           statement.executeUpdate();
+           
+           if(statement.executeUpdate() == 1){
+               return;
+           }else{
+               throw new DAOException("Impossible to insert the category");
+           }
        } catch (SQLException ex) {
            System.out.println("insert categoria non effetuato");
             Logger.getLogger(JDBCCategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -92,17 +105,21 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
 
     @Override
     public Category getByName(String nome) throws DAOException {
+        if(nome == null){
+          throw new DAOException("nome is a mandatory field", new NullPointerException("name is null"));
+        }
+        
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM Category WHERE nome = ?")) {
             stm.setString(1, nome.toString());
             
             Category categoria = new Category();
             try (ResultSet rs = stm.executeQuery()) {
-                while (rs.next()) {
-                    
+                while (rs.next()) {                    
                     categoria.setNome(rs.getString("nome"));
                     categoria.setDescrizione(rs.getString("descrizione"));
                     categoria.setAdmin(rs.getString("admin"));
-                    categoria.setImmagini(getImmagini(categoria));   
+                    categoria.setImmagini(getImmagini(categoria)); 
+                    
                 }
 
                 return categoria;
@@ -121,8 +138,8 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
         try (PreparedStatement statement = CON.prepareStatement("delete from Category where nome=?")) {
             statement.setString(1, category.getNome());
 
-            if (statement.execute() == true) {
-                System.out.println("cancellato");
+            if (statement.executeUpdate() > 0) {
+                return;
             } else {
                 throw new DAOException("Impossible to delete Category");
             }
@@ -134,10 +151,19 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
     
     @Override
     public void insertImmagine(Category categoria) throws DAOException{
+        if (categoria == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed category is null"));
+        } 
+        
         try(PreparedStatement statement = CON.prepareStatement("insert into Category_Image (categoria, immagine) values (?, ?)")){
            statement.setString(1, categoria.getNome());
            statement.setString(2, categoria.getImmagine());
-           statement.executeUpdate();
+           
+           if(statement.executeUpdate() == 1){
+               return;
+           }else{
+               throw new DAOException("impossible to insert category-immage");
+           }
        } catch (SQLException ex) {
            System.out.println("insert immagine non effetuato");
             Logger.getLogger(JDBCCategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -145,6 +171,10 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
     }
     
     public List<String> getImmagini(Category categoria) throws DAOException{
+        if (categoria == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed category is null"));
+        } 
+        
         try (PreparedStatement stm = CON.prepareStatement("SELECT categoria,immagine FROM Category_Image WHERE categoria = ?")) {
             stm.setString(1, categoria.getNome());
             
@@ -183,6 +213,10 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
 
     @Override
     public List<String> getAllImagesbyName(String name) throws DAOException {
+        if(name == null ){
+          throw new DAOException("nome is a mandatory field", new NullPointerException("name is null"));
+        }
+        
         try (PreparedStatement stm = CON.prepareStatement("SELECT immagine FROM Category_Image WHERE categoria = ?")) {
             stm.setString(1, name);
             
@@ -198,8 +232,4 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
             throw new DAOException("Impossible to get the immages", ex);
         }
     }
-
-    
-
-    
 }
