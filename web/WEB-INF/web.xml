@@ -31,7 +31,7 @@
     </filter>
     <filter-mapping>
         <filter-name>HomepageFilter</filter-name>
-        <url-pattern>homepage.jsp</url-pattern>
+        <url-pattern>/homepage.jsp</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>AdminProductsFilter</filter-name>
