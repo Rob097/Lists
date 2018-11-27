@@ -97,7 +97,11 @@ public class CookieFilter implements Filter {
         
         Throwable problem = null;
         try {
-            chain.doFilter(req, response);
+            if(req != null && response != null){
+                chain.doFilter(req, response);
+            }else{
+                System.out.println("req o respose = null");
+            }
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then

@@ -749,11 +749,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                 statement.setString(2, lista );
                 statement.setInt(3, id);
                 
-                if(statement.executeUpdate() >0){
-                    return;
-                }else{
-                    throw new DAOException("impossible to change status of the products");
-                }
+                statement.executeUpdate();
             } catch (SQLException ex) {
                 Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
                 System.out.println("errore update product status");
