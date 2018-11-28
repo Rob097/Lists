@@ -49,4 +49,5 @@ public interface ListDAO {
     public void changeStatusOfAllProduct(String tipo, String lista) throws DAOException;
     public boolean checkBuyed(int id, String lista, HttpSession request) throws DAOException;
     public ArrayList<ListProd> getProdList(String listaname) throws DAOException;
+    public ArrayList<ShopList> getAllObjectListsByCurentUser(String nome) throws DAOException;
 }

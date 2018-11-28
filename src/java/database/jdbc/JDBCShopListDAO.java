@@ -824,5 +824,41 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             }
         }
     }
+    
+    @Override
+    public ArrayList<ShopList> getAllObjectListsByCurentUser(String nome) throws DAOException {
+        if (nome == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed name is null"));
+        }
+
+        ArrayList<String> all = getAllListsByCurentUser(nome);
+
+        ArrayList<ShopList> liste = new ArrayList<>();
+
+        for (String s : all) {
+            try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM List where nome=?")) {
+                stm.setString(1, s);
+
+                try (ResultSet rs = stm.executeQuery()) {
+                    while (rs.next()) {
+                        ShopList lista = new ShopList();
+                        lista.setNome(rs.getString("nome"));
+                        lista.setDescrizione(rs.getString("descrizione"));
+                        lista.setImmagine(rs.getString("immagine"));
+                        lista.setCreator(rs.getString("creator"));
+                        lista.setCategoria(rs.getString("categoria"));
+                        liste.add(lista);
+                    }
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return liste;
+    }
 
 }
