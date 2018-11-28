@@ -362,7 +362,12 @@
                                 <div class="section-title clearfix">
                                     <div class="float-left float-xs-none" style="width: 89%;">
                                         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name of product">
-                                        <label style="display: none;" id="loadProducts">Carico i prodotti...</label>
+                                        <label style="display: none;" id="loadProducts1">Nessun prodotto trovato</label><br>
+                                        <c:if test="${not empty user and user.tipo=='amministratore'}">
+                                            
+                                                <a style="display: none;" id="loadProducts2" data-toggle="modal" data-target="#CreateProductModal" class="btn btn-primary text-caps btn-rounded" >+ Crea un prodotto</a>
+                                            
+                                        </c:if>
                                     </div>
                                     <div class="float-right d-xs-none thumbnail-toggle">
                                         <a href="#" class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
@@ -812,7 +817,7 @@
 
             <script>
                 function myFunction() {
-                    var input, filter, items, li, a, i;
+                    var input, filter, items, li, a, i, check = true;
                     input = document.getElementById("myInput");
                     filter = input.value.toUpperCase();
                     items = document.getElementsByClassName("item");
@@ -841,12 +846,18 @@
                             items = document.getElementsByClassName("item");
                             title = items[i].getElementsByClassName("title");
                             items[i].style.display = "";
-                            document.getElementById("loadProducts").style.display = "none";
+                            document.getElementById("loadProducts1").style.display = "none";
+                            document.getElementById("loadProducts2").style.display = "none";
                             
                         }else{
                             items[i].style.display = "none";
-                            document.getElementById("loadProducts").style.display = "";
+                            
                         }
+                        if(items[i].style.display === "") check = false;
+                    }
+                    if(check === true){
+                        document.getElementById("loadProducts1").style.display = "";
+                        document.getElementById("loadProducts2").style.display = "";
                     }
                 }
             </script>

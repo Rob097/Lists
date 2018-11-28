@@ -318,7 +318,15 @@
                                 <div class="section-title clearfix">
                                     <div class="float-left float-xs-none" style="width: 89%;">
                                         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name of product">
-                                        <label style="display: none;" id="loadProducts">Carico i prodotti...</label>
+                                        <label style="display: none;" id="loadProducts1">Nessun prodotto trovato</label><br>
+                                        <c:if test="${not empty user and user.tipo=='amministratore'}">
+                                            
+                                                <a style="display: none;" id="loadProducts2" data-toggle="modal" data-target="#CreateProductModal" class="btn btn-primary text-caps btn-rounded" >+ Crea un prodotto</a>
+                                            
+                                        </c:if>
+                                        <c:if test="${not empty user and user.tipo=='standard'}">
+                                            <a style="display: none;" id="loadProducts2" data-toggle="modal" data-target="#CreateAddProductModal" class="btn btn-primary text-caps btn-rounded" >Crea e aggiungi prodotto</a>
+                                        </c:if>
                                     </div>
                                     <div class="float-right d-xs-none thumbnail-toggle">
                                         <a href="#" class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
@@ -498,6 +506,63 @@
             </div>
         </div>
 
+        <!--createAndAddProductModal-->
+        <div class="modal fade" id="CreateAddProductModal" tabindex="-1" role="dialog" aria-labelledby="CreateAddProductModal" aria-hidden="true" enctype="multipart/form-data">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1 style="text-align: center;">Crea un nuovo prodotto</h1>
+                            </div>
+                            <!--end container-->
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form per il login -->
+                        <form class="form clearfix" id="CreateShopListform" action="<%=request.getContextPath()%>/restricted/CreateAndAddProduct"  method="post" role="form" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="Nome" class="col-form-label">Nome del prodotto</label>
+                                <input type="text" name="NomeProdotto" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="Descrizione" class="col-form-label">Note prodotto</label>
+                                <input type="text" name="NoteProdotto" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="Categoria" class="col-form-label">Categoria</label>
+                                <select name="CategoriaProdotto" id="Categoria" tabindex="1" size="5" >
+                                    <c:forEach items="${catProd}" var="prodcat">
+                                        <option value="${prodcat.nome}"><c:out value="${prodcat.nome}"/></option> 
+                                    </c:forEach>
+                                </select>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="Immagine" class="col-form-label required">Immagine</label>
+                                <input type="file" name="ImmagineProdotto" required>
+                            </div>
+                            
+                            <!--end form-group-->
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea Prodotto</button>
+                                <input type="hidden" name="showProduct" value="true">
+                            </div>
+                        </form>
+                        <hr>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+          </div>
+        
         <script>
                                         function addProduct(id) {
                                             $.ajax({
@@ -518,7 +583,7 @@
 
         <script>
             function myFunction() {
-                var input, filter, items, li, a, i;
+                var input, filter, items, li, a, i, check = true;
                 input = document.getElementById("myInput");
                 filter = input.value.toUpperCase();
                 items = document.getElementsByClassName("item");
@@ -538,21 +603,27 @@
                         alert("Errore");
                     }
                 });
-                for (i = 0; i < items.length; i++) {
+                for (i = 0; i<items.length;i++) {
                     console.log(items[i]);
                     console.log("inside cicle ");
                     title = items[i].getElementsByClassName("title");
-                    if (title[0].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    if(title[0].innerHTML.toUpperCase().indexOf(filter)>-1){
 
                         items = document.getElementsByClassName("item");
                         title = items[i].getElementsByClassName("title");
                         items[i].style.display = "";
-                        document.getElementById("loadProducts").style.display = "none";
+                        document.getElementById("loadProducts1").style.display = "none";
+                        document.getElementById("loadProducts2").style.display = "none";
 
-                    } else {
+                    }else{
                         items[i].style.display = "none";
-                        document.getElementById("loadProducts").style.display = "";
+
                     }
+                    if(items[i].style.display === "") check = false;
+                }
+                if(check === true){
+                    document.getElementById("loadProducts1").style.display = "";
+                    document.getElementById("loadProducts2").style.display = "";
                 }
             }
         </script>

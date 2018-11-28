@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ShopList;
+package Categories;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,12 +15,12 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Roberto97
+ * @author della
  */
-public class setPID extends HttpServlet {
+public class setImage extends HttpServlet {
 
     /**
-     * Handles the HTTP <code>POST</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -30,12 +30,13 @@ public class setPID extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("\nPID\n");
+        System.out.println("\nImage\n");
         HttpSession session = request.getSession();
-        String id = request.getParameter("PID");
-        session.setAttribute("prodotto", id);
-        
-        response.sendRedirect("/Lists/Pages/ShowProducts.jsp?PID="+id);
+        String listname = request.getParameter("listname");
+        if(listname != null){
+            System.out.println(listname);
+            session.setAttribute("listname", listname);
+        }
     }
 
     /**

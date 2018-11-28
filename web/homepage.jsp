@@ -37,16 +37,10 @@
 
         <title>Lists</title>
 
-        <!--apre subito il LoginModal se i dati inseriti non sono essistenti nel database-->
-        <c:if test="${loginResult==false}">
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    $("#LoginModal").modal('show');
-                });
-            </script>
-        </c:if>  
+
         <c:set var="privacy" scope="session" value="false"/>
-        
+
+
     </head>
     <body>
 
@@ -67,8 +61,8 @@
             String Type;
             String image;
 
-            ArrayList <Notification> notifiche = null; 
-            
+            ArrayList<Notification> notifiche = null;
+
             User u = new User();
             boolean find = false;
             if (s.getAttribute("user") != null) {
@@ -97,72 +91,9 @@
         <div class="page home-page">
             <header class="hero">
                 <div class="hero-wrapper">
-
-                    <%if (find) {%> 
-                    <nav class="navbar navbar-expand-xl navbar-dark fixed-top " id="mainNav">
-                        <a class="navbar-brand">
-                            <img width= "50" src="/Lists/Pages/img/favicon.png" alt="Logo">
-                        </a>
-                        <a class="navbar-brand js-scroll-trigger" href="#home">LISTS</a>
-                        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                            Menu
-                            <i class="fa fa-bars"></i>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarResponsive">
-                            <ul class="navbar-nav text-uppercase ml-auto text-center">
-                                <li class="nav-item js-scroll-trigger dropdown">
-                                    <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
-                                    <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item nav-link" href="userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
-                                        <a class="dropdown-item nav-link" href="foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
-                                    </div>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/profile.jsp">
-                                        <i class="fa fa-user"></i><b>Il mio profilo</b>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
-                                        <i class="fa fa-sign-out"></i><b><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> </b>/ <img src= "/Lists/${user.image}" width="25px" height="25px" style="border-radius: 100%;">
-                                    </a>
-                                </li>                                
-                            </ul>
-                        </div>
-                    </nav>
-                    <%} else {%>
-                    <nav class="navbar navbar-expand-xl navbar-dark fixed-top " id="mainNav">
-                        <a class="navbar-brand">
-                            <img width= "50" src="/Lists/Pages/img/favicon.png" alt="Logo">
-                        </a>
-                        <a class="navbar-brand js-scroll-trigger" href="#home">LISTS</a>
-                        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                            Menu
-                            <i class="fa fa-bars"></i>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarResponsive">
-                            <ul class="navbar-nav text-uppercase ml-auto text-center">                               
-                                <li class="nav-item js-scroll-trigger dropdown">
-                                    <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
-                                    <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item nav-link" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
-                                        <a class="dropdown-item nav-link disabled" data-toggle="tooltip" title="Registrati o fai il login per usare questa funzione"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
-                                    </div>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#LoginModal" style="cursor: pointer;">
-                                        <i class="fa fa-sign-in"></i><b>Login</b>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#RegisterModal" style="cursor: pointer;">
-                                        <i class="fa fa-pencil-square-o"></i><b>Registrati</b>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                    <%}%>
+                    <div id="navbar">
+                        <!-- Qui viene inclusa la navbar -->
+                    </div>
                     <!--============ End Secondary Navigation ===========================================================-->
                     <!--######################################################################################### 
                                     check dell'eventuale messaggio da visualizzare
@@ -256,29 +187,29 @@
             <!-- SISTEMA PER LE NOTIFICHE -->
 
             <%
-            //Guardo se esiste un utente loggato, guardo se l'utente loggato ha delle notifiche, per notifica guardo il tipo e la lista e ne salvo una mentre le altre uguali non le salvo. poi le visualizzo
-            if (find) {
-                if (session.getAttribute("notifiche") != null) {
-                    ArrayList<Notification> allN = (ArrayList<Notification>) session.getAttribute("notifiche");
-                    ArrayList<Notification> filteredN = new ArrayList<>();
-                    boolean check = false;
-                    //filteredN.add(allN.get(0));
-                    for(Notification n : allN){
-                        check = false;
-                        for(Notification nn : filteredN){
-                            if(n.getListName().equals(nn.getListName()) && n.getType().equals(nn.getType())){
-                                check = true;
-                                break;
-                            }else{
-                                check = false;
+                //Guardo se esiste un utente loggato, guardo se l'utente loggato ha delle notifiche, per notifica guardo il tipo e la lista e ne salvo una mentre le altre uguali non le salvo. poi le visualizzo
+                if (find) {
+                    if (session.getAttribute("notifiche") != null) {
+                        ArrayList<Notification> allN = (ArrayList<Notification>) session.getAttribute("notifiche");
+                        ArrayList<Notification> filteredN = new ArrayList<>();
+                        boolean check = false;
+                        //filteredN.add(allN.get(0));
+                        for (Notification n : allN) {
+                            check = false;
+                            for (Notification nn : filteredN) {
+                                if (n.getListName().equals(nn.getListName()) && n.getType().equals(nn.getType())) {
+                                    check = true;
+                                    break;
+                                } else {
+                                    check = false;
+                                }
+                            }
+                            if (check == false) {
+                                filteredN.add(n);
+                            } else {
+                                System.out.println("Notifica già presente");
                             }
                         }
-                        if(check == false){
-                            filteredN.add(n);
-                        }else{
-                            System.out.println("Notifica già presente");
-                        }
-                    }
             %>
             <li class="dropdown" id="notificationsLI">
                 <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
@@ -291,89 +222,89 @@
                     <div class="notification-heading"><h4 class="menu-title">Notifiche</h4><h4 class="menu-title pull-right"><a onclick="deleteALLNotifications();" style="cursor: pointer;">Cancella tutto</a><i class="glyphicon glyphicon-circle-arrow-right"></i></h4>
                     </div> 
                     <div class="notifications-wrapper" id="NotificationsWrapper"> 
-                        <% if(!filteredN.isEmpty()){
-                            for (Notification nf : filteredN) {
-                            if(nf.getType().equals("new_product")){
+                        <% if (!filteredN.isEmpty()) {
+                                for (Notification nf : filteredN) {
+                                    if (nf.getType().equals("new_product")) {
                         %>
-                            <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
-                                <div class="notification-item" id="<%=nf.getType()%>ID">
-                                    <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
-                                    <h4 class="item-title">Nuovi prodotti! <small> Sono stati aggiunti nuoi prodotti alla lista <%=nf.getListName()%></small></h4>
-                                    <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
-                                </div>  
-                            </a>
-                        <%  }else if(nf.getType().equals("empty_list")){%>
-                            <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
-                                <div class="notification-item" id="<%=nf.getType()%>ID">
-                                    <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
-                                    <h4 class="item-title">Lista svuotata! <small> E' stata svuotata la lista <%=nf.getListName()%></small></h4>
-                                    <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
-                                </div>  
-                            </a>
-                            <%}else if(nf.getType().equals("new_user")){%>
-                            <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
-                                <div class="notification-item" id="<%=nf.getType()%>ID">
-                                    <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
-                                    <h4 class="item-title">Utenti aggiunti alla lista! <small> Nuovi utenti nella lista <%=nf.getListName()%></small></h4>
-                                    <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
-                                </div>  
-                            </a>
-                            <%}else if(nf.getType().equals("change_status_product")){%>
-                            <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
-                                <div class="notification-item" id="<%=nf.getType()%>ID">
-                                    <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
-                                    <h4 class="item-title">Stato prodotti cambiato! <small> E' cambiato lo stato dei prodotti nella lista <%=nf.getListName()%></small></h4>
-                                    <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
-                                </div>  
-                            </a>
-                            <%}else if(nf.getType().equals("new_message")){%>
-                            <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
-                                <div class="notification-item" id="<%=nf.getType()%>ID">
-                                    <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
-                                    <h4 class="item-title">Nuovi Messaggi! <small> Ci sono dei nuovi messaggi nella lista <%=nf.getListName()%></small></h4>
-                                    <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
-                                </div>  
-                            </a>
-                            <%}else if(nf.getType().equals("role_change")){%>
-                            <a class="content" href="ShowShopList?<%=nf.getListName()%>" > 
-                                <div class="notification-item" id="<%=nf.getType()%>ID">
-                                    <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
-                                    <h4 class="item-title">Permessi aggiornati! <small> Sono cambiati i tuoi permessi nella lista <%=nf.getListName()%></small></h4>
-                                    <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
-                                </div>  
-                            </a>
-                            <%}else if(nf.getType().equals("remove_product")){
-                                    if (listdao.getbyName(nf.getListName()).getProducts() != null) {
-                                        if (listdao.getbyName(nf.getListName()).getProducts().isEmpty()) {%>
-                                            <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
-                                                <div class="notification-item" id="<%=nf.getType()%>ID">
-                                                    <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
-                                                    <h4 class="item-title">Lista svuotata! <small> E' stata svuotata la lista <%=nf.getListName()%></small></h4>
-                                                    <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
-                                                </div>  
-                                            </a>
-                                        <%} else {%>
-                                            <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
-                                                <div class="notification-item" id="<%=nf.getType()%>ID">
-                                                    <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
-                                                    <h4 class="item-title">Prodotti rimossi! <small> Sono stati rimossi dei prodotti dalla lista <%=nf.getListName()%></small></h4>
-                                                    <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
-                                                </div>  
-                                            </a>
-                                        <%}
+                        <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
+                            <div class="notification-item" id="<%=nf.getType()%>ID">
+                                <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
+                                <h4 class="item-title">Nuovi prodotti! <small> Sono stati aggiunti nuoi prodotti alla lista <%=nf.getListName()%></small></h4>
+                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
+                            </div>  
+                        </a>
+                        <%  } else if (nf.getType().equals("empty_list")) {%>
+                        <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
+                            <div class="notification-item" id="<%=nf.getType()%>ID">
+                                <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
+                                <h4 class="item-title">Lista svuotata! <small> E' stata svuotata la lista <%=nf.getListName()%></small></h4>
+                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
+                            </div>  
+                        </a>
+                        <%} else if (nf.getType().equals("new_user")) {%>
+                        <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
+                            <div class="notification-item" id="<%=nf.getType()%>ID">
+                                <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
+                                <h4 class="item-title">Utenti aggiunti alla lista! <small> Nuovi utenti nella lista <%=nf.getListName()%></small></h4>
+                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
+                            </div>  
+                        </a>
+                        <%} else if (nf.getType().equals("change_status_product")) {%>
+                        <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
+                            <div class="notification-item" id="<%=nf.getType()%>ID">
+                                <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
+                                <h4 class="item-title">Stato prodotti cambiato! <small> E' cambiato lo stato dei prodotti nella lista <%=nf.getListName()%></small></h4>
+                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
+                            </div>  
+                        </a>
+                        <%} else if (nf.getType().equals("new_message")) {%>
+                        <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
+                            <div class="notification-item" id="<%=nf.getType()%>ID">
+                                <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
+                                <h4 class="item-title">Nuovi Messaggi! <small> Ci sono dei nuovi messaggi nella lista <%=nf.getListName()%></small></h4>
+                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
+                            </div>  
+                        </a>
+                        <%} else if (nf.getType().equals("role_change")) {%>
+                        <a class="content" href="ShowShopList?<%=nf.getListName()%>" > 
+                            <div class="notification-item" id="<%=nf.getType()%>ID">
+                                <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
+                                <h4 class="item-title">Permessi aggiornati! <small> Sono cambiati i tuoi permessi nella lista <%=nf.getListName()%></small></h4>
+                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
+                            </div>  
+                        </a>
+                        <%} else if (nf.getType().equals("remove_product")) {
+                                if (listdao.getbyName(nf.getListName()).getProducts() != null) {
+                                    if (listdao.getbyName(nf.getListName()).getProducts().isEmpty()) {%>
+                        <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
+                            <div class="notification-item" id="<%=nf.getType()%>ID">
+                                <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
+                                <h4 class="item-title">Lista svuotata! <small> E' stata svuotata la lista <%=nf.getListName()%></small></h4>
+                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
+                            </div>  
+                        </a>
+                        <%} else {%>
+                        <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
+                            <div class="notification-item" id="<%=nf.getType()%>ID">
+                                <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
+                                <h4 class="item-title">Prodotti rimossi! <small> Sono stati rimossi dei prodotti dalla lista <%=nf.getListName()%></small></h4>
+                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
+                            </div>  
+                        </a>
+                        <%}
+                                        } else {%>
+                        <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
+                            <div class="notification-item" id="<%=nf.getType()%>ID">
+                                <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
+                                <h4 class="item-title">Lista svuotata! <small> E' stata svuotata la lista <%=nf.getListName()%></small></h4>
+                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
+                            </div>  
+                        </a>
+                        <%}
+                                            }
+                                        }
                                     } else {%>
-                                        <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
-                                            <div class="notification-item" id="<%=nf.getType()%>ID">
-                                                <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
-                                                <h4 class="item-title">Lista svuotata! <small> E' stata svuotata la lista <%=nf.getListName()%></small></h4>
-                                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
-                                            </div>  
-                                        </a>
-                                    <%}
-                            }
-                        }
-                        }else{%>
-                            <h4>Non ci sono notifiche!</h4>
+                        <h4>Non ci sono notifiche!</h4>
                         <%}%>
                     </div> 
                 </ul>
@@ -523,95 +454,8 @@
             <!--*********************************************************************************************************-->
             <!--************ FOOTER *************************************************************************************-->
             <!--*********************************************************************************************************-->
-            <footer class="footer">
-                <div class="wrapper">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <a href="#" class="brand">
-                                    <img src="Pages/img/logo.png" alt="">
-                                </a>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut nec tincidunt arcu, sit amet
-                                    fermentum sem. Class aptent taciti sociosqu ad litora torquent per conubia nostra.
-                                </p>
-                            </div>
-                            <!--end col-md-5-->
-                            <div class="col-md-3">
-                                <h2>Navigation</h2>
-                                <div class="row">
-                                    <div class="col-md-6 col-sm-6">
-                                        <nav>
-                                            <ul class="list-unstyled">
-                                                <li>
-                                                    <a href="#">Home</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Listing</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Pages</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Extras</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Contact</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Submit Ad</a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6">
-                                        <nav>
-                                            <ul class="list-unstyled">
-                                                <li>
-                                                    <a href="#">My Ads</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Sign In</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Register</a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--end col-md-3-->
-                            <div class="col-md-4">
-                                <h2>Contact</h2>
-                                <address>
-                                    <figure>
-                                        124 Abia Martin Drive<br>
-                                        New York, NY 10011
-                                    </figure>
-                                    <br>
-                                    <strong>Email:</strong> <a href="#">hello@example.com</a>
-                                    <br>
-                                    <strong>Skype: </strong> Craigs
-                                    <br>
-                                    <br>
-                                    <a href="contact.html" class="btn btn-primary text-caps btn-framed">Contact Us</a>
-                                </address>
-                            </div>
-                            <!--end col-md-4-->
-                        </div>
-                        <!--end row-->
-                    </div>
-                    <div class="background">
-                        <div class="background-image original-size">
-                            <img src="Pages/img/footer-background-icons.jpg" alt="">
-                        </div>
-                        <!--end background-image-->
-                    </div>
-                    <!--end background-->
-                </div>
-                </>
-                <!--end footer-->
+            <footer class="footer"></footer>
+
         </div>
         <!--end page-->
 
@@ -622,132 +466,12 @@
         ##########################################################-->
 
         <!-- Login Modal -->
-        <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModal" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-
-                        <div class="page-title">
-                            <div class="container">
-                                <h1>Sign In</h1>
-                            </div>
-                            <!--end container-->
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>            
-
-                    </div>
-                    <div class="modal-body">
-                        <c:if test="${loginResult==false}">
-                            <div class="alert alert-danger">
-                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                <strong>Login Failed!</strong> <br> Please try again or <a data-toggle="modal" href="#RegisterModal" class="alert-link"><u>Sign up!</u></a>
-
-                            </div>
-                        </c:if>
-                        <!-- Form per il login -->
-                        <form class="form clearfix" id="login-form" action="/Lists/LoginAction" method="post" role="form">
-                            <div class="form-group">
-                                <label for="email" class="col-form-label required">Email</label>
-                                <input type="text" name="email" id="emaillogin" tabindex="1" class="form-control" placeholder="Email" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="password" class="col-form-label required" style="width: 100%">Password</label>
-                                <input type="password" name="password" id="passwordlogin" tabindex="2" class="form-control" placeholder="Password" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="d-flex justify-content-between align-items-baseline">
-                                <div class="form-group text-center">
-                                    <label>
-                                        <input type="checkbox" name="remember" value="1">
-                                        Remember Me
-                                    </label>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Sign In</button>
-                            </div>
-
-                        </form>
-                        <hr>
-                        <p>
-                            Hai dimenticato la password? <a data-dismiss="modal" href="#" data-toggle="modal" data-target="#restorePassword" class="link">Recuperala.</a>
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModal" aria-hidden="true"></div>
         <!--######################################################-->
 
         <!-- Register Modal -->
-        <div class="modal fade" id="RegisterModal" tabindex="-1" role="dialog" aria-labelledby="RegisterModal" aria-hidden="true" enctype="multipart/form-data">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="page-title">
-                            <div class="container">
-                                <h1>Register</h1>
-                            </div>
-                            <!--end container-->
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Form per il login -->
-                        <form class="form clearfix" id="register-form" action="/Lists/RegisterAction" method="post" enctype="multipart/form-data" onsubmit="return (checkCheckBoxes(this) && validate()); ">
-                            <div class="form-group">
-                                <label for="email" class="col-form-label">Email</label>
-                                <input type="email" name="email" id="emailRegister" tabindex="1" class="form-control" placeholder="Email" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="nominativo" class="col-form-label">Nome</label>
-                                <input type="text" name="nominativo" id="nominativoRegister" tabindex="1" class="form-control" placeholder="Nome" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="password" class="col-form-label">Password</label>
-                                <input type="password" name="password" id="passwordRegister" tabindex="2" class="form-control" placeholder="Password" required><br>
-                                <label for="pswrt2" class="col-form-label">Conferma Password</label>
-                                <input type="password" name="pswrt2" id="pswrt2" tabindex="2" class="form-control" placeholder="Password"  value="${user.password}">
-                            </div>
+        <div class="modal fade" id="RegisterModal" tabindex="-1" role="dialog" aria-labelledby="RegisterModal" aria-hidden="true" enctype="multipart/form-data"></div>
 
-                            <!--end form-group-->
-
-                            <div class="form-group">
-                                <label for="image" class="col-form-label required">Avatar</label>
-                                <input type="file" name="file1" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="d-flex justify-content-between align-items-baseline">
-                                <div class="form-group text-center">
-                                    <input type="checkbox" tabindex="3" class="" name="standard" id="standard">
-                                    <label for="standard">Standard</label>
-                                    <input type="checkbox" tabindex="3" class="" name="amministratore" id="amministratore">
-                                    <label for="amministratore">Amministratore</label>
-                                </div>
-                                <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Register Now</button>
-                            </div>
-
-                            <div class="form-group">
-                                Per andare avanti accenta la nostra <a data-toggle="modal" href="#PrivacyModal" class="link">Privacy Policy</a><br>                
-                                <label for="privacy">Ho letto e acceto l'informativa sulla Privacy</label>         
-                                <input required type="checkbox" tabindex="3" class="" name="privacy" id="privacy">
-                            </div>
-                        </form>
-                        <hr>                                                
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
         <!-- Privacy Policy Modal -->
         <div class="modal fade" tabindex="-1" aria-hidden="true" id="PrivacyModal">
             <div class="modal-dialog modal-lg">
@@ -858,142 +582,15 @@
     <!--######################################################-->
 
     <!-- restore password Modal -->
-    <div class="modal fade" id="restorePassword" tabindex="-1" role="dialog" aria-labelledby="restorePassword" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-
-                    <div class="page-title">
-                        <div class="container">
-                            <h1>Recupera la password</h1>
-                        </div>
-                        <!--end container-->
-                    </div>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>            
-
-                </div>
-                <div class="modal-body">
-                    <!-- Form per il login -->
-                    <form class="form clearfix" id="login-form" action="/Lists/restorePassword" method="post" role="form">
-                        <div class="form-group">
-                            <label for="email" class="col-form-label required">Email</label>
-                            <input type="text" name="email" id="emaillogin" tabindex="1" class="form-control" placeholder="Email" value="" required>
-                        </div>
-                        <!--end form-group-->
-                        <div class="d-flex justify-content-between align-items-baseline">
-                            <button style="float: left;" type="submit" class="btn btn-primary">Recupera password</button>
-                            <button style="float: right;" type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="modal fade" id="restorePassword" tabindex="-1" role="dialog" aria-labelledby="restorePassword" aria-hidden="true"></div>
     <!--######################################################-->
 
     <!-- new password Modal -->
-    <div class="modal fade" id="newPassword" tabindex="-1" role="dialog" aria-labelledby="newPassword" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-
-                    <div class="page-title">
-                        <div class="container">
-                            <h1>Nuova password</h1>
-                        </div>
-                        <!--end container-->
-                    </div>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>            
-
-                </div>
-                <div class="modal-body">
-                    <h5>Nuova passworrd per <%=request.getParameter("restorePasswordOf")%></h5>
-                    <!-- Form per il login -->
-                    <form class="form clearfix" id="login-form" action="/Lists/changePassword" method="post" role="form">
-                        <div class="form-group">
-                            <label for="password" class="col-form-label required">Password</label>
-                            <input type="password" name="password" id="emaillogin" tabindex="1" class="form-control" placeholder="Password" value="" required>
-                            <input type="hidden" name="email" value="<%=request.getParameter("restorePasswordOf")%>">
-                        </div>
-                        <!--end form-group-->
-                        <div class="d-flex justify-content-between align-items-baseline">
-                            <button style="float: left;" type="submit" class="btn btn-primary">Recupera password</button>
-                            <button style="float: right;" type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="modal fade" id="newPassword" tabindex="-1" role="dialog" aria-labelledby="newPassword" aria-hidden="true"></div>
     <!--######################################################-->
 
 
-    <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="page-title">
-                        <div class="container">
-                            <h1 style="text-align: center;">Create list</h1>
-                        </div>
-                        <!--end container-->
-                    </div>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- Form per il login -->
-                    <form class="form clearfix" id="CreateShopListform" action="/Lists/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="Nome" class="col-form-label">Nome della lista</label>
-                            <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
-                        </div>
-                        <!--end form-group-->
-                        <div class="form-group">
-                            <label for="Descrizione" class="col-form-label">Descrizione</label>
-                            <input type="text" name="Descrizione" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
-                        </div>
-                        <!--end form-group-->
-                        <div class="form-group">
-                            <label for="Categoria" class="col-form-label">Categoria</label>
-                            <select name="Categoria" id="Categoria" tabindex="1" size="5" >
-
-                                <c:forEach items="${categorie}" var="categoria">
-                                    <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
-                                </c:forEach>
-                            </select><!--<input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>-->
-
-                        </div>
-                        <!--end form-group-->
-                        <%if (find) {%>
-                        <div class="form-group">
-                            <label for="Immagine" class="col-form-label required">Immagine</label>
-                            <input type="file" name="file1" required>
-                        </div>
-                        <%}%>
-                        <!--end form-group-->
-                        <div class="d-flex justify-content-between align-items-baseline">
-
-                            <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
-
-                            <%if (find == false && session.getAttribute("guestList") != null) {%>
-                            <h5>Attenzione, hai già salvato una lista. Se non sei registrato puoi salvare solo una lista alla volta. Salvando questa lista, cancellerai la lista gia salvata.</h5>
-                            <%}%>
-                        </div>
-                    </form>
-                    <hr>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data"></div>
 
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
     <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
@@ -1003,17 +600,16 @@
     <script src="Pages/js/jquery.validate.min.js"></script>
     <script src="Pages/js/custom.js"></script>
     <script src="Pages/js/vari.js"></script>
-    <script src="Pages/js/nav.js"></script>
 
     <script type="text/javascript">
-                            $(document).ready(function () {
-                                $("#alert").hide();
+        $(document).ready(function () {
+            $("#alert").hide();
 
-                                $("#alert").fadeTo(10000, 500).slideUp(500, function () {
-                                    $("#alert").slideUp(500);
-                                });
+            $("#alert").fadeTo(10000, 500).slideUp(500, function () {
+                $("#alert").slideUp(500);
+            });
 
-                            });
+        });
     </script>
 
     <script>
@@ -1059,27 +655,121 @@
         }
     </script>
     <script type="text/javascript">
-            function validate(){
-                var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
-                var n1 = document.getElementById("passwordRegister");
-                var n2 = document.getElementById("pswrt2");
-                if(n1.value != "" && n2.value != ""){
-                    if((n1.value == n2.value)){
-                        if(n1.value.match(passw)){
-                           return true; 
-                        }                        
+        function validate() {
+            var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+            var n1 = document.getElementById("passwordRegister");
+            var n2 = document.getElementById("pswrt2");
+            if (n1.value != "" && n2.value != "") {
+                if ((n1.value == n2.value)) {
+                    if (n1.value.match(passw)) {
+                        return true;
                     }
                 }
-                alert("password can't be empty and has to be equal to Conferma Password, 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter");
-                return false;
             }
-        </script>
+            alert("password can't be empty and has to be equal to Conferma Password, 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter");
+            return false;
+        }
+    </script>
 
 
     <!--###############################################################################################################################
-                        CHIUSURA DATABASE
+                        Import templates ajax
     ###############################################################################################################################-->            
+    <script>
+        $(document).ready(function () {
 
+            //LoginModal
+            $.ajax({
+                type: "GET",
+                url: "/Lists/Pages/template/loginTemplate.jsp",
+                cache: false,
+                success: function (response) {
+                    $("#LoginModal").html(response);
+                },
+                error: function () {
+                    alert("Errore LoginModalImport");
+                }
+            });
+
+            //RegisterModal
+            $.ajax({
+                type: "GET",
+                url: "/Lists/Pages/template/registerTemplate.jsp",
+                cache: false,
+                success: function (response) {
+                    $("#RegisterModal").html(response);
+                },
+                error: function () {
+                    alert("Errore RegisterModalImport");
+                }
+            });
+
+            //Restore password
+            $.ajax({
+                type: "GET",
+                url: "/Lists/Pages/template/restorePasswordTemplate.jsp",
+                cache: false,
+                success: function (response) {
+                    $("#restorePassword").html(response);
+                },
+                error: function () {
+                    alert("Errore restorePasswordTemplate");
+                }
+            });
+
+            //New password
+            $.ajax({
+                type: "GET",
+                url: "/Lists/Pages/template/newPasswordTemplate.jsp",
+                cache: false,
+                success: function (response) {
+                    $("#newPassword").html(response);
+                },
+                error: function () {
+                    alert("Errore newPasswordTemplate");
+                }
+            });
+
+            //Create List
+            $.ajax({
+                type: "GET",
+                url: "/Lists/Pages/template/createListTemplate.jsp",
+                cache: false,
+                success: function (response) {
+                    $("#CreateListModal").html(response);
+                },
+                error: function () {
+                    alert("Errore createListTemplate");
+                }
+            });
+
+            //Footer
+            $.ajax({
+                type: "GET",
+                url: "/Lists/Pages/template/footerTemplate.jsp",
+                cache: false,
+                success: function (response) {
+                    $("footer").html(response);
+                },
+                error: function () {
+                    alert("Errore footerTemplate");
+                }
+            });
+
+            //Navbar
+            $.ajax({
+                type: "GET",
+                url: "/Lists/Pages/template/navbarTemplate.jsp",
+                cache: false,
+                success: function (response) {
+                    $("#navbar").html(response);
+                },
+                error: function () {
+                    alert("Errore navbarTemplate");
+                }
+            });
+        });
+    </script>
     <!--###############################################################################################################################-->
 
 </body>

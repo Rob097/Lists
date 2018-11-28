@@ -652,10 +652,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
 
     @Override
     public boolean chckIfProductIsInTheList(int id, String list) throws DAOException {
-        if (list == null) {
-            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed list is null"));
-        }
-        
+                
         try (PreparedStatement stm = CON.prepareStatement("select * from Product where PID in (select prodotto from List_Prod where lista = ? AND PID = ?)")) {            
             stm.setString(1, list);
             stm.setInt(2, id);

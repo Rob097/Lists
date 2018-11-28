@@ -53,8 +53,8 @@ public class AddCategoryImage extends HttpServlet {
         HttpSession session = (HttpSession) request.getSession(false);
         Category category = new Category();
         User user = (User) session.getAttribute("user");
-        category.setNome(request.getParameter("category"));
-        System.out.println(category.getNome());
+        category.setNome( (String) session.getAttribute("listname"));
+        
         
         Part filePart1 = request.getPart("file1");
         

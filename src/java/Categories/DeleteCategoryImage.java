@@ -54,8 +54,6 @@ public class DeleteCategoryImage extends HttpServlet {
                 Logger.getLogger(DeleteCategoryImage.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        session.setAttribute("deleteImage", false);
         response.sendRedirect(request.getContextPath() +"/Pages/ShowListCategories.jsp");
     }
 

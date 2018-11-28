@@ -28,7 +28,10 @@
             if(request.getSession().getAttribute("number") == null){number = 0;}
             else{number = (int) request.getSession().getAttribute("number");}
             String resp = "";
-            String shoplistName = (String) request.getSession().getAttribute("shopListName");
+            String shoplistName = "";
+            if(request.getSession().getAttribute("shopListName") != null){
+                shoplistName = (String) request.getSession().getAttribute("shopListName");
+            }
             ArrayList<Product> pp;
             pp = productdao.getByRange(number, request);
             for (Product p : pp) {%>
@@ -55,12 +58,15 @@
                             <p><%=p.getNote()%></p>
                         </div>
                         <!--end description-->
-                        <%if (listdao.chckIfProductIsInTheList(p.getPid(), shoplistName) == false) {%>
-                        <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Aggiungi ad una lista</a>
-                        <%} else {%> 
-                        <a class="detail"><img src="img/correct.png" id="addIco"></a>
-                            <%}%>
-                        <a class="detail"><img src="img/correct.png" id="addIco<%=p.getPid()%>" class="dispNone"></a>
+                        <%if(shoplistName != null){%>
+                            <%if (listdao.chckIfProductIsInTheList(p.getPid(), shoplistName) == false) {%>
+                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Aggiungi ad una lista</a>
+                            <%} else {%> 
+                            <a class="detail"><img src="img/correct.png" id="addIco"></a>
+                            <%}
+                        }else{%>
+                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Aggiungi ad una lista</a>
+                        <%}%>
                     </div>
                 </div>
                 <%}%>

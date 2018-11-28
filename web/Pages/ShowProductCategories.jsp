@@ -165,9 +165,6 @@
                         <div class="collapse navbar-collapse" id="navbarResponsive">
                             <ul class="navbar-nav text-uppercase ml-auto text-center">
                                 <li class="nav-item">
-                                    <a data-toggle="modal" data-target="#CreateCategoryModal" class="btn btn-primary text-caps btn-rounded" >+ Crea una categoria</a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="../homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
                                 <li class="nav-item js-scroll-trigger dropdown">
@@ -202,6 +199,11 @@
                             </h1>
                         </div>                        
                     </div>
+                    <div class="background"></div>
+
+                    <div class="container text-center" id="welcomeGrid">
+                        <a data-toggle="modal" data-target="#CreateCategoryModal" class="btn btn-primary text-caps btn-framed btn-block" >Crea una categoria</a>
+                    </div
                 </div>
             </header>
              <div class="page sub-page">
@@ -216,7 +218,8 @@
                                 <div class="section-title clearfix">
                                     <div class="float-left float-xs-none" style="width: 89%;">
                                         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name of product">
-                                        <label style="display: none;" id="loadProducts">Carico le categorie...</label>
+                                        <label style="display: none;" id="loadProducts1">Nessuna categoria corrispondente</label></br>
+                                        <a style="display: none;" id="loadProducts2" data-toggle="modal" data-target="#CreateCategoryModal" class="btn btn-primary text-caps btn-rounded" >+ Crea una categoria</a>
                                     </div>
                                     <div class="float-right d-xs-none thumbnail-toggle">
                                         <a href="#" class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
@@ -296,7 +299,7 @@
             </script>
             <script>
                 function myFunction() {
-                    var input, filter, items, li, a, i;
+                    var input, filter, items, li, a, i, check = true;
                     input = document.getElementById("myInput");
                     filter = input.value.toUpperCase();
                     items = document.getElementsByClassName("item");
@@ -325,12 +328,18 @@
                             items = document.getElementsByClassName("item");
                             title = items[i].getElementsByClassName("title");
                             items[i].style.display = "";
-                            document.getElementById("loadProducts").style.display = "none";
+                            document.getElementById("loadProducts1").style.display = "none";
+                            document.getElementById("loadProducts2").style.display = "none";
                             
                         }else{
                             items[i].style.display = "none";
-                            document.getElementById("loadProducts").style.display = "";
+                            
                         }
+                        if(items[i].style.display === "") check = false;
+                    }
+                    if(check === true){
+                        document.getElementById("loadProducts1").style.display = "";
+                        document.getElementById("loadProducts2").style.display = "";
                     }
                 }
             </script>
