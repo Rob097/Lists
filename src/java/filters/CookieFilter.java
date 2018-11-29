@@ -6,13 +6,16 @@
 package filters;
 
 import Notifications.Notification;
+import database.daos.Category_ProductDAO;
 import database.daos.ListDAO;
 import database.daos.NotificationDAO;
 import database.daos.UserDAO;
+import database.entities.Category_Product;
 import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
+import database.jdbc.JDBCCategory_ProductDAO;
 import database.jdbc.JDBCNotificationsDAO;
 import database.jdbc.JDBCShopListDAO;
 import database.jdbc.JDBCUserDAO;
@@ -42,9 +45,10 @@ public class CookieFilter implements Filter {
     
     private static final boolean debug = true;
     private FilterConfig filterConfig = null;
-    UserDAO userdao = null;
-    ListDAO listdao = null;
-    NotificationDAO notificationdao = null;
+    private UserDAO userdao = null;
+    private ListDAO listdao = null;
+    private NotificationDAO notificationdao = null;
+    private Category_ProductDAO category_productdao = null;
     
     public CookieFilter() {
     }    
@@ -69,6 +73,14 @@ public class CookieFilter implements Filter {
         
         if(session != null){ 
             User user = (User) session.getAttribute("user");
+                                 
+            try {
+                ArrayList<Category_Product> cP = category_productdao.getAllCategories();
+                session.setAttribute("catProd", cP);
+            } catch (DAOException ex) {
+                Logger.getLogger(CookieFilter.class.getName()).log(Level.SEVERE, null, ex);
+            }            
+            
             if (cookies != null && user == null){
                 for (Cookie ck : cookies) {
                     if (ck.getName().equals("User")) {    
@@ -162,6 +174,7 @@ public class CookieFilter implements Filter {
         userdao = new JDBCUserDAO(daoFactory.getConnection());        
         listdao = new JDBCShopListDAO(daoFactory.getConnection());
         notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
+        category_productdao = new JDBCCategory_ProductDAO(daoFactory.getConnection());
     }
 
     /**

@@ -50,39 +50,18 @@
             if (daoFactory == null) {
                 throw new ServletException("Impossible to get dao factory for user storage system");
             }
-            ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
-            ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
-            NotificationDAO notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
-            Category_ProductDAO category_productdao = new JDBCCategory_ProductDAO(daoFactory.getConnection());
-            CategoryDAO categorydao = new JDBCCategoryDAO(daoFactory.getConnection());
-            UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
-            String Nominativo;
-            String Email;
-            String Type;
-            String image;
-
+            ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());           
+            NotificationDAO notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());          
+            
             ArrayList<Notification> notifiche = null;
 
             User u = new User();
             boolean find = false;
-            if (s.getAttribute("user") != null) {
-                u = (User) s.getAttribute("user");
-                find = true;
-                Nominativo = u.getNominativo();
-                Email = u.getEmail();
-                Type = u.getTipo();
-                image = u.getImage();
-                notifiche = notificationdao.getAllNotifications(u.getEmail());
-                session.setAttribute("notifiche", notifiche);
+            if (s.getAttribute("user") != null) {                               
+                //notifiche = notificationdao.getAllNotifications(u.getEmail());                
             } else {
-                Type = "guest";
+               
             }
-
-            ArrayList<Category> li = categorydao.getAllCategories();
-            ArrayList<Product> prod = productdao.getAllProducts();
-            ArrayList<Category_Product> cP = category_productdao.getAllCategories();
-            request.getSession().setAttribute("categorie", li);
-            request.getSession().setAttribute("catProd", cP);
 
         %>
         <!--###############################################################################################################################-->
@@ -104,29 +83,30 @@
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                             <strong>Registrazione avvenuta con successo</strong> Adesso puoi fare il login al tuo account!
                         </div>
-                        <%session.setAttribute("regResult", null); %>
+                        <c:set var="regResult" value="${null}"/>
                     </c:if>
                     <c:if test="${erroreIMG!=null}">
                         <div class="alert alert-warning text-center" id="alert">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                             <strong>Attenzione!</strong> ${erroreIMG}
                         </div>
-                        <%session.setAttribute("erroreIMG", null); %>
+                        <c:set var="erroreIMG" value="${null}"/>
                     </c:if>
                     <!--#########################################################################################-->
 
                     <!--============ Page Title =========================================================================-->
                     <div class="page-title" id="home">
                         <div class="container pt-5">
-                            <%if (find) {%>
-                            <h1 class="opacity-60 center">
-                                Ciao <a href="/Lists/profile.jsp" data-toggle="tooltip" title="Il mio profilo"><%=u.getNominativo()%>!</a>
-                            </h1><br>
-                            <%} else {%>
-                            <h1 class="opacity-60 center">
-                                Benvenuto
-                            </h1><br> 
-                            <%}%>
+                            <c:if test="${not empty user}" >
+                                <h1 class="opacity-60 center">
+                                    Ciao <a href="/Lists/profile.jsp" data-toggle="tooltip" title="Il mio profilo"><c:out value="${user.nominativo}"/>!</a>
+                                </h1><br>
+                            </c:if>
+                            <c:if test="${empty user}">
+                                <h1 class="opacity-60 center">
+                                    Benvenuto
+                                </h1><br> 
+                            </c:if>                           
                         </div>
                     </div>
 
@@ -140,16 +120,15 @@
                                 <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" style="color: white;">Crea una nuova Lista</a>
                             </div>
                             <div class="col-md-4">
-                                <%if (find) {%>
-                                <a href="/Lists/foreignLists.jsp" class="text-caps" style="font-size: 15px; font-weight: bold; font-style: italic;">Liste condivise</a>
-                                <%} else {%>
-                                <a class="text-caps disabled" style="font-size: 15px; font-weight: bold; font-style: italic;" data-toggle="tooltip" title="Registrati o fai il login per usare questa funzione">Liste condivise</a>
-                                <%}%>
+                                <c:if test="${not empty user}">
+                                    <a href="/Lists/foreignLists.jsp" class="text-caps" style="font-size: 15px; font-weight: bold; font-style: italic;">Liste condivise</a>
+                                </c:if>
+                                <c:if test="${empty user}">
+                                    <a class="text-caps disabled" style="font-size: 15px; font-weight: bold; font-style: italic;" data-toggle="tooltip" title="Registrati o fai il login per usare questa funzione">Liste condivise</a>
+                                </c:if>                                
                             </div>
-
                         </div>
                         <br>
-
                         <div class="row">
                             <c:if test="${not empty user}">
                                 <c:if test="${user.tipo == 'amministratore'}">
@@ -170,7 +149,6 @@
                             </c:if>
                         </div>
                     </div>
-
 
                     <div class="background">
                         <div class="background-image">
@@ -312,26 +290,23 @@
             <%}
                 }%>
 
-
             <!--ERRORI-->
-            <%if (session.getAttribute("errore") != null) {%>
-            <div class="container pt-5" id="alert">
-                <div class="alert alert-danger text-center" role="alert">
-                    <strong><%=session.getAttribute("errore")%></strong>
+            <c:if test="${not empty errore}">
+                <div class="container pt-5" id="alert">
+                    <div class="alert alert-danger text-center" role="alert">
+                        <strong><c:out value="${errore}"/></strong>
+                    </div>
                 </div>
-            </div>
-            <%  //session.setAttribute("errore", null);
-                }%>
-
+            </c:if>
+            
             <!--MESSAGGI-->
-            <%if (session.getAttribute("messaggio") != null) {%>
-            <div class="container pt-5" id="alert">
-                <div class="alert alert-success text-center" role="alert">
-                    <strong><%=session.getAttribute("messaggio")%></strong>
+            <c:if test="${not empty messaggio}">
+                <div class="container pt-5" id="alert">
+                    <div class="alert alert-success text-center" role="alert">
+                        <strong><c:out value="${messaggio}"/></strong>
+                    </div>
                 </div>
-            </div>
-            <%  //session.setAttribute("errore", null);
-                }%>
+            </c:if>            
 
             <!-- FINE DELLE NOTIFICHE -->
 
@@ -349,23 +324,21 @@
                         </div>
 
                         <ul class="categories-list clearfix">
-                            <%for (Category_Product p : cP) {%>
-                            <li>
-                                <img src="<%= p.getImmagine()%>" alt="">
-                                <h3><a href="/Lists/Pages/ShowProducts.jsp?cat=<%=p.getNome()%>"><%= p.getNome()%></a></h3>
-                                <div class="sub-categories">
-                                </div>
-                            </li>
-                            <%}%>
+                            <c:forEach items="${catProd}" var="catP">
+                               <li>
+                                    <img src="${catP.immagine}" alt="">
+                                    <h3><a href="/Lists/Pages/ShowProducts.jsp?cat=${catP.nome}"><c:out value="${catP.nome}"/></a></h3>
+                                    <div class="sub-categories">
+                                    </div>
+                                </li>
+                            </c:forEach>                            
                             <!--end category item-->
                         </ul>
                         <!--end categories-list-->
                     </div>
                     <!--end container-->
                 </section>
-
-
-
+                
                 <!--============ Features Steps =========================================================================-->
                 <section class="block has-dark-background">
                     <div class="container">
@@ -378,11 +351,12 @@
                                             <img src="Pages/img/add-user.png" alt="">
                                             <span>1</span>
                                         </figure>
-                                        <%if (!find) {%>
-                                        <a style="cursor: pointer;" data-toggle="modal" data-target="#RegisterModal"><h3>Crea un Account</h3></a>
-                                        <%} else {%>
-                                        <h3>Crea un Account</h3>
-                                        <%}%>     
+                                        <c:if test="${empty user}">
+                                            <a style="cursor: pointer;" data-toggle="modal" data-target="#RegisterModal"><h3>Crea un Account</h3></a>
+                                        </c:if>
+                                        <c:if test="${not empty user}">
+                                            <h3>Crea un Account</h3>
+                                        </c:if>                                            
                                         <p>Scegli che tipo di utente vuoi essere, o usa l'applicazione come ospite</p>
                                     </div>
                                     <!--end feature-box-->
