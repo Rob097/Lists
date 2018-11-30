@@ -7,23 +7,13 @@ package filters;
 
 import Notifications.Notification;
 import database.daos.CategoryDAO;
-import database.daos.Category_ProductDAO;
-import database.daos.ListDAO;
 import database.daos.NotificationDAO;
-import database.daos.ProductDAO;
-import database.daos.UserDAO;
 import database.entities.Category;
-import database.entities.Category_Product;
-import database.entities.Product;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCCategoryDAO;
-import database.jdbc.JDBCCategory_ProductDAO;
 import database.jdbc.JDBCNotificationsDAO;
-import database.jdbc.JDBCProductDAO;
-import database.jdbc.JDBCShopListDAO;
-import database.jdbc.JDBCUserDAO;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -53,12 +43,8 @@ public class HomepageFilter implements Filter {
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
-    private ListDAO listdao = null;
-    private ProductDAO productdao = null;
     private NotificationDAO notificationdao = null;
-    private  Category_ProductDAO category_productdao = null;
     private CategoryDAO categorydao = null;
-    private UserDAO userdao = null;
     
     public HomepageFilter() {
     }    
@@ -68,12 +54,8 @@ public class HomepageFilter implements Filter {
             if (daoFactory == null) {
                 throw new ServletException("Impossible to get dao factory for user storage system");
             }
-        listdao = new JDBCShopListDAO(daoFactory.getConnection());
-        productdao = new JDBCProductDAO(daoFactory.getConnection());
         notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
-        category_productdao = new JDBCCategory_ProductDAO(daoFactory.getConnection());
         categorydao = new JDBCCategoryDAO(daoFactory.getConnection());
-        userdao = new JDBCUserDAO(daoFactory.getConnection());
     }
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
@@ -82,40 +64,45 @@ public class HomepageFilter implements Filter {
             log("HomepageFilter:DoBeforeProcessing");
         }
         
-        if( request instanceof HttpServletRequest){
-            ServletContext servletContext = ((HttpServletRequest) request).getServletContext();
+        if( request instanceof HttpServletRequest){            
             HttpSession session = ((HttpServletRequest)request).getSession(false);
             
             if(session != null){
-                
-                try {
-                    ArrayList<Category_Product> cP = category_productdao.getAllCategories();                     
-                    session.setAttribute("catProd", cP);
-                } catch (DAOException ex) {
-                    Logger.getLogger(HomepageFilter.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
+                                
                 User user = (User) session.getAttribute("user");
                 
                 if(user != null){
                     session.setAttribute("user", user);
                     
                     try {
-                        
-                        ArrayList<Notification> notifiche = notificationdao.getAllNotifications(user.getEmail());
-                        ArrayList<Category> li = categorydao.getAllCategories();                        
-                        
-                        
-                        session.setAttribute("notifiche", notifiche);
+                                                
+                        ArrayList<Category> li = categorydao.getAllCategories();                     
                         session.setAttribute("categorie", li);
                         
+                        ArrayList<Notification> allN = notificationdao.getAllNotifications(user.getEmail());
+                        ArrayList<Notification> filteredN = new ArrayList<>();
+                        boolean check = false;                        
+                        for (Notification n : allN) {
+                            check = false;
+                            for (Notification nn : filteredN) {
+                                if (n.getListName().equals(nn.getListName()) && n.getType().equals(nn.getType())) {
+                                    check = true;
+                                    break;
+                                } else {
+                                    check = false;
+                                }
+                            }
+                            if (check == false) {
+                                filteredN.add(n);
+                            } else {
+                                System.out.println("Notifica già presente");
+                            }
+                        }
+                        session.setAttribute("notifiche", filteredN);                        
                         
                     } catch (DAOException ex) {
                         Logger.getLogger(HomepageFilter.class.getName()).log(Level.SEVERE, null, ex);
                     } 
-                    
-                }else{
-                    
                 }
             }
         }

@@ -45,23 +45,15 @@
     <body>
 
         <%
-            HttpSession s = (HttpSession) request.getSession(false);
+            
             DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
             if (daoFactory == null) {
                 throw new ServletException("Impossible to get dao factory for user storage system");
             }
             ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());           
-            NotificationDAO notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());          
+                      
             
-            ArrayList<Notification> notifiche = null;
-
-            User u = new User();
-            boolean find = false;
-            if (s.getAttribute("user") != null) {                               
-                //notifiche = notificationdao.getAllNotifications(u.getEmail());                
-            } else {
-               
-            }
+            boolean find = true;
 
         %>
         <!--###############################################################################################################################-->
@@ -601,7 +593,7 @@
                 type: "POST",
                 url: "/Lists/deleteNotificationsFromArray",
                 cache: false,
-                data: {"array": array, "user": '<%=u.getEmail()%>'},
+                data: {"array": array, "user": '${user.email}'},
                 success: function () {
                     $("#" + idDiv).hide();
                 },

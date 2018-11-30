@@ -52,6 +52,17 @@ public class CookieFilter implements Filter {
     
     public CookieFilter() {
     }    
+    
+    private void conInit(FilterConfig filterConfig) throws ServletException{
+        DAOFactory daoFactory = (DAOFactory) filterConfig.getServletContext().getAttribute("daoFactory");
+        if (daoFactory == null) {
+            throw new ServletException("Impossible to get dao factory for user storage system");
+        }        
+        userdao = new JDBCUserDAO(daoFactory.getConnection());        
+        listdao = new JDBCShopListDAO(daoFactory.getConnection());
+        notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
+        category_productdao = new JDBCCategory_ProductDAO(daoFactory.getConnection());
+    }
 
     /**
      *
@@ -166,15 +177,10 @@ public class CookieFilter implements Filter {
             if (debug) {                
                 log("CookieFilter:Initializing filter");
             }
-        }        
-        DAOFactory daoFactory = (DAOFactory) filterConfig.getServletContext().getAttribute("daoFactory");
-        if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for user storage system");
-        }        
-        userdao = new JDBCUserDAO(daoFactory.getConnection());        
-        listdao = new JDBCShopListDAO(daoFactory.getConnection());
-        notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
-        category_productdao = new JDBCCategory_ProductDAO(daoFactory.getConnection());
+        }    
+        
+        conInit(filterConfig);
+
     }
 
     /**
