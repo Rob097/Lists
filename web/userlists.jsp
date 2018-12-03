@@ -317,6 +317,7 @@
                                             <%} else {%>
                                             <h1>Non hai ancora creato nessuna lista</h1>
                                             <button data-toggle="modal" data-target="#import-list" class="btn btn-primary text-caps btn-rounded" >Ho una lista salvata</button>
+                                            <button data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >Crea una lista</button>
                                             <%}%>                                        
                                         </c:otherwise>
                                     </c:choose>

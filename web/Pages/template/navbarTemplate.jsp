@@ -27,10 +27,20 @@
                     <li class="nav-item js-scroll-trigger dropdown">
                         <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
                         <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item nav-link" href="userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
-                            <a class="dropdown-item nav-link" href="foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
+                            <a class="dropdown-item nav-link" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                            <a class="dropdown-item nav-link" href="/Lists/foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
                         </div>
                     </li>
+                    <c:if test="${user.tipo == 'amministratore'}">
+                        <li class="nav-item js-scroll-trigger dropdown">
+                            <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Operazioni</b></div>
+                            <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
+                                <a href="/Lists/Pages/AdminPages/AdminProducts.jsp" class="dropdown-item nav-link"><i class="fa fa-bars"></i><b>Lista prodotti</b></a>
+                                <a href="/Lists/Pages/ShowProductCategories.jsp" class="dropdown-item nav-link"><i class="fa fa-bars"></i><b>Categorie prodotti</b></a>
+                                <a href="/Lists/Pages/ShowListCategories.jsp" class="dropdown-item nav-link"><i class="fa fa-bars"></i><b>Categorie lista</b></a>                                        
+                            </div>
+                        </li>
+                    </c:if>
                     <li class="nav-item">
                         <a class="nav-link js-scroll-trigger" href="/Lists/profile.jsp">
                             <i class="fa fa-user"></i><b>Il mio profilo</b>
