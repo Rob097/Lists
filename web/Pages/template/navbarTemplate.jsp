@@ -94,5 +94,5 @@
     </c:otherwise>
 </c:choose>
 
-<script src="Pages/js/nav.js"></script>
+<script src="/Lists/Pages/js/nav.js"></script>
 

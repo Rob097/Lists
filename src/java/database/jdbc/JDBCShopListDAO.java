@@ -254,18 +254,18 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
     }
 
     @Override
-    public void deleteList(ShopList list) throws DAOException {
+    public void deleteList(String list) throws DAOException {
         if (list == null) {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed list is null"));
         }
         
         try (PreparedStatement stm = CON.prepareStatement("DELETE FROM User_List WHERE list=?")) {
-            stm.setString(1, list.getNome().replace(" ", ""));
-            
+            stm.setString(1, list);
+            System.out.println(list);
             if(stm.executeUpdate()>0){
                 
             }else{
-                throw new DAOException("Impossible to delete the list");
+                System.out.println("Impossible to delete the list");
             }
             
         } catch (SQLException ex) {
@@ -273,12 +273,12 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
         }
 
         try (PreparedStatement stm = CON.prepareStatement("DELETE FROM List_Prod WHERE lista=?")) {
-            stm.setString(1, list.getNome());
+            stm.setString(1, list);
             
             if (stm.executeUpdate() >0) {
                 
             } else {
-                throw new DAOException("Impossible to Delete the List");
+                System.out.println("Impossible to Delete the List");
             }
             
         } catch (SQLException ex) {
@@ -286,12 +286,12 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
         }
 
         try (PreparedStatement stm = CON.prepareStatement("DELETE FROM List WHERE nome=?")) {
-            stm.setString(1, list.getNome());
+            stm.setString(1, list);
             
             if (stm.executeUpdate() >0) {
                 
             } else {
-                throw new DAOException("Impossible to Delete the List");
+                System.out.println("Impossible to Delete the List");
             }            
         } catch (SQLException ex) {
             Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);

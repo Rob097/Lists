@@ -34,7 +34,7 @@ public interface ListDAO {
     public boolean chckIfProductIsInTheList(int id, String list)throws DAOException;
     public ArrayList<User> getUsersWithWhoTheListIsShared(String listname) throws DAOException;
     public void insertSharedUser(String email, String nomeLista) throws DAOException;
-    public void deleteList(ShopList list) throws DAOException;
+    public void deleteList(String list) throws DAOException;
     public ShopList getbyName(String nome) throws DAOException;
     public ArrayList<String> getAllListsByCurentUser(String nome) throws DAOException;
     public void insertProductToList(int prodotto, String lista) throws DAOException;
