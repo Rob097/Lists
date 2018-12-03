@@ -20,6 +20,10 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav text-uppercase ml-auto text-center">
+                    <!-- La home va inclusa essendo un template, altrimenti non comparirà in nessuna pagina -->
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
+                    </li>
                     <li class="nav-item js-scroll-trigger dropdown">
                         <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
                         <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
@@ -52,7 +56,11 @@
                 <i class="fa fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav text-uppercase ml-auto text-center">                               
+                <ul class="navbar-nav text-uppercase ml-auto text-center"> 
+                    <!-- La home va inclusa essendo un template, altrimenti non comparirà in nessuna pagina -->
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
+                    </li>
                     <li class="nav-item js-scroll-trigger dropdown">
                         <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
                         <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
