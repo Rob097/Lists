@@ -721,6 +721,9 @@
 
         <script src="Pages/js/nav.js"></script>
         
+
+        <!--MAPPA=====================================================================================================-->
+        
         <script  type="text/javascript" charset="UTF-8" >
 
             var keyWord = "farmacia";
@@ -794,7 +797,7 @@
                     console.log(searchResult.results.items[0].position);
                     
                     
-                    
+                    var distanzaMassima = 1000;
                     for (var i = 0, max = 5; i < max; i++) {
                         var l = searchResult.results.items[i].position[0];
                         var la = searchResult.results.items[i].position[1];
@@ -816,7 +819,9 @@
                             console.log("non ci sono gli orari");
                         }
                         console.log(openingHours);
-                        document.getElementById("tabella").innerHTML += "<tr><td>" + searchResult.results.items[i].title + "</td>" + "<td>" + category + "</td>" + "<td>" + distance + "</td>" + "<td>" + orari + "</td>" + "<td>" + vicinity + "</td>" + "<td> dai un occhiata alla lista: <h3>" + nomeLista + "</h3></td>"+"</tr>";
+                        if(distance<distanzaMassima){
+                            document.getElementById("tabella").innerHTML += "<tr><td>" + searchResult.results.items[i].title + "</td>" + "<td>" + category + "</td>" + "<td>" + distance + "</td>" + "<td>" + orari + "</td>" + "<td>" + vicinity + "</td>" + "<td> dai un occhiata alla lista: <h3>" + nomeLista + "</h3></td>"+"</tr>";
+                        }
                         console.log(searchResult.results.items[i].title);
                         
                         console.log("???????????????????????????????????????????? " + nomeLista);
@@ -824,9 +829,10 @@
                         // Add the marker to the map:
                         map.addObject(marker);
                     }
+                    document.getElementById("tabella").innerHTML +="<br>";
                 }
 
-                // Define a callback function to handle errors:
+                //Define a callback function to handle errors:
                 function onError(data) {
                     error = data;
                     console.log(error);
@@ -863,7 +869,7 @@
                                     }
                                 }
                         ));
-                    }
+            }
 
             function addDomMarker(map, lon, lat, text) {
                 var outerElement = document.createElement('div'),
