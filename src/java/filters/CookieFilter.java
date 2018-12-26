@@ -6,15 +6,18 @@
 package filters;
 
 import Notifications.Notification;
+import database.daos.CategoryDAO;
 import database.daos.Category_ProductDAO;
 import database.daos.ListDAO;
 import database.daos.NotificationDAO;
 import database.daos.UserDAO;
+import database.entities.Category;
 import database.entities.Category_Product;
 import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
+import database.jdbc.JDBCCategoryDAO;
 import database.jdbc.JDBCCategory_ProductDAO;
 import database.jdbc.JDBCNotificationsDAO;
 import database.jdbc.JDBCShopListDAO;
@@ -49,6 +52,7 @@ public class CookieFilter implements Filter {
     private ListDAO listdao = null;
     private NotificationDAO notificationdao = null;
     private Category_ProductDAO category_productdao = null;
+    private CategoryDAO categorydao = null;
     
     public CookieFilter() {
     }    
@@ -62,6 +66,7 @@ public class CookieFilter implements Filter {
         listdao = new JDBCShopListDAO(daoFactory.getConnection());
         notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
         category_productdao = new JDBCCategory_ProductDAO(daoFactory.getConnection());
+        categorydao = new JDBCCategoryDAO(daoFactory.getConnection());
     }
 
     /**
@@ -88,6 +93,10 @@ public class CookieFilter implements Filter {
             try {
                 ArrayList<Category_Product> cP = category_productdao.getAllCategories();
                 session.setAttribute("catProd", cP);
+                
+                ArrayList<Category> li = categorydao.getAllCategories();                     
+                session.setAttribute("categorie", li);
+                
             } catch (DAOException ex) {
                 Logger.getLogger(CookieFilter.class.getName()).log(Level.SEVERE, null, ex);
             }            
@@ -99,21 +108,50 @@ public class CookieFilter implements Filter {
                             String value = new String(Base64.decodeBase64(ck.getValue().getBytes("UTF-8")));
                             User dbuser = userdao.getByEmail(value);
                             if(dbuser != null){
+                                
                                 session.setAttribute("user", dbuser);
-
-                                ArrayList<ShopList> li = listdao.getByEmail(dbuser.getEmail());
-                                session.setAttribute("userLists", li);
-
-                                ArrayList<ShopList> sl = listdao.getListOfShopListsThatUserLookFor(dbuser.getEmail());
-                                session.setAttribute("sharedLists", sl);
-
-                                ArrayList <Notification> notifiche = notificationdao.getAllNotifications(dbuser.getEmail());
-                                session.setAttribute("notifiche", notifiche);
+                                user = dbuser;
+                                
                             }
                         } catch (DAOException ex) {
                             Logger.getLogger(CookieFilter.class.getName()).log(Level.SEVERE, null, ex);
                         }                
                     }
+                }
+            }
+            
+            if(user != null){
+                try{
+                    
+                    ArrayList<ShopList> li = listdao.getByEmail(user.getEmail());
+                    session.setAttribute("userLists", li);
+
+                    ArrayList<ShopList> sl = listdao.getListOfShopListsThatUserLookFor(user.getEmail());
+                    session.setAttribute("sharedLists", sl);                    
+                    
+                    ArrayList<Notification> allN = notificationdao.getAllNotifications(user.getEmail());
+                    ArrayList<Notification> filteredN = new ArrayList<>();
+                        boolean check = false;                        
+                        for (Notification n : allN) {
+                            check = false;
+                            for (Notification nn : filteredN) {
+                                if (n.getListName().equals(nn.getListName()) && n.getType().equals(nn.getType())) {
+                                    check = true;
+                                    break;
+                                } else {
+                                    check = false;
+                                }
+                            }
+                            if (check == false) {
+                                filteredN.add(n);
+                            } else {
+                                System.out.println("Notifica già presente");
+                            }
+                        }
+                        session.setAttribute("notifiche", filteredN);
+                        
+                } catch (DAOException ex) {
+                    Logger.getLogger(CookieFilter.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }

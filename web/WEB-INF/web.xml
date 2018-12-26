@@ -24,15 +24,6 @@
         <url-pattern>/restricted/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>   
-    
-    <filter>
-        <filter-name>HomepageFilter</filter-name>
-        <filter-class>filters.HomepageFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>HomepageFilter</filter-name>
-        <url-pattern>/homepage.jsp</url-pattern>
-    </filter-mapping>
 
     <filter>
         <filter-name>ListCategoryFilter</filter-name>
