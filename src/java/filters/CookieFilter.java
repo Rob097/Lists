@@ -129,6 +129,7 @@ public class CookieFilter implements Filter {
                     ArrayList<ShopList> sl = listdao.getListOfShopListsThatUserLookFor(user.getEmail());
                     session.setAttribute("sharedLists", sl);                    
                     
+                    //### notifiche ###
                     ArrayList<Notification> allN = notificationdao.getAllNotifications(user.getEmail());
                     ArrayList<Notification> filteredN = new ArrayList<>();
                         boolean check = false;                        
@@ -143,12 +144,14 @@ public class CookieFilter implements Filter {
                                 }
                             }
                             if (check == false) {
+                                n.setListimage(listdao.getbyName(n.getListName()).getImmagine());
                                 filteredN.add(n);
                             } else {
-                                System.out.println("Notifica già presente");
+                                //System.out.println("Notifica già presente");
                             }
                         }
                         session.setAttribute("notifiche", filteredN);
+                        //### fine notifiche ###
                         
                 } catch (DAOException ex) {
                     Logger.getLogger(CookieFilter.class.getName()).log(Level.SEVERE, null, ex);

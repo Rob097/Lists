@@ -13,6 +13,7 @@ public class Notification {
     String type;
     String listName;
     String user;
+    String listimage;
 
     public Notification() {
     }
@@ -46,6 +47,16 @@ public class Notification {
     public void setUser(String user) {
         this.user = user;
     }
+
+    public String getListimage() {
+        return listimage;
+    }
+
+    public void setListimage(String listimage) {
+        this.listimage = listimage;
+    }
+    
+    
     
     
 }

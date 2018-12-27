@@ -13,6 +13,7 @@
 <%@ page import="java.sql.*" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!doctype html>
 <html lang="en">
@@ -44,7 +45,7 @@
     </head>
     <body>
 
-        <%
+        <%/*
             
             DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
             if (daoFactory == null) {
@@ -54,7 +55,7 @@
                       
             
             boolean find = true;
-
+                */
         %>
         <!--###############################################################################################################################-->
 
@@ -156,7 +157,7 @@
 
             <!-- SISTEMA PER LE NOTIFICHE -->
 
-            <%
+            <%/*
                 //Guardo se esiste un utente loggato, guardo se l'utente loggato ha delle notifiche, per notifica guardo il tipo e la lista e ne salvo una mentre le altre uguali non le salvo. poi le visualizzo
                 if (find) {
                     if (session.getAttribute("notifiche") != null) {
@@ -180,10 +181,10 @@
                                 System.out.println("Notifica già presente");
                             }
                         }
-            %>
+           */ %>
             <li class="dropdown" id="notificationsLI">
                 <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
-                    <h3 style="width: 20px; position: absolute; background: yellow; border-radius: 50%; height: 20px; text-align: center;" id="notificationsSize"><%=filteredN.size()%></h3>
+                    <h3 style="width: 20px; position: absolute; background: yellow; border-radius: 50%; height: 20px; text-align: center;" id="notificationsSize">${fn:length(notifiche)}</h3>
                     <img style="width: 5rem;" src="Image/Icons/notification.svg">
                 </a>
 
@@ -192,95 +193,90 @@
                     <div class="notification-heading"><h4 class="menu-title">Notifiche</h4><h4 class="menu-title pull-right"><a onclick="deleteALLNotifications();" style="cursor: pointer;">Cancella tutto</a><i class="glyphicon glyphicon-circle-arrow-right"></i></h4>
                     </div> 
                     <div class="notifications-wrapper" id="NotificationsWrapper"> 
-                        <% if (!filteredN.isEmpty()) {
-                                for (Notification nf : filteredN) {
-                                    if (nf.getType().equals("new_product")) {
-                        %>
-                        <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
-                            <div class="notification-item" id="<%=nf.getType()%>ID">
-                                <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
-                                <h4 class="item-title">Nuovi prodotti! <small> Sono stati aggiunti nuoi prodotti alla lista <%=nf.getListName()%></small></h4>
-                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
-                            </div>  
-                        </a>
-                        <%  } else if (nf.getType().equals("empty_list")) {%>
-                        <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
-                            <div class="notification-item" id="<%=nf.getType()%>ID">
-                                <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
-                                <h4 class="item-title">Lista svuotata! <small> E' stata svuotata la lista <%=nf.getListName()%></small></h4>
-                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
-                            </div>  
-                        </a>
-                        <%} else if (nf.getType().equals("new_user")) {%>
-                        <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
-                            <div class="notification-item" id="<%=nf.getType()%>ID">
-                                <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
-                                <h4 class="item-title">Utenti aggiunti alla lista! <small> Nuovi utenti nella lista <%=nf.getListName()%></small></h4>
-                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
-                            </div>  
-                        </a>
-                        <%} else if (nf.getType().equals("change_status_product")) {%>
-                        <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
-                            <div class="notification-item" id="<%=nf.getType()%>ID">
-                                <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
-                                <h4 class="item-title">Stato prodotti cambiato! <small> E' cambiato lo stato dei prodotti nella lista <%=nf.getListName()%></small></h4>
-                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
-                            </div>  
-                        </a>
-                        <%} else if (nf.getType().equals("new_message")) {%>
-                        <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
-                            <div class="notification-item" id="<%=nf.getType()%>ID">
-                                <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
-                                <h4 class="item-title">Nuovi Messaggi! <small> Ci sono dei nuovi messaggi nella lista <%=nf.getListName()%></small></h4>
-                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
-                            </div>  
-                        </a>
-                        <%} else if (nf.getType().equals("role_change")) {%>
-                        <a class="content" href="ShowShopList?<%=nf.getListName()%>" > 
-                            <div class="notification-item" id="<%=nf.getType()%>ID">
-                                <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
-                                <h4 class="item-title">Permessi aggiornati! <small> Sono cambiati i tuoi permessi nella lista <%=nf.getListName()%></small></h4>
-                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
-                            </div>  
-                        </a>
-                        <%} else if (nf.getType().equals("remove_product")) {
-                                if (listdao.getbyName(nf.getListName()).getProducts() != null) {
-                                    if (listdao.getbyName(nf.getListName()).getProducts().isEmpty()) {%>
-                        <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
-                            <div class="notification-item" id="<%=nf.getType()%>ID">
-                                <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
-                                <h4 class="item-title">Lista svuotata! <small> E' stata svuotata la lista <%=nf.getListName()%></small></h4>
-                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
-                            </div>  
-                        </a>
-                        <%} else {%>
-                        <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
-                            <div class="notification-item" id="<%=nf.getType()%>ID">
-                                <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
-                                <h4 class="item-title">Prodotti rimossi! <small> Sono stati rimossi dei prodotti dalla lista <%=nf.getListName()%></small></h4>
-                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
-                            </div>  
-                        </a>
-                        <%}
-                                        } else {%>
-                        <a class="content" href="ShowShopList?nome=<%=nf.getListName()%>"> 
-                            <div class="notification-item" id="<%=nf.getType()%>ID">
-                                <img src="<%=listdao.getbyName(nf.getListName()).getImmagine()%>">
-                                <h4 class="item-title">Lista svuotata! <small> E' stata svuotata la lista <%=nf.getListName()%></small></h4>
-                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('<%=nf.getType()%>ID', '<%=nf.getType()%>')">elimina</a>
-                            </div>  
-                        </a>
-                        <%}
-                                            }
-                                        }
-                                    } else {%>
-                        <h4>Non ci sono notifiche!</h4>
-                        <%}%>
+                        <c:if test="${not empty notifiche}">
+                            <c:forEach items="${notifiche}" var="notifica">
+                                <c:choose>
+                                    
+                                    <c:when test="${notifica.type == 'new_product'}">
+                                        <a class="content" href="ShowShopList?nome=${notifica.listName}"> 
+                                            <div class="notification-item" id="${notifica.type}ID">
+                                                <img src="${notifica.listimage}">
+                                                <h4 class="item-title">Nuovi prodotti! <small> Sono stati aggiunti nuoi prodotti alla lista <c:out value="${notifica.listName}"/></small></h4>
+                                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('${notifica.type}ID', '${notifica.type}')">elimina</a>
+                                            </div>  
+                                        </a> 
+                                    </c:when>
+                                    
+                                    <c:when test="${notifica.type == 'empty_list'}">
+                                        <a class="content" href="ShowShopList?nome=${notifica.listName}"> 
+                                            <div class="notification-item" id="${notifica.type}ID">
+                                                <img src="${notifica.listimage}">
+                                                <h4 class="item-title">Lista svuotata! <small> E' stata svuotata la lista <c:out value="${notifica.listName}"/></small></h4>
+                                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('${notifica.type}ID', '${notifica.type}')">elimina</a>
+                                            </div>  
+                                        </a>
+                                    </c:when>
+                                    
+                                    <c:when test="${notifica.type == 'new_user'}">
+                                        <a class="content" href="ShowShopList?nome=${notifica.listName}"> 
+                                            <div class="notification-item" id="${notifica.type}ID">
+                                                <img src="${notifica.listimage}">
+                                                <h4 class="item-title">Utenti aggiunti alla lista! <small> Nuovi utenti nella lista <c:out value="${notifica.listName}"/></small></h4>
+                                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('${notifica.type}ID', '${notifica.type}')">elimina</a>
+                                            </div>  
+                                        </a>
+                                    </c:when>
+                                    
+                                    <c:when test="${notifica.type == 'change_status_product'}">
+                                        <a class="content" href="ShowShopList?nome=${notifica.listName}"> 
+                                            <div class="notification-item" id="${notifica.type}ID">
+                                                <img src="${notifica.listimage}">
+                                                <h4 class="item-title">Stato prodotti cambiato! <small> E' cambiato lo stato dei prodotti nella lista ${notifica.listName}</small></h4>
+                                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('${notifica.type}ID', '${notifica.type}')">elimina</a>
+                                            </div>  
+                                        </a>
+                                    </c:when>
+                                    
+                                    <c:when test="${notifica.type == 'new_message'}">
+                                        <a class="content" href="ShowShopList?nome=${notifica.listName}"> 
+                                            <div class="notification-item" id="${notifica.type}ID">
+                                                <img src="${notifica.listimage}">
+                                                <h4 class="item-title">Nuovi Messaggi! <small> Ci sono dei nuovi messaggi nella lista ${notifica.listName}</small></h4>
+                                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('${notifica.type}ID', '${notifica.type}')">elimina</a>
+                                            </div>  
+                                        </a>
+                                    </c:when>
+                                    
+                                    <c:when test="${notifica.type == 'role_change'}">
+                                        <a class="content" href="ShowShopList?nome=${notifica.listName}"> 
+                                            <div class="notification-item" id="${notifica.type}ID">
+                                                <img src="${notifica.listimage}">
+                                                <h4 class="item-title">Permessi aggiornati! <small> Sono cambiati i tuoi permessi nella lista ${notifica.listName}</small></h4>
+                                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('${notifica.type}ID', '${notifica.type}')">elimina</a>
+                                            </div>  
+                                        </a>
+                                    </c:when>
+                                    
+                                    <c:when test="${notifica.type == 'remove_product'}">
+                                        <a class="content" href="ShowShopList?nome=${notifica.listName}"> 
+                                            <div class="notification-item" id="${notifica.type}ID">
+                                                <img src="${notifica.listimage}">
+                                                <h4 class="item-title">Permessi aggiornati! <small> Sono cambiati i tuoi permessi nella lista ${notifica.listName}</small></h4>
+                                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('${notifica.getType}ID', '${notifica.getType}')">elimina</a>
+                                            </div>  
+                                        </a>
+                                    </c:when>
+                                    
+                                </c:choose>
+                            </c:forEach>
+                        </c:if>
+                        <c:if test="${empty notifiche}">
+                            <h4>Non ci sono notifiche!</h4>
+                        </c:if>
+
                     </div> 
                 </ul>
             </li>
-            <%}
-                }%>
 
             <!--ERRORI-->
             <c:if test="${not empty errore}">
