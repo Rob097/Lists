@@ -7,6 +7,7 @@ package database.entities;
 
 import java.util.ArrayList;
 
+
 /**
  *
  * @author Martin
@@ -95,5 +96,8 @@ public class ShopList {
     public void setSharedUsers(ArrayList<User> sharedUsers) {
         this.sharedUsers = sharedUsers;
     }
+
+    
+    
     
 }
