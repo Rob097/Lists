@@ -378,7 +378,15 @@
                                             <h4 class="location">
                                                 <a href="#"><%=p.getPid()%></a>
                                             </h4>
-                                                <input id="<%=p.getPid()%>Quantity" class="price" onchange="updateQuantity(<%=p.getPid()%>);" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" name="quantity" min="1" max="99" value="<%=productdao.getQuantity(p.getPid(), shoplistName)%>"></input>
+                                            <c:choose>
+                                                <c:when test="${(not empty user)}">
+                                                    <input id="<%=p.getPid()%>Quantity" class="price" onchange="updateQuantity(<%=p.getPid()%>);" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" name="quantity" min="1" max="99" value="<%=productdao.getQuantity(p.getPid(), shoplistName)%>"></input>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <input id="<%=p.getPid()%>Quantity" class="price"  data-toggle="tooltip" title="Devi esere registrato per cambiare le quantità dei prodotti." style="cursor: not-allowed; width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" name="quantity" value="<%=productdao.getQuantity(p.getPid(), shoplistName)%>"></input>
+                                                </c:otherwise>
+                                            </c:choose>
+                                                    
                                             <div class="admin-controls">
                                                 <a style="cursor: pointer;" onclick="giaAcquistatoItem(<%=p.getPid()%>)">
                                                     <i class="fas fa-shopping-cart"></i>Acquistato

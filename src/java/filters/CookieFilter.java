@@ -174,6 +174,8 @@ public class CookieFilter implements Filter {
             // rethrow the problem after that.
             problem = t;
             t.printStackTrace();
+            
+            
         }
 
         // If there was a problem, we want to rethrow it if it is
