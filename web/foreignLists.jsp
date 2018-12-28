@@ -112,26 +112,8 @@
                 <section class="block">
                     <div class="container">
                         <div class="row">
-                            <div class="col-md-3">
-                                <nav class="nav flex-column side-nav">
-                                    <a class="nav-link icon" href="profile.jsp">
-                                        <i class="fa fa-user"></i>Il mio profilo
-                                    </a>
-                                    <a class="nav-link active icon" href="userlists.jsp">
-                                        <i class="fa fa-bars"></i>Le mie liste
-                                    </a>
-                                    <a class="nav-link icon" href="/Lists/Pages/ShowProducts.jsp">
-                                        <i class="fa fa-recycle"></i>Tutti i Prodotti
-                                    </a>
-                                    <c:if test="${user.tipo=='amministratore'}">
-                                        <a class="nav-link icon" href="Pages/ShowProductCategories.jsp">
-                                            <i class="fa fa-bookmark"></i>Tutte le categorie per prodotti
-                                        </a>
-                                        <a class="nav-link icon" href="Pages/ShowListCategories.jsp">
-                                            <i class="fa fa-bookmark"></i>Tutte le categorie per liste
-                                        </a> 
-                                    </c:if>                                                                      
-                                </nav>
+                            <div class="col-md-3" id="sideNavbar">
+                                <!-- Qui c'è la side navar caricata dal template con AJAX -->
                             </div>
                             <!--end col-md-3-->
                             <div class="col-md-9">
@@ -308,6 +290,19 @@
                     },
                     error: function () {
                         alert("Errore navbarTemplate");
+                    }
+                });
+                
+                //Side-Navbar
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/sideNavbar.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#sideNavbar").html(response);
+                    },
+                    error: function () {
+                        alert("Errore sideNavbar Template");
                     }
                 });
             });

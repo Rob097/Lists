@@ -228,86 +228,9 @@
         <div class="page home-page">
             <header class="hero">
                 <div class="hero-wrapper">
-
-                    <%if (find) {%> 
-                    <nav class="navbar navbar-expand-xl navbar-dark fixed-top " id="mainNav">
-                        <a class="navbar-brand">
-                            <img width= "50" src="/Lists/Pages/img/favicon.png" alt="Logo">
-                        </a>
-                        <a class="navbar-brand js-scroll-trigger" href="/Lists/homepage.jsp">LISTS</a>
-                        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                            Menu
-                            <i class="fa fa-bars"></i>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarResponsive">
-                            <ul class="navbar-nav text-uppercase ml-auto text-center">
-                                <c:if test="${not empty user and user.tipo=='amministratore'}">
-                                    <li class="nav-item">
-                                    <a data-toggle="modal" data-target="#CreateProductModal" class="btn btn-primary text-caps btn-rounded" >+ Crea un prodotto</a>
-                                </li>
-                                </c:if>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
-                                </li>
-                                <li class="nav-item js-scroll-trigger dropdown">
-                                    <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
-                                    <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item nav-link" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
-                                        <a class="dropdown-item nav-link" href="/Lists/foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
-                                    </div>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/Pages/<%=Type%>/foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/Pages/<%=Type%>/profile.jsp">
-                                        <i class="fa fa-user"></i><b>Il mio profilo</b>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
-                                        <i class="fa fa-sign-in"></i><b><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> </b>/ <img src= "/Lists/${user.image}" width="25px" height="25px" style="border-radius: 100%;">
-                                    </a>
-                                </li>                                
-                            </ul>
-                        </div>
-                    </nav>
-                    <%} else {%>
-                    <nav class="navbar navbar-expand-xl navbar-dark fixed-top " id="mainNav">
-                        <a class="navbar-brand">
-                            <img width= "50" src="/Lists/Pages/img/favicon.png" alt="Logo">
-                        </a>
-                        <a class="navbar-brand js-scroll-trigger" href="/Lists/homepage.jsp">LISTS</a>
-                        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                            Menu
-                            <i class="fa fa-bars"></i>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarResponsive">
-                            <ul class="navbar-nav text-uppercase ml-auto text-center">
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
-                                </li>
-                                <li class="nav-item js-scroll-trigger dropdown">
-                                    <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
-                                    <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item nav-link" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
-                                        <a class="dropdown-item nav-link disabled" data-toggle="tooltip" title="Registrati o fai il login per usare questa funzione"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
-                                    </div>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#LoginModal" style="cursor: pointer;">
-                                        <i class="fa fa-sign-in"></i><b>Login</b>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#RegisterModal" style="cursor: pointer;">
-                                        <i class="fa fa-pencil-square-o"></i><b>Registrati</b>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                    <%}%>
+                    <div id="navbar">
+                        <!-- Qui viene inclusa la navbar -->
+                    </div>
                     <!--============ Page Title =========================================================================-->
                     <div class="page-title">
                         <div class="container">
@@ -324,7 +247,15 @@
                         <!--end container-->
                     </div>
 
-
+                    <c:choose>
+                        <c:when test="${not empty user}">
+                            <c:if test="${user.tipo == 'amministratore'}">
+                                <div class="container text-center" id="welcomeGrid">
+                                    <a data-toggle="modal" data-target="#CreateProductModal" class="btn btn-primary text-caps btn-framed btn-block" >Aggiungi un nuovo prodotto</a>
+                                </div>
+                            </c:if>
+                        </c:when>
+                    </c:choose>
 
                     <!--end background-->
                 </div>
@@ -879,5 +810,103 @@
             });
             }
         </script>
+        
+        <script>
+        $(document).ready(function () {
+
+            //LoginModal
+            $.ajax({
+                type: "GET",
+                url: "/Lists/Pages/template/loginTemplate.jsp",
+                cache: false,
+                success: function (response) {
+                    $("#LoginModal").html(response);
+                },
+                error: function () {
+                    alert("Errore LoginModalImport");
+                }
+            });
+
+            //RegisterModal
+            $.ajax({
+                type: "GET",
+                url: "/Lists/Pages/template/registerTemplate.jsp",
+                cache: false,
+                success: function (response) {
+                    $("#RegisterModal").html(response);
+                },
+                error: function () {
+                    alert("Errore RegisterModalImport");
+                }
+            });
+
+            //Restore password
+            $.ajax({
+                type: "GET",
+                url: "/Lists/Pages/template/restorePasswordTemplate.jsp",
+                cache: false,
+                success: function (response) {
+                    $("#restorePassword").html(response);
+                },
+                error: function () {
+                    alert("Errore restorePasswordTemplate");
+                }
+            });
+
+            //New password
+            $.ajax({
+                type: "GET",
+                url: "/Lists/Pages/template/newPasswordTemplate.jsp",
+                cache: false,
+                success: function (response) {
+                    $("#newPassword").html(response);
+                },
+                error: function () {
+                    alert("Errore newPasswordTemplate");
+                }
+            });
+
+            //Create List
+            $.ajax({
+                type: "GET",
+                url: "/Lists/Pages/template/createListTemplate.jsp",
+                cache: false,
+                success: function (response) {
+                    $("#CreateListModal").html(response);
+                },
+                error: function () {
+                    alert("Errore createListTemplate");
+                }
+            });
+
+            //Footer
+            $.ajax({
+                type: "GET",
+                url: "/Lists/Pages/template/footerTemplate.jsp",
+                cache: false,
+                success: function (response) {
+                    $("footer").html(response);
+                },
+                error: function () {
+                    alert("Errore footerTemplate");
+                }
+            });
+
+            //Navbar
+            $.ajax({
+                type: "GET",
+                url: "/Lists/Pages/template/navbarTemplate.jsp",
+                cache: false,
+                success: function (response) {
+                    $("#navbar").html(response);
+                },
+                error: function () {
+                    alert("Errore navbarTemplate");
+                }
+            });
+            
+            
+        });
+    </script>
     </body>
 </html>
