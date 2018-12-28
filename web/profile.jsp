@@ -6,22 +6,6 @@
 
 <%@page import="database.entities.User"%>
 <%@page import="java.net.URLDecoder"%>
-
-<%
-    HttpSession s = (HttpSession) request.getSession();
-    User u = null;
-    boolean find = false;
-
-    u = (User) s.getAttribute("user");
-    if (u == null) {
-        response.sendRedirect("/Lists/homepage.jsp");
-
-    } else {
-        find = true;      
-        if (find) {
-%>
-
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -31,6 +15,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="icon" href="Pages/img/favicon.png" sizes="16x16" type="image/png">
         <title>Lists</title>
+        
+        <c:if test="${empty user}">
+            <c:redirect url="/homepage.jsp"/>
+        </c:if>
 
         <!-- CSS personalizzati -->
         
@@ -67,10 +55,11 @@
                 border-radius: 50%;
             }
         </style>
-        
-        
+
     </head>
-    <body>        
+    
+    <body> 
+        <c:if test="${not empty user}">
         <div class="page home-page">
             <header class="hero">
                 <div class="hero-wrapper">
@@ -82,8 +71,8 @@
                         <div class="alert alert-success" id="alert">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                             <strong>Successful Modification!</strong> Your account is actualized.
-                        </div>
-                        <% request.getSession().setAttribute("updateResult", false); %>               
+                        </div>                        
+                        <c:set var="updateResult" value="false" /> 
                     </c:if> 
                                     
                     <!--============ Page Title =========================================================================-->
@@ -313,7 +302,6 @@
             }
         </script>
         
-        
         <script type="text/javascript">
             $(document).ready(function () {
             //Navbar
@@ -330,13 +318,6 @@
                 });
             });
         </script>
-        
-
+        </c:if>        
     </body>
 </html>
-
-<%
-    } else
-        response.sendRedirect("/Lists");
-}
-%>

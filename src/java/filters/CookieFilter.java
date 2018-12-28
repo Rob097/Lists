@@ -151,6 +151,8 @@ public class CookieFilter implements Filter {
                             }
                         }
                         session.setAttribute("notifiche", filteredN);
+                        //notifiche userlist
+                        session.setAttribute("allNotifiche",allN);                       
                         //### fine notifiche ###
                         
                 } catch (DAOException ex) {

@@ -18,40 +18,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%
-    HttpSession s = (HttpSession) request.getSession(false);
-    User u = null;
-    ArrayList<ShopList> li = null;
-    boolean find = false;
-    ShopList lista = null;
-    ArrayList<Notification> notifiche = null;
-    
-        DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
-        if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for user storage system");
-        }
-        ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
-        
-        
-    if(s.getAttribute("user") != null){
-        u = (User) s.getAttribute("user");
-    }
-    if (u == null) {
-
-        if (s.getAttribute("guestList") != null) {
-            lista = (ShopList) s.getAttribute("guestList");
-        }
-    } else {
-        
-        li = listdao.getByEmail(u.getEmail());
-        notifiche = new ArrayList();
-        if (session.getAttribute("notifiche") != null) {
-            notifiche = (ArrayList<Notification>) session.getAttribute("notifiche");
-        }
-    }
-
-%>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -171,109 +137,103 @@
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
                                     <c:choose>         
                                         <c:when test = "${ not empty user}">  
+                                            <c:if test="${not empty userLists}">
+                                                <c:forEach items="${userLists}" var="list">        
+                                                    <c:set scope="page" var="featured" value="false"/> 
+                                                    <c:forEach items="${allNotifiche}" var="nn">
+                                                        <c:if test="${nn.listName eq list.nome}">
+                                                            <c:set scope="page" var="featured" value="true"/>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                    <a href="#" data-toggle="modal" data-target="#CreateListModal" class="nav-link icon"><i class="fa fa-plus"></i>Crea una nuova lista</a><br>
+                                                    <div class="item">
+                                                        <c:if test="${featured == true}">
+                                                           <div class="ribbon-featured">Featured</div> 
+                                                        </c:if>
+                                                        <!--end ribbon-->
+                                                        <div class="wrapper">
+                                                            <div class="image">
+                                                                <h3>
+                                                                    <a href="#" class="tag category"><c:out value="${list.categoria}"/></a>
+                                                                    <a href="/Lists/ShowShopList?nome=${list.nome}" class="title"><c:out value="${list.nome}"/></a>
+                                                                </h3>
+                                                                <a href="single-listing-1.html" class="image-wrapper background-image">
+                                                                    <img src="${list.immagine}" alt="">
+                                                                </a>
+                                                            </div>
 
-                                            <%  
-                                                if(li != null && !li.isEmpty()){
-                                                for (ShopList l : li) {
-                                                    ArrayList<Notification> n = new ArrayList();
-                                                    for (Notification nn : notifiche) {
-                                                        if (nn.getListName().equals(l.getNome())) {
-                                                            n.add(nn);
-                                                        }
-                                                    }
-                                            %>             
-                                            <a href="#" data-toggle="modal" data-target="#CreateListModal" class="nav-link icon"><i class="fa fa-plus"></i>Crea una nuova lista</a><br>
-                                            <div class="item">
-                                                <%if (!n.isEmpty()) {%>
-                                                    <div class="ribbon-featured">Featured</div>
-                                                <%}%>
-                                                <!--end ribbon-->
-                                                <div class="wrapper">
-                                                    <div class="image">
-                                                        <h3>
-                                                            <a href="#" class="tag category"><%=l.getCategoria()%></a>
-                                                            <a href="/Lists/ShowShopList?nome=<%=l.getNome()%>" class="title"><%=l.getNome()%></a>
-                                                        </h3>
-                                                        <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                            <img src="/Lists/<%=l.getImmagine()%>" alt="">
-                                                        </a>
-
-                                                    </div>
-
-                                                    <!--end image-->
-                                                    <div class="price"><%=listdao.getAllProductsOfShopList(l.getNome()).size()%></div>
-                                                    <div class="admin-controls">
-                                                        <a href="/Lists/ShowShopList?nome=<%=l.getNome()%>">
-                                                            <i class="fa fa-pencil"></i>Edit
-                                                        </a>
-                                                        <a href="#" class="ad-hide">
-                                                            <i class="fa fa-eye-slash"></i>Hide
-                                                        </a>
-                                                        <a href="/Lists/DeleteShopList?shopListName=<%=l.getNome()%>" class="ad-remove">
-                                                            <i class="fa fa-trash"></i>Remove
-                                                        </a>
-                                                    </div>
-                                                    <!--end admin-controls-->
-                                                    <div class="description">
-                                                        <p><%=l.getDescrizione()%></p>
-                                                    </div>
-                                                    <!--end description-->
-                                                    <a href="/Lists/ShowShopList?nome=<%=l.getNome()%>" class="detail text-caps underline">Detail</a>
-                                                </div>
-                                            </div>                                        
-                                            <!--end item-->
-                                            <%}}else{%>
-                                            <h1>Non hai ancora creato nessuna lista</h1>
-                                            <button data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >Crea una lista</button>
-                                            <%}%>
+                                                            <!--end image-->                                                            
+                                                            <div class="admin-controls">
+                                                                <a href="/Lists/ShowShopList?nome=${list.nome}">
+                                                                    <i class="fa fa-pencil"></i>Edit
+                                                                </a>
+                                                                <a href="#" class="ad-hide">
+                                                                    <i class="fa fa-eye-slash"></i>Hide
+                                                                </a>
+                                                                <a href="/Lists/DeleteShopList?shopListName=${list.nome}" class="ad-remove">
+                                                                    <i class="fa fa-trash"></i>Remove
+                                                                </a>
+                                                            </div>
+                                                            <!--end admin-controls-->
+                                                            <div class="description">
+                                                                <p><c:out value="${list.descrizione}"/></p>
+                                                            </div>
+                                                            <!--end description-->
+                                                            <a href="/Lists/ShowShopList?nome=${list.nome}" class="detail text-caps underline">Detail</a>
+                                                        </div>
+                                                    </div>                                        
+                                                    <!--end item-->
+                                                </c:forEach>
+                                            </c:if>
+                                            
+                                            <c:if test="${empty userLists}">
+                                                <h1>Non hai ancora creato nessuna lista</h1>
+                                                <button data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >Crea una lista</button>
+                                            </c:if>                                           
 
                                         </c:when>
 
                                         <c:otherwise>        
-                                            <%if (lista != null && lista.getNome() != null) {%>                                                                 
+                                            <c:if test="${not empty guestList and guestList.nome != null}" >                            
                                             <div class="item">
                                                 <!--end ribbon-->
                                                 <div class="wrapper">
                                                     <div class="image">
                                                         <h3>
-                                                            <a href="#" class="tag category"><%=lista.getCategoria()%></a>
-                                                            <a href="/Lists/ShowShopList?nome=<%=lista.getNome()%>" class="title"><%=lista.getNome()%></a>
+                                                            <a href="#" class="tag category"><c:out value="${guestList.categoria}" /></a>
+                                                            <a href="/Lists/ShowShopList?nome=${guestList.nome}" class="title"><c:out value="${guestList.nome}" /></a>
                                                         </h3>
                                                         <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                            <img src="/Lists/<%=lista.getImmagine()%>" alt="">
+                                                            <img src="${guestList.immagine}" alt="">
                                                         </a>
                                                     </div>
-                                                    <!--end image-->
-                                                    <%if(lista.getProducts() != null){%>
-                                                    <div class="price"><%=lista.getProducts().size()%></div>
-                                                    <%}else{%>
-                                                    <div class="price">0</div>
-                                                    <%}%>
+                                                    <!--end image-->                                                    
                                                     <div class="admin-controls">
-                                                        <a href="/Lists/restricted/ShowShopList?nome=<%=lista.getNome()%>">
+                                                        <a href="/Lists/restricted/ShowShopList?nome=${guestList.nome}">
                                                             <i class="fa fa-pencil"></i>Edit
                                                         </a>
                                                         <a href="#" class="ad-hide">
                                                             <i class="fa fa-eye-slash"></i>Hide
                                                         </a>
-                                                        <a href="/Lists/DeleteShopList?shopListName=<%=s.getAttribute("guestList")%>" class="ad-remove">
+                                                        <a href="/Lists/DeleteShopList?shopListName=${guestList.nome}" class="ad-remove">
                                                             <i class="fa fa-trash"></i>Remove
                                                         </a>
                                                     </div>
                                                     <!--end admin-controls-->
                                                     <div class="description">
-                                                        <p><%=lista.getDescrizione()%></p>
+                                                        <p><c:out value="${guestList.descrizione}" /></p>
                                                     </div>
                                                     <!--end description-->
-                                                    <a href="/Lists/restricted/ShowShopList?nome=<%=lista.getNome()%>" class="detail text-caps underline">Detail</a>
+                                                    <a href="/Lists/restricted/ShowShopList?nome=${guestList.nome}" class="detail text-caps underline">Detail</a>
                                                 </div>
                                             </div>
+                                            </c:if>
                                             <!--end item-->
-                                            <%} else {%>
-                                            <h1>Non hai ancora creato nessuna lista</h1>
-                                            <button data-toggle="modal" data-target="#import-list" class="btn btn-primary text-caps btn-rounded" >Ho una lista salvata</button>
-                                            <button data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >Crea una lista</button>
-                                            <%}%>                                        
+                                            <c:if test="${empty guestList or guestList.nome == null}">
+                                                <h1>Non hai ancora creato nessuna lista</h1>
+                                                <button data-toggle="modal" data-target="#import-list" class="btn btn-primary text-caps btn-rounded" >Ho una lista salvata</button>
+                                                <button data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >Crea una lista</button>
+                                            </c:if>                                                                                   
                                         </c:otherwise>
                                     </c:choose>
                                 </div>                                
