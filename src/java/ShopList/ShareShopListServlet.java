@@ -106,12 +106,8 @@ public class ShareShopListServlet extends HttpServlet {
                 }
             session.setAttribute("Users", users);
             
-        try {
-            ArrayList<ShopList> li = listdao.getByEmail(user.getEmail());
-            ArrayList<ShopList> sl = listdao.getListOfShopListsThatUserLookFor(user.getEmail());
-            ShopList shoplist = listdao.getbyName(listname);             
-            session.setAttribute("userLists", li);
-            session.setAttribute("sharedLists", sl);
+        try {           
+            ShopList shoplist = listdao.getbyName(listname);            
             session.setAttribute("shoplist", shoplist);
             } catch (DAOException ex) {
                 Logger.getLogger(ShareShopListServlet.class.getName()).log(Level.SEVERE, null, ex);

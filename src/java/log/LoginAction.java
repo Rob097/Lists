@@ -37,7 +37,6 @@ public class LoginAction extends HttpServlet {
 
     String url = null;
     UserDAO userdao = null;
-    ListDAO listdao = null;
 
     @Override
     public void init() throws ServletException {
@@ -48,7 +47,6 @@ public class LoginAction extends HttpServlet {
         }
         //assegna a userdao la connessione(costruttore) e salva la connessione in una variabile tipo Connection
         userdao = new JDBCUserDAO(daoFactory.getConnection());        
-        listdao = new JDBCShopListDAO(daoFactory.getConnection());
     }
 
     /**
@@ -65,7 +63,6 @@ public class LoginAction extends HttpServlet {
         int COOKIE_MAX_AGE = 60*60*24*4;
         User user = null;       
         Boolean loginResult = true;                
-        ArrayList <Notification> notifiche = null;
         
         HttpSession session = (HttpSession) request.getSession(false);        
         session.setAttribute("errore", null);
@@ -80,17 +77,11 @@ public class LoginAction extends HttpServlet {
             user = userdao.getByEmailAndPassword(username, password);            
             //System.out.println(user.getNominativo());
             if (user != null) {
-                loginResult = true; 
-                
-                //database 
-                ArrayList<ShopList> li = listdao.getByEmail(user.getEmail());
-                ArrayList<ShopList> sl = listdao.getListOfShopListsThatUserLookFor(user.getEmail());
+                loginResult = true;                
                 
                 //sesssion vars
                 session.setAttribute("Logged", "on");
-                session.setAttribute("user", user);
-                session.setAttribute("userLists", li);
-                session.setAttribute("sharedLists", sl); 
+                session.setAttribute("user", user); 
                 
                 //create remember me cookie
                 if(remember != null){

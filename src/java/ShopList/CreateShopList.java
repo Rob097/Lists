@@ -119,16 +119,7 @@ public class CreateShopList extends HttpServlet {
         }
         if (nuovaLista != null && s.getAttribute("user") != null) {
             regResult = true;
-            s.setAttribute("regResult", regResult);
-            User user = (User) s.getAttribute("user");
-            ArrayList<ShopList> li;
-            try {
-                li = listdao.getByEmail(user.getEmail());
-                s.setAttribute("userLists", li);
-            } catch (DAOException ex) {
-                Logger.getLogger(CreateShopList.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+            s.setAttribute("regResult", regResult);         
         }
         s.setAttribute("regResult", false);
         System.out.println(url);

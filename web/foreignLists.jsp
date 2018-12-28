@@ -16,34 +16,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%
-    DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
-    if (daoFactory == null) {
-        throw new ServletException("Impossible to get dao factory for user storage system");
-    }
-    UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
-    ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
-
-    HttpSession s = (HttpSession) request.getSession();
-    User u = null;
-    boolean find = false;
-
-    u = (User) s.getAttribute("user");
-    if (u == null) {
-        response.setHeader("Refresh", "0; URL=/Lists/homepage.jsp");
-
-    } else {
-            find = true;
-    }
-
-    if (find) {
-        ArrayList<ShopList> li = listdao.getAllSharedList(u.getEmail());
-        ArrayList <Notification> notifiche = new ArrayList();
-            if(session.getAttribute("notifiche") != null){
-                notifiche = (ArrayList<Notification>) session.getAttribute("notifiche");
-            }
-%>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -51,6 +23,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="icon" href="Pages/img/favicon.png" sizes="16x16" type="image/png">
         <title>Lists</title>
+        <c:if test="${empty user}">
+            <c:redirect url="/homepage.jsp"/>
+        </c:if>
 
         <!-- CSS personalizzati -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
@@ -81,6 +56,7 @@
         </style>
     </head>
     <body>
+        <c:if test="${not empty user}">
         <div class="page home-page">
             <header class="hero">
                 <div class="hero-wrapper">
@@ -153,57 +129,50 @@
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
                                     <!--##############-->
-
-                                    <% 
-                                        for (ShopList l : li) {
-                                            ArrayList<Notification> n = new ArrayList();
-                                            for(Notification nn : notifiche) {
-                                                if(nn.getListName().equals(l.getNome())){
-                                                    n.add(nn);
-                                                }
-                                            }
-                                    %>                                                                  
-                                    <div class="item">
-                                        <%if(!n.isEmpty()){%>
-                                            <div class="ribbon-featured">Featured</div>
-                                        <%}%>
-                                        <!--end ribbon-->
-                                        <div class="wrapper">
-                                            <div class="image">
-                                                <h3>
-                                                    <a href="#" class="tag category"><%=l.getCategoria()%></a>
-                                                    <a href="/Lists/ShowShopList?nome=<%=l.getNome()%>" class="title"><%=l.getNome()%></a>
-                                                </h3>
-                                                <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                    <img src="/Lists/<%=l.getImmagine()%>" alt="">
-                                                </a>
+                                    <c:forEach items="${sharedLists}" var="list">
+                                        <c:set scope="page" var="featured" value="false"/> 
+                                        <c:forEach items="${allNotifiche}" var="nn">
+                                            <c:if test="${nn.listName eq list.nome}">
+                                                <c:set scope="page" var="featured" value="true"/>
+                                            </c:if>
+                                        </c:forEach>                                                                
+                                        <div class="item">
+                                            <c:if test="${featured == true}">
+                                                <div class="ribbon-featured">Featured</div> 
+                                            </c:if>
+                                            <!--end ribbon-->
+                                            <div class="wrapper">
+                                                <div class="image">
+                                                    <h3>
+                                                        <a href="#" class="tag category"><c:out value="${list.categoria}"/></a>
+                                                        <a href="/Lists/ShowShopList?nome=${list.nome}" class="title"><c:out value="${list.nome}"/></a>
+                                                    </h3>
+                                                    <a href="single-listing-1.html" class="image-wrapper background-image">
+                                                        <img src="${list.immagine}" alt="">
+                                                    </a>
+                                                </div>
+                                                <!--end image-->                                            
+                                                <div class="admin-controls">
+                                                    <a href="/Lists/ShowShopList?nome=${list.nome}">
+                                                        <i class="fa fa-pencil"></i>Edit
+                                                    </a>
+                                                    <a href="#" class="ad-hide">
+                                                        <i class="fa fa-eye-slash"></i>Hide
+                                                    </a>
+                                                    <a href="#" class="ad-remove">
+                                                        <i class="fa fa-trash"></i>Remove
+                                                    </a>
+                                                </div>
+                                                <!--end admin-controls-->
+                                                <div class="description">
+                                                    <p><c:out value="${list.descrizione}"/></p>
+                                                </div>
+                                                <!--end description-->
+                                                <a href="/Lists/ShowShopList?nome=${list.nome}" class="detail text-caps underline">Detail</a>
                                             </div>
-                                            <!--end image-->
-                                            <div class="price"><%=listdao.getAllProductsOfShopList(l.getNome()).size()%></div>
-                                            <div class="admin-controls">
-                                                <a href="/Lists/ShowShopList?nome=<%=l.getNome()%>">
-                                                    <i class="fa fa-pencil"></i>Edit
-                                                </a>
-                                                <a href="#" class="ad-hide">
-                                                    <i class="fa fa-eye-slash"></i>Hide
-                                                </a>
-                                                <a href="#" class="ad-remove">
-                                                    <i class="fa fa-trash"></i>Remove
-                                                </a>
-                                            </div>
-                                            <!--end admin-controls-->
-                                            <div class="description">
-                                                <p><%=l.getDescrizione()%></p>
-                                            </div>
-                                            <!--end description-->
-                                            <a href="/Lists/ShowShopList?nome=<%=l.getNome()%>" class="detail text-caps underline">Detail</a>
                                         </div>
-                                    </div>
                                     <!--end item-->
-                                    <%}%>
-
-                                    <!--end item-->
-
+                                    </c:forEach>                                  
                                 </div>
                                 <!--end items-->
                             </div>
@@ -315,9 +284,8 @@
         
 
             <script src="Pages/js/nav.js"></script>
+            </c:if>
     </body>
 </html>
 
-<%    } else
-        response.sendRedirect("/Lists");
-%>
+
