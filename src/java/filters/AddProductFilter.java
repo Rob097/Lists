@@ -48,17 +48,19 @@ import javax.servlet.http.HttpSession;
  *
  * @author Martin
  */
-@WebFilter(filterName = "ShopListFilter", urlPatterns = {"/Pages/ShowUserList.jsp"})
-public class ShopListFilter implements Filter {
+@WebFilter(filterName = "AddProductFilter", urlPatterns = {"/Pages/AddProductToListPage.jsp"})
+public class AddProductFilter implements Filter {
     
     private static final boolean debug = true;
     private FilterConfig filterConfig = null;
     private UserDAO userdao = null;
     private ListDAO listdao = null;
+    private NotificationDAO notificationdao = null;
     private Category_ProductDAO category_productdao = null;
+    private CategoryDAO categorydao = null;
     private ProductDAO productdao = null;
     
-    public ShopListFilter() {
+    public AddProductFilter() {
     }    
     
     private void conInit(FilterConfig filterConfig) throws ServletException{
@@ -68,14 +70,16 @@ public class ShopListFilter implements Filter {
         }        
         userdao = new JDBCUserDAO(daoFactory.getConnection());        
         listdao = new JDBCShopListDAO(daoFactory.getConnection());
-        category_productdao = new JDBCCategory_ProductDAO(daoFactory.getConnection());;
+        notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
+        category_productdao = new JDBCCategory_ProductDAO(daoFactory.getConnection());
+        categorydao = new JDBCCategoryDAO(daoFactory.getConnection());
         productdao = new JDBCProductDAO(daoFactory.getConnection());
     }
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("ShopListFilter:DoBeforeProcessing");
+            log("AddProductFilter:DoBeforeProcessing");
         }
         
         if(request instanceof HttpServletRequest){
@@ -89,91 +93,11 @@ public class ShopListFilter implements Filter {
                 User user =(User) session.getAttribute("user");
                 String shopListName = (String) session.getAttribute("shopListName");
                 ShopList guestList = (ShopList) session.getAttribute("guestList");
-               
-                //categories of products
-                try {
-                     ArrayList<Category_Product> allPrcategories;
-                    allPrcategories = category_productdao.getAllCategories();
-                    session.setAttribute("catProd", allPrcategories);
-                } catch (DAOException ex) {
-                    Logger.getLogger(ShopListFilter.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-                if(user != null && shopListName != null){
-                    try {
-                        //shoplist
-                        ShopList shoplist = listdao.getbyName(shopListName);
-                        session.setAttribute("lista", shoplist);
-                        
-                        //sharedusers
-                        ArrayList<User> sharedusers = listdao.getUsersWithWhoTheListIsShared(shopListName);  
-                        //role sharedusers 
-                        for (User su : sharedusers) {
-                            su.setRuolo(listdao.checkRole(su.getEmail(), shopListName));
-                        }
-                        session.setAttribute("sharedUsers", sharedusers);
-                        
-                        //Products of list
-                        ArrayList<Product> products = listdao.getAllProductsOfShopList(shopListName); 
-                        //status products
-                        for (Product p : products) {
-                            if(listdao.checkBuyed(p.getPid(), shopListName, session))
-                            p.setStatus("acquistato");
-                            p.setQuantity(productdao.getQuantity(p.getPid(), shopListName));
-                        }                        
-                        session.setAttribute("listProducts", products);
-                        
-                        //role User
-                        user.setRuolo(listdao.checkRole(user.getEmail(), shopListName));
-                        String role = listdao.checkRole(user.getEmail(), shopListName);
-                        session.setAttribute("role", role);
-                        
-                        //not shared users                   
-                        try {
-                           ArrayList<User> users = userdao.getAllUsers();
-                            Iterator<User> i = users.iterator();
-                            while(i.hasNext()){
-                                //remove your username
-                                if(i.next().getEmail().equals(user.getEmail())){
-                                    i.remove();
-                                }
-                            }
-                            for (int j = 0; j < users.size(); j++) {
-                                for (int k = 0; k < sharedusers.size()-1; k++) {
-                                    if(users.get(j).getEmail().equals(sharedusers.get(k).getEmail())){
-                                        users.remove(j);
-                                    }
-                                }
-                            }
-                            session.setAttribute("Users", users);
-                            
-                        } catch (DAOException ex) {
-                            Logger.getLogger(ShowShopList.class.getName()).log(Level.SEVERE, null, ex);
-                            System.out.println("problems with getAllUsers()");
-                        }
-                    } catch (DAOException ex) {
-                        System.out.println("SHOPLISTFILTER ERROR");
-                        Logger.getLogger(ShopListFilter.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }else if (user == null && guestList != null && shopListName != null){ //for guestlist
+
+                if(user != null){
                     
-                    //products of guestlist  
-                    try {
-                        if (session.getAttribute("prodottiGuest") != null) {
-                            ArrayList<Product> li = (ArrayList<Product>) session.getAttribute("prodottiGuest"); //Prendi l'attributo di sessione contenente i prodotti se non è nullo
-                            if(session.getAttribute("importGL") != null){
-                                for (Product p : li) {
-                                    if(listdao.checkBuyed(p.getPid(), shopListName, session)){
-                                        p.setStatus("acquistato");                                        
-                                    }
-                                }
-                            }
-                            session.setAttribute("listProducts", li);
-                        }
-                    } catch (DAOException ex) {
-                        System.out.println("GUESTLIST SHOPLISTFILTER ERROR");
-                           Logger.getLogger(ShopListFilter.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                }else if (user == null && guestList != null){ //for guestlist
+                    
                 } else{
                   ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "userlists.jsp"));
                 return;  
@@ -182,10 +106,9 @@ public class ShopListFilter implements Filter {
                 ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "homepage.jsp"));
                 return;
             }
-        }     
+        }
 
     }    
-    
 
     /**
      *
@@ -201,7 +124,7 @@ public class ShopListFilter implements Filter {
             throws IOException, ServletException {
         
         if (debug) {
-            log("ShopListFilter:doFilter()");
+            log("AddProductFilter:doFilter()");
         }
         
         doBeforeProcessing(request, response);
@@ -216,7 +139,7 @@ public class ShopListFilter implements Filter {
             problem = t;
             t.printStackTrace();
         }
-
+      
         // If there was a problem, we want to rethrow it if it is
         // a known type, otherwise log it.
         if (problem != null) {
@@ -259,7 +182,7 @@ public class ShopListFilter implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {                
-                log("ShopListFilter:Initializing filter");
+                log("AddProductFilter:Initializing filter");
             }
         }
         
@@ -272,9 +195,9 @@ public class ShopListFilter implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("ShopListFilter()");
+            return ("AddProductFilter()");
         }
-        StringBuffer sb = new StringBuffer("ShopListFilter(");
+        StringBuffer sb = new StringBuffer("AddProductFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
