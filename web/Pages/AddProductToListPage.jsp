@@ -203,12 +203,12 @@
             <header class="hero">
                 <div class="hero-wrapper">
 
-                    <%if (find) {%> 
+                    <c:if test="${user != null}">
                     <nav class="navbar navbar-expand-xl navbar-dark fixed-top " id="mainNav">
                         <a class="navbar-brand">
                             <img width= "50" src="/Lists/Pages/img/favicon.png" alt="Logo">
                         </a>
-                        <a class="navbar-brand js-scroll-trigger" href="/Lists/homepage.jsp">LISTS</a>
+                        <a class="navbar-brand js-scroll-trigger" href="../homepage.jsp">LISTS</a>
                         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                             Menu
                             <i class="fa fa-bars"></i>
@@ -216,34 +216,35 @@
                         <div class="collapse navbar-collapse" id="navbarResponsive">
                             <ul class="navbar-nav text-uppercase ml-auto text-center">
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
+                                    <a class="nav-link js-scroll-trigger" href="../homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
                                 <li class="nav-item js-scroll-trigger dropdown">
                                     <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
                                     <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item nav-link" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
-                                        <a class="dropdown-item nav-link" href="/Lists/foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
+                                        <a class="dropdown-item nav-link" href="../userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                        <a class="dropdown-item nav-link" href="../foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
                                     </div>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
-                                        <i class="fa fa-sign-in"></i><b><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> </b>/ <img src= "/Lists/${user.image}" width="25px" height="25px" style="border-radius: 100%;">
+                                        <i class="fa fa-sign-in"></i><b><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> </b>/ <img src= "../${user.image}" width="25px" height="25px" style="border-radius: 100%;">
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/Pages/<%=Type%>/profile.jsp">
+                                    <a class="nav-link js-scroll-trigger" href="../profile.jsp">
                                         <i class="fa fa-user"></i><b>Il mio profilo</b>
                                     </a>
                                 </li>
                             </ul>
                         </div>
                     </nav>
-                    <%} else {%>
+                    </c:if>
+                    <c:if test="${user == null}">
                     <nav class="navbar navbar-expand-xl navbar-dark fixed-top " id="mainNav">
                         <a class="navbar-brand">
                             <img width= "50" src="/Lists/Pages/img/favicon.png" alt="Logo">
                         </a>
-                        <a class="navbar-brand js-scroll-trigger" href="/Lists/homepage.jsp">LISTS</a>
+                        <a class="navbar-brand js-scroll-trigger" href="../homepage.jsp">LISTS</a>
                         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                             Menu
                             <i class="fa fa-bars"></i>
@@ -251,12 +252,12 @@
                         <div class="collapse navbar-collapse" id="navbarResponsive">
                             <ul class="navbar-nav text-uppercase ml-auto text-center">
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
+                                    <a class="nav-link js-scroll-trigger" href="../homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
                                 <li class="nav-item js-scroll-trigger dropdown">
                                     <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
                                     <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item nav-link" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                        <a class="dropdown-item nav-link" href="../userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
                                         <a class="dropdown-item nav-link disabled" data-toggle="tooltip" title="Registrati o fai il login per usare questa funzione"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
                                     </div>
                                 </li>
@@ -273,8 +274,7 @@
                             </ul>
                         </div>
                     </nav>
-
-                    <%}%>
+                    </c:if>
                     <!--============ Page Title =========================================================================-->
                     <div class="page-title">
                         <div class="container">
@@ -305,12 +305,9 @@
                             <div class="col-md-3">
                                 <div class="list-group">
                                     <a href="/Lists/Pages/AddProductToListPage.jsp?cat=all" class="list-group-item">All</a>
-                                    <%  String prod = "";
-
-                                        for (String sprd : allCategories) {
-                                            System.out.println("sprd: " + sprd);%>
-                                    <a href="/Lists/Pages/AddProductToListPage.jsp?cat=<%=sprd%>" class="list-group-item"><%=sprd%></a>
-                                    <%}%>
+                                    <c:forEach items="${prodCategories}" var="prodcat" >                                    
+                                            <a href="/Lists/Pages/AddProductToListPage.jsp?cat=${prodcat}" class="list-group-item"><c:out value="${prodcat}"/></a>
+                                    </c:forEach>
                                 </div>
                             </div>
                             <div class="col-md-9">    
@@ -345,53 +342,54 @@
                                             for (Product p : li) {
                                                 if (request.getParameter("cat").equals(p.getCategoria_prodotto())) {
                                     %>
+                                    <c:if test="${not empty param.cat and param.cat ne all}">
+                                        <c:forEach items="${products}" var="product">
 
-                                    <div class="item">
-                                        <!--end ribbon-->
-                                        <div class="wrapper">
-                                            <div class="image">
-                                                <h3>
-                                                    <a href="#" class="tag category"><%=p.getCategoria_prodotto()%></a>
-                                                    <a href="single-listing-1.html" class="title"><%=p.getNome()%></a>
-                                                    <span class="tag">Offer</span>
-                                                </h3>
-                                                <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                    <img src="../<%=p.getImmagine()%>" alt="">
-                                                </a>
-                                            </div>
-                                            <!--end image-->
-
-                                            <div class="price">$80</div>
-
-                                            <!--end admin-controls-->
-                                            <div class="description">
-                                                <p><%=p.getNote()%></p>
-                                            </div>
-                                            <!--end description-->
-                                            <%if (find) {%>
-                                            <%if (listdao.chckIfProductIsInTheList(p.getPid(), shoplistName) == false) {%>
-                                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
-                                            <%} else {%> 
-                                            <a class="detail"><img src="img/correct.png" id="addIco"></a>
-                                                <%}%>
-                                                <%} else if (guestProducts != null && !guestProducts.isEmpty()) {
-                                                    boolean check = false;%>
-                                                <%for (Product t : guestProducts) {
-                                                        if (t.getPid() == p.getPid()) {
-                                                            check = true;
-                                                        }
-                                                    }%>
-                                                <%if (check == true) {%>
-                                            <a class="detail"><img src="img/correct.png" id="addIco"></a>
+                                        <div class="item">
+                                            <!--end ribbon-->
+                                            <div class="wrapper">
+                                                <div class="image">
+                                                    <h3>
+                                                        <a href="#" class="tag category"><c:out value="${product.categoria_prodotto}"/></a>
+                                                        <a href="single-listing-1.html" class="title"><c:out value="${product.nome}"/></a>
+                                                        <span class="tag">Offer</span>
+                                                    </h3>
+                                                    <a href="single-listing-1.html" class="image-wrapper background-image">
+                                                        <img src="../${product.immagine}" alt="">
+                                                    </a>
+                                                </div>
+                                                <!--end image-->
+                                                <!--end admin-controls-->
+                                                <div class="description">
+                                                    <p><c:out value="${product.note}"/></p>
+                                                </div>
+                                                <!--end description-->
+                                                <%if (find) {%>
+                                                <%if (listdao.chckIfProductIsInTheList(p.getPid(), shoplistName) == false) {%>
+                                                <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
+                                                <%} else {%> 
+                                                <a class="detail"><img src="img/correct.png" id="addIco"></a>
+                                                    <%}%>
+                                                    <%} else if (guestProducts != null && !guestProducts.isEmpty()) {
+                                                        boolean check = false;%>
+                                                    <%for (Product t : guestProducts) {
+                                                            if (t.getPid() == p.getPid()) {
+                                                                check = true;
+                                                            }
+                                                        }%>
+                                                    <%if (check == true) {%>
+                                                <a class="detail"><img src="img/correct.png" id="addIco"></a>
+                                                    <%} else {%>
+                                                <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
+                                                <%}%>                                               
                                                 <%} else {%>
-                                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
-                                            <%}%>                                               
-                                            <%} else {%>
-                                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
-                                            <%}%>
-                                            <a class="detail"><img src="img/correct.png" id="addIco<%=p.getPid()%>" class="dispNone"></a>
+                                                <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
+                                                <%}%>
+                                                <a class="detail"><img src="img/correct.png" id="addIco<%=p.getPid()%>" class="dispNone"></a>
+                                            </div>
                                         </div>
-                                    </div>
+                                        </c:forEach>
+                                    </c:if>
                                     <%}
                                         }
                                     } else if (request.getParameter("cat") == null || request.getParameter("cat").equals("all")) {

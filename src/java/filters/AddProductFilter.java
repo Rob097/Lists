@@ -93,13 +93,26 @@ public class AddProductFilter implements Filter {
                 User user =(User) session.getAttribute("user");
                 String shopListName = (String) session.getAttribute("shopListName");
                 ShopList guestList = (ShopList) session.getAttribute("guestList");
+                
+                try {
+                    //get all product categories
+                    ArrayList<String> allCategories = productdao.getAllProductCategories();
+                    session.setAttribute("prodCategories", allCategories);
+                    
+                    //get all products
+                    ArrayList<Product> li = productdao.getallAdminProducts();
+                    session.setAttribute("products", li);
+                } catch (DAOException ex) {
+                    System.out.println("FIRST TRY-CHATCH ERROR ADDPRODUCTSFILTER");
+                    Logger.getLogger(AddProductFilter.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
                 if(user != null){
                     
-                }else if (user == null && guestList != null){ //for guestlist
+                }else if (user == null){ //for guestlist
                     
                 } else{
-                  ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "userlists.jsp"));
+                  ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "homepage.jsp"));
                 return;  
                 }                       
             }else{
