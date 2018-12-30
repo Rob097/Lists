@@ -3,68 +3,11 @@
     Created on : 15-giu-2018, 17.13.06
     Author     : Roberto97
 --%>
-<%@page import="database.jdbc.JDBCProductDAO"%>
-<%@page import="database.daos.ProductDAO"%>
-<%@page import="database.entities.Product"%>
-<%@page import="database.jdbc.JDBCShopListDAO"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="database.entities.ShopList"%>
-<%@page import="database.daos.ListDAO"%>
-<%@page import="database.daos.UserDAO"%>
-<%@page import="database.jdbc.JDBCUserDAO"%>
-<%@page import="database.factories.DAOFactory"%>
-<%@page import="database.entities.User"%>
+
 <%@page import="java.net.URLDecoder"%>
-<%@page import="java.sql.PreparedStatement"%>
-<%@page import="java.sql.Blob"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-
-<%
-    System.out.println("ShowUserList\n\n");
-    DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
-    if (daoFactory == null) {
-        throw new ServletException("Impossible to get dao factory for user storage system");
-    }
-
-    UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
-    ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
-    ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
-    HttpSession s = (HttpSession) request.getSession();
-    String shoplistName = null; //Nome della lista
-    ShopList guestList = null; //Lista dell'utente non registrato
-    ShopList lista = null;
-    String role = ""; String shareUserRole = "";
-    ArrayList<Product> li = null; //ArrayList dei prodotti della lista
-    ArrayList<User> AllUsersOfCurentList = null; //ArrayList degli utenti con cui la lista è condivisa
-    User u = null; //Eventuale utent
-    boolean find = false;
-
-    //Se rileva che c'è un utente loggato imposta find = true
-    if (s.getAttribute("user") != null) {
-        u = (User) s.getAttribute("user");
-        find = true;
-    }
-
-    if (find) {//Se c'è un utente loggato
-        if (s.getAttribute("shopListName") != null) {//Se l'attributo di session col nome della lista non è null
-            shoplistName = (String) s.getAttribute("shopListName");
-            li = listdao.getAllProductsOfShopList(shoplistName); //prendi tutti i prodotti della lista e mettili in li
-            AllUsersOfCurentList = listdao.getUsersWithWhoTheListIsShared(shoplistName); //Prendi tutti gli utenti con cui la lista è condivisa
-            lista = listdao.getbyName(shoplistName);
-            role  = listdao.checkRole(u.getEmail(), shoplistName); System.out.println("\nRUOLO: " + role + "\n");
-        }
-    } else if (s.getAttribute("guestList") != null) { //Se non è loggato nessun utente, se l'attributo di sessione contenente la lista dell'utente Guest non è nullo
-        guestList = (ShopList) s.getAttribute("guestList");
-        if (s.getAttribute("prodottiGuest") != null) {
-            li = (ArrayList<Product>) s.getAttribute("prodottiGuest"); //Prendi l'attributo di sessione contenente i prodotti se non è nullo
-        }
-        shoplistName = (String) guestList.getNome();
-    }
-
-
-%>
 
 <!DOCTYPE html>
 <html>
@@ -196,22 +139,6 @@
 
     </head>
     <body>        
-
-        <%            
-            String Nominativo = "";
-            String Email = "";
-            String Type = "";
-            String image = "";
-            if (find) {
-                //String Image = "";
-                Nominativo = u.getNominativo();
-                Email = u.getEmail();
-                Type = u.getTipo();
-                image = u.getImage();
-            }
-        %>
-
-
         <div class="page home-page">
             <header class="hero">
                 <div class="hero-wrapper">
@@ -225,54 +152,52 @@
                     <div class="page-title">
                         <div class="container">
                             <h1 class="opacity-60 center">
-                                <%=shoplistName%>
-                                <%System.out.println("NOME:    ====   " + shoplistName); %>
-                            </h1>
-                            
+                                <c:out value="${shopListName}"/>                                
+                            </h1>                            
                             <p class="text-center">
-                                <%if(lista != null){%>
-                                    <%=lista.getDescrizione()%>
-                                <%}else if(guestList != null){%>
-                                    <%=guestList.getDescrizione()%>
-                                <%}%>
+                                <c:if test="${lista != null}">
+                                    <c:out value="${lista.descrizione}"/>
+                                </c:if>
+                                <c:if test="${guestList != null}">
+                                    <c:out value="${guestList.descrizione}"/>
+                                </c:if>
                             </p>
                             
                         </div>
                     </div>
+                    <c:if test="${user != null}">
                     <div class="container text-center" id="welcomeGrid">
                         <a data-toggle="modal" data-target="#CreateAddProductModal" class="btn btn-primary text-caps btn-framed btn-block">Crea e aggiungi prodotto</a>
                     </div>
+                    </c:if>
                     <!--============ End Page Title =====================================================================-->
 
 
                     <!--<div id="map"></div>-->
                 </div>
             </header>
-            
-                                <%if(session.getAttribute("role") != null){%>
-                                <div class="container pt-5" id="alert">
-                                    <%if (!session.getAttribute("role").equals("same")) {%>
-                                    <div class="alert alert-success text-center" role="alert">
-                                        <strong>Permessi</strong> di <%=session.getAttribute("role")%> aggiornati correttamente.</a>.
+                                <c:if test="${role != null}">
+                                    <div class="container pt-5" id="alert">
+                                        <c:if test="${role ne 'same'}">
+                                            <div class="alert alert-success text-center" role="alert">
+                                                <strong>Permessi</strong> di <c:out value="${role}"/> aggiornati correttamente.</a>.
+                                            </div> 
+                                                <c:set var="role" value="same"/>
+                                        </c:if> 
                                     </div>
-                                    <%session.setAttribute("role", "same");}%>
-                                </div>
-                                <%}%>
-
+                                </c:if>
+                               
             <!--*********************************************************************************************************-->
             <!--************ CONTENT ************************************************************************************-->
             <!--*********************************************************************************************************-->
             <section class="content">
-                
-
                 <section class="block">
-                    <div class="container">
-                        
+                    <div class="container">                        
                         <div class="icon-bar">
                             
                             <c:choose>
                                 <c:when test="${(not empty user)}">
-                                    <c:set var = "ruolo" value="<%=role%>"/>
+                                    <c:set var = "ruolo" value="${user.ruolo}"/>
                                     <c:choose>
                                         <c:when test="${(ruolo eq 'creator')}">
                                             <div class="row">
@@ -299,8 +224,8 @@
                                         <c:when test="${(ruolo == 'Read')}">
                                         <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
                                         <a href="ThirdChatroom.jsp"><i class="fas fa-users"><br>ChatRoom</i></a>
-                                        <a data-toggle="tooltip" title="Non hai i permessi perr condividere la lista. Contatta <%=u.getNominativo()%>" class="disabled"><i class="fa fa-globe"><br>Share</i></a>
-                                        <a data-toggle="tooltip" title="Non hai i permessi perr cancellare la lista. Contatta <%=u.getNominativo()%>" class="disabled"><i class="fa fa-trash"><br>Delete</i></a> 
+                                        <a data-toggle="tooltip" title="Non hai i permessi perr condividere la lista. Contatta ${user.nominativo}" class="disabled"><i class="fa fa-globe"><br>Share</i></a>
+                                        <a data-toggle="tooltip" title="Non hai i permessi perr cancellare la lista. Contatta ${user.nominativo}" class="disabled"><i class="fa fa-trash"><br>Delete</i></a> 
                                         </c:when>
                                     </c:choose>
                                 </c:when>
@@ -323,7 +248,7 @@
                                 
                                 <!--============ Section Title===================================================================-->
                                 <div class="section-title clearfix">
-                                    <%if (li != null && !li.isEmpty()) {%>
+                                    <c:if test="${listProducts != null }">
                                     <form class="float-left" method="POST" action="/Lists/removeALLProducts">
                                         <input style="margin-left: 10px; margin-bottom: 10px;" type="submit" class="btn btn-primary" value="Svuota la lista">
                                     </form>
@@ -335,7 +260,7 @@
                                         <input type="submit" class="btn btn-dark" style="margin-left: 10px;" value="Spesa finita">
                                         <input type="hidden" value="acquistato" name="tipo">
                                     </form>
-                                    <%}%>
+                                    </c:if> 
                                     <div class="float-right d-xs-none thumbnail-toggle">
                                         <a href="#" class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
                                             <i class="fa fa-th"></i>
@@ -346,137 +271,116 @@
                                     </div></div>
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
-                                <%if(li != null){
-                                    for (Product p : li) {%>
-                                    <%if(listdao.checkBuyed(p.getPid(), shoplistName, s) == true){%>
-                                    <div class="item itemAcquistato" id="item<%=p.getPid()%>">
-                                        <div class="overlayAcquistato" id="divProva<%=p.getPid()%>">
-                                            <p class="pAcquistato" id="pProva<%=p.getPid()%>">Già acquistato<br><a onclick="daAcquistareItem(<%=p.getPid()%>)" type="button" class="btn btn-dark" style="color: white;">Annulla</a></p>                                            
-                                        </div>
-                                        <!--end ribbon-->
-                                        <div class="wrapper wrapperProva" id="wrapperProva<%=p.getPid()%>">
-                                    <%}else{%>
-                                    <div class="item" id="item<%=p.getPid()%>">
-                                        <div class="invisible" id="divProva<%=p.getPid()%>">
-                                            <p id="pProva<%=p.getPid()%>">Già acquistato<br><a onclick="daAcquistareItem(<%=p.getPid()%>)" type="button" class="btn btn-dark" style="color: white;">Annulla</a></p>
-                                        </div>
-                                        <!--end ribbon-->
-                                        <div class="wrapper" id="wrapperProva<%=p.getPid()%>">
-                                    <%}%>
-                                            <div class="image">
-                                                <h3>
-                                                    <a href="#" class="tag category"><%=p.getCategoria_prodotto()%></a>
-                                                    <a href="single-listing-1.html" class="title"><%=p.getNome()%></a>
-                                                    <span class="tag">Offer</span>
-                                                </h3>
-                                                <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                    <img src="../<%=p.getImmagine()%>" alt="">
-                                                    <%System.out.println(p.getImmagine());%>
-                                                </a>
+                                    <c:if test="${listProducts != null}">
+                                        <c:forEach items="${listProducts}" var="prod">
+                                            <c:if test="${prod eq 'acquistato'}">
+                                                <div class="item itemAcquistato" id="item${prod.pid}">
+                                                    <div class="overlayAcquistato" id="divProva${prod.pid}">
+                                                        <p class="pAcquistato" id="pProva${prod.pid}">Già acquistato<br><a onclick="daAcquistareItem(${prod.pid})" type="button" class="btn btn-dark" style="color: white;">Annulla</a></p>                                            
+                                                    </div>
+                                                    <!--end ribbon-->
+                                                    <div class="wrapper wrapperProva" id="wrapperProva${prod.pid}"> 
+                                            </c:if>
+                                            <c:if test="${prod ne 'acquistato'}">
+                                                <div class="item" id="item${prod.pid}">
+                                                    <div class="invisible" id="divProva${prod.pid}">
+                                                        <p id="pProva${prod.pid}">Già acquistato<br><a onclick="daAcquistareItem(${prod.pid})" type="button" class="btn btn-dark" style="color: white;">Annulla</a></p>
+                                                    </div>
+                                                    <!--end ribbon-->
+                                                    <div class="wrapper" id="wrapperProva${prod.pid}">
+                                            </c:if>
+                                                    <div class="image">
+                                                        <h3>
+                                                            <a href="#" class="tag category"><c:out value="${prod.categoria_prodotto}"/></a>
+                                                            <a href="single-listing-1.html" class="title"><c:out value="${prod.nome}"/></a>
+                                                            <span class="tag">Offer</span>
+                                                        </h3>
+                                                        <a href="single-listing-1.html" class="image-wrapper background-image">
+                                                            <img src="../${prod.immagine}" alt="">                                                            
+                                                        </a>
+                                                    </div>
+                                                    <h4 class="location">
+                                                        <a href="#"><c:out value="${prod.pid}"/></a>
+                                                    </h4>
+                                                        <input id="${prod.pid}Quantity" class="price" onchange="updateQuantity(${prod.pid});" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" name="quantity" min="1" max="99" value="${prod.quantity}"></input>
+                                                    <div class="admin-controls">
+                                                        <a style="cursor: pointer;" onclick="giaAcquistatoItem(${prod.pid})">
+                                                            <i class="fas fa-shopping-cart"></i>Acquistato
+                                                        </a>
+                                                        <a onclick="removeItem('${prod.pid}');" style="cursor: pointer;" class="ad-remove">
+                                                            <i class="fa fa-trash"></i>Remove
+                                                        </a>
+                                                    </div>
+                                                    <!--end admin-controls-->
+                                                    <div class="description">
+                                                        <p><c:out value="${prod.note}"/></p>
+                                                    </div>
+                                                    <!--end description-->
+                                                    <!--<a href="single-listing-1.html" class="detail text-caps underline">Detail</a>-->
+                                                </div>
                                             </div>
-                                            <!--end image-->
-                                            <h4 class="location">
-                                                <a href="#"><%=p.getPid()%></a>
-                                            </h4>
-                                            <c:choose>
-                                                <c:when test="${(not empty user)}">
-                                                    <input id="<%=p.getPid()%>Quantity" class="price" onchange="updateQuantity(<%=p.getPid()%>);" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" name="quantity" min="1" max="99" value="<%=productdao.getQuantity(p.getPid(), shoplistName)%>"></input>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <input id="<%=p.getPid()%>Quantity" class="price"  data-toggle="tooltip" title="Devi esere registrato per cambiare le quantità dei prodotti." style="cursor: not-allowed; width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" name="quantity" value="<%=productdao.getQuantity(p.getPid(), shoplistName)%>"></input>
-                                                </c:otherwise>
-                                            </c:choose>
-                                                    
-                                            <div class="admin-controls">
-                                                <a style="cursor: pointer;" onclick="giaAcquistatoItem(<%=p.getPid()%>)">
-                                                    <i class="fas fa-shopping-cart"></i>Acquistato
-                                                </a>
-                                                <a onclick="removeItem('<%=p.getPid()%>');" style="cursor: pointer;" class="ad-remove">
-                                                    <i class="fa fa-trash"></i>Remove
-                                                </a>
-                                            </div>
-                                            <!--end admin-controls-->
-                                            <div class="description">
-                                                <p><%=p.getNote()%></p>
-                                            </div>
-                                            <!--end description-->
-                                            <!--<a href="single-listing-1.html" class="detail text-caps underline">Detail</a>-->
-                                        </div>
-                                    </div>
-                                    <%}
-                                }%>
-                                    <!--end item-->
-
-                                    <!--end item-->
-
-
-                                    <!--end item-->
-
+                                        </c:forEach>
+                                    </c:if> 
                                 </div>
                                 <!--end items-->
                             </div>
-
-                            <%if (find) {%>
+                            
+                            <c:if test="${user != null}">                            
                             <div class = "col-md-3">
                                 <div class="panel-body">
                                     <div class="table-container" style="width: -webkit-fill-available; min-width: fit-content;">                                        
                                         <table class="table-users table" border="0">
                                             <thead>
-                                                <c:if test="${user.email == shoplist.creator}">
+                                                <c:if test="${user.email == lista.creator}">
                                                     <button style="width: -webkit-fill-available;" type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#ShareListModal" <c:if test="${empty Users}">disabled</c:if>>Share List</button>
                                                 </c:if> 
                                             </thead>
                                             <tbody>
-                                                <%for (User usersoflist : AllUsersOfCurentList) {
-                                                    shareUserRole = listdao.checkRole(usersoflist.getEmail(), shoplistName);
-                                                    System.out.println("\nNOME: " + usersoflist.getNominativo() + "\nTIPO: " + usersoflist.getTipo());
-                                                %>
-                                                <c:set var = "shareUserRole" value="<%=listdao.checkRole(usersoflist.getEmail(), shoplistName)%>"/>
+                                                <c:forEach items="${sharedUsers}" var="u">
+                                                    <c:set var = "shareUserRole" value="${u.ruolo}"/>
                                                 <tr>
-
-
                                                     <td width="10" align="center">
                                                         <i class="fa fa-2x fa-user fw"></i>
                                                     </td>
                                                     <td>
-                                                        <%=usersoflist.getNominativo()%><br>
+                                                        <c:out value="${u.nominativo}" /><br>
                                                     </td>
                                                     <td>
                                                         <c:choose>
                                                             <c:when test="${(ruolo eq 'creator')}">
                                                                 <div class="btn-group dropleft" style="width: -webkit-fill-available;">
                                                                     <a class="dropdown-toggle" style="background-color: red; padding: 4px; border-radius: 10%; color: white; width: -webkit-fill-available; text-align: center; min-width: max-content;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                        <%=shareUserRole%>
+                                                                        <c:out value="${shareUserRole}"/>
                                                                     </a>
                                                                     <div class="dropdown-menu">
                                                                         <c:if test = "${shareUserRole eq 'Read'}">
-                                                                            <a class="dropdown-item actualRole" href="/Lists/changeRole?user=<%=usersoflist.getEmail()%>&role=<%=shareUserRole%>&new=Read&list=<%=shoplistName%>">Read</a>
-                                                                            <a class="dropdown-item" href="/Lists/changeRole?user=<%=usersoflist.getEmail()%>&role=<%=shareUserRole%>&new=Write&list=<%=shoplistName%>">Write</a>
+                                                                            <a class="dropdown-item actualRole" href="/Lists/changeRole?user=${u.email}&role=${shareUserRole}&new=Read&list=${shoplistName}">Read</a>
+                                                                            <a class="dropdown-item" href="/Lists/changeRole?user=${u.email}&role=${shareUserRole}&new=Write&list=${shoplistName}">Write</a>
                                                                         </c:if>
                                                                         <c:if test = "${shareUserRole eq 'Write'}">
-                                                                            <a class="dropdown-item" href="/Lists/changeRole?user=<%=usersoflist.getEmail()%>&role=<%=shareUserRole%>&new=Read&list=<%=shoplistName%>">Read</a>
-                                                                            <a class="dropdown-item actualRole" href="/Lists/changeRole?user=<%=usersoflist.getEmail()%>&role=<%=shareUserRole%>&new=Write&list=<%=shoplistName%>">Write</a>
+                                                                            <a class="dropdown-item" href="/Lists/changeRole?user=${u.email}&role=${shareUserRole}&new=Read&list=${shoplistName}">Read</a>
+                                                                            <a class="dropdown-item actualRole" href="/Lists/changeRole?user=${u.email}&role=${shareUserRole}&new=Write&list=${shoplistName}">Write</a>
                                                                         </c:if>
                                                                     </div>
                                                                 </div>
                                                             </c:when>
                                                             <c:otherwise>
-                                                                <%=usersoflist.getTipo()%>
+                                                                <c:out value="${u.tipo}"/>
                                                             </c:otherwise>
-                                                        </c:choose>
-                                                        
+                                                        </c:choose>                                                        
                                                     </td>
                                                 </tr>
-                                                <%}%>
+                                                </c:forEach>                                              
                                             </tbody>
                                         </table>
-                                            <c:if test="${user.email == shoplist.creator}">
-                                                <button style="width: -webkit-fill-available;" type="button" class="btn btn-dark btn-block" data-toggle="modal" data-target="#DeleteShareListModal" <c:if test="${empty shoplist.sharedUsers}">disabled</c:if>>Delete Shared Users</button>
+                                            <c:if test="${user.email == lista.creator}">
+                                                <button style="width: -webkit-fill-available;" type="button" class="btn btn-dark btn-block" data-toggle="modal" data-target="#DeleteShareListModal" <c:if test="${empty sharedUsers}">disabled</c:if>>Delete Shared Users</button>
                                             </c:if>
                                     </div>
                                 </div>
                             </div>
-                            <%} else {%>
+                            </c:if>                            
+                            <c:if test="${user == null}">
                             <div class = "col-md-3">
                                 <div class="panel-body">
                                     <div class="table-container">
@@ -485,7 +389,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <%}%>
+                            </c:if>
                             <!--end col-md-9-->
                         </div>
                         <!--end row-->
@@ -575,7 +479,7 @@
                     <div class="modal-body">
                         <form method="POST" action="/Lists/restricted/DeleteSharedUsers">
                             <select name="sharedToDelete" class="mdb-select colorful-select dropdown-primary" multiple>     
-                                <c:forEach items="${shoplist.sharedUsers}" var="susers">
+                                <c:forEach items="${sharedUsers}" var="susers">
                                     <option value="${susers.email}"><c:out value="${susers.email}"/></option> 
                                 </c:forEach>
                             </select>
@@ -607,9 +511,9 @@
                     <div class="modal-body">
                         <h3>Sei sicuro di voler eliminare questa lista?<br> Non potrai annullare la modifica.</h3>
                         <form class="clearfix" action="/Lists/DeleteShopList" method="POST">
-                            <%if (!find && s.getAttribute("import") != null) {%>
-                            <input type="email" name="creator" placeholder="Email" required><br><br>
-                            <%}%>
+                            <c:if test="${empty user and importGL != null}">                                
+                                    <input type="email" name="creator" placeholder="Email" required><br><br>
+                            </c:if>
                             <button type="submit" class="btn btn-dark" id="delete">Delete</button>
                             <button type="button" data-dismiss="modal" class="btn btn-dark" id="delete-btn-no">Cancel</button>
                         </form>
@@ -696,10 +600,10 @@
                             <form action="/Lists/SaveGuestList" method="POST">
                                 <input type="email" name="creator" required>
                                 <input type="password" name="password" required>
-                                <input type="hidden" name="nome" value="<%=shoplistName%>">
-                                <input type="hidden" name="categoria" value="<%=guestList.getCategoria()%>">
-                                <input type="hidden" name="descrizione" value="<%=guestList.getDescrizione()%>">
-                                <input type="hidden" name="immagine" value="<%=guestList.getImmagine()%>">
+                                <input type="hidden" name="nome" value="${shoplistName}">
+                                <input type="hidden" name="categoria" value="${guestList.categoria}">
+                                <input type="hidden" name="descrizione" value="${guestList.descrizione}">
+                                <input type="hidden" name="immagine" value="${guestList.immagine}">
                                 <input type="submit" class="btn btn-primary btn-block" data-toggle="modal" data-target="#SaveListModal" value="Salva la lista">
                                 <button type="button" data-dismiss="modal" class="btn btn-dark" id="save2-btn-no">Cancel</button>
                             </form>
@@ -797,7 +701,7 @@
         
         <script>
         function updateQuantity(id) {
-            var lista = '<%=shoplistName%>';
+            var lista = '${shopListName}';
             var quantita = $('#'+id+'Quantity').val();
             $.ajax({
                 type: "POST",

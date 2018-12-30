@@ -55,7 +55,7 @@ public class CreateShopList extends HttpServlet {
         Boolean regResult = false;
         String nome;
         String descrizione;
-        String immagine = "/Image/ListsImg/guestsList.jpg";
+        String immagine = "Image/ListsImg/guestsList.jpg";
         String creator;
         String categoria;
         String url = "/Lists/userlists.jsp";

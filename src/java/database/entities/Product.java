@@ -17,6 +17,17 @@ public class Product {
     private String immagine;
     private String creator;
     private String status;
+    private int quantity;
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+    
+    
 
     public String getImmagine() {
         return immagine;

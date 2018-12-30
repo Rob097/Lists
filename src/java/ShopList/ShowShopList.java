@@ -59,65 +59,21 @@ public class ShowShopList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("ShowShopList:\n\n");
         HttpSession session =(HttpSession) request.getSession(false);
-        String s = request.getParameter("nome");
-        ShopList shoplist ;        
-        
+        String shopListName = request.getParameter("nome");       
         
         if(session.getAttribute("user") != null) {
-            ArrayList<User> users = new ArrayList<>();
+            
             User user = (User) session.getAttribute("user");
-            User dbuser = null;
-            ArrayList<User> sharedusers = new ArrayList<>();
-            ArrayList<Notification> notifiche = new ArrayList<>();
              try{
-                notificationdao.deleteNotification(user.getEmail(), s);
-                notifiche = notificationdao.getAllNotifications(user.getEmail());
-                session.setAttribute("notifiche", notifiche);
+                notificationdao.deleteNotification(user.getEmail(), shopListName);
             } catch (Exception ex) {
                 System.out.println("Non ci sono notifiche da eliminare\n");
             }
-
-            try {
-                dbuser = userdao.getByEmail(user.getEmail());
-                sharedusers = listdao.getUsersWithWhoTheListIsShared(s);
-                shoplist = listdao.getbyName(s);
-                session.setAttribute("shoplist", shoplist);
-            } catch (DAOException ex) {
-                System.out.println("try error showShopList.java\n");
-            }
-
-            try {
-                users = userdao.getAllUsers();
-                Iterator<User> i = users.iterator();
-                while(i.hasNext()){
-                    //remove your username
-                    if(i.next().getEmail().equals(user.getEmail())){
-                        i.remove();
-                    }
-                }
-                
-                
-                //remove just linked usernames
-                for (int j = 0; j < users.size(); j++) {
-                    for (int k = 0; k < sharedusers.size()-1; k++) {
-                        if(users.get(j).getEmail().equals(sharedusers.get(k).getEmail())){
-                            users.remove(j);
-                        }
-                    }
-                }
-            } catch (DAOException ex) {
-                Logger.getLogger(ShowShopList.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println("problems with getAllUsers()");
-            }
-            session.setAttribute("Users", users);
         }
-        System.out.println("==========================" + s);
-        
-        session.setAttribute("shopListName", s); 
-        
-        
+      
+        session.setAttribute("shopListName", shopListName); 
+               
         response.sendRedirect("/Lists/Pages/ShowUserList.jsp");
     }
 

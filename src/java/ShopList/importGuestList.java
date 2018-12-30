@@ -75,7 +75,7 @@ public class importGuestList extends HttpServlet {
         if(s.getNome() != null){
             session.setAttribute("guestList", s);
             session.setAttribute("prodottiGuest", pp);
-            session.setAttribute("import", true);
+            session.setAttribute("importGL", true);
         }
         
         response.sendRedirect("/Lists/userlists.jsp");

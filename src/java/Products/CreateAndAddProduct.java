@@ -62,7 +62,7 @@ public class CreateAndAddProduct extends HttpServlet {
         //variablili iniziali
         HttpSession session = (HttpSession) request.getSession(false);
         User user = (User) session.getAttribute("user");
-        ShopList list = (ShopList) session.getAttribute("shoplist");
+        ShopList list = (ShopList) session.getAttribute("lista");
         Product newProduct = new Product();
         
         //-->##INSERIMENTO NEL DATABASE##<--

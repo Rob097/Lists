@@ -19,6 +19,17 @@ public class User {
     private String tipo;
     private String image;
     private ArrayList<List> list;
+    private String ruolo;
+
+    public String getRuolo() {
+        return ruolo;
+    }
+
+    public void setRuolo(String ruolo) {
+        this.ruolo = ruolo;
+    }
+    
+    
 
     public ArrayList<List> getLista() {
         return list;
