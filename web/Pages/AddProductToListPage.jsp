@@ -20,59 +20,6 @@
 <%@page import="java.sql.Blob"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%
-
-    DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
-    if (daoFactory == null) {
-        throw new ServletException("Impossible to get dao factory for user storage system");
-    }
-    UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
-    ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
-    ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
-
-    HttpSession s = (HttpSession) request.getSession();
-    String shoplistName = "";
-    ShopList guestList;
-    ArrayList<Product> guestProducts = new ArrayList<>();
-    User u = new User();
-    boolean find = false;
-    if (s.getAttribute("user") != null) {
-        u = (User) s.getAttribute("user");
-        find = true;
-        if (s.getAttribute("shopListName") != null) {
-            shoplistName = (String) s.getAttribute("shopListName");
-        }
-        if (request.getParameter("shopListName") != null) {
-            shoplistName = (String) request.getParameter("shopListName");
-            s.setAttribute("shopListName", shoplistName);
-        }
-    } else {
-        if (s.getAttribute("guestList") != null) {
-            System.out.println("\nqui");
-            guestList = (ShopList) s.getAttribute("guestList");
-            shoplistName = guestList.getNome();
-        }
-        if (s.getAttribute("prodottiGuest") != null) {
-            guestProducts = (ArrayList<Product>) s.getAttribute("prodottiGuest");
-        }
-    }
-
-    ArrayList<Product> li = productdao.getallAdminProducts();
-    ArrayList<String> allCategories = productdao.getAllProductCategories();
-    ArrayList<String> allListsOfUser = null;
-
-    for (Product q : li) {
-        s.setAttribute(q.getNome(), null);
-    }
-
-    if (find) {
-        allListsOfUser = listdao.getAllListsByCurentUser(u.getEmail());
-    }
-
-    session.setAttribute("number", 15);
-
-%>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -183,22 +130,6 @@
 
     </head>
     <body>        
-
-        <%            String Nominativo = "";
-            String Email = "";
-            String Type = "";
-            String image = "";
-
-            if (find) {
-                //String Image = "";
-                Nominativo = u.getNominativo();
-                Email = u.getEmail();
-                Type = u.getTipo();
-                image = u.getImage();
-            }
-        %>
-
-
         <div class="page home-page">
             <header class="hero">
                 <div class="hero-wrapper">
@@ -284,9 +215,6 @@
                         </div>
                         <!--end container-->
                     </div>
-
-
-
                     <!--end background-->
                 </div>
                 <!--end hero-wrapper-->
@@ -326,134 +254,134 @@
                                         </c:if>
                                     </div>
                                     <div class="float-right d-xs-none thumbnail-toggle">
-                                        <a href="#" class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
+                                        <a class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
                                             <i class="fa fa-th"></i>
                                         </a>
-                                        <a href="#" class="change-class active" data-change-from-class="grid" data-change-to-class="list" data-parent-class="items">
+                                        <a class="change-class active" data-change-from-class="grid" data-change-to-class="list" data-parent-class="items">
                                             <i class="fa fa-th-list"></i>
                                         </a>
                                     </div>
                                 </div>
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
-
-                                    <%
-                                        if (request.getParameter("cat") != null && !request.getParameter("cat").equals("all")) {
-                                            for (Product p : li) {
-                                                if (request.getParameter("cat").equals(p.getCategoria_prodotto())) {
-                                    %>
-                                    <c:if test="${not empty param.cat and param.cat ne all}">
-                                        <c:forEach items="${products}" var="product">
-
-                                        <div class="item">
-                                            <!--end ribbon-->
-                                            <div class="wrapper">
-                                                <div class="image">
-                                                    <h3>
-                                                        <a href="#" class="tag category"><c:out value="${product.categoria_prodotto}"/></a>
-                                                        <a href="single-listing-1.html" class="title"><c:out value="${product.nome}"/></a>
-                                                        <span class="tag">Offer</span>
-                                                    </h3>
-                                                    <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                        <img src="../${product.immagine}" alt="">
-                                                    </a>
-                                                </div>
-                                                <!--end image-->
-                                                <!--end admin-controls-->
-                                                <div class="description">
-                                                    <p><c:out value="${product.note}"/></p>
-                                                </div>
-                                                <!--end description-->
-                                                <%if (find) {%>
-                                                <%if (listdao.chckIfProductIsInTheList(p.getPid(), shoplistName) == false) {%>
-                                                <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
-                                                <%} else {%> 
-                                                <a class="detail"><img src="img/correct.png" id="addIco"></a>
-                                                    <%}%>
-                                                    <%} else if (guestProducts != null && !guestProducts.isEmpty()) {
-                                                        boolean check = false;%>
-                                                    <%for (Product t : guestProducts) {
-                                                            if (t.getPid() == p.getPid()) {
-                                                                check = true;
-                                                            }
-                                                        }%>
-                                                    <%if (check == true) {%>
-                                                <a class="detail"><img src="img/correct.png" id="addIco"></a>
-                                                    <%} else {%>
-                                                <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
-                                                <%}%>                                               
-                                                <%} else {%>
-                                                <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
-                                                <%}%>
-                                                <a class="detail"><img src="img/correct.png" id="addIco<%=p.getPid()%>" class="dispNone"></a>
+                                    <c:choose>
+                                        <c:when test="${not empty param.cat and param.cat ne all}">
+                                            <c:forEach items="${products}" var="product">
+                                                <c:if test="${param.cat eq product.categoria_prodotto}">
+                                                    <div class="item">
+                                                        <!--end ribbon-->
+                                                        <div class="wrapper">
+                                                            <div class="image">
+                                                                <h3>
+                                                                    <a class="tag category"><c:out value="${product.categoria_prodotto}"/></a>
+                                                                    <a class="title"><c:out value="${product.nome}"/></a>
+                                                                    <span class="tag">Offer</span>
+                                                                </h3>
+                                                                <a class="image-wrapper background-image">
+                                                                    <img src="../${product.immagine}" alt="">
+                                                                </a>
+                                                            </div>
+                                                            <!--end image-->
+                                                            <!--end admin-controls-->
+                                                            <div class="description">
+                                                                <p><c:out value="${product.note}"/></p>
+                                                            </div>
+                                                            <!--end description-->
+                                                            <c:choose>
+                                                                <c:when test="${not empty user}">
+                                                                    <c:if test="${product.inList == false}">
+                                                                        <a class="detail text-caps underline" style="cursor: pointer;" id="addButton${product.pid}" onclick="addProduct(${product.pid});">Add to your list</a>
+                                                                    </c:if>
+                                                                    <c:if test="${product.inList != false}">                                                       
+                                                                        <a class="detail"><img src="img/correct.png" id="addIco"></a>                                                            
+                                                                    </c:if>
+                                                                </c:when>
+                                                                <c:when test="${prodottiGuest != null && not empty prodottiGuest}">
+                                                                    <c:set var="check" scope="page" value="false"/>
+                                                                    <c:forEach items="${prodottiGuest}" var="gprod">
+                                                                        <c:if test="${gprod.pid == product.pid}">
+                                                                            <c:set var="check" scope="page" value="true"/>
+                                                                        </c:if>
+                                                                    </c:forEach>           
+                                                                    <c:if test="${check == true}">
+                                                                        <a class="detail"><img src="img/correct.png" id="addIco"></a>
+                                                                    </c:if>
+                                                                    <c:if test="${check != true}">                                                            
+                                                                        <a class="detail text-caps underline" style="cursor: pointer;" id="addButton${product.pid}" onclick="addProduct(${product.pid});">Add to your list</a>
+                                                                    </c:if>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                     <a class="detail text-caps underline" style="cursor: pointer;" id="addButton${product.pid}" onclick="addProduct(${product.pid});">Add to your list</a>
+                                                                </c:otherwise> 
+                                                            </c:choose>                                                        
+                                                            <a class="detail"><img src="img/correct.png" id="addIco${product.pid}" class="dispNone"></a>
+                                                        </div>
+                                                    </div>
+                                                </c:if>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:when test="${param.cat == null or param.cat eq 'all'}">
+                                            <c:set var="count" value="5" scope="page"/>
+                                            <c:forEach items="${products}" var="product">
+                                                <c:if test="${count <= 15}">
+                                                    <div class="item">
+                                                        <!--end ribbon-->
+                                                        <div class="wrapper">
+                                                            <div class="image">
+                                                                <h3>
+                                                                    <a class="tag category"><c:out value="${product.categoria_prodotto}"/></a>
+                                                                    <a class="title"><c:out value="${product.nome}"/></a>
+                                                                    <span class="tag">Offer</span>
+                                                                </h3>
+                                                                <a class="image-wrapper background-image" style="background-image: url('../${product.immagine}')">
+                                                                    <img src="../${product.immagine}" alt="">
+                                                                </a>
+                                                            </div>
+                                                            <!--end image-->
+                                                            <div class="price"><c:out value="${product.pid}"/></div>
+                                                            <!--end admin-controls-->
+                                                            <div class="description">
+                                                                <p><c:out value="${product.note}"/></p>
+                                                            </div>
+                                                            <!--end description-->
+                                                            <c:choose>
+                                                                <c:when test="${not empty user}">
+                                                                    <c:if test="${product.inList == false}">
+                                                                        <a class="detail text-caps underline" style="cursor: pointer;" id="addButton${product.pid}" onclick="addProduct(${product.pid});">Add to your list</a>
+                                                                    </c:if>
+                                                                    <c:if test="${product.inList != false}">
+                                                                        <a class="detail"><img src="img/correct.png" id="addIco"></a> 
+                                                                    </c:if>
+                                                                </c:when>
+                                                                <c:when test="${prodottiGuest != null && not empty prodottiGuest}">
+                                                                    <c:set var="check" scope="page" value="false"/>
+                                                                    <c:forEach items="${prodottiGuest}" var="gprod">
+                                                                        <c:if test="${gprod.pid == product.pid}">
+                                                                            <c:set var="check" scope="page" value="true"/>
+                                                                        </c:if>
+                                                                    </c:forEach> 
+                                                                    <c:if test="${check == true}">
+                                                                        <a class="detail"><img src="img/correct.png" id="addIco"></a>
+                                                                    </c:if>
+                                                                    <c:if test="${check != true}">                                                            
+                                                                        <a class="detail text-caps underline" style="cursor: pointer;" id="addButton${product.pid}" onclick="addProduct(${product.pid});">Add to your list</a>
+                                                                    </c:if>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <a class="detail text-caps underline" style="cursor: pointer;" id="addButton${product.pid}" onclick="addProduct(${product.pid});">Add to your list</a>
+                                                                </c:otherwise> 
+                                                            </c:choose>
+                                                           <a class="detail"><img src="img/correct.png" id="addIco${product.pid}" class="dispNone"></a>
+                                                        </div>
+                                                    </div>
+                                                </c:if>
+                                                <c:set var="count" value="${count + 1}" scope="page"/>
+                                            </c:forEach>
+                                            <div id="content-wrapper">
                                             </div>
-                                        </div>
-                                        </c:forEach>
-                                    </c:if>
-                                    <%}
-                                        }
-                                    } else if (request.getParameter("cat") == null || request.getParameter("cat").equals("all")) {
-                                        int count = 5;
-                                        for (Product p : li) {
-                                            if (count <= 15) {
-                                                session.setAttribute(p.getNome(), p.getNome());
-                                    %>
-                                    <div class="item">
-                                        <!--end ribbon-->
-                                        <div class="wrapper">
-                                            <div class="image">
-                                                <h3>
-                                                    <a href="#" class="tag category"><%=p.getCategoria_prodotto()%></a>
-                                                    <a href="single-listing-1.html" class="title"><%=p.getNome()%></a>
-                                                    <span class="tag">Offer</span>
-                                                </h3>
-                                                <a href="single-listing-1.html" class="image-wrapper background-image" style="background-image: url('../<%=p.getImmagine()%>')">
-                                                    <%System.out.println("IMAGINEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE: " + p.getImmagine());%>
-                                                    <img src="../<%=p.getImmagine()%>" alt="">
-                                                </a>
-                                            </div>
-                                            <!--end image-->
-
-                                            <div class="price"><%=p.getPid()%></div>
-
-                                            <!--end admin-controls-->
-                                            <div class="description">
-                                                <p><%=p.getNote()%></p>
-                                            </div>
-                                            <!--end description-->
-                                            <%if (find) {%>
-                                            <%if (listdao.chckIfProductIsInTheList(p.getPid(), shoplistName) == false) {%>
-                                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
-                                            <%} else {%> 
-                                            <a class="detail"><img src="img/correct.png" id="addIco"></a>
-                                                <%}%>
-                                                <%} else if (guestProducts != null && !guestProducts.isEmpty()) {
-                                                    boolean check = false;%>
-                                                <%for (Product t : guestProducts) {
-                                                        if (t.getPid() == p.getPid()) {
-                                                            check = true;
-                                                        }
-                                                    }%>
-                                                <%if (check == true) {%>
-                                            <a class="detail"><img src="img/correct.png" id="addIco"></a>
-                                                <%} else {%>
-                                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
-                                            <%}%>                                               
-                                            <%} else {%>
-                                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Add to your list</a>
-                                            <%}%>
-                                            <a class="detail"><img src="img/correct.png" id="addIco<%=p.getPid()%>" class="dispNone"></a>
-                                        </div>
-                                    </div>
-                                    <%}
-                                            count++;
-                                        }%>
-                                    <div id="content-wrapper">
-
-                                    </div>
-                                    <button class="btn btn-primary text-center" onclick="showProduct();">Mostra più prodotti</button>
-                                    <%}%>
-
+                                            <button class="btn btn-primary text-center" onclick="showProduct();">Mostra più prodotti</button>
+                                        </c:when>
+                                    </c:choose>
                                 </div>
                                 <!--end items-->
                             </div>

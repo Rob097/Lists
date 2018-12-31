@@ -89,32 +89,36 @@ public class AddProductFilter implements Filter {
                 contextPath += "/";
             }
             HttpSession session = ((HttpServletRequest)request).getSession(false);
-            if(session != null){
-                User user =(User) session.getAttribute("user");
-                String shopListName = (String) session.getAttribute("shopListName");
+            if(session != null){                
+                String shopListName = (String) session.getAttribute("shopListName");    
+                User user = (User) session.getAttribute("user");
                 ShopList guestList = (ShopList) session.getAttribute("guestList");
-                
-                try {
-                    //get all product categories
-                    ArrayList<String> allCategories = productdao.getAllProductCategories();
-                    session.setAttribute("prodCategories", allCategories);
-                    
-                    //get all products
-                    ArrayList<Product> li = productdao.getallAdminProducts();
-                    session.setAttribute("products", li);
-                } catch (DAOException ex) {
-                    System.out.println("FIRST TRY-CHATCH ERROR ADDPRODUCTSFILTER");
-                    Logger.getLogger(AddProductFilter.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                if((user != null || guestList != null) && shopListName != null){
+                    try {
+                        //get all product categories
+                        ArrayList<String> allCategories = productdao.getAllProductCategories();
+                        session.setAttribute("prodCategories", allCategories);
+                        ArrayList<Category_Product> allPrcategories;
+                        allPrcategories = category_productdao.getAllCategories();
+                        session.setAttribute("catProd", allPrcategories);
 
-                if(user != null){
-                    
-                }else if (user == null){ //for guestlist
-                    
-                } else{
-                  ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "homepage.jsp"));
+                        //get all products
+                        ArrayList<Product> li = productdao.getallAdminProducts();
+                        if(shopListName != null){
+                            for(Product p : li){
+                                p.setInList(listdao.chckIfProductIsInTheList(p.getPid(), shopListName));
+                            }
+                        }
+                        session.setAttribute("products", li);
+                        
+                    } catch (DAOException ex) {
+                        System.out.println("ERROR ADDPRODUCTSFILTER");
+                        Logger.getLogger(AddProductFilter.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }else {
+                  ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "userlists.jsp"));
                 return;  
-                }                       
+                }                     
             }else{
                 ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "homepage.jsp"));
                 return;

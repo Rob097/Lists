@@ -18,6 +18,17 @@ public class Product {
     private String creator;
     private String status;
     private int quantity;
+    private boolean inList;
+
+    public boolean isInList() {
+        return inList;
+    }
+
+    public void setInList(boolean inList) {
+        this.inList = inList;
+    }
+    
+    
 
     public int getQuantity() {
         return quantity;
