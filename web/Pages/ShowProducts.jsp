@@ -168,7 +168,6 @@
             }
 
         </style>
-
         <style>
             * {
                 box-sizing: border-box;
@@ -234,19 +233,21 @@
                     <!--============ Page Title =========================================================================-->
                     <div class="page-title">
                         <div class="container">
-                            <%if(request.getParameter("cat") != null && request.getParameter("cat") != "" && !request.getParameter("cat").equals("all")){%>
-                            <h1 class="opacity-60 center">
-                                <%=request.getParameter("cat")%>
-                            </h1>
-                            <%}else{%>
-                            <h1 class="opacity-60 center">
-                                Tutti i prodotti
-                            </h1>
-                            <%}%>
+                            <c:choose>
+                                <c:when test="${param.cat != null and param.cat != '' and param.cat ne 'all'}">
+                                    <h1 class="opacity-60 center">
+                                        <c:out value="${param.cat}"/>                                    
+                                    </h1>
+                                </c:when>
+                                <c:otherwise>
+                                    <h1 class="opacity-60 center">
+                                        Tutti i prodotti
+                                    </h1>
+                                </c:otherwise>
+                            </c:choose>                            
                         </div>
                         <!--end container-->
                     </div>
-
                     <c:choose>
                         <c:when test="${not empty user}">
                             <c:if test="${user.tipo == 'amministratore'}">
@@ -256,7 +257,6 @@
                             </c:if>
                         </c:when>
                     </c:choose>
-
                     <!--end background-->
                 </div>
                 <!--end hero-wrapper-->
@@ -279,16 +279,12 @@
                                     <%  String prod = "";
 
                                         for (String sprd : allCategories) {
-                                            System.out.println("sprd: " + sprd);%>
+                                            
                                     <a href="/Lists/Pages/ShowProducts.jsp?cat=<%=sprd%>" class="list-group-item"><%=sprd%></a>
                                     <%}%>
                                 </div>
-
                             </div>
-
                             <div class="col-md-9">
-
-
                                 <!--============ Section Title===================================================================-->
                                 <div class="section-title clearfix">
                                     <div class="float-left float-xs-none" style="width: 89%;">

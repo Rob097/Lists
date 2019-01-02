@@ -5,18 +5,12 @@
  */
 package filters;
 
-import ShopList.ShowShopList;
 import database.daos.CategoryDAO;
 import database.daos.Category_ProductDAO;
 import database.daos.ListDAO;
 import database.daos.NotificationDAO;
 import database.daos.ProductDAO;
 import database.daos.UserDAO;
-import database.entities.Category_Product;
-import database.entities.Product;
-import database.entities.ShopList;
-import database.entities.User;
-import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCCategoryDAO;
 import database.jdbc.JDBCCategory_ProductDAO;
@@ -28,96 +22,49 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Martin
  */
-@WebFilter(filterName = "AddProductFilter", urlPatterns = {"/Pages/AddProductToListPage.jsp"})
-public class AddProductFilter implements Filter {
+public class ShowProductFilter implements Filter {
     
     private static final boolean debug = true;
     private FilterConfig filterConfig = null;
+    private UserDAO userdao = null;
     private ListDAO listdao = null;
+    private NotificationDAO notificationdao = null;
     private Category_ProductDAO category_productdao = null;
+    private CategoryDAO categorydao = null;
     private ProductDAO productdao = null;
-    
-    public AddProductFilter() {
-    }    
     
     private void conInit(FilterConfig filterConfig) throws ServletException{
         DAOFactory daoFactory = (DAOFactory) filterConfig.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
             throw new ServletException("Impossible to get dao factory for user storage system");
-        }              
+        }        
+        userdao = new JDBCUserDAO(daoFactory.getConnection());        
         listdao = new JDBCShopListDAO(daoFactory.getConnection());
+        notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
         category_productdao = new JDBCCategory_ProductDAO(daoFactory.getConnection());
+        categorydao = new JDBCCategoryDAO(daoFactory.getConnection());
         productdao = new JDBCProductDAO(daoFactory.getConnection());
     }
+    
+    public ShowProductFilter() {
+    }    
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("AddProductFilter:DoBeforeProcessing");
+            log("ShowProductFilter:DoBeforeProcessing");
         }
-        
-        if(request instanceof HttpServletRequest){
-            ServletContext servletContext = ((HttpServletRequest) request).getServletContext();
-            String contextPath = servletContext.getContextPath();
-            if(!contextPath.endsWith("/")){
-                contextPath += "/";
-            }
-            HttpSession session = ((HttpServletRequest)request).getSession(false);
-            if(session != null){                
-                String shopListName = (String) session.getAttribute("shopListName");    
-                User user = (User) session.getAttribute("user");
-                ShopList guestList = (ShopList) session.getAttribute("guestList");
-                if((user != null || guestList != null) && shopListName != null){
-                    try {
-                        //get all product categories
-                        ArrayList<String> allCategories = productdao.getAllProductCategories();
-                        session.setAttribute("prodCategories", allCategories);
-                        ArrayList<Category_Product> allPrcategories;
-                        allPrcategories = category_productdao.getAllCategories();
-                        session.setAttribute("catProd", allPrcategories);
-
-                        //get all products
-                        ArrayList<Product> li = productdao.getallAdminProducts();
-                        if(shopListName != null){
-                            for(Product p : li){
-                                p.setInList(listdao.chckIfProductIsInTheList(p.getPid(), shopListName));
-                            }
-                        }
-                        session.setAttribute("products", li);
-                        
-                    } catch (DAOException ex) {
-                        System.out.println("ERROR ADDPRODUCTSFILTER");
-                        Logger.getLogger(AddProductFilter.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }else {
-                  ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "userlists.jsp"));
-                return;  
-                }                     
-            }else{
-                ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "homepage.jsp"));
-                return;
-            }
-        }
-
     }    
 
     /**
@@ -134,7 +81,7 @@ public class AddProductFilter implements Filter {
             throws IOException, ServletException {
         
         if (debug) {
-            log("AddProductFilter:doFilter()");
+            log("ShowProductFilter:doFilter()");
         }
         
         doBeforeProcessing(request, response);
@@ -149,7 +96,7 @@ public class AddProductFilter implements Filter {
             problem = t;
             t.printStackTrace();
         }
-      
+
         // If there was a problem, we want to rethrow it if it is
         // a known type, otherwise log it.
         if (problem != null) {
@@ -192,10 +139,9 @@ public class AddProductFilter implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {                
-                log("AddProductFilter:Initializing filter");
+                log("ShowProductFilter:Initializing filter");
             }
         }
-        
         conInit(filterConfig);
     }
 
@@ -205,9 +151,9 @@ public class AddProductFilter implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("AddProductFilter()");
+            return ("ShowProductFilter()");
         }
-        StringBuffer sb = new StringBuffer("AddProductFilter(");
+        StringBuffer sb = new StringBuffer("ShowProductFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
