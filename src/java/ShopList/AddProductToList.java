@@ -7,7 +7,6 @@ package ShopList;
 
 import database.daos.ListDAO;
 import database.daos.NotificationDAO;
-import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
@@ -52,7 +51,7 @@ public class AddProductToList extends HttpServlet {
         }
         ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
         NotificationDAO notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
-        HttpSession s = (HttpSession) request.getSession();
+        HttpSession s = (HttpSession) request.getSession(false);
         String prodotto = ""; String lista = "";
         
         //richieste dei parametri lista e prodotto

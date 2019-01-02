@@ -85,7 +85,7 @@ public class AddProductFilter implements Filter {
             if(session != null){                
                 String shopListName = (String) session.getAttribute("shopListName");    
                 User user = (User) session.getAttribute("user");
-                ShopList guestList = (ShopList) session.getAttribute("guestList");
+                ShopList guestList = (ShopList) session.getAttribute("guestList");                
                 if((user != null || guestList != null) && shopListName != null){
                     try {
                         //get all product categories
@@ -103,6 +103,12 @@ public class AddProductFilter implements Filter {
                             }
                         }
                         session.setAttribute("products", li);
+                        
+                        if((request.getParameter("cat") == null || request.getParameter("cat").equals("all"))){
+                            for(Product p : li){
+                                session.setAttribute(p.getNome(), p.getNome());
+                            }                        
+                        }
                         
                     } catch (DAOException ex) {
                         System.out.println("ERROR ADDPRODUCTSFILTER");

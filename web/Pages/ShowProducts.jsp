@@ -23,50 +23,6 @@
 <%@page import="java.sql.Blob"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%
-
-    DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
-    if (daoFactory == null) {
-        throw new ServletException("Impossible to get dao factory for user storage system");
-    }
-    UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
-    ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
-    ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
-    Category_ProductDAO category_productdao = new JDBCCategory_ProductDAO(daoFactory.getConnection());
-
-    HttpSession s = (HttpSession) request.getSession();
-    String shoplistName = "";
-    if (s.getAttribute("shopListName") != null) {
-        shoplistName = (String) s.getAttribute("shopListName");
-    }
-    User u = new User();
-    boolean find = false;
-
-    ArrayList<Product> li = productdao.getallAdminProducts();
-    ArrayList<String> allCategories = productdao.getAllProductCategories();
-    ArrayList<String> allListsOfUser = new ArrayList();
-    ArrayList<Category_Product> cP = category_productdao.getAllCategories();
-    s.setAttribute("catProd", cP);
-
-    for(Product q : li){
-        s.setAttribute(q.getNome(), null);
-    }
-    
-    int PID = 0;
-    String cat = null;
-    if (request.getParameter("cat") != null) {
-        cat = request.getParameter("cat");
-        System.out.println("\nCAT: " + cat);
-    }
-
-    if (s.getAttribute("user") != null) {
-        u = (User) s.getAttribute("user");
-        allListsOfUser = listdao.getAllListsByCurentUser(u.getEmail());
-        find = true;
-    }
-    session.setAttribute("number", 15);
-%>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -207,23 +163,7 @@
         </style>
 
     </head>
-    <body>        
-
-        <%            String Nominativo = "";
-            String Email = "";
-            String Type = "";
-            String image = "";
-
-            //String Image = "";
-            if (find) {
-                Nominativo = u.getNominativo();
-                Email = u.getEmail();
-                Type = u.getTipo();
-                image = u.getImage();
-            }
-        %>
-
-
+    <body>       
         <div class="page home-page">
             <header class="hero">
                 <div class="hero-wrapper">
@@ -275,13 +215,10 @@
 
                             <div class="col-md-3">
                                 <div class="list-group">
-                                    <a href="/Lists/Pages/ShowProducts.jsp?cat=all" class="list-group-item">All</a>
-                                    <%  String prod = "";
-
-                                        for (String sprd : allCategories) {
-                                            
-                                    <a href="/Lists/Pages/ShowProducts.jsp?cat=<%=sprd%>" class="list-group-item"><%=sprd%></a>
-                                    <%}%>
+                                    <a href="ShowProducts.jsp?cat=all" class="list-group-item">All</a>
+                                    <c:forEach items="${prodCategories}" var="cat">
+                                        <a href="ShowProducts.jsp?cat=${cat}" class="list-group-item"><c:out value="${cat}"/></a>
+                                    </c:forEach>                                    
                                 </div>
                             </div>
                             <div class="col-md-9">
@@ -290,105 +227,88 @@
                                     <div class="float-left float-xs-none" style="width: 89%;">
                                         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name of product">
                                         <label style="display: none;" id="loadProducts1">Nessun prodotto trovato</label><br>
-                                        <c:if test="${not empty user and user.tipo=='amministratore'}">
-                                            
-                                                <a style="display: none;" id="loadProducts2" data-toggle="modal" data-target="#CreateProductModal" class="btn btn-primary text-caps btn-rounded" >+ Crea un prodotto</a>
-                                            
+                                        <c:if test="${not empty user and user.tipo=='amministratore'}">                                            
+                                                <a style="display: none;" id="loadProducts2" data-toggle="modal" data-target="#CreateProductModal" class="btn btn-primary text-caps btn-rounded" >+ Crea un prodotto</a>                                            
                                         </c:if>
                                     </div>
                                     <div class="float-right d-xs-none thumbnail-toggle">
-                                        <a href="#" class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
+                                        <a class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
                                             <i class="fa fa-th"></i>
                                         </a>
-                                        <a href="#" class="change-class active" data-change-from-class="grid" data-change-to-class="list" data-parent-class="items">
+                                        <a class="change-class active" data-change-from-class="grid" data-change-to-class="list" data-parent-class="items">
                                             <i class="fa fa-th-list"></i>
                                         </a>
                                     </div>
                                 </div>
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
+                                    <c:choose>
+                                        <c:when test="${param.cat != null && param.cat ne 'all'}">
+                                            <c:forEach items="${products}" var="p">
+                                                <c:if test="${param.cat eq p.categoria_prodotto}">
+                                                    <div class="item">
+                                                        <!--end ribbon-->
+                                                        <div class="wrapper">
+                                                            <div class="image">
+                                                                <h3>
+                                                                    <a class="tag category"><c:out value="${p.categoria_prodotto}"/></a>
+                                                                    <a class="title"><c:out value="${p.nome}"/></a>
+                                                                    <span class="tag">Offer</span>
+                                                                </h3>
+                                                                <a class="image-wrapper background-image">
+                                                                    <img src="../${p.immagine}" alt="">
+                                                                </a>
+                                                            </div>
+                                                            <!--end image-->
+                                                            <div class="price"><c:out value="ID: ${p.pid}"/></div>
+                                                            <!--end admin-controls-->
+                                                            <div class="description">
+                                                                <p><c:out value="${p.note}"/></p>
+                                                            </div>
+                                                            <!--end description-->
+                                                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton${p.pid}" onclick="addProduct(${p.pid});">Aggiungi ad una lista</a>
+                                                        </div>
+                                                    </div>
+                                                </c:if>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:when test="${param.cat == null or param.cat eq 'all'}">
+                                            <c:set scope="page" var="count" value="5"/>
+                                            <c:forEach  items="${products}" var="p">
+                                                <c:if test="${count <= 15}">
+                                                    <div class="item">
+                                                    <!--end ribbon-->
+                                                    <div class="wrapper">
+                                                        <div class="image">
+                                                            <h3>
+                                                                <a class="tag category"><c:out value="${p.categoria_prodotto}"/></a>
+                                                                <a class="title"><c:out value="${p.nome}"/></a>
+                                                                <span class="tag">Offer</span>
+                                                            </h3>
+                                                            <a class="image-wrapper background-image" style="background-image: url('../${p.immagine}')">                                                                
+                                                                <img src="../${p.immagine}" alt="">
+                                                            </a>
+                                                        </div>
+                                                        <!--end image-->
 
-                                    <%  if (cat != null && !cat.equals("all")) {
-                                            for (Product p : li) {
-                                                PID = p.getPid();
-                                                if (cat.equals(p.getCategoria_prodotto())) {
-                                    %>
+                                                        <div class="price"><c:out value="ID: ${p.pid}"/></div>
 
-                                    <div class="item">
-                                        <!--end ribbon-->
-                                        <div class="wrapper">
-                                            <div class="image">
-                                                <h3>
-                                                    <a href="#" class="tag category"><%=p.getCategoria_prodotto()%></a>
-                                                    <a href="single-listing-1.html" class="title"><%=p.getNome()%></a>
-                                                    <span class="tag">Offer</span>
-                                                </h3>
-                                                <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                    <img src="../<%=p.getImmagine()%>" alt="">
-                                                </a>
+                                                        <!--end admin-controls-->
+                                                        <div class="description">
+                                                            <p><c:out value="${p.note}"/></p>
+                                                        </div>
+                                                        <!--end description-->
+                                                        <a class="detail text-caps underline" style="cursor: pointer;" id="addButton${p.pid}" onclick="addProduct(${p.pid});">Aggiungi ad una lista</a>
+                                                    </div>
+                                                </div>
+                                                </c:if>
+                                                <c:set var="count" value="${count + 1}" scope="page"/>
+                                            </c:forEach>
+                                            <div id="content-wrapper">                                        
                                             </div>
-                                            <!--end image-->
-
-                                            <div class="price">$<%=PID%></div>
-
-                                            <!--end admin-controls-->
-                                            <div class="description">
-                                                <p><%=p.getNote()%></p>
-                                            </div>
-                                            <!--end description-->
-                                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Aggiungi ad una lista</a>
-                                            <!--<form class="ListModal detail text-caps underline" action="/Lists/setPID" method="post" role="form" id="ListModal" >
-                                                <input type="submit" class="btn btn-primary" value="Add to your list">
-                                                <input name="PID" type="hidden" value="<%=PID%>">
-                                            </form>-->
-
-                                        </div>
-                                    </div>
-                                    <%          }
-                                        }
-                                    } else if (request.getParameter("cat") == null || request.getParameter("cat").equals("all")) {
-                                        int count = 5; 
-                                        for (Product p : li) {
-                                            if(count <= 15){ session.setAttribute(p.getNome(), p.getNome());
-                                    %>
-                                    <div class="item">
-                                        <!--end ribbon-->
-                                        <div class="wrapper">
-                                            <div class="image">
-                                                <h3>
-                                                    <a href="#" class="tag category"><%=p.getCategoria_prodotto()%></a>
-                                                    <a href="single-listing-1.html" class="title"><%=p.getNome()%></a>
-                                                    <span class="tag">Offer</span>
-                                                </h3>
-                                                <a href="single-listing-1.html" class="image-wrapper background-image" style="background-image: url('../<%=p.getImmagine()%>')">
-                                                    <%System.out.println("IMAGINEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE: " + p.getImmagine());%>
-                                                    <img src="../<%=p.getImmagine()%>" alt="">
-                                                </a>
-                                            </div>
-                                            <!--end image-->
-
-                                            <div class="price"><%=p.getPid()%></div>
-
-                                            <!--end admin-controls-->
-                                            <div class="description">
-                                                <p><%=p.getNote()%></p>
-                                            </div>
-                                            <!--end description-->
-                                            <a class="detail text-caps underline" style="cursor: pointer;" id="addButton<%=p.getPid()%>" onclick="addProduct(<%=p.getPid()%>);">Aggiungi ad una lista</a>
-                                            <!--<form class="ListModal detail text-caps underline" action="/Lists/setPID" method="post" role="form" id="ListModal" >
-                                                <input type="submit" class="btn btn-primary" value="Add to your list">
-                                                <input name="PID" type="hidden" value="<%=PID%>">
-                                            </form>-->
-
-                                        </div>
-                                    </div>
-                                    <%}count++;}%>
-                                    <div id="content-wrapper">
-                                        
-                                    </div>
-                                    <button class="btn btn-primary text-center" onclick="showProduct();">Mostra più prodotti</button>
-                                        <%}%>
-
+                                            <button class="btn btn-primary text-center" onclick="showProduct();">Mostra più prodotti</button>
+                                        </c:when>
+                                    </c:choose>
                                 </div>
                                 <!--end items-->
                             </div>
@@ -401,7 +321,6 @@
                 <!--end block-->
             </section>
             <!--end content-->
-
         </div>
         <!--end page-->
 
@@ -443,7 +362,7 @@
                     <div class="modal-body">
                         <c:if test="${loginResult==false}">
                             <div class="alert alert-danger">
-                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
                                 <strong>Login Failed!</strong> <br> Please try again or <a data-toggle="modal" href="#RegisterModal" class="alert-link"><u>Sign up!</u></a>
 
                             </div>
@@ -536,7 +455,7 @@
                         </form>
                         <hr>
                         <p>
-                            By clicking "Register Now" button, you agree with our <a href="#" class="link">Terms & Conditions.</a>
+                            By clicking "Register Now" button, you agree with our <a class="link">Terms & Conditions.</a>
                         </p>
                     </div>
                     <div class="modal-footer">
@@ -560,21 +479,18 @@
                     </div>
                     <div class="modal-body">
                         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
-
-
-                        <%if (find) {
-                                for (String nomeLista : allListsOfUser) {%>
-                        <ul id="myUL">
-                            <li><a class="btn btn-primary" href="/Lists/AddProductToList?shopListName=<%=nomeLista%>"><%=nomeLista%></a></li>
-                        </ul>
-                        <%}
-                        } else if (s.getAttribute("guestList") != null) {
-                            ShopList Glist = (ShopList) s.getAttribute("guestList");%>
-                        <ul id="myUL">
-                            <li><a href="/Lists/AddProductToList?shopListName=<%=Glist.getNome()%>"></a><%=Glist.getNome()%></li> 
-                        </ul> 
-                        <%}%>
-
+                        <c:if test="${not empty user}">
+                            <c:forEach items="${allListsOfUser}" var="listname">
+                                <ul id="myUL">
+                                    <li><a class="btn btn-primary" href="/Lists/AddProductToList?shopListName=${listname}"><c:out value="${listname}"/></a></li>
+                                </ul>
+                            </c:forEach>
+                        </c:if>
+                        <c:if test="${not empty guestList}">
+                            <ul id="myUL">
+                                <li><a href="/Lists/AddProductToList?shopListName=${guestList.nome}"><c:out value="${guestList.nome}"/></a></li> 
+                            </ul> 
+                        </c:if>
                     </div>
                     <div style="padding: 1rem;">
                         <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >Crea una lista</a>
@@ -620,7 +536,6 @@
                                         <option value="${prodcat.nome}"><c:out value="${prodcat.nome}"/></option> 
                                     </c:forEach>
                                 </select>
-
                             </div>
                             <div class="form-group">
                                 <label for="Immagine" class="col-form-label required">Immagine</label>
@@ -682,21 +597,21 @@
 
                             </div>
                             <!--end form-group-->
-                            <%if (find) {%>
+                            <c:if test="${not empty user}">
                             <div class="form-group">
                                 <label for="Immagine" class="col-form-label required">Immagine</label>
                                 <input type="file" name="file1" required>
                             </div>
-                            <%}%>
+                            </c:if>
                             <!--end form-group-->
                             <div class="d-flex justify-content-between align-items-baseline">
 
                                 <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
                                 <input type="hidden" name="showProduct" value="true">
 
-                                <%if (find == false && session.getAttribute("guestList") != null) {%>
-                                <h5>Attenzione, hai già salvato una lista. Se non sei registrato puoi salvare solo una lista alla volta. Salvando questa lista, cancellerai la lista gia salvata.</h5>
-                                <%}%>
+                                <c:if test="${not empty user and guestList != null}">
+                                    <h5>Attenzione, hai già salvato una lista. Se non sei registrato puoi salvare solo una lista alla volta. Salvando questa lista, cancellerai la lista gia salvata.</h5>
+                                </c:if>
                             </div>
                         </form>
                         <hr>
@@ -899,8 +814,7 @@
                 error: function () {
                     alert("Errore navbarTemplate");
                 }
-            });
-            
+            });            
             
         });
     </script>
