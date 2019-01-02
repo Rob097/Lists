@@ -72,10 +72,8 @@ public class ShowProductFilter implements Filter {
                 contextPath += "/";
             }
             HttpSession session = ((HttpServletRequest)request).getSession(false);
-            if(session != null){                
-                String shopListName = (String) session.getAttribute("shopListName");    
-                User user = (User) session.getAttribute("user");
-                ShopList guestList = (ShopList) session.getAttribute("guestList");
+            if(session != null){               
+                User user = (User) session.getAttribute("user");                
                 
                 try {
                     //all product categories
@@ -95,8 +93,7 @@ public class ShowProductFilter implements Filter {
                         for(Product p : li){
                             session.setAttribute(p.getNome(), p.getNome());
                         }                        
-                    }
-                    
+                    }                    
                     
                 } catch (DAOException ex) {
                     Logger.getLogger(ShowProductFilter.class.getName()).log(Level.SEVERE, null, ex);

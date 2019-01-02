@@ -53,19 +53,8 @@ public class CreateListCategory extends HttpServlet {
         
         //set category
         String nome = request.getParameter("Nome");
-        String descrizione = request.getParameter("Descrizione");
-        /*Part filePart1 = request.getPart("file1");
-        
-        //salva immagine
-        if(filePart1!=null){
-            String relativeListFolderPath = "/Image/CategoryIco";
-            String listsFolder = ObtainRootFolderPath(relativeListFolderPath);
-            String extension = getImageExtension(filePart1);
-            String imagineName =  category.getNome() + "." + extension;
-            ImageDispatcher.InsertImgIntoDirectory(listsFolder, imagineName, filePart1);
-            String immagine = ImageDispatcher.savePathImgInDatabsae(relativeListFolderPath, imagineName);
-            category.setImmagine(immagine);
-        }*/
+        String descrizione = request.getParameter("Descrizione");        
+       
         category.setNome(nome);
         category.setDescrizione(descrizione);
         category.setAdmin(user.getEmail());

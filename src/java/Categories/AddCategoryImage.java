@@ -51,8 +51,7 @@ public class AddCategoryImage extends HttpServlet {
             throws ServletException, IOException {
       //inizializza variabili
         HttpSession session = (HttpSession) request.getSession(false);
-        Category category = new Category();
-        User user = (User) session.getAttribute("user");
+        Category category = new Category();        
         category.setNome( (String) session.getAttribute("listname"));
         
         
