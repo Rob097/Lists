@@ -20,5 +20,6 @@ public interface Category_ProductDAO {
     public void insertProdCategory(Category_Product catProd) throws DAOException;
     public Category_Product getByName(String nome) throws DAOException;
     public void deleteProductCategory(Category_Product catProd) throws DAOException;
+    public int inUse(Category_Product catProd) throws DAOException;
     
 }

@@ -69,8 +69,7 @@ public class ShareShopListServlet extends HttpServlet {
             User user ;           
             String[] emailsharedUsers = request.getParameterValues("sharedUsers");
             HttpSession session =(HttpSession) request.getSession(false);
-            String listname = (String) session.getAttribute("shopListName");            
-            ArrayList<User> users = (ArrayList<User>) session.getAttribute("Users");
+            String listname = (String) session.getAttribute("shopListName");           
             user = (User) session.getAttribute("user");
             
             
@@ -96,22 +95,7 @@ public class ShareShopListServlet extends HttpServlet {
                 Logger.getLogger(ShareShopListServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            //rimuove gli utenti appena condivisi dal dropdown
-            for (int j = 0; j < users.size(); j++) {
-                    for (int k = 0; k <emailsharedUsers.length; k++) {
-                        if(users.get(j).getEmail().equals(emailsharedUsers[k])){
-                            users.remove(j);
-                        }
-                    }
-                }
-            session.setAttribute("Users", users);
             
-        try {           
-            ShopList shoplist = listdao.getbyName(listname);            
-            session.setAttribute("shoplist", shoplist);
-            } catch (DAOException ex) {
-                Logger.getLogger(ShareShopListServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
         
         response.sendRedirect("/Lists/Pages/ShowUserList.jsp");
     }

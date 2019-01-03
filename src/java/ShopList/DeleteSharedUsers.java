@@ -61,7 +61,6 @@ public class DeleteSharedUsers extends HttpServlet {
         HttpSession session = (HttpSession)request.getSession(false);
         String[] sharedToDelete = request.getParameterValues("sharedToDelete");
         String listname = (String) session.getAttribute("shopListName");
-        User user = (User) session.getAttribute("user");
         
         //cancellazione utenti condivisi selezionati
         try{
@@ -71,45 +70,7 @@ public class DeleteSharedUsers extends HttpServlet {
         }catch(DAOException ex){ //mit DAOException ersetzen
             Logger.getLogger(ShareShopListServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-            
-         //modificare le variabili della sessione
-         try{
-            ArrayList<ShopList> li = listdao.getByEmail(user.getEmail());
-            ArrayList<ShopList> sl = listdao.getListOfShopListsThatUserLookFor(user.getEmail());
-            ShopList shoplist = listdao.getbyName(listname);
-            session.setAttribute("userLists", li);
-            session.setAttribute("sharedLists", sl);
-            session.setAttribute("shoplist", shoplist);
-         }  catch (DAOException ex1) {
-                Logger.getLogger(DeleteSharedUsers.class.getName()).log(Level.SEVERE, null, ex1);
-        } 
-         //atualizza drowpdown
-         try {
-               ArrayList<User> users = userdao.getAllUsers();
-               ArrayList<User> sharedusers = listdao.getUsersWithWhoTheListIsShared(listname);
-                Iterator<User> i = users.iterator();
-                while(i.hasNext()){
-                    //remove your username
-                    if(i.next().getEmail().equals(user.getEmail())){
-                        i.remove();
-                    }
-                }
-                //remove just linked usernames
-                for (int j = 0; j < users.size(); j++) {
-                    for (int k = 0; k < sharedusers.size(); k++) {
-                        if(users.get(j).getEmail().equals(sharedusers.get(k).getEmail())){
-                            users.remove(j);
-                        }
-                    }
-                }
-                
-                session.setAttribute("Users", users);
-            } catch (DAOException ex) {
-                Logger.getLogger(ShowShopList.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println("problems with getAllUsers()");
-            }
-         
+
          //redirecting to Shopping List
         response.sendRedirect("/Lists/Pages/ShowUserList.jsp");
     }

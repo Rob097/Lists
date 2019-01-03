@@ -114,10 +114,10 @@
                                         <a style="display: none;" id="loadProducts2" data-toggle="modal" data-target="#CreateProductModal" class="btn btn-primary text-caps btn-rounded" >+ Crea un prodotto</a>
                                         </div>                                                                       
                                     <div class="float-right d-xs-none thumbnail-toggle">
-                                        <a href="#" class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
+                                        <a class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
                                             <i class="fa fa-th"></i>
                                         </a>
-                                        <a href="#" class="change-class active" data-change-from-class="grid" data-change-to-class="list" data-parent-class="items">
+                                        <a class="change-class active" data-change-from-class="grid" data-change-to-class="list" data-parent-class="items">
                                             <i class="fa fa-th-list"></i>
                                         </a>
                                     </div>
@@ -130,26 +130,20 @@
                                         <div class="wrapper">
                                             <div class="image">
                                                 <h3>
-                                                    <a href="#" class="tag category">${product.categoria_prodotto}</a>
-                                                    <a href="single-listing-1.html" class="title">${product.nome}</a>                           
+                                                    <a class="tag category">${product.categoria_prodotto}</a>
+                                                    <a class="title">${product.nome}</a>                           
                                                 </h3>
-                                                <a href="single-listing-1.html" >
+                                                <a >
                                                     <img src="../../${product.immagine}" alt="" class="avatar">
                                                 </a>
                                             </div>
-                                            <h4 class="location">
-                                                <a href="#">${product.note}</a>
+                                            <h4 class="description">
+                                                <a >${product.note}</a>
                                             </h4>
 
-                                            <div class="admin-controls">
-                                                <a href="edit-ad.html">
-                                                    <i class="fa fa-pencil"></i>Edit
-                                                </a>
-                                                <a href="#" class="ad-hide">
-                                                    <i class="fa fa-eye-slash"></i>Hide
-                                                </a>
+                                            <div class="admin-controls">                                               
                                                 <a href="<%=request.getContextPath()%>/DeleteProduct?PID=<c:out value="${product.pid}"/>" class="ad-remove">
-                                                    <i class="fa fa-trash"></i>Remove
+                                                    <i class="fa fa-trash"></i>Cancella
                                                 </a>
                                             </div>
 

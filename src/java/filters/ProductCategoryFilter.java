@@ -64,8 +64,11 @@ public class ProductCategoryFilter implements Filter {
                 User user =(User) session.getAttribute("user");
                 if(user != null && user.getTipo().equals("amministratore")){
                     try {
-                        
+                        //all product-categories
                         ArrayList<Category_Product> allPrcategories = catproddao.getAllCategories();
+                        for (Category_Product pc : allPrcategories) {
+                            pc.setInUse(catproddao.inUse(pc));
+                        }
                         session.setAttribute("allPrcategories", allPrcategories);
                         
                     } catch(DAOException ex){

@@ -121,13 +121,8 @@ public class ShopListFilter implements Filter {
                             p.setStatus("acquistato");
                             p.setQuantity(productdao.getQuantity(p.getPid(), shopListName));
                         }                        
-                        session.setAttribute("listProducts", products);
-                        
-                        //role User
-                        user.setRuolo(listdao.checkRole(user.getEmail(), shopListName));
-                        String role = listdao.checkRole(user.getEmail(), shopListName);
-                        session.setAttribute("role", role);
-                        
+                        session.setAttribute("listProducts", products);                       
+                         
                         //not shared users                   
                         try {
                            ArrayList<User> users = userdao.getAllUsers();

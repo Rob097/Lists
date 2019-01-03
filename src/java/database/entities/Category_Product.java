@@ -14,6 +14,15 @@ public class Category_Product {
    private String descrizione;
    private String admin;
    private String immagine;
+   private int inUse;
+
+    public int getInUse() {
+        return inUse;
+    }
+
+    public void setInUse(int inUse) {
+        this.inUse = inUse;
+    }
 
     public String getNome() {
         return nome;

@@ -186,10 +186,10 @@
                                         <a style="display: none;" id="loadProducts2" data-toggle="modal" data-target="#CreateCategoryModal" class="btn btn-primary text-caps btn-rounded" >+ Crea una categoria</a>
                                     </div>
                                     <div class="float-right d-xs-none thumbnail-toggle">
-                                        <a href="#" class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
+                                        <a  class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
                                             <i class="fa fa-th"></i>
                                         </a>
-                                        <a href="#" class="change-class active" data-change-from-class="grid" data-change-to-class="list" data-parent-class="items">
+                                        <a class="change-class active" data-change-from-class="grid" data-change-to-class="list" data-parent-class="items">
                                             <i class="fa fa-th-list"></i>
                                         </a>
                                     </div>
@@ -212,11 +212,15 @@
                                                     </div>
                                                 </div>
                                                 <h4 class="description">                                                                                                 
-                                                    <a><c:out value="${Pcategoria.descrizione}"/></a>                                                     
+                                                    <c:if test="${Pcategoria.inUse != 1}">
+                                                        <a><c:out value="${Pcategoria.descrizione}"/><br><b><c:out value="Usata per ${Pcategoria.inUse} Prodotti"/></b></a>
+                                                    </c:if>
+                                                    <c:if test="${Pcategoria.inUse == 1}">
+                                                        <a><c:out value="${Pcategoria.descrizione}"/><br><b><c:out value="Usata per ${Pcategoria.inUse} Prodotto"/></b></a>
+                                                    </c:if>                                                      
                                                 </h4>
-
                                                 <div class="admin-controls">
-                                                    <a href="<%=request.getContextPath()%>/restricted/DeleteProductCategory?listname=${Pcategoria.nome}" class="ad-remove">
+                                                    <a href="<%=request.getContextPath()%>/restricted/DeleteProductCategory?listname=${Pcategoria.nome}" class="ad-remove <c:if test="${Pcategoria.inUse != 0}">disabled</c:if>" data-toggle="tooltip" <c:if test="${Pcategoria.inUse != 0}">title="In uso, non è possibile cancellarla"</c:if>>
                                                         <i class="fa fa-trash"></i>Cancella
                                                     </a>
                                                 </div>                                            

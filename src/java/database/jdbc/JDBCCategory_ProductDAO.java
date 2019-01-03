@@ -146,4 +146,26 @@ public class JDBCCategory_ProductDAO extends JDBCDAO implements Category_Product
             throw new DAOException(ex);
         }
     }    
+
+    @Override
+    public int inUse(Category_Product catProd) throws DAOException {
+        if(catProd == null ){
+          throw new DAOException("category is a mandatory field", new NullPointerException("category is null"));
+        }
+        
+        try (PreparedStatement stm = CON.prepareStatement("SELECT COUNT(categoria_prod) FROM Product WHERE categoria_prod = ?")){
+           stm.setString(1, catProd.getNome()); 
+           
+           try(ResultSet rs = stm.executeQuery()){             
+                while (rs.next()) {
+                    return rs.getInt(1);
+                }              
+           }          
+                      
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCCategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }      
+        
+        return 0;
+    }
 }
