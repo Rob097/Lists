@@ -14,37 +14,6 @@
 <%@page import="java.sql.Blob"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<c:if test="${user == null}">
-    <c:redirect url="/homepage.jsp"/>
-</c:if>
-
-<%
-
-    DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
-    if (daoFactory == null) {
-        throw new ServletException("Impossible to get dao factory for user storage system");
-    }
-    UserDAO userdao = new JDBCUserDAO(daoFactory.getConnection());
-    ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
-    ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
-
-    HttpSession s = (HttpSession) request.getSession();
-    String shoplistName = (String) s.getAttribute("shopListName");
-    User u = null;
-    boolean find = false;
-
-    u = (User) s.getAttribute("user");
-
-    if (u.getTipo().equals("standard") || u.getTipo().equals("amministratore")) {
-        find = true;
-    }
-
-    if (find) {
-        ArrayList<User> listautenti = listdao.getUsersWithWhoTheListIsShared(shoplistName);
-
-%>
-
-
 <!doctype html>
 <html lang="en">
     <head>
@@ -78,18 +47,6 @@
 
     </head>
     <body onload="loadChatFile()">
-
-        <%            String Nominativo = "";
-            String Email = "";
-            String Type = "";
-            String image = "";
-
-            //String Image = "";
-            Nominativo = u.getNominativo();
-            Email = u.getEmail();
-            Type = u.getTipo();
-            image = u.getImage();
-        %>
         <div class="page sub-page">
             <!--*********************************************************************************************************-->
             <!--************ HERO ***************************************************************************************-->
@@ -100,28 +57,25 @@
                         <a class="navbar-brand">
                             <img width= "50" src="img/favicon.png" alt="Logo">
                         </a>
-                        <a class="navbar-brand js-scroll-trigger" href="#home">LISTS</a>
+                        <a class="navbar-brand js-scroll-trigger" href="../homepage.jsp">LISTS</a>
                         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                             Menu
                             <i class="fa fa-bars"></i>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarResponsive">
-                            <ul class="navbar-nav text-uppercase ml-auto text-center">
+                            <ul class="navbar-nav text-uppercase ml-auto text-center">                                
                                 <li class="nav-item">
-                                    <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >Crea una lista</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger"  href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
+                                    <a class="nav-link js-scroll-trigger"  href="../homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
                                 </li>
                                 <li class="nav-item js-scroll-trigger dropdown">
                                     <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
                                     <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item nav-link" href="/Lists/userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
-                                        <a class="dropdown-item nav-link" href="/Lists/foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
+                                        <a class="dropdown-item nav-link" href="../userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
+                                        <a class="dropdown-item nav-link" href="../foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
                                     </div>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="profile.jsp">
+                                    <a class="nav-link js-scroll-trigger" href="../profile.jsp">
                                         <i class="fa fa-user"></i><b>Il mio profilo</b>
                                     </a>
                                 </li>
@@ -140,6 +94,7 @@
                 <div class="page-title">
                     <div class="container">
                         <h1>Messages</h1>
+                        <br>
                     </div>
                     <!--end container-->
                 </div>
@@ -169,24 +124,18 @@
                             </div>
                             <div class="messaging__content">
                                 <ul class="messaging__persons-list">
-
-                                    <%for (User utente : listautenti) {%>
-
-                                    <li>
-                                        <a href="#" class="messaging__person">
-                                            <figure class="messaging__image-item" data-background-image="../<%=utente.getImage()%>"></figure>
-                                            <figure class="content">
-                                                <h5><%=utente.getNominativo()%></h5>
-
-                                            </figure>
-                                            <figure class="messaging__image-person" ></figure>
-                                        </a>
-                                        <!--messaging__person-->
-                                    </li>
-
-                                    <%}%>
-
-
+                                    <c:forEach items="${userList}" var="u">
+                                        <li>
+                                            <a class="messaging__person">
+                                                <figure class="messaging__image-item" data-background-image="../${u.image}"></figure>
+                                                <figure class="content">
+                                                    <h5><c:out value="${u.nominativo}"/></h5>
+                                                </figure>
+                                                <figure class="messaging__image-person" ></figure>
+                                            </a>
+                                            <!--messaging__person-->
+                                        </li>
+                                    </c:forEach>
                                 </ul>
                                 <!--end messaging__persons-list-->
                             </div>
@@ -204,12 +153,12 @@
                         <div id="messaging__chat-window" class="messaging__box">
                             <div class="messaging__header">
                                 <div class="float-left flex-row-reverse messaging__person">
-                                    <h5 class="font-weight-bold" id="Sender"><%=Nominativo%></h5>
-                                    <input type = "hidden" name = "senderEmail" id = "senderEmail" value = "<%=Email%>">
+                                    <h5 class="font-weight-bold" id="Sender"><c:out value="${user.nominativo}"/></h5>
+                                    <input type = "hidden" name = "senderEmail" id = "senderEmail" value = "<c:out value="${user.email}"/>">
                                     <figure class="mr-4 messaging__image-person" data-background-image="assets/img/author-02.jpg"></figure>
                                 </div>
                                 <div class="float-right messaging__person">
-                                    <h5 class="mr-4" id="shoplistName"><%=shoplistName%></h5>
+                                    <h5 class="mr-4" id="shoplistName"><c:out value="${shopListName}"/></h5>
                                     <figure id="messaging__user" class="messaging__image-person" data-background-image="assets/img/author-06.jpg"></figure>
                                 </div>
                             </div>
@@ -289,69 +238,6 @@
     <!--end footer-->
 </div>
 <!--end page-->
-
-<div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="page-title">
-                            <div class="container">
-                                <h1 style="text-align: center;">Create list</h1>
-                            </div>
-                            <!--end container-->
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Form per il login -->
-                        <form class="form clearfix" id="CreateShopListform" action="/Lists/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
-                            <div class="form-group">
-                                <label for="Nome" class="col-form-label">Nome della lista</label>
-                                <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="Descrizione" class="col-form-label">Descrizione</label>
-                                <input type="text" name="Descrizione" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="Categoria" class="col-form-label">Categoria</label>
-                                <select name="Categoria" id="Categoria" tabindex="1" size="5" >
-
-                                    <c:forEach items="${categorie}" var="categoria">
-                                        <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
-                                    </c:forEach>
-                                </select><!--<input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>-->
-
-                            </div>
-                            <!--end form-group-->
-                            <%if(find){%>
-                            <div class="form-group">
-                                <label for="Immagine" class="col-form-label required">Immagine</label>
-                                <input type="file" name="file1" required>
-                            </div>
-                            <%}%>
-                            <!--end form-group-->
-                            <div class="d-flex justify-content-between align-items-baseline">
-
-                                <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
-
-                                <%if (find == false && session.getAttribute("guestList") != null) {%>
-                                <h5>Attenzione, hai già salvato una lista. Se non sei registrato puoi salvare solo una lista alla volta. Salvando questa lista, cancellerai la lista gia salvata.</h5>
-                                <%}%>
-                            </div>
-                        </form>
-                        <hr>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
 <script src="js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="js/popper.min.js"></script>
@@ -518,8 +404,3 @@
 
 </body>
 </html>
-
-<%
-    } else
-        response.sendRedirect("/Lists");
-%>
