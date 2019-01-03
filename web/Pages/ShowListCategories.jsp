@@ -211,10 +211,10 @@
                                         <a style="display: none;" id="loadProducts2" data-toggle="modal" data-target="#CreateCategoryModal" class="btn btn-primary text-caps btn-rounded" >+ Crea una categoria</a>
                                     </div>
                                     <div class="float-right d-xs-none thumbnail-toggle">
-                                        <a href="#" class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
+                                        <a class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
                                             <i class="fa fa-th"></i>
                                         </a>
-                                        <a href="#" class="change-class active" data-change-from-class="grid" data-change-to-class="list" data-parent-class="items">
+                                        <a class="change-class active" data-change-from-class="grid" data-change-to-class="list" data-parent-class="items">
                                             <i class="fa fa-th-list"></i>
                                         </a>
                                     </div>
@@ -243,21 +243,26 @@
                                                                             <img src="../${immagine}" alt="immagine categoria" class=" background-image">
                                                                         </a>
                                                                     </div>
-                                                              </c:forEach>
+                                                              </c:forEach>                                                            
                                                         </div>
                                                       </div>                                                   
                                                 </div>
                                                 <h4 class="description">
-                                                    <a><c:out value="${categoria.descrizione}"/></a>                                                    
+                                                    <c:if test="${categoria.inUse != 1}">
+                                                        <a><c:out value="${categoria.descrizione}"/><br><b><c:out value="Usata in ${categoria.inUse} Liste"/></b></a>
+                                                    </c:if>
+                                                    <c:if test="${categoria.inUse == 1}">
+                                                        <a><c:out value="${categoria.descrizione}"/><br><b><c:out value="Usata in ${categoria.inUse} Lista"/></b></a>
+                                                    </c:if>                                                    
                                                 </h4>
                                                 <div class="admin-controls">
-                                                    <a onclick="setImage('${categoria.nome}', 'add')" href="#" class="ad-remove">
+                                                    <a onclick="setImage('${categoria.nome}', 'add')" class="ad-remove">
                                                         <i class="fa fa-picture-o"></i>+ immagine
                                                     </a>                                                  
-                                                    <a onclick="setImage('${categoria.nome}', 'delete')" href="#" class="ad-remove">
+                                                    <a onclick="setImage('${categoria.nome}', 'delete')" class="ad-remove">
                                                         <i class="fa fa-remove"></i>- immagine
                                                     </a>
-                                                    <a href="<%=request.getContextPath()%>/restricted/DeleteListCategory?listname=${categoria.nome}" class="ad-remove">
+                                                    <a href="<%=request.getContextPath()%>/restricted/DeleteListCategory?listname=${categoria.nome}" class="ad-remove <c:if test="${categoria.inUse != 0}">disabled</c:if>" data-toggle="tooltip" <c:if test="${categoria.inUse != 0}">title="In uso, non è possibile cancellarla"</c:if> >
                                                         <i class="fa fa-trash"></i>Cancella
                                                     </a>
                                                 </div>                                            

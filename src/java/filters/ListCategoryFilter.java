@@ -59,8 +59,12 @@ public class ListCategoryFilter implements Filter {
                 if(user != null){
                     if(user.getTipo().equals("amministratore")){
                           try {
+                              //get all categories
                               ArrayList<Category> allCategories = categorydao.getAllCategories();
-                              session.setAttribute("allCategories", allCategories);
+                              for(Category cat : allCategories){
+                                  cat.setInUse(categorydao.inUse(cat));                                  
+                              }
+                              session.setAttribute("allCategories", allCategories);                               
             
                           } catch (DAOException ex) {
                               System.out.println("don't get all categories form database");

@@ -232,4 +232,26 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
             throw new DAOException("Impossible to get the immages", ex);
         }
     }
+
+    @Override
+    public int inUse(Category category) throws DAOException {
+        if(category == null ){
+          throw new DAOException("category is a mandatory field", new NullPointerException("category is null"));
+        }
+        
+        try (PreparedStatement stm = CON.prepareStatement("SELECT COUNT(categoria) AS total FROM List WHERE categoria = ?")){
+           stm.setString(1, category.getNome()); 
+           
+           try(ResultSet rs = stm.executeQuery()){             
+                while (rs.next()) {
+                    return rs.getInt(1);
+                }              
+           }          
+                      
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCCategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }      
+        
+        return 0;
+    }
 }

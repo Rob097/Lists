@@ -17,7 +17,16 @@ public class Category {
     private String admin;
     public String immagine;
     private List<String> immagini;
+    private int inUse;
 
+    public int getInUse() {
+        return inUse;
+    }
+
+    public void setInUse(int inUse) {
+        this.inUse = inUse;
+    }
+        
     public String getNome() {
         return nome;
     }

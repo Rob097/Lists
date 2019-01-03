@@ -24,4 +24,5 @@ public interface CategoryDAO {
     public void insertImmagine(Category categoria) throws DAOException;
     public List<String> getAllImagesbyName(String name) throws DAOException;
     public void deleteImage(String image) throws DAOException;
+    public int inUse(Category category) throws DAOException;
 }
