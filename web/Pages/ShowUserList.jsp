@@ -292,10 +292,10 @@
                                                     <div class="image">
                                                         <h3>
                                                             <a href="#" class="tag category"><c:out value="${prod.categoria_prodotto}"/></a>
-                                                            <a href="single-listing-1.html" class="title"><c:out value="${prod.nome}"/></a>
+                                                            <a class="title"><c:out value="${prod.nome}"/></a>
                                                             <span class="tag">Offer</span>
                                                         </h3>
-                                                        <a href="single-listing-1.html" class="image-wrapper background-image">
+                                                        <a class="image-wrapper background-image">
                                                             <img src="../${prod.immagine}" alt="">                                                            
                                                         </a>
                                                     </div>
@@ -308,7 +308,7 @@
                                                             <i class="fas fa-shopping-cart"></i>Acquistato
                                                         </a>
                                                         <a onclick="removeItem('${prod.pid}');" style="cursor: pointer;" class="ad-remove">
-                                                            <i class="fa fa-trash"></i>Remove
+                                                            <i class="fa fa-trash"></i>Cancella
                                                         </a>
                                                     </div>
                                                     <!--end admin-controls-->

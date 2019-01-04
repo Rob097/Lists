@@ -137,13 +137,7 @@
                                                 <div class="admin-controls">
                                                     <a href="/Lists/ShowShopList?nome=${list.nome}">
                                                         <i class="fa fa-pencil"></i>Edit
-                                                    </a>
-                                                    <a href="#" class="ad-hide">
-                                                        <i class="fa fa-eye-slash"></i>Hide
-                                                    </a>
-                                                    <a href="#" class="ad-remove">
-                                                        <i class="fa fa-trash"></i>Remove
-                                                    </a>
+                                                    </a>                                                    
                                                 </div>
                                                 <!--end admin-controls-->
                                                 <div class="description">

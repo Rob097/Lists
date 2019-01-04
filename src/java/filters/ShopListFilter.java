@@ -105,6 +105,10 @@ public class ShopListFilter implements Filter {
                         ShopList shoplist = listdao.getbyName(shopListName);
                         session.setAttribute("lista", shoplist);
                         
+                        //user role
+                        user.setRuolo(listdao.checkRole(user.getEmail(), shopListName));
+                        session.setAttribute("user", user);
+                        
                         //sharedusers
                         ArrayList<User> sharedusers = listdao.getUsersWithWhoTheListIsShared(shopListName);  
                         //role sharedusers 

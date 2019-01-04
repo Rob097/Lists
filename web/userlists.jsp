@@ -145,13 +145,10 @@
                                                             <!--end image-->                                                            
                                                             <div class="admin-controls">
                                                                 <a href="/Lists/ShowShopList?nome=${list.nome}">
-                                                                    <i class="fa fa-pencil"></i>Edit
-                                                                </a>
-                                                                <a href="#" class="ad-hide">
-                                                                    <i class="fa fa-eye-slash"></i>Hide
-                                                                </a>
+                                                                    <i class="fa fa-pencil"></i>Modifica
+                                                                </a>                                                                
                                                                 <a href="/Lists/DeleteShopList?shopListName=${list.nome}" class="ad-remove">
-                                                                    <i class="fa fa-trash"></i>Remove
+                                                                    <i class="fa fa-trash"></i>Cancella
                                                                 </a>
                                                             </div>
                                                             <!--end admin-controls-->
