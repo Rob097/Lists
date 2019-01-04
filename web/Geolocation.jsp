@@ -101,7 +101,7 @@
                 padding: 15px;
             }
         </style>
-
+        
     </head>
     <body>
         <div class="page home-page">
@@ -191,22 +191,29 @@
                             <div class="col-md-12">
                                 <div id="map" style="width: 100%; height: 400px; background: grey"></div>
                                 <div class="container">
-                                          
-                                    <table class="table" id="tabella">
-                                      <thead>
+                                    
+                                    <div id = "contenitore"></div>
+                                    
+                                    
+                                       
+                                    
+                                    
+                                    <table class="table">
+                                      <thead class="thead-dark">
                                         <tr>
                                           <th>Nome</th>
                                           <th>Categoria</th>
                                           <th>Distanza</th>
                                           <th>orari</th>
                                           <th>Indirizzo</th>
-                                          <th>potresti averi bisogno nella lista</th>
+                                          <th>nome lista</th>
                                         </tr>
                                       </thead>
-                                      <tbody>
+                                      <tbody id="tabella">
                                         
                                       </tbody>
                                     </table>
+                                                  
                                   </div>
                                 <!--============ Section Title===================================================================-->
                                 
@@ -723,7 +730,7 @@
         
 
         <!--MAPPA=====================================================================================================-->
-        
+                
         <script  type="text/javascript" charset="UTF-8" >
 
             var keyWord = "farmacia";
@@ -790,8 +797,13 @@
                     'at': yourLat+','+yourLong
                 };
                 var search = new H.places.Search(platform.getPlacesService()), searchResult, error;
-
+                
+                
+                var z = 0;
                 function onResult(data) {
+                    z++; console.log("sto guardanado z: " + z);
+                    console.log("guardo il nome della lista: " + nomeLista);
+                    
                     searchResult = data;
                     console.log(searchResult);
                     console.log(searchResult.results.items[0].position);
@@ -820,7 +832,7 @@
                         }
                         console.log(openingHours);
                         if(distance<distanzaMassima){
-                            document.getElementById("tabella").innerHTML += "<tr><td>" + searchResult.results.items[i].title + "</td>" + "<td>" + category + "</td>" + "<td>" + distance + "</td>" + "<td>" + orari + "</td>" + "<td>" + vicinity + "</td>" + "<td> dai un occhiata alla lista: <h3>" + nomeLista + "</h3></td>"+"</tr>";
+                            document.getElementById("tabella").innerHTML += "<tr><td>" + searchResult.results.items[i].title + "</td>" + "<td>" + category + "</td>" + "<td>" + distance + "</td>" + "<td>" + orari + "</td>" + "<td>" + vicinity + "</td>"+"</tr>";
                         }
                         console.log(searchResult.results.items[i].title);
                         
@@ -829,7 +841,6 @@
                         // Add the marker to the map:
                         map.addObject(marker);
                     }
-                    document.getElementById("tabella").innerHTML +="<br>";
                 }
 
                 //Define a callback function to handle errors:
@@ -841,17 +852,168 @@
                 // Run a search request with parameters, headers (empty), and
                 // callback functions:
                 <%  for (ShopList l : li) {%>
+                        var lsn;
                         nomeLista = '<%=l.getNome()%>';
+                        lsn = '<%=l.getNome()%>';
                         nomeCategoria = '<%=l.getCategoria()%>';
                         console.log("Sto cercando per cetegoria ["+nomeCategoria+"] nella lista ["+nomeLista+"]");
-                            
-                        var params = {
-                            'q': nomeCategoria,
-                            'at': yourLat+','+yourLong
-                            };
-                        search.request(params, {}, onResult, onError);
+                        giveAllPlaces(nomeCategoria, nomeLista);
+                        
                 <%}%>
+                    
+                    function buildDOMwithPlaces(nomeLista, nomeLocale, category, distance, orari, vicinity){
+                        var msg = "Hei sei nelle vicinanze di una farmacia, dai un occhiata alla lista {NOME LISTA} e completa la spesa";
+                        
+                        var cardHeader = "<div id=\"accordion\">"+
+                                        "<div class=\"card\">"+
+                                          "<div class=\"card-header\" id=\"headingOne\">"+
+                                            "<h5 class=\"mb-0\">"+
+                                              "<button class=\"btn collapsed\" data-toggle=\"collapse\" data-target=\"#collapseTwo\" aria-expanded=\"false\" aria-controls=\"collapseTwo\">"+
+                                                "Collapsible Group Item #1"+
+                                              "</button>"+
+                                            "</h5>"+
+                                          "</div>"+
+                                          "<div id=\"collapseTwo\" class=\"collapse\" aria-labelledby=\"headingTwo\" data-parent=\"#accordion\">"+
+                                           " <div class=\"card-body\">";
+                                   
+                        var table = "<tr>"+
+                                        "<td>" + searchResult.results.items[i].title + "</td>" + 
+                                        "<td>" + category + "</td>" + 
+                                        "<td>" + distance + "</td>" + 
+                                        "<td>" + orari + "</td>" + 
+                                        "<td>" + vicinity + "</td>"+ 
+                                        "<td>" + nomeLista + "</td>"+
+                                    "</tr>";
+                        
+                        var closeCard = "</table>"+
+                                        "</div>"+
+                                        "</div>"+
+                                        "</div>"+
+                                        "</div>";
+                                
+                                
+                        var tableHeader = " <table class=\"table\">"+
+                                      "<thead class=\"thead-dark\">"+
+                                        "<tr>"+
+                                          "<th>Nome</th>"+
+                                          "<th>Categoria</th>"+
+                                          "<th>Distanza</th>"+
+                                          "<th>orari</th>"+
+                                          "<th>Indirizzo</th>"+
+                                          "<th>nome lista</th>"+
+                                        "</tr>"+
+                                      "</thead>"+
+                                      "<tbody id=\"tabella\">";
+                                        
+                        var tableClose = "</tbody>"+
+                                         "</table>";
+                        
+                        document.getElementById("contenitore").innerHTML+="";
+                    }
+                    
+                    function giveAllPlaces(nomeCategoria, nomeLista){
+                        $.ajax({
+                        url: 'https://places.demo.api.here.com/places/v1/discover/search',
+                        type: 'GET',
+                        data: {
+                          at: yourLat+','+yourLong,
+                          q: nomeCategoria,
+                          app_id: 'devportal-demo-20180625',
+                          app_code: '9v2BkviRwi9Ot26kp2IysQ'
+                        },
+                        beforeSend: function(xhr){
+                          xhr.setRequestHeader('Accept', 'application/json');
+                        },
+                        success: function (data) {
+                          //alert(JSON.stringify(data));
+                          console.log(data);
+                          //alert(nomeLista);
+                          
+                          searchResult = data;
+                    console.log(searchResult);
+                    console.log(searchResult.results.items[0].position);
+                    
+                    var cardHeader = "<div id=\"accordion\">"+
+                                        "<div class=\"card\">"+
+                                          "<div class=\"card-header\" id=\"heading"+nomeLista+"\">"+
+                                            "<h5 class=\"mb-0\">"+
+                                              "<button class=\"btn collapsed\" data-toggle=\"collapse\" data-target=\"#collapse"+nomeLista+"\" aria-expanded=\"false\" aria-controls=\"collapse"+nomeLista+"\">"+
+                                                "Collapsible Group Item #1"+
+                                              "</button>"+
+                                            "</h5>"+
+                                          "</div>"+
+                                          "<div id=\"collapse"+nomeLista+"\" class=\"collapse\" aria-labelledby=\"heading"+nomeLista+"\" data-parent=\"#accordion\">"+
+                                           " <div class=\"card-body\">";
+                    
+                    var tableHeader = " <table class=\"table\">"+
+                                      "<thead class=\"thead-dark\">"+
+                                        "<tr>"+
+                                          "<th>Nome</th>"+
+                                          "<th>Categoria</th>"+
+                                          "<th>Distanza</th>"+
+                                          "<th>orari</th>"+
+                                          "<th>Indirizzo</th>"+
+                                          "<th>nome lista</th>"+
+                                        "</tr>"+
+                                      "</thead>"+
+                                      "<tbody id=\""+nomeLista+"\">";
+                              
+                    var tableClose = "</tbody>"+
+                                     "</table>";
+                             
+                    var closeCard = "</table>"+
+                                        "</div>"+
+                                        "</div>"+
+                                        "</div>"+
+                                        "</div>";
+                                
+                   var msg = "<div class=\"shadow-lg p-3 mb-5 bg-white rounded\">Hei sei nelle vicinanze di una "+nomeCategoria+", dai un occhiata alla lista "+nomeLista+" e completa la spesa</div>";
+                   document.getElementById("contenitore").innerHTML += msg;
+                   document.getElementById("contenitore").innerHTML += tableHeader;
+                   
+                    var distanzaMassima = 10000;
+                    for (var i = 0, max = 5; i < max; i++) {
+                        var l = searchResult.results.items[i].position[0];
+                        var la = searchResult.results.items[i].position[1];
+                        var icon = new H.map.Icon(searchResult.results.items[i].icon);
+
+                        // Create a marker using the previously instantiated icon:
+                        var marker = new H.map.Marker({lat: l, lng: la}, {icon: icon});
+                        var category = searchResult.results.items[i].category.title;
+                        var distance = searchResult.results.items[i].distance;
+                        var openingHours = searchResult.results.items[i].openingHours;
+                        var vicinity = searchResult.results.items[i].vicinity;
+
+                        var orari = "";
+                        if (openingHours) {
+                            orari = openingHours.text;
+                            console.log(openingHours.text);
+                        } else {
+                            orari = "non ci sono gli orari";
+                            console.log("non ci sono gli orari");
+                        }
+                        console.log(openingHours);
+                        
+                            document.getElementById(nomeLista).innerHTML += "<tr><td>" + searchResult.results.items[i].title + "</td>" + "<td>" + category + "</td>" + "<td>" + distance + "</td>" + "<td>" + orari + "</td>" + "<td>" + vicinity + "</td>"+ "<td>" + nomeLista + "</td>"+"</tr>";
+                        
+                        console.log(searchResult.results.items[i].title);
+                        
+                        console.log("???????????????????????????????????????????? " + nomeLista);
+
+                        // Add the marker to the map:
+                        map.addObject(marker);
+                    }
+                    document.getElementById("contenitore").innerHTML +=tableClose;
+                   
+
+                        }
+                    });
+                    }
+                    
+                    
             }
+            
+            
 
             getLocation();
 
