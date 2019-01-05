@@ -216,7 +216,7 @@
                                                 </div>
                                                 
                                                 <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6">
-                                                    <a href="ThirdChatroom.jsp" style="font-size: 2.5rem; width: -webkit-fill-available;"><i class="fas fa-map-marked-alt"><br>Map</i></a> 
+                                                    <a href="../Geolocation.jsp" style="font-size: 2.5rem; width: -webkit-fill-available;"><i class="fas fa-map-marked-alt"><br>Map</i></a> 
                                                 </div>
                                             </div>
                                         </c:when>
