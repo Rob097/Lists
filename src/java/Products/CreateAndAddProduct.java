@@ -70,6 +70,7 @@ public class CreateAndAddProduct extends HttpServlet {
         newProduct.setNome(request.getParameter("NomeProdotto"));
         newProduct.setNote(request.getParameter("NoteProdotto"));
         newProduct.setCategoria_prodotto(request.getParameter("CategoriaProdotto"));
+        String data = request.getParameter("expiration");
         if (user != null) {
             newProduct.setCreator(user.getEmail());
         }
@@ -110,7 +111,7 @@ public class CreateAndAddProduct extends HttpServlet {
         try { 
             utenti = notificationdao.getUsersWithWhoTheListIsShared(list.getNome());
             pid = productdao.LastPIDforInsert(newProduct);
-            listdao.insertProductToList(pid, list.getNome());
+            listdao.insertProductToList(pid, list.getNome(),data);
             for(User u : utenti){
                 if(!u.getEmail().equals(user.getEmail())){
                     notificationdao.addNotification(u.getEmail(), "new_product", list.getNome());

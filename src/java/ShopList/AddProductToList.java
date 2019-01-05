@@ -14,6 +14,7 @@ import database.jdbc.JDBCNotificationsDAO;
 import database.jdbc.JDBCShopListDAO;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -53,10 +54,12 @@ public class AddProductToList extends HttpServlet {
         NotificationDAO notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
         HttpSession s = (HttpSession) request.getSession(false);
         String prodotto = ""; String lista = "";
+        String data = null;
         
         //richieste dei parametri lista e prodotto
         if(request.getParameter("prodotto") != null){
             prodotto = request.getParameter("prodotto");
+            data = request.getParameter("date");            
         }else if(s.getAttribute("prodotto") != null){
             prodotto = (String) "" + s.getAttribute("prodotto");
         }else prodotto = "niente";
@@ -83,7 +86,7 @@ public class AddProductToList extends HttpServlet {
         if(s.getAttribute("user") != null){
             User utente = (User) s.getAttribute("user");
             try {
-                listdao.insertProductToList(Integer.parseInt(prodotto), lista);
+                listdao.insertProductToList(Integer.parseInt(prodotto), lista, data);
                 for(User u : utenti){
                     //System.out.println("Nome: "+u.getNominativo() + "\nlista: " + lista);
                     if(!u.getEmail().equals(utente.getEmail())){

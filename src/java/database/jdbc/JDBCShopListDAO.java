@@ -15,7 +15,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -370,26 +375,49 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
     }
 
     @Override
-    public void insertProductToList(int prodotto, String lista) throws DAOException {
-        if (lista == null) {
-            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed email or listname is null"));
-        }
-
-        java.sql.Timestamp date = new java.sql.Timestamp(new java.util.Date().getTime());
+    public void insertProductToList(int prodotto, String lista, String data) throws DAOException {
         
-        try (PreparedStatement stm = CON.prepareStatement("INSERT INTO List_Prod VALUES (?,?,'2008-7-04',null,'daAcquistare', 1, null)")) {
-            stm.setString(1, lista);
-            stm.setInt(2, prodotto);
-            //stm.setTimestamp(3, date);
-
-            if (stm.executeUpdate() == 1) {
-               return;
-            } else {
-                throw new DAOException("Impossible to insert the product");
+            if (lista == null) {
+                throw new DAOException("parameter not valid", new IllegalArgumentException("The passed email or listname is null"));
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            Date date1 = null;
+            if(data.length()>10){
+                String strMnth    = data.substring(4,7);
+                String day        = data.substring(8,10);
+                String year       = data.substring(11,15);                
+                String strDate = year +'-'+strMnth+'-'+day;
+                try{
+                    date1=new SimpleDateFormat("yyyy-MMM-dd").parse(strDate);                
+                }catch (Exception e){
+                    e.printStackTrace(); 
+                }
+            }else{
+                try {
+                    date1=new SimpleDateFormat("yyyy-MM-dd").parse(data);
+                } catch (ParseException ex) {
+                    Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            java.sql.Date sqlStartDate = new java.sql.Date(date1.getTime());            
+            
+            
+            
+            try (PreparedStatement stm = CON.prepareStatement("INSERT INTO List_Prod VALUES (?,?,?,null,'daAcquistare', 1, null)")) {
+                stm.setString(1, lista);
+                stm.setInt(2, prodotto);
+                stm.setDate(3, sqlStartDate);
+                
+                //stm.setTimestamp(3, date);
+                
+                if (stm.executeUpdate() == 1) {
+                    return;
+                } else {
+                    throw new DAOException("Impossible to insert the product");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }        
     }
     
     @Override

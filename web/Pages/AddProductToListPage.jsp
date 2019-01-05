@@ -36,6 +36,7 @@
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/user.css">
         <link rel="stylesheet" href="css/navbar.css">
+        <link rel="stylesheet" href="css/datepicker.css">
         <style>
 
             body{
@@ -284,7 +285,7 @@
                                                             <!--end image-->
                                                             <!--end admin-controls-->
                                                             <div class="description">
-                                                                <p><c:out value="${product.note}"/></p>
+                                                                <p><c:out value="${product.note}"/></p>                                                                
                                                             </div>
                                                             <!--end description-->
                                                             <c:choose>
@@ -411,6 +412,7 @@
         <script src="js/jquery.validate.min.js"></script>
         <script src="js/custom.js"></script>
         <script src="js/nav.js"></script>
+        <script src="js/datepicker.js"></script>
 
         <div class="modal fade" id="myModal" role="dialog">
             <div class="modal-dialog">
@@ -491,9 +493,10 @@
         
         <script>
                                         function addProduct(id) {
+                                            var d1 = new Date(prompt('Comprare entro: (yyyy-mm-dd)'));
                                             $.ajax({
                                                 type: "GET",
-                                                url: "/Lists/AddProductToList?prodotto=" + id,
+                                                url: "/Lists/AddProductToList?prodotto="+id+"&date="+d1,
                                                 async: false,
                                                 success: function () {
                                                     $('#addButton' + id).addClass('dispNone');

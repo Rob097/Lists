@@ -24,6 +24,7 @@
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/user.css">
         <link rel="stylesheet" href="css/navbar.css">
+        <link rel="stylesheet" href="css/datepicker.css">
         <link rel="stylesheet" href="css/datatables.css" type="text/css"> 
         <script src="js/jquery-3.3.1.min.js"></script>
         <script type="text/javascript" src="js/popper.min.js"></script>
@@ -564,6 +565,10 @@
 
                             </div>
                             <div class="form-group">
+                                <label for="Date" class="col-form-label required">Data di scadenza</label>
+                                <input type="text" class="datepicker" name="expiration" >
+                            </div>
+                            <div class="form-group">
                                 <label for="Immagine" class="col-form-label required">Immagine</label>
                                 <input type="file" name="ImmagineProdotto" required>
                             </div>
@@ -631,6 +636,7 @@
         <script src="js/custom.js"></script>
         <script src="js/nav.js"></script>
         <script src="js/vari.js"></script>
+        <script src="js/datepicker.js"></script>
         
         
         <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>-->
