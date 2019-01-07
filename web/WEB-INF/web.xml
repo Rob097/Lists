@@ -66,6 +66,10 @@
         <description>ServletContextListener</description>
         <listener-class>listeners.WebAppListener</listener-class>
     </listener>
+    <listener>
+        <description>ServletContextListener</description>
+        <listener-class>listeners.ExpirationJobManager</listener-class>
+    </listener>
     <servlet>
         <servlet-name>LogoutAction</servlet-name>
         <servlet-class>log.LogoutAction</servlet-class>

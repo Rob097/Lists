@@ -28,6 +28,7 @@ public class WebAppListener implements ServletContextListener {
        try{
            //Crea una daoFactory e la inizializza con un istanza di JDBCDAOFactoy(db driver e db connection)
            DAOFactory daoFactory = JDBCDAOFactory.getInstance();
+           System.out.println("Log: WebAPPListener initialized");
            
            //l`evento sce mette nella Servlet-Context un attributo daoFactory ad accedere da ogni servlet
            sce.getServletContext().setAttribute("daoFactory", daoFactory);
@@ -44,7 +45,7 @@ public class WebAppListener implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent sce) {
         //crea un oggetto daoFactory inizzializzato col attributo daoFactory (inizzializzato sopra)
        DAOFactory daoFactory =(DAOFactory) sce.getServletContext().getAttribute("daoFactory");
-       
+        System.out.println("Log:WebAppListener destroyed");
        //chiude la connessione 
        if(daoFactory != null){
            daoFactory.shutdown();
