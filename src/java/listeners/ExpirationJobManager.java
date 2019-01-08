@@ -27,7 +27,7 @@ public class ExpirationJobManager implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(new ScheduledTask(), 0, 1, TimeUnit.MINUTES);
+        scheduler.scheduleAtFixedRate(new ScheduledTask(sce), 0, 3, TimeUnit.MINUTES);
         
     }
 
@@ -37,4 +37,5 @@ public class ExpirationJobManager implements ServletContextListener {
             scheduler.shutdown();
     }
 }
+
 

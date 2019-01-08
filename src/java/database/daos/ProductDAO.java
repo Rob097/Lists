@@ -5,8 +5,8 @@
  */
 package database.daos;
 
+import database.entities.ListProd;
 import database.entities.Product;
-import database.entities.User;
 import database.exceptions.DAOException;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
@@ -33,4 +33,5 @@ public interface ProductDAO {
     public int LastPIDforInsert(Product p) throws DAOException;
     public int getQuantity(int idProd, String listName) throws DAOException;
     public void updateQuantity(int quantita, int idProd, String listName) throws DAOException;
+    public ArrayList<ListProd> getAllChoosenProducts () throws DAOException;
 }

@@ -6,6 +6,7 @@
 package database.jdbc;
 
 import database.daos.ProductDAO;
+import database.entities.ListProd;
 import database.entities.Product;
 import database.exceptions.DAOException;
 import java.sql.Connection;
@@ -13,6 +14,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -393,6 +396,35 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
             
         } catch (SQLException ex) {
             throw new DAOException("Impossible to update quantity #2", ex);
+        }
+    }
+
+    @Override
+    public ArrayList<ListProd> getAllChoosenProducts() throws DAOException {
+        
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM List_Prod")) {           
+            
+            ArrayList<ListProd> listProdlink = new ArrayList<ListProd>();
+            
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    
+                    ListProd link = new ListProd();
+                    link.setLista(rs.getString("lista"));
+                    link.setProdotto(rs.getString("prodotto"));
+                    link.setData_scadenza(rs.getDate("data_Scadenza"));
+                    link.setData_inserimento(rs.getDate("data_inserimento"));
+                    link.setStato(rs.getString("stato"));
+                    link.setDataAcquisto(rs.getDate("data_acquisto"));
+                    link.setQuantita(rs.getString("quantita"));
+
+                    listProdlink.add(link);
+                }
+
+                return listProdlink;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of products", ex);
         }
     }
 
