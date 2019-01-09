@@ -44,22 +44,7 @@
 
     </head>
     <body>
-
-        <%/*
-            
-            DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
-            if (daoFactory == null) {
-                throw new ServletException("Impossible to get dao factory for user storage system");
-            }
-            ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());           
-                      
-            
-            boolean find = true;
-                */
-        %>
         <!--###############################################################################################################################-->
-
-
         <div class="page home-page">
             <header class="hero">
                 <div class="hero-wrapper">
@@ -157,31 +142,6 @@
 
             <!-- SISTEMA PER LE NOTIFICHE -->
 
-            <%/*
-                //Guardo se esiste un utente loggato, guardo se l'utente loggato ha delle notifiche, per notifica guardo il tipo e la lista e ne salvo una mentre le altre uguali non le salvo. poi le visualizzo
-                if (find) {
-                    if (session.getAttribute("notifiche") != null) {
-                        ArrayList<Notification> allN = (ArrayList<Notification>) session.getAttribute("notifiche");
-                        ArrayList<Notification> filteredN = new ArrayList<>();
-                        boolean check = false;
-                        //filteredN.add(allN.get(0));
-                        for (Notification n : allN) {
-                            check = false;
-                            for (Notification nn : filteredN) {
-                                if (n.getListName().equals(nn.getListName()) && n.getType().equals(nn.getType())) {
-                                    check = true;
-                                    break;
-                                } else {
-                                    check = false;
-                                }
-                            }
-                            if (check == false) {
-                                filteredN.add(n);
-                            } else {
-                                System.out.println("Notifica già presente");
-                            }
-                        }
-           */ %>
             <li class="dropdown" id="notificationsLI">
                 <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
                     <h3 style="width: 20px; position: absolute; background: yellow; border-radius: 50%; height: 20px; text-align: center;" id="notificationsSize">${fn:length(notifiche)}</h3>

@@ -8,9 +8,7 @@ package Tools;
 import database.daos.ProductDAO;
 import database.entities.ListProd;
 import database.exceptions.DAOException;
-import database.exceptions.DAOFactoryException;
 import database.factories.DAOFactory;
-import database.factories.JDBCDAOFactory;
 import database.jdbc.JDBCProductDAO;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
+
 
 /**
  *
@@ -45,8 +43,10 @@ public class ScheduledTask implements Runnable{
             for (ListProd p : prods) {
                 int missingDays = dayDifference(p.getData_scadenza());
                 if(missingDays >= 0 && missingDays <= 2){                    
-                    System.out.println(p.getProdotto() + " nella lista " + p.getLista() + " scade in " + missingDays + " giorni");
-                }
+                    System.out.println(p.getProdotto() + " nella lista " + p.getLista() + " deve essere comprato al più presto");
+                }else if(missingDays > 0 && missingDays <=4){
+                    System.out.println(p.getProdotto() + " nella lista " + p.getLista() + " `è vicino all`esauimento");
+                }                
             }
         } catch (ServletException ex) {
             Logger.getLogger(ScheduledTask.class.getName()).log(Level.SEVERE, null, ex);
@@ -74,9 +74,4 @@ public class ScheduledTask implements Runnable{
         return (int) (diffms / (1000*60*60*24));
     }
 
-    
-    
- 
-
-    
 }
