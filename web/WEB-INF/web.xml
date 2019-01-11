@@ -222,6 +222,10 @@
         <servlet-name>setImage</servlet-name>
         <servlet-class>Categories.setImage</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddPeriodicProducts</servlet-name>
+        <servlet-class>Products.AddPeriodicProducts</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -373,6 +377,10 @@
     <servlet-mapping>
         <servlet-name>setImage</servlet-name>
         <url-pattern>/setImage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddPeriodicProducts</servlet-name>
+        <url-pattern>/restricted/AddPeriodicProducts</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

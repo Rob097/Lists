@@ -210,6 +210,9 @@
                     <!--============ Page Title =========================================================================-->
                     <div class="page-title">
                         <div class="container">
+                            <c:if test="${not empty user}">
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#perPro">Prodotti permanenti <i class="fa fa-line-chart"></i></button>
+                            </c:if>
                             <h1 class="opacity-60 center">
                                 Tutti i Prodotti
                             </h1>
@@ -490,6 +493,60 @@
                 </div>
             </div>
           </div>
+                            
+        <!--modal per prodotti permanenti-->
+        <c:if test="${not empty user}">
+            <div class="modal fade" id="perPro" tabindex="-1" role="dialog" aria-labelledby="CreateAddProductModal" aria-hidden="true" enctype="multipart/form-data">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="page-title">
+                                <div class="container">
+                                    <h1 style="text-align: center;">Crea prodotti permanenti</h1>
+                                </div>
+                                <!--end container-->
+                            </div>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Form per il login -->
+                            <form class="form clearfix" id="perPro" action=""  method="post" role="form" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="Nome" class="col-form-label">Prodotti scelti</label>
+                                    <select name="choosenProducts" class="mdb-select colorful-select dropdown-primary" multiple required>     
+                                        <c:forEach items="${products}" var="p">
+                                            <option value="${p.pid}"><c:out value="${p.nome}"/></option> 
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="example-number-input" class="col-2 col-form-label">Periodo</label>  
+                                    <div class="col-12">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><strong>da comprare ogni</strong></span>
+                                            <input class="form-control" type="number" value="7" min="1" max="60" id="example-number-input">                                
+                                            <span class="input-group-text"><strong>giorni</strong></span>
+                                        </div> 
+                                    </div>
+                                  </div>  
+                                <div class="form-group">                                    
+                                    <label for="Date" class="col-form-label required">Data partenza</label>
+                                    <input type="text" class="datepicker" name="initday" >                            
+                                </div>
+                                <!--end form-group-->
+                                <div class="d-flex justify-content-between align-items-baseline">
+                                    <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Conferma prodotti periodici</button>                                
+                                </div>
+                            </form>
+                            <hr>
+                            <i>Salva prodotti che si insericono automaticamente nella lista ogni x giorni</i>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </c:if>
         
         <script>
                                         function addProduct(id) {
