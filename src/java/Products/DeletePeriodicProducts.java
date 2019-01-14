@@ -10,9 +10,7 @@ import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCProductDAO;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -25,10 +23,10 @@ import javax.servlet.http.HttpSession;
  *
  * @author Martin
  */
-public class AddPeriodicProducts extends HttpServlet {
-
+public class DeletePeriodicProducts extends HttpServlet {
     
     ProductDAO productdao;
+    
     @Override
     public void init() throws ServletException {       
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
@@ -37,25 +35,19 @@ public class AddPeriodicProducts extends HttpServlet {
         }
         productdao = new JDBCProductDAO(daoFactory.getConnection());
         
-    }    
-    
+    }   
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
+        
         //get all variables by request
         HttpSession session = (HttpSession) request.getSession(false);
         String[] choosenProducts = request.getParameterValues("choosenProducts");
-        String period = request.getParameter("period");
-        String initday = request.getParameter("initday");
         String shopListName = (String) session.getAttribute("shopListName");
         
-        //new parsed vars
+        //new parsed var
         int[] pids = new int[choosenProducts.length];
-        int periodtimer = 0;
-        Date initdate = null;
-        
-        //parsing
         if(choosenProducts != null){
             int i = 0;            
            for (String p : choosenProducts) {               
@@ -64,25 +56,10 @@ public class AddPeriodicProducts extends HttpServlet {
             } 
         }
         
-        if(period != null){
-            periodtimer = Integer.parseInt(period);
-        }
-        
-        if(initday != null){           
-            try {
-                System.out.println(initday);
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                initdate = formatter.parse(initday);
-            } catch (ParseException ex) {
-                Logger.getLogger(AddPeriodicProducts.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        
         try {
-            productdao.insertPeriodicProducts(pids, shopListName, periodtimer, initdate);
+            productdao.deletePeriodicProducts(pids, shopListName);
         } catch (DAOException ex) {
-            System.out.println("insertPeriodicProduct Error");
-            Logger.getLogger(AddPeriodicProducts.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DeletePeriodicProducts.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         response.sendRedirect(request.getContextPath() +"/Pages/ShowUserList.jsp");

@@ -9,6 +9,7 @@ import database.entities.ListProd;
 import database.entities.Product;
 import database.exceptions.DAOException;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 
 
@@ -34,4 +35,7 @@ public interface ProductDAO {
     public int getQuantity(int idProd, String listName) throws DAOException;
     public void updateQuantity(int quantita, int idProd, String listName) throws DAOException;
     public ArrayList<ListProd> getAllChoosenProducts () throws DAOException;
+    public void insertPeriodicProducts(int[] pids,String shopListName, int period, Date initday)throws DAOException;
+    public ArrayList<Product> getPeriodicProducts(String shopListName) throws DAOException;
+    public void deletePeriodicProducts(int[] pids, String shopListName) throws DAOException;
 }

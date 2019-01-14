@@ -26,7 +26,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="icon" href="img/favicon.png" sizes="16x16" type="image/png">
-        <title>Products</title>
+        <title><c:out value="${shopListName}"/></title>
 
         <!-- CSS personalizzati -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
@@ -209,13 +209,25 @@
                     </c:if>
                     <!--============ Page Title =========================================================================-->
                     <div class="page-title">
-                        <div class="container">
-                            <c:if test="${not empty user}">
-                                <button class="btn btn-primary" data-toggle="modal" data-target="#perPro">Prodotti permanenti <i class="fa fa-line-chart"></i></button>
-                            </c:if>
-                            <h1 class="opacity-60 center">
-                                Tutti i Prodotti
-                            </h1>
+                        <div class="container center">
+                            <div class="row center">
+                                <div class="col-4">
+                                    <c:if test="${not empty user}">                                
+                                        <button class="btn btn-primary" data-toggle="modal" data-target="#perPro">Prodotti permanenti <i class="fa fa-line-chart"></i></button> 
+                                    </c:if>                                   
+                                </div>
+                                <div class="col-4">
+                                    <h1 class="opacity-60">
+                                        Tutti i Prodotti
+                                    </h1>
+                                </div>
+                                <div class="col-4">                                    
+                                    <c:if test="${not empty user}">
+                                        <button class="btn btn-dark" data-toggle="modal" data-target="#delPerPro">Cancella Prodotti permanenti <i class="fa fa-line-chart"></i></button>
+                                    </c:if>                                                                      
+                                </div>
+                            </div>                           
+                            
                         </div>
                         <!--end container-->
                     </div>
@@ -494,8 +506,8 @@
             </div>
           </div>
                             
-        <!--modal per prodotti permanenti-->
         <c:if test="${not empty user}">
+            <!--modal per prodotti permanenti-->
             <div class="modal fade" id="perPro" tabindex="-1" role="dialog" aria-labelledby="CreateAddProductModal" aria-hidden="true" enctype="multipart/form-data">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -512,7 +524,7 @@
                         </div>
                         <div class="modal-body">
                             <!-- Form per il login -->
-                            <form class="form clearfix" id="perPro" action=""  method="post" role="form" enctype="multipart/form-data">
+                            <form class="form clearfix" id="perPro" action="/Lists/restricted/AddPeriodicProducts"  method="post" >
                                 <div class="form-group">
                                     <label for="Nome" class="col-form-label">Prodotti scelti</label>
                                     <select name="choosenProducts" class="mdb-select colorful-select dropdown-primary" multiple required>     
@@ -526,7 +538,7 @@
                                     <div class="col-12">
                                         <div class="input-group-append">
                                             <span class="input-group-text"><strong>da comprare ogni</strong></span>
-                                            <input class="form-control" type="number" value="7" min="1" max="60" id="example-number-input">                                
+                                                <input class="form-control" name="period" type="number" value="7" min="1" max="60" id="example-number-input">                                
                                             <span class="input-group-text"><strong>giorni</strong></span>
                                         </div> 
                                     </div>
@@ -542,6 +554,43 @@
                             </form>
                             <hr>
                             <i>Salva prodotti che si insericono automaticamente nella lista ogni x giorni</i>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            <!--cancella prodotti permanenti-->
+            <div class="modal fade" id="delPerPro" tabindex="-1" role="dialog" aria-labelledby="CreateAddProductModal" aria-hidden="true" enctype="multipart/form-data">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="page-title">
+                                <div class="container">
+                                    <h1 style="text-align: center;">Cancella prodotti permanenti</h1>
+                                </div>
+                                <!--end container-->
+                            </div>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Form per il login -->
+                            <form class="form clearfix" id="perPro" action="/Lists/restricted/DeletePeriodicProducts"  method="post" >
+                                <div class="form-group">
+                                    <label for="Nome" class="col-form-label">Prodotti da cancellare</label>
+                                    <select name="choosenProducts" class="mdb-select colorful-select dropdown-primary" multiple required>     
+                                        <c:forEach items="${periodicProducts}" var="p">
+                                            <option value="${p.pid}"><c:out value="${p.nome}"/></option> 
+                                        </c:forEach>
+                                    </select>
+                                </div>                              
+                               
+                                <div class="d-flex justify-content-between align-items-baseline">
+                                    <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-dark">Cancella prodotti periodici</button>                                
+                                </div>
+                            </form>
+                            <hr>
+                            <i>Cancella prodotti che si insericono automaticamente nella lista ogni x giorni</i>
                         </div> 
                     </div>
                 </div>

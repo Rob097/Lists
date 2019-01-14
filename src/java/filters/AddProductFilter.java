@@ -96,13 +96,15 @@ public class AddProductFilter implements Filter {
                         session.setAttribute("catProd", allPrcategories);
 
                         //get all products
-                        ArrayList<Product> li = productdao.getallAdminProducts();
-                        if(shopListName != null){
-                            for(Product p : li){
-                                p.setInList(listdao.chckIfProductIsInTheList(p.getPid(), shopListName));
-                            }
-                        }
+                        ArrayList<Product> li = productdao.getallAdminProducts();                        
+                        for(Product p : li){
+                            p.setInList(listdao.chckIfProductIsInTheList(p.getPid(), shopListName));
+                        }                        
                         session.setAttribute("products", li);
+                        
+                        //get all periodic products
+                        ArrayList<Product> pli = productdao.getPeriodicProducts(shopListName);
+                        session.setAttribute("periodicProducts", pli);
                         
                         if((request.getParameter("cat") == null || request.getParameter("cat").equals("all"))){
                             for(Product p : li){

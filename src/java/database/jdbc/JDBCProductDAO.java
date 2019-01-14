@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -426,6 +427,78 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of products", ex);
         }
+    }
+
+    @Override
+    public void insertPeriodicProducts(int[] pids, String shopListName, int period, Date initday) throws DAOException {
+        java.sql.Date sqlinitday = new java.sql.Date(initday.getTime());
+        System.out.println("sql: " + sqlinitday);
+        System.out.println("date: "+ initday);
+        for(int pid : pids){
+           try(PreparedStatement stm = CON.prepareStatement("Insert into Periodic_Products (lista, prodotto, data_scadenza, periodo) values (?,?,?,?)")){
+               stm.setString(1, shopListName);
+               stm.setInt(2, pid);
+               stm.setDate(3, sqlinitday);
+               stm.setInt(4, period);
+               
+               if (stm.executeUpdate() == 1) {
+                    
+                } else {
+                    throw new DAOException("Impossible to insert periodic product");
+                }               
+               
+           } catch (SQLException ex) {
+                Logger.getLogger(JDBCProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    @Override
+    public ArrayList<Product> getPeriodicProducts(String shopListName) throws DAOException {
+        ArrayList<Product> productLists = new ArrayList<>();
+        
+        try(PreparedStatement stm = CON.prepareStatement("SELECT * FROM Product where PID IN (Select prodotto from Periodic_Products where lista = ?)")){
+            stm.setString(1, shopListName);            
+            
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    Product p = new Product();
+                    p.setPid(rs.getInt("PID"));
+                    p.setNome(rs.getString("nome"));
+                    p.setNote(rs.getString("note"));
+                    p.setCategoria_prodotto(rs.getString("categoria_prod"));
+                    p.setImmagine(rs.getString("immagine"));
+                    p.setCreator(rs.getString("creator"));
+                    productLists.add(p);
+                }                
+                
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return productLists;
+    }
+
+    @Override
+    public void deletePeriodicProducts(int[] pids, String shopListName) throws DAOException {
+        
+        for(int pid : pids){
+          try (PreparedStatement statement = CON.prepareStatement("delete from Periodic_Products where lista = ? and prodotto = ?")){
+                statement.setString(1, shopListName);
+                statement.setInt(2, pid);
+                
+                if (statement.executeUpdate() > 0) {
+                    
+                } else {
+                    throw new DAOException("Impossible to delete the product");
+                }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(JDBCProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }  
+        }
+        
     }
 
 }

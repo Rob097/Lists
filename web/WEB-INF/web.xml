@@ -226,6 +226,10 @@
         <servlet-name>AddPeriodicProducts</servlet-name>
         <servlet-class>Products.AddPeriodicProducts</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeletePeriodicProducts</servlet-name>
+        <servlet-class>Products.DeletePeriodicProducts</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -381,6 +385,10 @@
     <servlet-mapping>
         <servlet-name>AddPeriodicProducts</servlet-name>
         <url-pattern>/restricted/AddPeriodicProducts</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeletePeriodicProducts</servlet-name>
+        <url-pattern>/restricted/DeletePeriodicProducts</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
