@@ -901,4 +901,31 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
         return liste;
     }
 
+    @Override
+    public ListProd getbyListAndProd(String lista, int prod) throws DAOException {
+        ListProd p = null;
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM List_Prod where lista=? and prodotto=?")) {
+            stm.setString(1, lista);
+            stm.setInt(2, prod);
+            
+            try (ResultSet rs = stm.executeQuery()) {
+                
+                while (rs.next()) {                        
+                    p = new ListProd();
+                    p.setLista(rs.getString("lista"));
+                    p.setProdotto(rs.getString("prodotto"));
+                    p.setData_scadenza(rs.getDate("data_scadenza"));
+                    p.setData_inserimento(rs.getDate("data_inserimento"));
+                    p.setStato(rs.getString("stato"));
+                    p.setQuantita(rs.getString("quantita"));
+                    p.setDataAcquisto(rs.getDate("data_acquisto"));
+                }
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return p;
+    }
+
 }

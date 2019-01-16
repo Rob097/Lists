@@ -7,6 +7,7 @@ package database.jdbc;
 
 import database.daos.ProductDAO;
 import database.entities.ListProd;
+import database.entities.PeriodicProduct;
 import database.entities.Product;
 import database.exceptions.DAOException;
 import java.sql.Connection;
@@ -499,6 +500,28 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
             }  
         }
         
+    }
+
+    @Override
+    public ArrayList<PeriodicProduct> getAllPeriodicProducts() throws DAOException {
+         ArrayList<PeriodicProduct> list = new ArrayList<>();
+         
+        try (PreparedStatement statement = CON.prepareStatement("Select * from Periodic_Products")){
+            try(ResultSet rs = statement.executeQuery()){               
+                PeriodicProduct p;
+                while(rs.next()){
+                    p = new PeriodicProduct();
+                    p.setLista(rs.getString("lista"));
+                    p.setProdotto(rs.getInt("prodotto"));
+                    p.setData_scadenza(rs.getDate("data_scadenza"));
+                    p.setPeriodo(rs.getInt("periodo"));
+                    list.add(p);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
 
 }

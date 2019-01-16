@@ -6,6 +6,7 @@
 package database.daos;
 
 import database.entities.ListProd;
+import database.entities.PeriodicProduct;
 import database.entities.Product;
 import database.exceptions.DAOException;
 import java.util.ArrayList;
@@ -38,4 +39,5 @@ public interface ProductDAO {
     public void insertPeriodicProducts(int[] pids,String shopListName, int period, Date initday)throws DAOException;
     public ArrayList<Product> getPeriodicProducts(String shopListName) throws DAOException;
     public void deletePeriodicProducts(int[] pids, String shopListName) throws DAOException;
+    public ArrayList<PeriodicProduct> getAllPeriodicProducts() throws DAOException;
 }

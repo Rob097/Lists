@@ -5,10 +5,9 @@
  */
 package listeners;
 
+import Tools.PeriodicTask;
 import Tools.ScheduledTask;
 import java.util.Date;
-import java.util.TimerTask;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -28,6 +27,7 @@ public class ExpirationJobManager implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleAtFixedRate(new ScheduledTask(sce), 0, 3, TimeUnit.MINUTES);
+        scheduler.scheduleAtFixedRate(new PeriodicTask(sce), 0, 3, TimeUnit.MINUTES);
         
     }
 

@@ -11,7 +11,6 @@ import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
 import java.util.ArrayList;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -50,4 +49,5 @@ public interface ListDAO {
     public boolean checkBuyed(int id, String lista, HttpSession request) throws DAOException;
     public ArrayList<ListProd> getProdList(String listaname) throws DAOException;
     public ArrayList<ShopList> getAllObjectListsByCurentUser(String nome) throws DAOException;
+    public ListProd getbyListAndProd(String lista, int prod) throws DAOException;
 }
