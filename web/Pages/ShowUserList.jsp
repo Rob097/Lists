@@ -278,7 +278,7 @@
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
                                     <c:if test="${listProducts != null}">
                                         <c:forEach items="${listProducts}" var="prod">
-                                            <c:if test="${prod eq 'acquistato'}">
+                                            <c:if test="${prod.status eq 'acquistato'}">
                                                 <div class="item itemAcquistato" id="item${prod.pid}">
                                                     <div class="overlayAcquistato" id="divProva${prod.pid}">
                                                         <p class="pAcquistato" id="pProva${prod.pid}">Già acquistato<br><a onclick="daAcquistareItem(${prod.pid})" type="button" class="btn btn-dark" style="color: white;">Annulla</a></p>                                            
@@ -286,7 +286,7 @@
                                                     <!--end ribbon-->
                                                     <div class="wrapper wrapperProva" id="wrapperProva${prod.pid}"> 
                                             </c:if>
-                                            <c:if test="${prod ne 'acquistato'}">
+                                            <c:if test="${prod.status ne 'acquistato'}">
                                                 <div class="item" id="item${prod.pid}">
                                                     <div class="invisible" id="divProva${prod.pid}">
                                                         <p id="pProva${prod.pid}">Già acquistato<br><a onclick="daAcquistareItem(${prod.pid})" type="button" class="btn btn-dark" style="color: white;">Annulla</a></p>

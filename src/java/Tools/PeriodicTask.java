@@ -46,15 +46,15 @@ public class PeriodicTask implements Runnable {
            for(PeriodicProduct p : products){                             
                if(dayDifference(p.getData_scadenza())<5){
                    if(!listdao.chckIfProductIsInTheList(p.getProdotto(), p.getLista())){
-                       listdao.insertProductToList(p.getProdotto(), p.getLista(), p.getData_scadenza().toString());
+                       listdao.insertProductToList(p.getProdotto(), p.getLista(), p.getData_scadenza().toString());                       
                        System.out.println("");
                        System.out.println("inserted: "+ p.getLista() + " " + p.getProdotto() + " " + p.getData_scadenza() );
                    } else if(listdao.chckIfProductIsInTheList(p.getProdotto(), p.getLista())){
                         ListProd prod = listdao.getbyListAndProd(p.getLista(), p.getProdotto());
                         if(prod.getStato().equals("acquistato")){
-                            //listdao.signProductAsBuyed(p.getProdotto(), "daAcquistare", p.getLista());
-                            addPeriod(p.getData_scadenza(),p.getPeriodo());
-                            //update periodic product no zu mochen
+                            listdao.signProductAsBuyed(p.getProdotto(), "daAcquistare", p.getLista());
+                            productdao.updatePeriodicDate(p, addPeriod(p.getData_scadenza(),p.getPeriodo()));  
+                            listdao.updateExpirationDate(p, addPeriod(p.getData_scadenza(),p.getPeriodo()));
                         }
                    }
                }
@@ -65,8 +65,7 @@ public class PeriodicTask implements Runnable {
         } catch (DAOException ex) {
             Logger.getLogger(PeriodicTask.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+                
     }
     
     private void getConnection() throws ServletException{
@@ -85,12 +84,10 @@ public class PeriodicTask implements Runnable {
         return (int) (diffms / (1000*60*60*24));
     }
      
-     private java.sql.Date addPeriod(java.sql.Date date, int period){
-         System.out.println("");
+     private java.sql.Date addPeriod(java.sql.Date date, int period){         
          System.out.println(date);
          long newDate = date.getTime() + TimeUnit.DAYS.toMillis(period);
-         date = new java.sql.Date(newDate);
-         System.out.println(date);
+         date = new java.sql.Date(newDate);         
          return date;
      }
     

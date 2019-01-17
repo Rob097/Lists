@@ -524,4 +524,23 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
         return list;
     }
 
+    @Override
+    public void updatePeriodicDate(PeriodicProduct pp, java.sql.Date newDate) throws DAOException {
+        if (pp == null || newDate==null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed product or date is null"));
+        }
+        try(PreparedStatement stm = CON.prepareStatement("UPDATE Periodic_Products SET data_scadenza=? WHERE lista=? and prodotto=?")){
+            stm.setDate(1, newDate);
+            stm.setString(2, pp.getLista());
+            stm.setInt(3, pp.getProdotto());
+            if(stm.executeUpdate() == 1){
+                return;
+            }else{
+                throw new DAOException("impossible update date");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }

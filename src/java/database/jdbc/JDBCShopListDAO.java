@@ -7,6 +7,7 @@ package database.jdbc;
 
 import database.daos.ListDAO;
 import database.entities.ListProd;
+import database.entities.PeriodicProduct;
 import database.entities.Product;
 import database.entities.ShopList;
 import database.entities.User;
@@ -926,6 +927,26 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return p;
+    }
+
+    @Override
+    public void updateExpirationDate(PeriodicProduct pp, java.sql.Date newDate) throws DAOException {
+        if (pp == null || newDate==null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed product or date is null"));
+        }
+        try(PreparedStatement stm = CON.prepareStatement("UPDATE List_Prod SET data_scadenza=? WHERE lista=? and prodotto=?")){
+            stm.setDate(1, newDate);
+            stm.setString(2, pp.getLista());
+            stm.setInt(3, pp.getProdotto());
+            
+            if(stm.executeUpdate() == 1){
+                return;
+            }else{
+                throw new DAOException("impossible update date");
+            }
+        }   catch (SQLException ex) {
+            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

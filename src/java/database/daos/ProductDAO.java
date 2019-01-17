@@ -40,4 +40,5 @@ public interface ProductDAO {
     public ArrayList<Product> getPeriodicProducts(String shopListName) throws DAOException;
     public void deletePeriodicProducts(int[] pids, String shopListName) throws DAOException;
     public ArrayList<PeriodicProduct> getAllPeriodicProducts() throws DAOException;
+    public void updatePeriodicDate(PeriodicProduct pp, java.sql.Date newDate)throws DAOException;
 }

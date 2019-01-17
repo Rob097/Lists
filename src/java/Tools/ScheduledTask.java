@@ -41,12 +41,14 @@ public class ScheduledTask implements Runnable{
             //gets all products in List_Prod and compares them
             ArrayList<ListProd> prods = productdao.getAllChoosenProducts();
             for (ListProd p : prods) {
-                int missingDays = dayDifference(p.getData_scadenza());
-                if(missingDays >= 0 && missingDays <= 2){                    
-                    System.out.println(p.getProdotto() + " nella lista " + p.getLista() + " deve essere comprato al più presto");
-                }else if(missingDays > 0 && missingDays <=4){
-                    System.out.println(p.getProdotto() + " nella lista " + p.getLista() + " `è vicino all`esauimento");
-                }                
+                if(p.getStato().equals("acquistato")){
+                    int missingDays = dayDifference(p.getData_scadenza());
+                    if(missingDays >= 0 && missingDays <= 2){                    
+                        System.out.println(p.getProdotto() + " nella lista " + p.getLista() + " deve essere comprato al più presto");
+                    }else if(missingDays > 0 && missingDays <=4){
+                        System.out.println(p.getProdotto() + " nella lista " + p.getLista() + " `è vicino all`esauimento");
+                    }     
+                }
             }
         } catch (ServletException ex) {
             Logger.getLogger(ScheduledTask.class.getName()).log(Level.SEVERE, null, ex);

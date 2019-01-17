@@ -6,6 +6,7 @@
 package database.daos;
 
 import database.entities.ListProd;
+import database.entities.PeriodicProduct;
 import database.entities.Product;
 import database.entities.ShopList;
 import database.entities.User;
@@ -50,4 +51,5 @@ public interface ListDAO {
     public ArrayList<ListProd> getProdList(String listaname) throws DAOException;
     public ArrayList<ShopList> getAllObjectListsByCurentUser(String nome) throws DAOException;
     public ListProd getbyListAndProd(String lista, int prod) throws DAOException;
+    public void updateExpirationDate(PeriodicProduct pp,java.sql.Date newDate) throws DAOException;
 }
