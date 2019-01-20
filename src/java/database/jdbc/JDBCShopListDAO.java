@@ -57,6 +57,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                     sL.setImmagine(rs.getString("immagine"));
                     sL.setCreator(rs.getString("creator"));
                     sL.setCategoria(rs.getString("categoria"));
+                    sL.setPromemoria(rs.getInt("reminder"));
                     sL.setSharedUsers(getUsersWithWhoTheListIsShared(sL));
 
                     shoppingLists.add(sL);
@@ -156,7 +157,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
         }
 
         String qry = "insert into guestLists(nome,descrizione,immagine,creator,password,categoria) "
-                + "values(?,?,?,?,?,?)";
+                + "values(?,?,?,?,?,?,?)";
 
         try (PreparedStatement statement = CON.prepareStatement(qry)) {
             statement.setString(1, l.getNome());
@@ -165,6 +166,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             statement.setString(4, creator);
             statement.setString(5, password);
             statement.setString(6, l.getCategoria());
+            statement.setInt(7, l.getPromemoria());
 
             if (statement.executeUpdate() == 1) {
                 return l;
@@ -195,6 +197,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                     sL.setImmagine(rs.getString("immagine"));
                     sL.setCreator(rs.getString("creator"));
                     sL.setCategoria("categoria");
+                    sL.setPromemoria(rs.getInt("reminder"));
                     sL.setSharedUsers(getUsersWithWhoTheListIsShared(sL));
 
                     shoppingLists.add(sL);
@@ -322,6 +325,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                     sL.setImmagine(rs.getString("immagine"));
                     sL.setCreator(rs.getString("creator"));
                     sL.setCategoria("categoria");
+                    sL.setPromemoria(rs.getInt("reminder"));
                     sL.setSharedUsers(getUsersWithWhoTheListIsShared(sL));
                     
                 }
@@ -390,24 +394,11 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             } catch (ParseException ex) {
                 Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            if(data.length()>10){
-                String strMnth    = data.substring(4,7);
-                String day        = data.substring(8,10);
-                String year       = data.substring(11,15);
-                String strDate = year +'-'+strMnth+'-'+day;
-                try{
-                date1=new SimpleDateFormat("yyyy-MMM-dd").parse(strDate);
-                }catch (Exception e){
-                e.printStackTrace();
-                }
-            }else{
                 try {
                 date1=new SimpleDateFormat("yyyy-MM-dd").parse(data);
                 } catch (ParseException ex) {
                 Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
             
             java.sql.Date sqlExpireDate = new java.sql.Date(date1.getTime());
             java.sql.Date sqlInsertDate = new java.sql.Date(date2.getTime());
@@ -419,8 +410,6 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             stm.setInt(2, prodotto);
             stm.setDate(3, sqlExpireDate);
             stm.setDate(4, sqlInsertDate);
-            
-            //stm.setTimestamp(3, date);
             
             if (stm.executeUpdate() == 1) {
             return;
@@ -490,6 +479,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                     sL.setImmagine(rs.getString("immagine"));
                     sL.setCreator(rs.getString("creator"));
                     sL.setCategoria(rs.getString("categoria"));
+                    sL.setPromemoria(rs.getInt("reminder"));
                     sL.setSharedUsers(getUsersWithWhoTheListIsShared(sL));
 
                     shoppingLists.add(sL);
@@ -542,6 +532,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                     shoppingLists.setImmagine(rs.getString("immagine"));
                     shoppingLists.setCreator(rs.getString("creator"));
                     shoppingLists.setCategoria("categoria");
+                    shoppingLists.setPromemoria(rs.getInt("reminder"));
                     
                 }
                 return shoppingLists;
@@ -888,6 +879,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                         lista.setImmagine(rs.getString("immagine"));
                         lista.setCreator(rs.getString("creator"));
                         lista.setCategoria(rs.getString("categoria"));
+                        lista.setPromemoria(rs.getInt("reminder"));
                         liste.add(lista);
                     }
 
@@ -943,6 +935,22 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                 return;
             }else{
                 throw new DAOException("impossible update date");
+            }
+        }   catch (SQLException ex) {
+            Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Override
+    public void updateReminder(String lista, int valore) throws DAOException{
+        try(PreparedStatement stm = CON.prepareStatement("UPDATE List SET reminder=? WHERE nome=?")){
+            stm.setInt(1, valore);
+            stm.setString(2, lista);
+            
+            if(stm.executeUpdate() == 1){
+                return;
+            }else{
+                throw new DAOException("impossible update reminder");
             }
         }   catch (SQLException ex) {
             Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);

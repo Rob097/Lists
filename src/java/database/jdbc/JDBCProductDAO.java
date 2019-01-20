@@ -5,19 +5,25 @@
  */
 package database.jdbc;
 
+import database.daos.ListDAO;
 import database.daos.ProductDAO;
 import database.entities.ListProd;
 import database.entities.PeriodicProduct;
 import database.entities.Product;
 import database.exceptions.DAOException;
+import database.factories.DAOFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -511,6 +517,46 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
         } catch (SQLException ex) {
             Logger.getLogger(JDBCProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }   
+    
+    @Override
+    public String getReminderDate(Product p, String lista)throws DAOException{
+        
+        Date dateReminder = null;
+        String dataStr = "";
+        try (PreparedStatement statement = CON.prepareStatement("Select * from List_Prod where prodotto=? AND lista=?")){
+            statement.setInt(1, p.getPid());
+            statement.setString(2, lista);
+            try(ResultSet rs = statement.executeQuery()){  
+                while (rs.next()) {
+                    dateReminder = rs.getDate("data_scadenza");
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    dataStr = sdf.format(dateReminder);          
+                }
+                //sessione.setAttribute("reminder-lista-"+p.getPid(), dataStr);
+            }
+        }catch (SQLException ex) {
+            Logger.getLogger(JDBCProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dataStr;
     }
-
+    
+    @Override
+    public void updateReminder(int id, String lista, String data)throws DAOException{
+        try(PreparedStatement stm = CON.prepareStatement("UPDATE List_Prod SET data_scadenza=? WHERE lista=? and prodotto=?")){
+            Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(data);
+            java.sql.Date sqlExpireDate = new java.sql.Date(date1.getTime());
+            stm.setDate(1, sqlExpireDate);
+            stm.setString(2, lista);
+            stm.setInt(3, id);
+            if(stm.executeUpdate() == 1){
+            }else{
+                throw new DAOException("impossible update date");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(JDBCProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

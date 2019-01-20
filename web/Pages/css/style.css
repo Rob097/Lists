@@ -1137,11 +1137,17 @@ a.disabled {
     height: inherit;
 }
 .items:not(.selectize-input).grid.compact .item .wrapper {
-    height: 31rem;
+    height: 38rem;
 }
 /*.items:not(.selectize-input).grid.compact .item .wrapper .detail {
     display: none;
 }*/
+.items:not(.selectize-input).grid.compact .item h4 {
+    display: none;
+}
+.items:not(.selectize-input).grid.compact .item reminderInvisible {
+    display: inherit;
+}
 .items:not(.selectize-input).grid.compact .item .admin-controls {
     position: relative;
     right: inherit;
@@ -1375,6 +1381,9 @@ a.disabled {
 }
 .items:not(.selectize-input).list.compact .item .detail:after {
     display: block;
+}
+.items:not(.selectize-input).list.compact .item .reminderInvisible {
+    display: none !important;
 }
 .items:not(.selectize-input).list.compact .item .admin-controls {
     position: absolute;

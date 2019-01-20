@@ -7,12 +7,18 @@ package Tools;
 
 import database.daos.ListDAO;
 import database.daos.ProductDAO;
+import database.daos.UserDAO;
 import database.entities.ListProd;
 import database.entities.PeriodicProduct;
+import database.entities.Product;
+import database.entities.ShopList;
+import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCProductDAO;
 import database.jdbc.JDBCShopListDAO;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -20,29 +26,36 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Martin
  */
-public class PeriodicTask implements Runnable {
+public class PeriodicTask extends HttpServlet implements Runnable {
     
     ServletContextEvent sce;
     ProductDAO productdao;
     ListDAO listdao;
-
+    UserDAO userdao;
+    
     public PeriodicTask(ServletContextEvent sce) {
         this.sce = sce;
     }    
     
     @Override
     public void run() {
+        
         System.out.println("\nPeriodicListener: " + new Date());
         try {
             //init connection
             getConnection();
             //get all periodic Products
            ArrayList<PeriodicProduct> products = productdao.getAllPeriodicProducts();
+           
+           
            for(PeriodicProduct p : products){                             
                if(dayDifference(p.getData_scadenza())<5){
                    if(!listdao.chckIfProductIsInTheList(p.getProdotto(), p.getLista())){
@@ -58,7 +71,7 @@ public class PeriodicTask implements Runnable {
                         }
                    }
                }
-           }           
+           }
            
         } catch (ServletException ex) {
             Logger.getLogger(PeriodicTask.class.getName()).log(Level.SEVERE, null, ex);

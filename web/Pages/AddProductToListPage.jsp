@@ -525,10 +525,10 @@
         
         <script>
                                         function addProduct(id) {
-                                            var d1 = new Date(prompt('Comprare entro: (yyyy-mm-dd)'));
+                                            //var d1 = new Date(prompt('Comprare entro: (yyyy-mm-dd)'));
                                             $.ajax({
                                                 type: "GET",
-                                                url: "/Lists/AddProductToList?prodotto="+id+"&date="+d1,
+                                                url: "/Lists/AddProductToList?prodotto="+id,
                                                 async: false,
                                                 success: function () {
                                                     $('#addButton' + id).addClass('dispNone');

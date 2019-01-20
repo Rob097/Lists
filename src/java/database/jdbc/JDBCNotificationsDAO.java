@@ -37,6 +37,18 @@ public class JDBCNotificationsDAO extends JDBCDAO implements NotificationDAO{
         if (userName == null || type == null || listName == null) {
             throw new DAOException("parameter not valid", new IllegalArgumentException("parameters are null"));
         }
+        try {
+            PreparedStatement stm = CON.prepareStatement("select * from Notifications where User=? AND Type=? AND ListName=?");
+            stm.setString(1, userName);
+            stm.setString(2, type);
+            stm.setString(3, listName);
+            ResultSet rs = stm.executeQuery();
+                while (rs.next()) {
+                    return;
+                }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCNotificationsDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         String qry = "insert into Notifications(User,Type,ListName) "
                 + "values((select email from User where email = ?),?,?)";
@@ -88,7 +100,7 @@ public class JDBCNotificationsDAO extends JDBCDAO implements NotificationDAO{
                 throw new DAOException("Impossible to get the list of users #1", ex);
             }
             for(User u : userList){
-                System.out.println("\n"+u.getEmail());
+                System.out.println("\nUtente: "+u.getEmail());
             }
             return userList;
         } catch (SQLException ex) {

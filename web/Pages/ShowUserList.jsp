@@ -4,6 +4,11 @@
     Author     : Roberto97
 --%>
 
+<%@page import="Tools.ScheduledTask"%>
+<%@page import="database.entities.Product"%>
+<%@page import="database.jdbc.JDBCProductDAO"%>
+<%@page import="database.daos.ProductDAO"%>
+<%@page import="database.factories.DAOFactory"%>
 <%@page import="java.net.URLDecoder"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -104,6 +109,13 @@
                 font-size: -webkit-xxx-large;
                 font-weight: bold; 
             }
+            .items:not(.selectize-input).grid .item.itemAcquistato{
+                background-image: linear-gradient(to left, #808080d6 0%, #80808033 50%, #808080d6 100%);
+                color: black;
+                font-style: italic;
+                font-size: -webkit-xxx-large;
+                font-weight: bold; 
+            }
             .overlayAcquistato{
                 display: -webkit-box;
                 width: -webkit-fill-available;
@@ -115,6 +127,14 @@
                 align-items: center;
                 min-height: calc(100% - (0.5rem * 2));
                 position: absolute;
+            }
+            .items:not(.selectize-input).grid .item .pAcquistato{
+                margin-top: unset;
+                margin-bottom: unset;
+                width: -webkit-fill-available;
+                opacity: 1;
+                margin-left: -35px;
+                height: auto !important;
             }
             .pAcquistato{
                 margin-top: unset;
@@ -136,8 +156,6 @@
             }
             /* Optional: Makes the sample page fill the window. */
         </style>
-
-
     </head>
     <body>        
         <div class="page home-page">
@@ -272,8 +290,19 @@
                                         <a href="#" class="change-class active" data-change-from-class="grid" data-change-to-class="list" data-parent-class="items">
                                             <i class="fa fa-th-list"></i>
                                         </a>
-                                    </div></div>
+                                    </div>
+                                </div>
+                                <div class="pb-5">                                    
+                                    <h4>Promemoria di default: <i class="pl-3 fa fa-info" data-toggle="tooltip" data-placement="right" title="Tutti i prodotti aggiunti a questa lista avranno un promemoria di default impostato a ${lista.promemoria} giorni. Questo valore è modificabile."></i></h4>
+                                    <input class="form-control" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" onchange="defaultChange();" value="${lista.promemoria}" id="defaultReminder">
+                                </div>
                                 <!--============ Items ==========================================================================-->
+                                <%DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
+                                    if (daoFactory == null) {
+                                        throw new ServletException("Impossible to get dao factory for user storage system");
+                                    }                                    
+                                    ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
+                                %>
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
                                     <c:if test="${listProducts != null}">
                                         <c:forEach items="${listProducts}" var="prod">
@@ -293,34 +322,50 @@
                                                     <!--end ribbon-->
                                                     <div class="wrapper" id="wrapperProva${prod.pid}">
                                             </c:if>
-                                                    <div class="image">
-                                                        <h3>
-                                                            <a href="#" class="tag category"><c:out value="${prod.categoria_prodotto}"/></a>
-                                                            <a class="title"><c:out value="${prod.nome}"/></a>
-                                                            <span class="tag">Offer</span>
-                                                        </h3>
-                                                        <a class="image-wrapper background-image">
-                                                            <img src="../${prod.immagine}" alt="">                                                            
-                                                        </a>
-                                                    </div>
-                                                    <h4 class="location">
-                                                        <a href="#"><c:out value="${prod.pid}"/></a>
-                                                    </h4>
-                                                        <input id="${prod.pid}Quantity" class="price" onchange="updateQuantity(${prod.pid});" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" name="quantity" min="1" max="99" value="${prod.quantity}"></input>
-                                                    <div class="admin-controls">
-                                                        <a style="cursor: pointer;" onclick="giaAcquistatoItem(${prod.pid})">
-                                                            <i class="fas fa-shopping-cart"></i>Acquistato
-                                                        </a>
-                                                        <a onclick="removeItem('${prod.pid}');" style="cursor: pointer;" class="ad-remove">
-                                                            <i class="fa fa-trash"></i>Cancella
-                                                        </a>
-                                                    </div>
-                                                    <!--end admin-controls-->
-                                                    <div class="description">
-                                                        <p><c:out value="${prod.note}"/></p>
-                                                    </div>
-                                                    <!--end description-->
-                                                    <!--<a href="single-listing-1.html" class="detail text-caps underline">Detail</a>-->
+                                                        <div class="image">
+                                                            <h3>
+                                                                <a href="#" class="tag category"><c:out value="${prod.categoria_prodotto}"/></a>
+                                                                <a class="title"><c:out value="${prod.nome}"/></a>
+                                                                <span class="tag">Offer</span>
+                                                            </h3>
+                                                            <a class="image-wrapper background-image">
+                                                                <img src="../${prod.immagine}" alt="">                                                            
+                                                            </a>
+                                                        </div>
+                                                        <h4>
+                                                            <c:set var="prodotto" value="${prod}"/>
+                                                            <c:set var="list" value="${shopListName}"/>
+                                                            <c:set var="data" value="${shopListName}"/>
+                                                            <%Product p = (Product) pageContext.getAttribute("prodotto");
+                                                                String s = (String) pageContext.getAttribute("list");
+                                                                String data = /*"27-01-2019";*/productdao.getReminderDate(p, s);
+                                                                pageContext.setAttribute("reminder", data);
+                                                            %>
+                                                            
+                                                            <a>
+                                                                <i style="color: black;" class="fa fa-calendar" data-toggle="tooltip" data-placement="bottom" title="Promemoria di acquisto di ${prod.nome}"></i>
+                                                                <input style="background-color: transparent; cursor: pointer; width: fit-content;" type="date" onchange="changeReminder(${prod.pid}, '${shopListName}');" class="border border-primary rounded" value="${reminder}" id="Reminder-${prod.pid}-${shopListName}">
+                                                            </a>
+                                                        </h4>
+                                                            <input id="${prod.pid}Quantity" class="price" onchange="updateQuantity(${prod.pid});" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" name="quantity" min="1" max="99" value="${prod.quantity}"></input>
+                                                        <div class="admin-controls">
+                                                            <a style="cursor: pointer;" onclick="giaAcquistatoItem(${prod.pid})">
+                                                                <i class="fas fa-shopping-cart"></i>Acquistato
+                                                            </a>
+                                                            <a onclick="removeItem('${prod.pid}');" style="cursor: pointer;" class="ad-remove">
+                                                                <i class="fa fa-trash"></i>Cancella
+                                                            </a>
+                                                            <a class="reminderInvisible">
+                                                                <i style="color: black;" class="fa fa-calendar" data-toggle="tooltip" data-placement="bottom" title="Promemoria di acquisto di ${prod.nome}"></i>
+                                                                <input style="background-color: transparent; cursor: pointer; width: fit-content;" type="date" onchange="changeReminder(${prod.pid}, '${shopListName}');" class="border border-primary rounded" value="${reminder}" id="Reminder-grid-${prod.pid}-${shopListName}">
+                                                            </a>
+                                                        </div>
+                                                        <!--end admin-controls-->
+                                                        <div class="description">
+                                                            <p><c:out value="${prod.note}"/></p>
+                                                        </div>
+                                                        <!--end description-->
+                                                        <!--<a href="single-listing-1.html" class="detail text-caps underline">Detail</a>-->
                                                 </div>
                                             </div>
                                         </c:forEach>
@@ -719,6 +764,43 @@
                 async: false,
                 success: function () {
                     
+                },
+                error: function () {
+                   alert("Errore");
+               }
+            });
+        }
+        
+        function defaultChange(){            
+            var lista = '${shopListName}';
+            var valore = $('#'+'defaultReminder').val();
+            
+            $.ajax({
+                type: "POST",
+                url: "/Lists/updateDefaultReminder",
+                data: jQuery.param({lista: lista, valore: valore}),
+                async: false,
+                success: function () {
+                    
+                },
+                error: function () {
+                   alert("Errore update default reminder");
+               }
+            });
+        }
+        
+        function changeReminder(id, lista) {
+            var data = $("#Reminder-"+id+"-"+lista).val();
+            if(data === undefined || data === null){
+                data = $("#Reminder-grid-"+id+"-"+lista).val();
+            }
+            console.log(data);
+            $.ajax({
+                type: "POST",
+                url: "/Lists/updateReminder",
+                data: jQuery.param({id: id, lista: lista, data: data}),
+                async: false,
+                success: function () {
                 },
                 error: function () {
                    alert("Errore");

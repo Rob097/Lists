@@ -60,7 +60,7 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>AdminProductsFilter</filter-name>
-        <url-pattern>/Pages/AdminPages/AdminProducts.jsp</url-pattern>
+        <url-pattern>/Pages/AdminProducts.jsp</url-pattern>
     </filter-mapping>
     <listener>
         <description>ServletContextListener</description>
@@ -230,6 +230,14 @@
         <servlet-name>DeletePeriodicProducts</servlet-name>
         <servlet-class>Products.DeletePeriodicProducts</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>updateDefaultReminder</servlet-name>
+        <servlet-class>ShopList.updateDefaultReminder</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updateReminder</servlet-name>
+        <servlet-class>Products.updateReminder</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -389,6 +397,14 @@
     <servlet-mapping>
         <servlet-name>DeletePeriodicProducts</servlet-name>
         <url-pattern>/restricted/DeletePeriodicProducts</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateDefaultReminder</servlet-name>
+        <url-pattern>/updateDefaultReminder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateReminder</servlet-name>
+        <url-pattern>/updateReminder</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

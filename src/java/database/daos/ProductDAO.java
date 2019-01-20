@@ -9,9 +9,12 @@ import database.entities.ListProd;
 import database.entities.PeriodicProduct;
 import database.entities.Product;
 import database.exceptions.DAOException;
+import database.factories.DAOFactory;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 
 /**
@@ -40,4 +43,6 @@ public interface ProductDAO {
     public void deletePeriodicProducts(int[] pids, String shopListName) throws DAOException;
     public ArrayList<PeriodicProduct> getAllPeriodicProducts() throws DAOException;
     public void updatePeriodicDate(PeriodicProduct pp, java.sql.Date newDate)throws DAOException;
+    public String getReminderDate(Product p, String lista)throws DAOException;
+    public void updateReminder(int id, String lista, String data)throws DAOException;
 }

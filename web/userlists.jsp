@@ -118,6 +118,7 @@
                                     <c:choose>         
                                         <c:when test = "${ not empty user}">  
                                             <c:if test="${not empty userLists}">
+                                                <a href="#" data-toggle="modal" data-target="#CreateListModal" class="nav-link icon"><i class="fa fa-plus"></i>Crea una nuova lista</a><br>
                                                 <c:forEach items="${userLists}" var="list">        
                                                     <c:set scope="page" var="featured" value="false"/> 
                                                     <c:forEach items="${allNotifiche}" var="nn">
@@ -125,7 +126,6 @@
                                                             <c:set scope="page" var="featured" value="true"/>
                                                         </c:if>
                                                     </c:forEach>
-                                                    <a href="#" data-toggle="modal" data-target="#CreateListModal" class="nav-link icon"><i class="fa fa-plus"></i>Crea una nuova lista</a><br>
                                                     <div class="item">
                                                         <c:if test="${featured == true}">
                                                            <div class="ribbon-featured">Featured</div> 

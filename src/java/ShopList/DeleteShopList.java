@@ -56,6 +56,16 @@ public class DeleteShopList extends HttpServlet {
             try {
                 ShopList list = listdao.getbyName(listname);
                 System.out.println("NOME LISTAAA" + list.getNome());
+                
+                if (list.getImmagine() != null && !(list.getImmagine().equals(""))) {
+                    String listsFolder = "";
+                    listsFolder = getServletContext().getRealPath(listsFolder);
+                    listsFolder = listsFolder.replace("\\build", "");
+                    String imgfolder = list.getImmagine().replace("/Image/ListsImg", "");
+                    DeleteImgFromDirectory(listsFolder + imgfolder);
+                }
+                
+                
                 listdao.deleteList(listname);
             } catch (DAOException ex) {
                 Logger.getLogger(DeleteShopList.class.getName()).log(Level.SEVERE, null, ex);
@@ -109,6 +119,16 @@ public class DeleteShopList extends HttpServlet {
             try {
                 ShopList list = listdao.getbyName(listname);
                 System.out.println("NOME LISTAAA" + list.getNome());
+                
+                if (list.getImmagine() != null && !(list.getImmagine().equals(""))) {
+                    String listsFolder = "";
+                    listsFolder = getServletContext().getRealPath(listsFolder);
+                    listsFolder = listsFolder.replace("\\build", "");
+                    String imgfolder = list.getImmagine().replace("/Image/ListsImg", "");
+                    DeleteImgFromDirectory(listsFolder + imgfolder);
+                }
+                
+                
                 listdao.deleteList(listname);
             } catch (DAOException ex) {
                 Logger.getLogger(DeleteShopList.class.getName()).log(Level.SEVERE, null, ex);

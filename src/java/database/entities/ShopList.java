@@ -20,7 +20,7 @@ public class ShopList {
     private String categoria;
     private ArrayList<Product> products;
     private ArrayList<User> sharedUsers;
-
+    public int promemoria;
 
     public ShopList() {
     }
@@ -97,7 +97,13 @@ public class ShopList {
         this.sharedUsers = sharedUsers;
     }
 
-    
+    public int getPromemoria() {
+        return promemoria;
+    }
+
+    public void setPromemoria(int promemoria) {
+        this.promemoria = promemoria;
+    }    
     
     
 }

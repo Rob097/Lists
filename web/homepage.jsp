@@ -113,7 +113,7 @@
                                     <div class="col-md-2">                                
                                     </div>
                                     <div class="col-md-3">
-                                        <a href="Pages/AdminPages/AdminProducts.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">Lista prodotti</a>
+                                        <a href="Pages/AdminProducts.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">Lista prodotti</a>
                                     </div>
                                     <div class="col-md-2">
                                         <a href="Pages/ShowProductCategories.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">Categorie prodotti</a>                                
@@ -222,6 +222,26 @@
                                             <div class="notification-item" id="${notifica.type}ID">
                                                 <img src="${notifica.listimage}">
                                                 <h4 class="item-title">Sono stati rimossi dei prodotti!<small> Potrebbe essere che la lista <b>${notifica.listName}</b> ora sia vuota</small></h4>
+                                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('${notifica.type}ID', '${notifica.type}')">elimina</a>
+                                            </div>  
+                                        </a>
+                                    </c:when>
+                                    
+                                    <c:when test="${notifica.type == 'primoReminder'}">
+                                        <a class="content" href="ShowShopList?nome=${notifica.listName}"> 
+                                            <div class="notification-item" id="${notifica.type}ID">
+                                                <img src="${notifica.listimage}">
+                                                <h4 class="item-title">Attenzione!<small> alcuni prodotti nella lista <b>${notifica.listName}</b> sono vicini all'esaurmineto</small></h4>
+                                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('${notifica.type}ID', '${notifica.type}')">elimina</a>
+                                            </div>  
+                                        </a>
+                                    </c:when>
+                                    
+                                    <c:when test="${notifica.type == 'secondoReminder'}">
+                                        <a class="content" href="ShowShopList?nome=${notifica.listName}"> 
+                                            <div class="notification-item" id="${notifica.type}ID">
+                                                <img src="${notifica.listimage}">
+                                                <h4 class="item-title">Attenzione!<small> alcuni prodotti nella lista <b>${notifica.listName}</b> devono essere acquistati al più presto</small></h4>
                                                 <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('${notifica.type}ID', '${notifica.type}')">elimina</a>
                                             </div>  
                                         </a>

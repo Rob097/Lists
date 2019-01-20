@@ -13,7 +13,10 @@ import database.factories.DAOFactory;
 import database.jdbc.JDBCNotificationsDAO;
 import database.jdbc.JDBCShopListDAO;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,7 +46,6 @@ public class AddProductToList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("\nPRIMO\n");
         
         //Dichiarazioni
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
@@ -55,22 +57,36 @@ public class AddProductToList extends HttpServlet {
         HttpSession s = (HttpSession) request.getSession(false);
         String prodotto = ""; String lista = "";
         String data = null;
-        
-        //richieste dei parametri lista e prodotto
-        if(request.getParameter("prodotto") != null){
-            prodotto = request.getParameter("prodotto");
-            data = request.getParameter("date");            
-        }else if(s.getAttribute("prodotto") != null){
-            prodotto = (String) "" + s.getAttribute("prodotto");
-        }else prodotto = "niente";
-        System.out.println("\nSECONDO\nprodotto="+prodotto);
+        Date currentDate = null;
+        Calendar c = null;
         
         if(request.getParameter("shopListName") != null){
             lista = (String) request.getParameter("shopListName");
         }else if(s.getAttribute("shopListName") != null){
             lista = (String) "" + s.getAttribute("shopListName");
         }else prodotto = "niente";
-        System.out.println("\nTERZO\nlista="+lista);
+
+        //richieste dei parametri lista e prodotto
+        if(request.getParameter("prodotto") != null){
+            prodotto = request.getParameter("prodotto");
+        }else if(s.getAttribute("prodotto") != null){
+            prodotto = (String) "" + s.getAttribute("prodotto");
+        }else prodotto = "niente";        
+        
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String dataStr = sdf.format(new Date());
+            currentDate = sdf.parse(dataStr);            
+            
+            c = Calendar.getInstance();
+            c.setTime(currentDate);
+            c.add(Calendar.DAY_OF_MONTH, listdao.getbyName(lista).getPromemoria());
+            data = sdf.format(c.getTime());
+        } catch (ParseException ex) {
+            Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DAOException ex) {
+            Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         //utenti con cui la lista è condivisa
         ArrayList<User> utenti = new ArrayList();
