@@ -25,7 +25,7 @@
     boolean find = false;
     ShopList lista = null;
     ArrayList<Notification> notifiche = null;
-    String listaStr = (String)s.getAttribute("shopListName");
+    String listastr = (String) s.getAttribute("shopListName");
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
             throw new ServletException("Impossible to get dao factory for user storage system");
@@ -42,8 +42,8 @@
             lista = (ShopList) s.getAttribute("guestList");
         }
     } else {
-        
-        lista = listdao.getbyName("FUJITSU");
+        lista = listdao.getbyName(listastr);
+        li = listdao.getAllObjectListsByCurentUser(u.getEmail());
         notifiche = new ArrayList();
         if (session.getAttribute("notifiche") != null) {
             notifiche = (ArrayList<Notification>) session.getAttribute("notifiche");
@@ -218,100 +218,7 @@
                                 <!--============ Section Title===================================================================-->
                                 
                                 <!--============ Items ==========================================================================-->
-                                <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
-                                    <c:choose>         
-                                        <c:when test = "${ not empty user}">  
-
-                                            <%  
-                                                for (ShopList l : li) {      
-                                            %>                                                                  
-                                            <div class="item">
-                                               
-                                                <div class="wrapper">
-                                                    <div class="image">
-                                                        <h3>
-                                                            <a href="#" class="tag category"><%=l.getCategoria()%></a>
-                                                            <a href="/Lists/ShowShopList?nome=<%=l.getNome()%>" class="title"><%=l.getNome()%></a>
-                                                        </h3>
-                                                        <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                            <img src="/Lists/<%=l.getImmagine()%>" alt="">
-                                                        </a>
-
-                                                    </div>
-
-                                                    <!--end image-->
-                                                    <div class="price"><%=listdao.getAllProductsOfShopList(l.getNome()).size()%></div>
-                                                    <div class="admin-controls">
-                                                        <a href="/Lists/ShowShopList?nome=<%=l.getNome()%>">
-                                                            <i class="fa fa-pencil"></i>Edit
-                                                        </a>
-                                                        <a href="#" class="ad-hide">
-                                                            <i class="fa fa-eye-slash"></i>Hide
-                                                        </a>
-                                                        <a href="/Lists/DeleteShopList?shopListName=<%=l.getNome()%>" class="ad-remove">
-                                                            <i class="fa fa-trash"></i>Remove
-                                                        </a>
-                                                    </div>
-                                                    <!--end admin-controls-->
-                                                    <div class="description">
-                                                        <p><%=l.getDescrizione()%></p>
-                                                    </div>
-                                                    <!--end description-->
-                                                    <a href="/Lists/ShowShopList?nome=<%=l.getNome()%>" class="detail text-caps underline">Detail</a>
-                                                </div>
-                                            </div>                                        
-                                            <!--end item-->
-                                            <%}%>                                   
-
-                                        </c:when>
-
-                                        <c:otherwise>        
-                                            <%if (lista != null && lista.getNome() != null) {%>                                                                 
-                                            <div class="item">
-                                                <!--end ribbon-->
-                                                <div class="wrapper">
-                                                    <div class="image">
-                                                        <h3>
-                                                            <a href="#" class="tag category"><%=lista.getCategoria()%></a>
-                                                            <a href="/Lists/ShowShopList?nome=<%=lista.getNome()%>" class="title"><%=lista.getNome()%></a>
-                                                        </h3>
-                                                        <a href="single-listing-1.html" class="image-wrapper background-image">
-                                                            <img src="/Lists/<%=lista.getImmagine()%>" alt="">
-                                                        </a>
-                                                    </div>
-                                                    <!--end image-->
-                                                    <%if(lista.getProducts() != null){%>
-                                                    <div class="price"><%=lista.getProducts().size()%></div>
-                                                    <%}else{%>
-                                                    <div class="price">0</div>
-                                                    <%}%>
-                                                    <div class="admin-controls">
-                                                        <a href="/Lists/restricted/ShowShopList?nome=<%=lista.getNome()%>">
-                                                            <i class="fa fa-pencil"></i>Edit
-                                                        </a>
-                                                        <a href="#" class="ad-hide">
-                                                            <i class="fa fa-eye-slash"></i>Hide
-                                                        </a>
-                                                        <a href="/Lists/DeleteShopList?shopListName=<%=s.getAttribute("guestList")%>" class="ad-remove">
-                                                            <i class="fa fa-trash"></i>Remove
-                                                        </a>
-                                                    </div>
-                                                    <!--end admin-controls-->
-                                                    <div class="description">
-                                                        <p><%=lista.getDescrizione()%></p>
-                                                    </div>
-                                                    <!--end description-->
-                                                    <a href="/Lists/restricted/ShowShopList?nome=<%=lista.getNome()%>" class="detail text-caps underline">Detail</a>
-                                                </div>
-                                            </div>
-                                            <!--end item-->
-                                            <%} else {%>
-                                            <h1>Non hai ancora creato nessuna lista</h1>
-                                            <button data-toggle="modal" data-target="#import-list" class="btn btn-primary text-caps btn-rounded" >Ho una lista salvata</button>
-                                            <%}%>                                        
-                                        </c:otherwise>
-                                    </c:choose>
-                                </div>                                
+                                                              
                                 <!--end items-->
                             </div>
                             <!--end col-md-9-->
@@ -855,7 +762,7 @@
                        
                         nomeLista = "<c:out value="${shopListName}"/>";
                         
-                        nomeCategoria = "<%=lista.getCategoria()%>";
+                        nomeCategoria = "farmacia";
                         console.log("Sto cercando per cetegoria ["+nomeCategoria+"] nella lista ["+nomeLista+"]");
                         giveAllPlaces(nomeCategoria, nomeLista);
                         
