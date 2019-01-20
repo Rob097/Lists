@@ -40,9 +40,13 @@ public class ScheduledTask implements Runnable{
             getConn();
             //gets all products in List_Prod and compares them
             ArrayList<ListProd> prods = productdao.getAllChoosenProducts();
+            
             for (ListProd p : prods) {
-                if(p.getStato().equals("acquistato")){
+                //controlla se il prodotto è ancora da acquistare                
+                if(p.getStato().equals("daAcquistare")){  
+                    //calcola quanti giorni mancano
                     int missingDays = dayDifference(p.getData_scadenza());
+                    //confronta e manda il messaggio appropriato(solo temporaneo  ancora da fare)
                     if(missingDays >= 0 && missingDays <= 2){                    
                         System.out.println(p.getProdotto() + " nella lista " + p.getLista() + " deve essere comprato al più presto");
                     }else if(missingDays > 0 && missingDays <=4){
@@ -71,9 +75,13 @@ public class ScheduledTask implements Runnable{
     //calcolates the missing days to expiration-date
     private int dayDifference(java.sql.Date exdate){
         Date date = new Date();
-        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-        long diffms = exdate.getTime() - sqlDate.getTime();
-        return (int) (diffms / (1000*60*60*24));
+        if(exdate != null){
+            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+            long diffms = exdate.getTime() - sqlDate.getTime();
+            return (int) (diffms / (1000*60*60*24));
+        }else{
+            return -1;
+        }
     }
 
 }

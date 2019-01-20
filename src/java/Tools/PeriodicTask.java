@@ -43,17 +43,26 @@ public class PeriodicTask implements Runnable {
             getConnection();
             //get all periodic Products
            ArrayList<PeriodicProduct> products = productdao.getAllPeriodicProducts();
-           for(PeriodicProduct p : products){                             
+           for(PeriodicProduct p : products){ 
+               //controlla se mancano meno di 5 giorni fino alla data scadenza
                if(dayDifference(p.getData_scadenza())<5){
+                   //se il prodotto non è ancora nella lista
                    if(!listdao.chckIfProductIsInTheList(p.getProdotto(), p.getLista())){
+                       //inserisce il prodotto nella lista
                        listdao.insertProductToList(p.getProdotto(), p.getLista(), p.getData_scadenza().toString());                       
                        System.out.println("");
                        System.out.println("inserted: "+ p.getLista() + " " + p.getProdotto() + " " + p.getData_scadenza() );
+                    //se è nella lista
                    } else if(listdao.chckIfProductIsInTheList(p.getProdotto(), p.getLista())){
+                       //carica il prodotto
                         ListProd prod = listdao.getbyListAndProd(p.getLista(), p.getProdotto());
+                        //controlla se è stato acquistato
                         if(prod.getStato().equals("acquistato")){
+                            //cambia lo stato del prodotto
                             listdao.signProductAsBuyed(p.getProdotto(), "daAcquistare", p.getLista());
-                            productdao.updatePeriodicDate(p, addPeriod(p.getData_scadenza(),p.getPeriodo()));  
+                            //somma la data scadenza al periodo e la atualizza nella tabella Periodic_Products
+                            productdao.updatePeriodicDate(p, addPeriod(p.getData_scadenza(),p.getPeriodo())); 
+                            //somma la data scadenza al periodo e la atualizza nella tabella List_Prod
                             listdao.updateExpirationDate(p, addPeriod(p.getData_scadenza(),p.getPeriodo()));
                         }
                    }
