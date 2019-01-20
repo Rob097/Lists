@@ -275,7 +275,6 @@
                                         <c:when test="${param.cat == null or param.cat eq 'all'}">
                                             <c:set scope="page" var="count" value="5"/>
                                             <c:forEach  items="${products}" var="p">
-                                                <c:if test="${count <= 15}">
                                                     <div class="item">
                                                     <!--end ribbon-->
                                                     <div class="wrapper">
@@ -301,12 +300,8 @@
                                                         <a class="detail text-caps underline" style="cursor: pointer;" id="addButton${p.pid}" onclick="addProduct(${p.pid});">Aggiungi ad una lista</a>
                                                     </div>
                                                 </div>
-                                                </c:if>
                                                 <c:set var="count" value="${count + 1}" scope="page"/>
                                             </c:forEach>
-                                            <div id="content-wrapper">                                        
-                                            </div>
-                                            <button class="btn btn-primary text-center" onclick="showProduct();">Mostra più prodotti</button>
                                         </c:when>
                                     </c:choose>
                                 </div>
@@ -696,6 +691,12 @@
                             
                         }
                         if(items[i].style.display === "") check = false;
+                    }                    
+                    if(filter == null || filter == ""){
+                        for (i = 0; i<items.length;i++) {
+                            console.l
+                            items[i].style.display = "";
+                        }
                     }
                     if(check === true){
                         document.getElementById("loadProducts1").style.display = "";
@@ -703,24 +704,6 @@
                     }
                 }
             </script>
-            
-            <script>
-            
-            function showProduct() {
-                $.ajax({
-                type: "POST",
-                url: "/Lists/Pages/elements.jsp",
-                
-                cache: false,
-                success: function (response) {
-                    $("#content-wrapper").html($("#content-wrapper").html() + response);
-                },
-                error: function () {
-                   alert("Errore");
-               }
-            });
-            }
-        </script>
         
         <script>
         $(document).ready(function () {

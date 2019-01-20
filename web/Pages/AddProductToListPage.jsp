@@ -134,79 +134,9 @@
         <div class="page home-page">
             <header class="hero">
                 <div class="hero-wrapper">
-
-                    <c:if test="${user != null}">
-                    <nav class="navbar navbar-expand-xl navbar-dark fixed-top " id="mainNav">
-                        <a class="navbar-brand">
-                            <img width= "50" src="/Lists/Pages/img/favicon.png" alt="Logo">
-                        </a>
-                        <a class="navbar-brand js-scroll-trigger" href="../homepage.jsp">LISTS</a>
-                        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                            Menu
-                            <i class="fa fa-bars"></i>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarResponsive">
-                            <ul class="navbar-nav text-uppercase ml-auto text-center">
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="../homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
-                                </li>
-                                <li class="nav-item js-scroll-trigger dropdown">
-                                    <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
-                                    <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item nav-link" href="../userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
-                                        <a class="dropdown-item nav-link" href="../foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
-                                    </div>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
-                                        <i class="fa fa-sign-in"></i><b><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> </b>/ <img src= "../${user.image}" width="25px" height="25px" style="border-radius: 100%;">
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="../profile.jsp">
-                                        <i class="fa fa-user"></i><b>Il mio profilo</b>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                    </c:if>
-                    <c:if test="${user == null}">
-                    <nav class="navbar navbar-expand-xl navbar-dark fixed-top " id="mainNav">
-                        <a class="navbar-brand">
-                            <img width= "50" src="/Lists/Pages/img/favicon.png" alt="Logo">
-                        </a>
-                        <a class="navbar-brand js-scroll-trigger" href="../homepage.jsp">LISTS</a>
-                        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                            Menu
-                            <i class="fa fa-bars"></i>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarResponsive">
-                            <ul class="navbar-nav text-uppercase ml-auto text-center">
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="../homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
-                                </li>
-                                <li class="nav-item js-scroll-trigger dropdown">
-                                    <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
-                                    <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item nav-link" href="../userlists.jsp"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
-                                        <a class="dropdown-item nav-link disabled" data-toggle="tooltip" title="Registrati o fai il login per usare questa funzione"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
-                                    </div>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#LoginModal" style="cursor: pointer;">
-                                        <i class="fa fa-sign-in"></i><b>Login</b>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#RegisterModal" style="cursor: pointer;">
-                                        <i class="fa fa-pencil-square-o"></i><b>Registrati</b>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                    </c:if>
+                    <div id="navbar">
+                        <!-- Qui viene inclusa la navbar -->
+                    </div>
                     <!--============ Page Title =========================================================================-->
                     <div class="page-title">
                         <div class="container center">
@@ -339,7 +269,6 @@
                                         <c:when test="${param.cat == null or param.cat eq 'all'}">
                                             <c:set var="count" value="5" scope="page"/>
                                             <c:forEach items="${products}" var="product">
-                                                <c:if test="${count <= 15}">
                                                     <div class="item">
                                                         <!--end ribbon-->
                                                         <div class="wrapper">
@@ -390,12 +319,9 @@
                                                            <a class="detail"><img src="img/correct.png" id="addIco${product.pid}" class="dispNone"></a>
                                                         </div>
                                                     </div>
-                                                </c:if>
+                                                
                                                 <c:set var="count" value="${count + 1}" scope="page"/>
                                             </c:forEach>
-                                            <div id="content-wrapper">
-                                            </div>
-                                            <button class="btn btn-primary text-center" onclick="showProduct();">Mostra più prodotti</button>
                                         </c:when>
                                     </c:choose>
                                 </div>
@@ -662,23 +588,21 @@
                 }
             }
         </script>
-
-        <script>
-
-            function showProduct() {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                //Navbar
                 $.ajax({
-                    type: "POST",
-                    url: "/Lists/Pages/elements.jsp",
-
+                    type: "GET",
+                    url: "/Lists/Pages/template/navbarTemplate.jsp",
                     cache: false,
                     success: function (response) {
-                        $("#content-wrapper").html($("#content-wrapper").html() + response);
+                        $("#navbar").html(response);
                     },
                     error: function () {
-                        alert("Errore");
+                        alert("Errore navbarTemplate");
                     }
                 });
-            }
+            });
         </script>
 
     </body>

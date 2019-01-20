@@ -270,37 +270,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
         }
     }
 
-    @Override
-    public ArrayList<Product> getByRange(int number, HttpServletRequest request) throws DAOException {
-        
-        HttpSession session = request.getSession();
-        ArrayList<Product> products = new ArrayList<>();
-        
-            try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM Product WHERE creator = ? ORDER BY PID LIMIT 10 OFFSET ?;")) {
-                stm.setString(1, "amministratore");
-                stm.setInt(2, number);
-                try (ResultSet rs = stm.executeQuery()) {
-                    while (rs.next()) {
-                        Product p = new Product();
-                        p.setPid(rs.getInt("PID"));
-                        p.setNome(rs.getString("nome"));
-                        p.setNote(rs.getString("note"));
-                        p.setCategoria_prodotto(rs.getString("categoria_prod"));
-                        p.setImmagine(rs.getString("immagine"));
-                        p.setCreator(rs.getString("creator"));
-                        products.add(p);
-                        session.setAttribute(p.getNome(), p.getNome());
-                    }
-                }catch(Exception ex){
-                    ex.printStackTrace();
-                }
-            } catch (SQLException ex) {
-                throw new DAOException("Impossible number product", ex);
-            }
-        
-        session.setAttribute("number", number+10);
-        return products;
-    }
+    
 
     @Override
     public ArrayList<Product> nameContian(String s, HttpServletRequest request) throws DAOException {

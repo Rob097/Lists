@@ -566,7 +566,7 @@
         function deleteALLNotifications() {
             $.ajax({
                 type: "POST",
-                url: "/Lists/Pages/deleteALLNotifications.jsp",
+                url: "/Lists/Pages/template/deleteALLNotifications.jsp",
                 cache: false,
                 success: function (response) {
                     $("#NotificationsWrapper").html(response);

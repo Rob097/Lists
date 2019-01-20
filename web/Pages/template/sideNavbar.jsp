@@ -18,16 +18,17 @@
         <a class="nav-link active icon" href="/Lists/foreignLists.jsp">
             <i class="fa fa-share-alt"></i>Liste condivise
         </a>
-        <a class="nav-link icon" href="/Lists/Pages/ShowProducts.jsp">
-            <i class="fa fa-recycle"></i>Tutti i Prodotti
-        </a>
         <c:if test="${user.tipo=='amministratore'}">
-            <a class="nav-link icon" href="/Lists/Pages/ShowProductCategories.jsp">
-                <i class="fa fa-bookmark"></i>Tutte le categorie per prodotti
-            </a>
-            <a class="nav-link icon" href="/Lists/Pages/ShowListCategories.jsp">
-                <i class="fa fa-bookmark"></i>Tutte le categorie per liste
-            </a>                                        
+            <div class="btn-group dropright">
+                <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+                    <i style="color: red;" class="fa fa-bookmark"></i>  Dashboard
+                </a>
+                <div class="dropdown-menu">
+                    <a href="/Lists/Pages/AdminProducts.jsp" class="dropdown-item nav-link"><i style="color: red;" class="fa fa-bars"></i><b>Lista prodotti</b></a>
+                    <a href="/Lists/Pages/ShowProductCategories.jsp" class="dropdown-item nav-link"><i style="color: red;" class="fa fa-bars"></i><b>Categorie prodotti</b></a>
+                    <a href="/Lists/Pages/ShowListCategories.jsp" class="dropdown-item nav-link"><i style="color: red;" class="fa fa-bars"></i><b>Categorie lista</b></a>                                         
+                </div>
+            </div>                     
         </c:if>
     </nav>
 </c:if>

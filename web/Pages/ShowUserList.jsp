@@ -143,7 +143,6 @@
         <div class="page home-page">
             <header class="hero">
                 <div class="hero-wrapper">
-
                     <div id="navbar">
                         <!-- Qui viene inclusa la navbar -->
                     </div>

@@ -33,9 +33,9 @@
                     </li>
                     <c:if test="${user.tipo == 'amministratore'}">
                         <li class="nav-item js-scroll-trigger dropdown">
-                            <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Operazioni</b></div>
+                            <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Dashboard</b></div>
                             <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
-                                <a href="/Lists/Pages/AdminPages/AdminProducts.jsp" class="dropdown-item nav-link"><i class="fa fa-bars"></i><b>Lista prodotti</b></a>
+                                <a href="/Lists/Pages/AdminProducts.jsp" class="dropdown-item nav-link"><i class="fa fa-bars"></i><b>Lista prodotti</b></a>
                                 <a href="/Lists/Pages/ShowProductCategories.jsp" class="dropdown-item nav-link"><i class="fa fa-bars"></i><b>Categorie prodotti</b></a>
                                 <a href="/Lists/Pages/ShowListCategories.jsp" class="dropdown-item nav-link"><i class="fa fa-bars"></i><b>Categorie lista</b></a>                                        
                             </div>

@@ -14,6 +14,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
+    try{
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
             throw new ServletException("Impossible to get dao factory for user storage system");
@@ -25,11 +26,14 @@
         String shoplistName = (String) request.getSession().getAttribute("shopListName");
         
             String s = request.getParameter("s");
+            System.out.println(s);
             ArrayList<Product> pp = null;
-            if(s == null || s.equals("")){
-                
+            
+            if(s == null || s.equals("") || s.isEmpty()){
+                pp  = productdao.getAllProducts();
             }else{
                 pp = productdao.nameContian(s, request);
+            }
                 for(Product p : pp){%>
                 <div class="item">
                     <!--end ribbon-->
@@ -63,5 +67,8 @@
                     </div>
                 </div>
                 <%}
-            }%>
+            }
+                 finally {
+    // ... cleanup that will execute whether or not an error occurred ...
+}%>
 

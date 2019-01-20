@@ -192,7 +192,7 @@
 
                     <div class="container text-center" id="welcomeGrid">
                         <a data-toggle="modal" data-target="#CreateCategoryModal" class="btn btn-primary text-caps btn-framed btn-block" >Crea una categoria</a>
-                    </div
+                    </div>
                 </div>
             </header>
              <div class="page sub-page">
@@ -200,9 +200,11 @@
                 <section class="block">
                     <div class="container">
                         <div class="row">
-
+                            <div class="col-md-3" id="sideNavbar">
+                                <!-- Qui c'è la side navar caricata dal template con AJAX -->
+                            </div>
                             <!--end col-md-3-->
-                            <div class="col-md-12">
+                            <div class="col-md-9">
                                 <!--============ Section Title===================================================================-->
                                 <div class="section-title clearfix">
                                     <div class="float-left float-xs-none" style="width: 89%;">
@@ -497,7 +499,7 @@
                 function deleteImage(listname) {
                     $.ajax({
                         type: "GET",
-                        url: "/Lists/Pages/deleteImage.jsp?listname=" + listname,
+                        url: "/Lists/Pages/template/deleteImage.jsp?listname=" + listname,
                         async: true,
                         success: function (response) {
                             $("#deleteImageModal").html(response);
@@ -513,7 +515,7 @@
                 function showImage(listname) {
                     $.ajax({
                         type: "GET",
-                        url: "/Lists/Pages/showImage.jsp?listname=" + listname,
+                        url: "/Lists/Pages/template/showImage.jsp?listname=" + listname,
                         async: true,
                         success: function (response) {
                             $("#imageModal").html(response);
@@ -576,7 +578,18 @@
                         alert("Errore navbarTemplate");
                     }
                 });
-
+                //Side-Navbar
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/sideNavbar.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#sideNavbar").html(response);
+                    },
+                    error: function () {
+                        alert("Errore sideNavbar Template");
+                    }
+                });
 
             });
         </script>

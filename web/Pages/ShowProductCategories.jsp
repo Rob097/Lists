@@ -175,9 +175,11 @@
                 <section class="block">
                     <div class="container">
                         <div class="row">
-
+                            <div class="col-md-3" id="sideNavbar">
+                                <!-- Qui c'è la side navar caricata dal template con AJAX -->
+                            </div>
                             <!--end col-md-3-->
-                            <div class="col-md-12">
+                            <div class="col-md-9">
                                 <!--============ Section Title===================================================================-->
                                 <div class="section-title clearfix">
                                     <div class="float-left float-xs-none" style="width: 89%;">
@@ -384,7 +386,18 @@
                         alert("Errore navbarTemplate");
                     }
                 });
-
+                //Side-Navbar
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/sideNavbar.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#sideNavbar").html(response);
+                    },
+                    error: function () {
+                        alert("Errore sideNavbar Template");
+                    }
+                });
 
             });
         </script>

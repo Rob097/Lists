@@ -21,17 +21,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="author" content="ThemeStarz">
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
-        <link rel="stylesheet" href="../css/navbar.css"> 
-        <link rel="stylesheet" href="../css/datatables.css" type="text/css"> 
-        <link rel="icon" href="../img/favicon.png" sizes="16x16" type="image/png">
-        <script src="../js/jquery-3.3.1.min.js"></script>
-        <script type="text/javascript" src="../js/popper.min.js"></script>
-        <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>        
-        <link rel="stylesheet" href="../bootstrap/css/bootstrap.css" type="text/css">
-        <link rel="stylesheet" href="../fonts/font-awesome.css" type="text/css">
-        <link rel="stylesheet" href="../css/selectize.css" type="text/css">
-        <link rel="stylesheet" href="../css/style.css">
-        <link rel="stylesheet" href="../css/user.css">
+        <link rel="stylesheet" href="css/navbar.css"> 
+        <link rel="stylesheet" href="css/datatables.css" type="text/css"> 
+        <link rel="icon" href="img/favicon.png" sizes="16x16" type="image/png">
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="js/popper.min.js"></script>
+        <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>        
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css">
+        <link rel="stylesheet" href="fonts/font-awesome.css" type="text/css">
+        <link rel="stylesheet" href="css/selectize.css" type="text/css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/user.css">
 
         <title>Adminpage Products</title>
 
@@ -103,9 +103,11 @@
                 <section class="block">
                     <div class="container">
                         <div class="row">
-
+                            <div class="col-md-3" id="sideNavbar">
+                                <!-- Qui c'è la side navar caricata dal template con AJAX -->
+                            </div>
                             <!--end col-md-3-->
-                            <div class="col-md-12">
+                            <div class="col-md-9">
                                 <!--============ Section Title===================================================================-->
                                   <div class="section-title clearfix">                                    
                                         <div class="float-left float-xs-none" style="width: 89%;">
@@ -134,7 +136,7 @@
                                                     <a class="title">${product.nome}</a>                           
                                                 </h3>
                                                 <a >
-                                                    <img src="../../${product.immagine}" alt="" class="avatar">
+                                                    <img src="../${product.immagine}" alt="" class="avatar">
                                                 </a>
                                             </div>
                                             <h4 class="description">
@@ -232,19 +234,19 @@
           </div>
 
 
-        <script src="../js/jquery-3.3.1.min.js"></script>
+        <script src="js/jquery-3.3.1.min.js"></script>
         <script type="text/javascript" src="assets/js/popper.min.js"></script>
         <script type="text/javascript" src="assets/bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
-        <script src="../js/selectize.min.js"></script>
-        <script src="../js/masonry.pkgd.min.js"></script>
-        <script src="../js/icheck.min.js"></script>
-        <script src="../js/jquery.validate.min.js"></script>
-        <script src="../js/custom.js"></script>
+        <script src="js/selectize.min.js"></script>
+        <script src="js/masonry.pkgd.min.js"></script>
+        <script src="js/icheck.min.js"></script>
+        <script src="js/jquery.validate.min.js"></script>
+        <script src="js/custom.js"></script>
             <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
             <script>
                 function myFunction() {
-                    var input, filter, ul, li, a, i;
+                    var input, filter, ul, li, a, i;zz
                     input = document.getElementById("myInput");
                     filter = input.value.toUpperCase();
                     ul = document.getElementById("myUL");
@@ -336,7 +338,18 @@
                             alert("Errore navbarTemplate");
                         }
                     });
-
+                    //Side-Navbar
+                    $.ajax({
+                        type: "GET",
+                        url: "/Lists/Pages/template/sideNavbar.jsp",
+                        cache: false,
+                        success: function (response) {
+                            $("#sideNavbar").html(response);
+                        },
+                        error: function () {
+                            alert("Errore sideNavbar Template");
+                        }
+                    });
 
                 });
             </script>
