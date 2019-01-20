@@ -20,14 +20,23 @@ import javax.servlet.ServletContextListener;
  * @author Martin
  */
 public class ExpirationJobManager implements ServletContextListener {
-
+    /*
+    **Executor-->An object that executes submitted Runnable tasks. 
+        An Executor is normally used instead of explicitly creating threads
+    **ExecutorService-->An Executor that provides methods to manage
+        termination and methods that can produce a Future 
+        for tracking progress of one or more asynchronous tasks.
+    **ScheduledExecutorService-->An ExecutorService that can schedule commands 
+        to run after a given delay, or to execute periodically.
+    */
     private ScheduledExecutorService scheduler = null;
     
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(new ScheduledTask(sce), 0, 1, TimeUnit.MINUTES);
-        scheduler.scheduleAtFixedRate(new PeriodicTask(sce), 0, 1, TimeUnit.MINUTES);
+        //manages the runnable periodically:(runnable class, delay, period , time-unit)  
+        scheduler.scheduleAtFixedRate(new ScheduledTask(sce), 0, 3, TimeUnit.MINUTES);
+        scheduler.scheduleAtFixedRate(new PeriodicTask(sce), 0, 3, TimeUnit.MINUTES);
         
     }
 

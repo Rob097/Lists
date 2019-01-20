@@ -96,9 +96,13 @@ public class ScheduledTask implements Runnable{
     //calcolates the missing days to expiration-date
     private int dayDifference(java.sql.Date exdate){
         Date date = new Date();
-        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-        long diffms = exdate.getTime() - sqlDate.getTime();
-        return (int) (diffms / (1000*60*60*24));
+        if(exdate != null){
+            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+            long diffms = exdate.getTime() - sqlDate.getTime();
+            return (int) (diffms / (1000*60*60*24));
+        }else{
+            return -1;
+        }
     }
 
 }
