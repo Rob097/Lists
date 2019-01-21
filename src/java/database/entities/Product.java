@@ -19,6 +19,7 @@ public class Product {
     private String status;
     private int quantity;
     private boolean inList;
+    private String data_scadenza;
 
     public boolean isInList() {
         return inList;
@@ -98,6 +99,15 @@ public class Product {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getData_scadenza() {
+        return data_scadenza;
+    }
+
+    public void setData_scadenza(String data_scadenza) {
+        this.data_scadenza = data_scadenza;
+    }
+    
     
     
     

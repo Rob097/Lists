@@ -92,7 +92,7 @@ public class ShopListFilter implements Filter {
                
                 //categories of products
                 try {
-                     ArrayList<Category_Product> allPrcategories;
+                    ArrayList<Category_Product> allPrcategories;
                     allPrcategories = category_productdao.getAllCategories();
                     session.setAttribute("catProd", allPrcategories);
                 } catch (DAOException ex) {
@@ -124,6 +124,7 @@ public class ShopListFilter implements Filter {
                             if(listdao.checkBuyed(p.getPid(), shopListName, session))
                             p.setStatus("acquistato");
                             p.setQuantity(productdao.getQuantity(p.getPid(), shopListName));
+                            p.setData_scadenza(productdao.getReminderDate(p, shopListName));
                         }                        
                         session.setAttribute("listProducts", products);                       
                          

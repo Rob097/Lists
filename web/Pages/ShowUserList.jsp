@@ -301,13 +301,7 @@
                                     <h4>Promemoria di default: <i class="pl-3 fa fa-info" data-toggle="tooltip" data-placement="right" title="Tutti i prodotti aggiunti a questa lista avranno un promemoria di default impostato a ${lista.promemoria} giorni. Questo valore è modificabile."></i></h4>
                                     <input class="form-control" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" onchange="defaultChange();" value="${lista.promemoria}" id="defaultReminder">
                                 </div>
-                                <!--============ Items ==========================================================================-->
-                                <%DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
-                                    if (daoFactory == null) {
-                                        throw new ServletException("Impossible to get dao factory for user storage system");
-                                    }                                    
-                                    ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
-                                %>
+                                <!--============ Items ==========================================================================-->                               
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
                                     <c:if test="${listProducts != null}">
                                         <c:forEach items="${listProducts}" var="prod">
@@ -337,19 +331,10 @@
                                                                 <img src="../${prod.immagine}" alt="">                                                            
                                                             </a>
                                                         </div>
-                                                        <h4>
-                                                            <c:set var="prodotto" value="${prod}"/>
-                                                            <c:set var="list" value="${shopListName}"/>
-                                                            <c:set var="data" value="${shopListName}"/>
-                                                            <%Product p = (Product) pageContext.getAttribute("prodotto");
-                                                                String s = (String) pageContext.getAttribute("list");
-                                                                String data = /*"27-01-2019";*/productdao.getReminderDate(p, s);
-                                                                pageContext.setAttribute("reminder", data);
-                                                            %>
-                                                            
+                                                        <h4>                                                       
                                                             <a>
                                                                 <i style="color: black;" class="fa fa-calendar" data-toggle="tooltip" data-placement="bottom" title="Promemoria di acquisto di ${prod.nome}"></i>
-                                                                <input style="background-color: transparent; cursor: pointer; width: fit-content;" type="date" onchange="changeReminder(${prod.pid}, '${shopListName}');" class="border border-primary rounded" value="${reminder}" id="Reminder-${prod.pid}-${shopListName}">
+                                                                <input style="background-color: transparent; cursor: pointer; width: fit-content;" type="date" onchange="changeReminder(${prod.pid}, '${shopListName}');" class="border border-primary rounded" value="${prod.data_scadenza}" id="Reminder-${prod.pid}-${shopListName}">
                                                             </a>
                                                         </h4>
                                                             <input id="${prod.pid}Quantity" class="price" onchange="updateQuantity(${prod.pid});" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" name="quantity" min="1" max="99" value="${prod.quantity}"></input>
@@ -362,7 +347,7 @@
                                                             </a>
                                                             <a class="reminderInvisible">
                                                                 <i style="color: black;" class="fa fa-calendar" data-toggle="tooltip" data-placement="bottom" title="Promemoria di acquisto di ${prod.nome}"></i>
-                                                                <input style="background-color: transparent; cursor: pointer; width: fit-content;" type="date" onchange="changeReminder(${prod.pid}, '${shopListName}');" class="border border-primary rounded" value="${reminder}" id="Reminder-grid-${prod.pid}-${shopListName}">
+                                                                <input style="background-color: transparent; cursor: pointer; width: fit-content;" type="date" onchange="changeReminder(${prod.pid}, '${shopListName}');" class="border border-primary rounded" value="${prod.data_scadenza}" id="Reminder-grid-${prod.pid}-${shopListName}">
                                                             </a>
                                                         </div>
                                                         <!--end admin-controls-->
