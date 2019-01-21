@@ -31,6 +31,7 @@
         <link rel="stylesheet" href="css/navbar.css">
         <link rel="stylesheet" href="css/datepicker.css">
         <link rel="stylesheet" href="css/datatables.css" type="text/css"> 
+        <link rel="stylesheet" href="css/notificationCss.css" type="text/css"> 
         <script src="js/jquery-3.3.1.min.js"></script>
         <script type="text/javascript" src="js/popper.min.js"></script>
         <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
@@ -194,6 +195,10 @@
                     <!--<div id="map"></div>-->
                 </div>
             </header>
+            <!-- SISTEMA PER LE NOTIFICHE -->
+
+            <li class="dropdown" id="notificationsLI"></li>
+            
                                 <c:if test="${role != null}">
                                     <div class="container pt-5" id="alert">
                                         <c:if test="${role ne 'same'}">
@@ -875,6 +880,19 @@
                     alert("Errore navbarTemplate");
                 }
             });
+            
+            //Notifiche
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/notifiche.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#notificationsLI").html(response);
+                    },
+                    error: function () {
+                        alert("Errore Notifiche template");
+                    }
+                });
         });
         </script>
         

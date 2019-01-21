@@ -32,6 +32,7 @@
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/user.css">
         <link rel="stylesheet" href="css/navbar.css">
+        <link rel="stylesheet" href="css/notificationCss.css" type="text/css"> 
 
         <title>Craigs - Easy Buy & Sell Listing HTML Template</title>
 
@@ -74,7 +75,9 @@
         <!--end hero-wrapper-->
     </header>
     <!--end hero-->
+    <!-- SISTEMA PER LE NOTIFICHE -->
 
+    <li class="dropdown" id="notificationsLI"></li>
     <!--*********************************************************************************************************-->
     <!--************ CONTENT ************************************************************************************-->
     <!--*********************************************************************************************************-->
@@ -385,6 +388,20 @@
                     alert("Errore navbarTemplate");
                 }
             });
+            
+            //Notifiche
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/notifiche.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#notificationsLI").html(response);
+                    },
+                    error: function () {
+                        alert("Errore Notifiche template");
+                    }
+                });
+            
         });
 </script>
 

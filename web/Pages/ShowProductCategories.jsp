@@ -28,6 +28,7 @@
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/user.css">
         <link rel="stylesheet" href="css/navbar.css">
+        <link rel="stylesheet" href="css/notificationCss.css" type="text/css"> 
         <title>Categorie Lista</title>
         <style>
             body{
@@ -170,6 +171,9 @@
                     </div
                 </div>
             </header>
+            <!-- SISTEMA PER LE NOTIFICHE -->
+
+            <li class="dropdown" id="notificationsLI"></li>
              <div class="page sub-page">
             <section class="content">
                 <section class="block">
@@ -396,6 +400,19 @@
                     },
                     error: function () {
                         alert("Errore sideNavbar Template");
+                    }
+                });
+                
+                //Notifiche
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/notifiche.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#notificationsLI").html(response);
+                    },
+                    error: function () {
+                        alert("Errore Notifiche template");
                     }
                 });
 

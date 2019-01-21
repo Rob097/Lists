@@ -24,10 +24,10 @@
         <div class="modal-body">
             <h5>Nuova passworrd per <%=request.getParameter("restorePasswordOf")%></h5>
             <!-- Form per il login -->
-            <form class="form clearfix" id="login-form" action="/Lists/changePassword" method="post" role="form">
+            <form class="form clearfix" id="restore-form" action="/Lists/changePassword" method="post" role="form">
                 <div class="form-group">
                     <label for="password" class="col-form-label required">Password</label>
-                    <input type="password" name="password" id="emaillogin" tabindex="1" class="form-control" placeholder="Password" value="" required>
+                    <input type="password" name="password" id="passwordnew" tabindex="1" class="form-control" placeholder="Password" value="" required>
                     <input type="hidden" name="email" value="<%=request.getParameter("restorePasswordOf")%>">
                 </div>
                 <!--end form-group-->

@@ -238,6 +238,10 @@
         <servlet-name>updateReminder</servlet-name>
         <servlet-class>Products.updateReminder</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>reminderEmail</servlet-name>
+        <servlet-class>email.reminderEmail</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -405,6 +409,10 @@
     <servlet-mapping>
         <servlet-name>updateReminder</servlet-name>
         <url-pattern>/updateReminder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>reminderEmail</servlet-name>
+        <url-pattern>/reminderEmail</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -16,6 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -214,6 +215,41 @@ public class JDBCNotificationsDAO extends JDBCDAO implements NotificationDAO{
         } catch (SQLException ex) {
             Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Problems with deleting shared user");
+        }
+    }
+
+    @Override
+    public boolean checkReminderMail(String email, String lista) throws DAOException {
+        try {
+            PreparedStatement stm = CON.prepareStatement("select * from reminderMail where email=? AND lista=?");
+            stm.setString(1, email);
+            stm.setString(2, lista);
+            ResultSet rs = stm.executeQuery();
+                while (rs.next()) {
+                    return false;
+                }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCNotificationsDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        String qry = "insert into reminderMail(email,lista,data) "
+                + "values(?,?,?)";
+        Date date = new Date();
+        java.sql.Date sqlExpireDate = new java.sql.Date(date.getTime());
+        try (PreparedStatement stm = CON.prepareStatement(qry)) {
+            stm.setString(1, email);
+            stm.setString(2, lista);
+            stm.setDate(3, sqlExpireDate);
+            
+            if (stm.executeUpdate() == 1) {
+                System.out.println("new email ok"); 
+                return true;
+            } else {
+                throw new DAOException("Impossible to insert the email");
+            }
+        } catch (SQLException ex) {
+            throw new DAOException(ex);
+
         }
     }
     

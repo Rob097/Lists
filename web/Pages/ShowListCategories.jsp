@@ -31,6 +31,7 @@
         <link rel="stylesheet" href="css/user.css">  
         <link rel="stylesheet" href="css/navbar.css"> 
         <link rel="stylesheet" href="css/datatables.css" type="text/css"> 
+        <link rel="stylesheet" href="css/notificationCss.css" type="text/css"> 
         <link rel="icon" href="img/favicon.png" sizes="16x16" type="image/png">
         <script src="js/jquery-3.3.1.min.js"></script>
         <script type="text/javascript" src="js/popper.min.js"></script>
@@ -195,6 +196,9 @@
                     </div>
                 </div>
             </header>
+            <!-- SISTEMA PER LE NOTIFICHE -->
+
+            <li class="dropdown" id="notificationsLI"></li>
              <div class="page sub-page">
             <section class="content">
                 <section class="block">
@@ -588,6 +592,19 @@
                     },
                     error: function () {
                         alert("Errore sideNavbar Template");
+                    }
+                });
+                
+                //Notifiche
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/notifiche.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#notificationsLI").html(response);
+                    },
+                    error: function () {
+                        alert("Errore Notifiche template");
                     }
                 });
 

@@ -39,6 +39,7 @@
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/user.css">
         <link rel="stylesheet" href="css/navbar.css"> 
+        <link rel="stylesheet" href="css/notificationCss.css" type="text/css"> 
         <style>
 
             body{
@@ -202,7 +203,9 @@
                 <!--end hero-wrapper-->
             </header>
             <!--end hero-->
+            <!-- SISTEMA PER LE NOTIFICHE -->
 
+            <li class="dropdown" id="notificationsLI"></li>
             <!--*********************************************************************************************************-->
             <!--************ CONTENT ************************************************************************************-->
             <!--*********************************************************************************************************-->
@@ -338,129 +341,18 @@
         ##########################################################-->
 
         <!-- Login Modal -->
-        <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModal" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-
-                        <div class="page-title">
-                            <div class="container">
-                                <h1>Sign In</h1>
-                            </div>
-                            <!--end container-->
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>            
-
-                    </div>
-                    <div class="modal-body">
-                        <c:if test="${loginResult==false}">
-                            <div class="alert alert-danger">
-                                <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                <strong>Login Failed!</strong> <br> Please try again or <a data-toggle="modal" href="#RegisterModal" class="alert-link"><u>Sign up!</u></a>
-
-                            </div>
-                        </c:if>
-                        <!-- Form per il login -->
-                        <form class="form clearfix" id="login-form" action="/Lists/LoginAction" method="post" role="form">
-                            <div class="form-group">
-                                <label for="email" class="col-form-label required">Email</label>
-                                <input type="text" name="email" id="emaillogin" tabindex="1" class="form-control" placeholder="Email" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="password" class="col-form-label required">Password</label>
-                                <input type="password" name="password" id="passwordlogin" tabindex="2" class="form-control" placeholder="Password" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="d-flex justify-content-between align-items-baseline">
-                                <div class="form-group text-center">
-                                    <label>
-                                        <input type="checkbox" name="remember" value="1">
-                                        Remember Me
-                                    </label>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Sign In</button>
-                            </div>
-
-                        </form>
-                        <hr>
-                        <p>
-                            Troubles with signing? <a href="#RegisterModal" data-toggle="modal" class="link">Click here.</a>
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModal" aria-hidden="true"></div>
         <!--######################################################-->
 
         <!-- Register Modal -->
-        <div class="modal fade" id="RegisterModal" tabindex="-1" role="dialog" aria-labelledby="RegisterModal" aria-hidden="true" enctype="multipart/form-data">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="page-title">
-                            <div class="container">
-                                <h1>Register</h1>
-                            </div>
-                            <!--end container-->
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Form per il login -->
-                        <form class="form clearfix" id="register-form" action="/Lists/RegisterAction" method="post" enctype="multipart/form-data" onsubmit="return checkCheckBoxes(this);">
-                            <div class="form-group">
-                                <label for="email" class="col-form-label">Email</label>
-                                <input type="email" name="email" id="emailRegister" tabindex="1" class="form-control" placeholder="Email" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="nominativo" class="col-form-label">Nome</label>
-                                <input type="text" name="nominativo" id="nominativoRegister" tabindex="1" class="form-control" placeholder="Nome" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="password" class="col-form-label">Password</label>
-                                <input type="password" name="password" id="passwordRegister" tabindex="2" class="form-control" placeholder="Password" required>
-                            </div>
+        <div class="modal fade" id="RegisterModal" tabindex="-1" role="dialog" aria-labelledby="RegisterModal" aria-hidden="true" enctype="multipart/form-data"></div>
 
-                            <!--end form-group-->
+        <!-- restore password Modal -->
+        <div class="modal fade" id="restorePassword" tabindex="-1" role="dialog" aria-labelledby="restorePassword" aria-hidden="true"></div>
+        <!--######################################################-->
 
-                            <div class="form-group">
-                                <label for="image" class="col-form-label required">Avatar</label>
-                                <input type="file" name="file1" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="d-flex justify-content-between align-items-baseline">
-                                <div class="form-group text-center">
-                                    <input type="checkbox" tabindex="3" class="" name="standard" id="standard">
-                                    <label for="standard">Standard</label>
-                                    <input type="checkbox" tabindex="3" class="" name="amministratore" id="amministratore">
-                                    <label for="amministratore">Amministratore</label>
-                                </div>
-                                <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Register Now</button>
-                            </div>
-                        </form>
-                        <hr>
-                        <p>
-                            By clicking "Register Now" button, you agree with our <a class="link">Terms & Conditions.</a>
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
+        <!-- new password Modal -->
+        <div class="modal fade" id="newPassword" tabindex="-1" role="dialog" aria-labelledby="newPassword" aria-hidden="true"></div>
         <!--######################################################-->
 
         <div class="modal fade" id="myModal" role="dialog">
@@ -554,69 +446,7 @@
           </c:if>
         <!--########################## moooddaaalllll ############################-->
 
-        <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="page-title">
-                            <div class="container">
-                                <h1 style="text-align: center;">Create list</h1>
-                            </div>
-                            <!--end container-->
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Form per il login -->
-                        <form class="form clearfix" id="CreateShopListform" action="/Lists/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
-                            <div class="form-group">
-                                <label for="Nome" class="col-form-label">Nome della lista</label>
-                                <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="Descrizione" class="col-form-label">Descrizione</label>
-                                <input type="text" name="Descrizione" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="Categoria" class="col-form-label">Categoria</label>
-                                <select name="Categoria" id="Categoria" tabindex="1" size="5" >
-
-                                    <c:forEach items="${categorie}" var="categoria">
-                                        <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
-                                    </c:forEach>
-                                </select><!--<input type="text" name="Categoria" id="Categoria" tabindex="1" class="form-control" placeholder="Categoria" value="" required>-->
-
-                            </div>
-                            <!--end form-group-->
-                            <c:if test="${not empty user}">
-                            <div class="form-group">
-                                <label for="Immagine" class="col-form-label required">Immagine</label>
-                                <input type="file" name="file1" required>
-                            </div>
-                            </c:if>
-                            <!--end form-group-->
-                            <div class="d-flex justify-content-between align-items-baseline">
-
-                                <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
-                                <input type="hidden" name="showProduct" value="true">
-
-                                <c:if test="${not empty user and guestList != null}">
-                                    <h5>Attenzione, hai già salvato una lista. Se non sei registrato puoi salvare solo una lista alla volta. Salvando questa lista, cancellerai la lista gia salvata.</h5>
-                                </c:if>
-                            </div>
-                        </form>
-                        <hr>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data"></div>
 
             <script>
                 function myFunction() {
@@ -797,7 +627,20 @@
                 error: function () {
                     alert("Errore navbarTemplate");
                 }
-            });            
+            });     
+            
+            //Notifiche
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/notifiche.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#notificationsLI").html(response);
+                    },
+                    error: function () {
+                        alert("Errore Notifiche template");
+                    }
+                });
             
         });
     </script>

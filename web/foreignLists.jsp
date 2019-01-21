@@ -36,6 +36,7 @@
         <link rel="stylesheet" href="Pages/css/user.css">
         <link rel="stylesheet" href="Pages/css/navbar.css">
         <link rel="stylesheet" href="Pages/css/datatables.css" type="text/css">
+        <link rel="stylesheet" href="Pages/css/notificationCss.css" type="text/css"> 
         
         <style>
             .modal-dialog{
@@ -80,7 +81,9 @@
                 <!--end hero-wrapper-->
             </header>
             <!--end hero-->
+            <!-- SISTEMA PER LE NOTIFICHE -->
 
+            <li class="dropdown" id="notificationsLI"></li>
             <!--*********************************************************************************************************-->
             <!--************ CONTENT ************************************************************************************-->
             <!--*********************************************************************************************************-->
@@ -266,6 +269,19 @@
                     },
                     error: function () {
                         alert("Errore sideNavbar Template");
+                    }
+                });
+                
+                //Notifiche
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/notifiche.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#notificationsLI").html(response);
+                    },
+                    error: function () {
+                        alert("Errore Notifiche template");
                     }
                 });
             });

@@ -69,6 +69,7 @@
         <link rel="stylesheet" href="Pages/css/user.css">
         <link rel="stylesheet" href="Pages/css/navbar.css">
         <link rel="stylesheet" href="Pages/css/datatables.css" type="text/css"> 
+        <link rel="stylesheet" href="css/notificationCss.css" type="text/css"> 
         
         <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.0/mapsjs-ui.css?dp-version=1542186754" />
         <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-core.js"></script>
@@ -107,60 +108,9 @@
         <div class="page home-page">
             <header class="hero">
                 <div class="hero-wrapper">
-                    <nav class="navbar navbar-expand-xl navbar-dark fixed-top " id="mainNav">
-                        <a class="navbar-brand">
-                            <img width= "50" src="Pages/img/favicon.png" alt="Logo">
-                        </a>
-                        <a class="navbar-brand js-scroll-trigger" href="#home">LISTS</a>
-                        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                            Menu
-                            <i class="fa fa-bars"></i>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarResponsive">
-                            <ul class="navbar-nav text-uppercase ml-auto text-center">
-                                <li class="nav-item">
-                                    <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >Crea una lista</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger"  href="/Lists/homepage.jsp"><i class="fa fa-home"></i><b>Home</b></a>
-                                </li>                                
-                                <c:if test="${empty user}">
-                                    <li class="nav-item js-scroll-trigger dropdown">
-                                        <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
-                                        <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
-                                            <a class="dropdown-item nav-link" href="#"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
-                                            <a class="dropdown-item nav-link disabled" data-toggle="tooltip" title="Registrati o fai il login per usare questa funzione"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
-                                        </div>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link js-scroll-trigger" style="cursor: pointer;" data-toggle="modal" data-target="#LoginModal"><i class="fa fa-home"></i><b>Login</b></a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link js-scroll-trigger" style="cursor: pointer;" data-toggle="modal" data-target="#RegisterModal"><i class="fa fa-home"></i><b>Registrati</b></a>
-                                    </li>
-                                </c:if>
-                                <c:if test="${not empty user}">
-                                    <li class="nav-item js-scroll-trigger dropdown">
-                                        <div style="cursor: pointer;" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i><b>Liste</b></div>
-                                        <div class="dropdown-menu" style="color: white;" aria-labelledby="navbarDropdown">
-                                            <a class="dropdown-item nav-link" href="#"><i class="fa fa-bars"></i><b>Le mie liste</b></a>
-                                            <a class="dropdown-item nav-link" href="/Lists/foreignLists.jsp"><i class="fa fa-share-alt"></i><b>Liste condivise con me</b></a>                                        
-                                        </div>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link js-scroll-trigger" href="profile.jsp">
-                                            <i class="fa fa-user"></i><b>Il mio profilo</b>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link js-scroll-trigger" href="<c:url context="/Lists" value="/restricted/LogoutAction" />" data-toggle="tooltip" data-placement="bottom" title="LogOut">
-                                            <i class="fa fa-sign-in"></i><b><c:out value="${user.nominativo}"/> / <c:out value="${user.tipo}"/> </b>/ <img src= "/Lists/${user.image}" width="25px" height="25px" style="border-radius: 100%;">
-                                        </a>
-                                    </li>
-                                </c:if>                              
-                            </ul>
-                        </div>
-                    </nav>
+                    <div id="navbar">
+                        <!-- Qui viene inclusa la navbar -->
+                    </div>
                     <!--============ End Page Title =====================================================================-->  
                     <div class="page-title">
                         <div class="container">
@@ -179,6 +129,9 @@
                 <!--end hero-wrapper-->
             </header>
             <!--end hero-->
+            <!-- SISTEMA PER LE NOTIFICHE -->
+
+            <li class="dropdown" id="notificationsLI"></li>
             <!--*********************************************************************************************************-->
             <!--************ CONTENT ************************************************************************************-->
             <!--*********************************************************************************************************-->
@@ -399,202 +352,20 @@
         </c:if>           
             
         <!-- Login Modal -->
-        <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModal" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-
-                        <div class="page-title">
-                            <div class="container">
-                                <h1>Sign In</h1>
-                            </div>
-                            <!--end container-->
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>            
-
-                    </div>
-                    <div class="modal-body">
-                        <c:if test="${loginResult==false}">
-                            <div class="alert alert-danger">
-                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                <strong>Login Failed!</strong> <br> Please try again or <a data-toggle="modal" href="#RegisterModal" class="alert-link"><u>Sign up!</u></a>
-
-                            </div>
-                        </c:if>
-                        <!-- Form per il login -->
-                        <form class="form clearfix" id="login-form" action="/Lists/LoginAction" method="post" role="form">
-                            <div class="form-group">
-                                <label for="email" class="col-form-label required">Email</label>
-                                <input type="text" name="email" id="emaillogin" tabindex="1" class="form-control" placeholder="Email" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="password" class="col-form-label required">Password</label>
-                                <input type="password" name="password" id="passwordlogin" tabindex="2" class="form-control" placeholder="Password" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="d-flex justify-content-between align-items-baseline">
-                                <div class="form-group text-center">
-                                    <label>
-                                        <input type="checkbox" name="remember" value="1">
-                                        Remember Me
-                                    </label>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Sign In</button>
-                            </div>
-
-                        </form>
-                        <hr>
-                        <p>
-                            Troubles with signing? <a href="#RegisterModal" data-toggle="modal" class="link">Click here.</a>
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModal" aria-hidden="true"></div>
         <!--######################################################-->
 
         <!-- Register Modal -->
-        <div class="modal fade" id="RegisterModal" tabindex="-1" role="dialog" aria-labelledby="RegisterModal" aria-hidden="true" enctype="multipart/form-data">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="page-title">
-                            <div class="container">
-                                <h1>Register</h1>
-                            </div>
-                            <!--end container-->
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Form per il login -->
-                        <form class="form clearfix" id="register-form" action="/Lists/RegisterAction" method="post" enctype="multipart/form-data" onsubmit="return checkCheckBoxes(this);">
-                            <div class="form-group">
-                                <label for="email" class="col-form-label">Email</label>
-                                <input type="email" name="email" id="emailRegister" tabindex="1" class="form-control" placeholder="Email" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="nominativo" class="col-form-label">Nome</label>
-                                <input type="text" name="nominativo" id="nominativoRegister" tabindex="1" class="form-control" placeholder="Nome" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="password" class="col-form-label">Password</label>
-                                <input type="password" name="password" id="passwordRegister" tabindex="2" class="form-control" placeholder="Password" required>
-                            </div>
+        <div class="modal fade" id="RegisterModal" tabindex="-1" role="dialog" aria-labelledby="RegisterModal" aria-hidden="true" enctype="multipart/form-data"></div>
 
-                            <!--end form-group-->
-
-                            <div class="form-group">
-                                <label for="image" class="col-form-label required">Avatar</label>
-                                <input type="file" name="file1" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="d-flex justify-content-between align-items-baseline">
-                                <div class="form-group text-center">
-                                    <input type="checkbox" tabindex="3" class="" name="standard" id="standard">
-                                    <label for="standard">Standard</label>
-                                    <input type="checkbox" tabindex="3" class="" name="amministratore" id="amministratore">
-                                    <label for="amministratore">Amministratore</label>
-                                </div>
-                                <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Register Now</button>
-                            </div>
-                        </form>
-                        <hr>
-                        <p>
-                            By clicking "Register Now" button, you agree with our <a href="#" class="link">Terms & Conditions.</a>
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
+        <!-- restore password Modal -->
+        <div class="modal fade" id="restorePassword" tabindex="-1" role="dialog" aria-labelledby="restorePassword" aria-hidden="true"></div>
         <!--######################################################-->
-            
-            
-        <!--########################## create list modal ############################-->
 
-        <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="page-title">
-                            <div class="container">
-                                <h1 style="text-align: center;">Create list</h1>
-                            </div>
-                            <!--end container-->
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Form per il login -->
-                        <form class="form clearfix" id="CreateShopListform" action="/Lists/CreateShopList"  method="post" role="form" enctype="multipart/form-data">
-                            <div class="form-group">
-                                <label for="Nome" class="col-form-label">Nome della lista</label>
-                                <input type="text" name="Nome" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="Descrizione" class="col-form-label">Descrizione</label>
-                                <input type="text" name="Descrizione" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="Categoria" class="col-form-label">Categoria</label>
-                                <select name="Categoria" id="Categoria" tabindex="1" size="5" >
-                                    <c:forEach items="${categorie}" var="categoria">
-                                        <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
-                                    </c:forEach>
-                                </select>
-
-                            </div>
-                            <c:choose>
-                                <c:when test="${not empty user}">
-                                    <div class="form-group">
-                                        <label for="Immagine" class="col-form-label required">Immagine</label>
-                                        <input type="file" name="file1" required>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-baseline">
-                                        <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    </div>
-                                </c:when>
-
-                                <c:otherwise>
-                                    <div class="d-flex justify-content-between align-items-baseline">
-                                        <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
-                                        <%if (session.getAttribute("guestList") != null) {%>
-                                        <h5>Attenzione, hai già salvato una lista. Se non sei registrato puoi salvare solo una lista alla volta. Salvando questa lista, cancellerai la lista gia salvata.</h5>
-                                        <%}%>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    </div>
-                                </c:otherwise>
-                            </c:choose>
-                        </form>
-                        <hr>
-                    </div>                    
-                </div>
-            </div>
-        </div>
+        <!-- new password Modal -->
+        <div class="modal fade" id="newPassword" tabindex="-1" role="dialog" aria-labelledby="newPassword" aria-hidden="true"></div>
+        
+        <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data"></div>
         <!--##############################-->
         <div class="modal fade" id="import-list" tabindex="-1" role="dialog" aria-labelledby="import-list" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -1002,6 +773,36 @@
                 map.addObject(bearsMarker);
             }
         </script>
-
+        
+        <script type="text/javascript">
+            $(document).ready(function () {
+                //Navbar
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/navbarTemplate.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#navbar").html(response);
+                    },
+                    error: function () {
+                        alert("Errore navbarTemplate");
+                    }
+                });
+                
+                //Notifiche
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/notifiche.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#notificationsLI").html(response);
+                    },
+                    error: function () {
+                        alert("Errore Notifiche template");
+                    }
+                });
+            });
+        </script>
+        
     </body>
 </html>

@@ -37,6 +37,7 @@
         <link rel="stylesheet" href="css/user.css">
         <link rel="stylesheet" href="css/navbar.css">
         <link rel="stylesheet" href="css/datepicker.css">
+        <link rel="stylesheet" href="css/notificationCss.css" type="text/css"> 
         <style>
 
             body{
@@ -166,7 +167,9 @@
                 <!--end hero-wrapper-->
             </header>
             <!--end hero-->
+            <!-- SISTEMA PER LE NOTIFICHE -->
 
+            <li class="dropdown" id="notificationsLI"></li>
             <!--*********************************************************************************************************-->
             <!--************ CONTENT ************************************************************************************-->
             <!--*********************************************************************************************************-->
@@ -464,14 +467,14 @@
                                     <div class="col-12">
                                         <div class="input-group-append">
                                             <span class="input-group-text"><strong>da comprare ogni</strong></span>
-                                                <input class="form-control" name="period" type="number" value="7" min="1" max="60" id="example-number-input">                                
+                                                <input class="form-control" name="period" type="number" value="${lista.promemoria}" min="1" max="60" id="example-number-input">                                
                                             <span class="input-group-text"><strong>giorni</strong></span>
                                         </div> 
                                     </div>
                                   </div>  
                                 <div class="form-group">                                    
                                     <label for="Date" class="col-form-label required">Data partenza</label>
-                                    <input type="text" class="datepicker" name="initday" >                            
+                                    <input type="date" class="" name="initday" >                            
                                 </div>
                                 <!--end form-group-->
                                 <div class="d-flex justify-content-between align-items-baseline">
@@ -479,7 +482,7 @@
                                 </div>
                             </form>
                             <hr>
-                            <i>Salva prodotti che si insericono automaticamente nella lista ogni x giorni</i>
+                            <i>Salva prodotti che si insericono automaticamente nella lista ogni ${lista.promemoria} giorni</i>
                         </div> 
                     </div>
                 </div>
@@ -600,6 +603,19 @@
                     },
                     error: function () {
                         alert("Errore navbarTemplate");
+                    }
+                });
+                
+                //Notifiche
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/notifiche.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#notificationsLI").html(response);
+                    },
+                    error: function () {
+                        alert("Errore Notifiche template");
                     }
                 });
             });

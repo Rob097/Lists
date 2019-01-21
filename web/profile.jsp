@@ -28,6 +28,7 @@
         <link rel="stylesheet" href="Pages/css/selectize.css" type="text/css">
         <link rel="stylesheet" href="Pages/css/style.css">    
         <link rel="stylesheet" href="Pages/css/navbar.css">
+        <link rel="stylesheet" href="Pages/css/notificationCss.css" type="text/css"> 
         <style>
             .btn-file {
                 position: relative;
@@ -92,6 +93,9 @@
                 </div>
                 <!--end hero-wrapper-->
             </header>
+            <!-- SISTEMA PER LE NOTIFICHE -->
+
+            <li class="dropdown" id="notificationsLI"></li>
             <!--end hero-->
             <!--*********************************************************************************************************-->
             <!--************ CONTENT ************************************************************************************-->
@@ -105,7 +109,7 @@
                             </div>
                             <!--end col-md-3-->
                             <div class="col-md-9">
-                                <form class="form clearfix" id="login-form" action="/Lists/restricted/updateUser" method="post" enctype="multipart/form-data" onsubmit="return validate();">
+                                <form class="form clearfix" id="update-user-form" action="/Lists/restricted/updateUser" method="post" enctype="multipart/form-data" onsubmit="return validate();">
                                     <div class="row">
                                         <div class="col-md-8">
                                             <h2>Informazioni personali</h2>
@@ -312,6 +316,19 @@
                     },
                     error: function () {
                         alert("Errore sideNavbar Template");
+                    }
+                });
+                
+                //Notifiche
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/notifiche.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#notificationsLI").html(response);
+                    },
+                    error: function () {
+                        alert("Errore Notifiche template");
                     }
                 });
             });
