@@ -18,57 +18,23 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%
-    HttpSession s = (HttpSession) request.getSession(false);
-    User u = null;
-    ArrayList<ShopList> li = null;
-    boolean find = false;
-    ShopList lista = null;
-    ArrayList<Notification> notifiche = null;
-    String listastr = (String) s.getAttribute("shopListName");
-        DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
-        if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for user storage system");
-        }
-        ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
-        
-        
-    if(s.getAttribute("user") != null){
-        u = (User) s.getAttribute("user");
-    }
-    if (u == null) {
-
-        if (s.getAttribute("guestList") != null) {
-            lista = (ShopList) s.getAttribute("guestList");
-        }
-    } else {
-        lista = listdao.getbyName(listastr);
-        li = listdao.getAllObjectListsByCurentUser(u.getEmail());
-        notifiche = new ArrayList();
-        if (session.getAttribute("notifiche") != null) {
-            notifiche = (ArrayList<Notification>) session.getAttribute("notifiche");
-        }
-    }
-
-%>
-
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="icon" href="Pages/img/favicon.png" sizes="16x16" type="image/png">
-        <title>Lists</title>
+        <link rel="icon" href="img/favicon.png" sizes="16x16" type="image/png">
+        <title>${shopListName} Map</title>
 
         <!-- CSS personalizzati -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
-        <link rel="stylesheet" href="Pages/bootstrap/css/bootstrap.css" type="text/css">
-        <link rel="stylesheet" href="Pages/fonts/font-awesome.css" type="text/css">
-        <link rel="stylesheet" href="Pages/css/selectize.css" type="text/css">
-        <link rel="stylesheet" href="Pages/css/style.css">
-        <link rel="stylesheet" href="Pages/css/user.css">
-        <link rel="stylesheet" href="Pages/css/navbar.css">
-        <link rel="stylesheet" href="Pages/css/datatables.css" type="text/css"> 
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css">
+        <link rel="stylesheet" href="fonts/font-awesome.css" type="text/css">
+        <link rel="stylesheet" href="css/selectize.css" type="text/css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/user.css">
+        <link rel="stylesheet" href="css/navbar.css">
+        <link rel="stylesheet" href="css/datatables.css" type="text/css"> 
         <link rel="stylesheet" href="css/notificationCss.css" type="text/css"> 
         
         <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.0/mapsjs-ui.css?dp-version=1542186754" />
@@ -114,13 +80,13 @@
                     <!--============ End Page Title =====================================================================-->  
                     <div class="page-title">
                         <div class="container">
-                            <h1>Le mie liste</h1>                            
+                            <h1>Map for ${shopListName}</h1>                            
                         </div>
                         <!--end container-->
                     </div>
                     <div class="background">
                         <div class="background-image">
-                            <img src="Pages/img/hero-background-image-02.jpg" alt="">
+                            <img src="img/hero-background-image-02.jpg" alt="">
                         </div>
                         <!--end background-image-->
                     </div>
@@ -187,87 +153,10 @@
             <!--************ FOOTER *************************************************************************************-->
             <!--*********************************************************************************************************-->
             <footer class="footer">
-                <div class="wrapper">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <a href="#" class="brand">
-                                    <img src="Pages/img/logo.png" alt="">
-                                </a>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut nec tincidunt arcu, sit amet
-                                    fermentum sem. Class aptent taciti sociosqu ad litora torquent per conubia nostra.
-                                </p>
-                            </div>
-                            <!--end col-md-5-->
-                            <div class="col-md-3">
-                                <h2>Navigation</h2>
-                                <div class="row">
-                                    <div class="col-md-6 col-sm-6">
-                                        <nav>
-                                            <ul class="list-unstyled">
-                                                <li>
-                                                    <a href="#">Home</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Listing</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Pages</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Extras</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Contact</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Submit Ad</a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6">
-                                        <nav>
-                                            <ul class="list-unstyled">
-                                                <li>
-                                                    <a href="#">My Ads</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Sign In</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Register</a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--end col-md-3-->
-                            <div class="col-md-4">
-                                <h2>Contact</h2>
-                                <address>
-                                    <figure>
-                                        124 Abia Martin Drive<br>
-                                        New York, NY 10011
-                                    </figure>
-                                    <br>
-                                    <strong>Email:</strong> <a href="#">hello@example.com</a>
-                                    <br>
-                                    <strong>Skype: </strong> Craigs
-                                    <br>
-                                    <br>
-                                    <a href="contact.html" class="btn btn-primary text-caps btn-framed">Contact Us</a>
-                                </address>
-                            </div>
-                            <!--end col-md-4-->
-                        </div>
-                        <!--end row-->
-                    </div>
+                <div class="wrapper">                   
                     <div class="background">
                         <div class="background-image original-size">
-                            <img src="Pages/img/footer-background-icons.jpg" alt="">
+                            <img src="img/footer-background-icons.jpg" alt="">
                         </div>
                         <!--end background-image-->
                     </div>
@@ -279,18 +168,18 @@
         <!--end page-->
 
         <!--######################################################-->
-        <script src="Pages/js/jquery-3.3.1.min.js"></script>
+        <script src="js/jquery-3.3.1.min.js"></script>
 
-        <script type="text/javascript" src="Pages/js/popper.min.js"></script>
-        <script type="text/javascript" src="Pages/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/popper.min.js"></script>
+        <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
         <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
-        <script src="Pages/js/selectize.min.js"></script>
-        <script src="Pages/js/masonry.pkgd.min.js"></script>
-        <script src="Pages/js/icheck.min.js"></script>
-        <script src="Pages/js/jquery.validate.min.js"></script>
-        <script src="Pages/js/custom.js"></script>        
-        <script type="text/javascript" src="Pages/js/datatables.js" ></script>
+        <script src="js/selectize.min.js"></script>
+        <script src="js/masonry.pkgd.min.js"></script>
+        <script src="js/icheck.min.js"></script>
+        <script src="js/jquery.validate.min.js"></script>
+        <script src="js/custom.js"></script>        
+        <script type="text/javascript" src="js/datatables.js" ></script>
         <c:if test="${not empty user}">             
             <script>
                 function myFunction() {
@@ -404,7 +293,7 @@
             </div>
         </div>
 
-        <script src="Pages/js/nav.js"></script>
+        <script src="js/nav.js"></script>
         
 
         <!--MAPPA=====================================================================================================-->

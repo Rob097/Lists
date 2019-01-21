@@ -238,7 +238,7 @@
                                                 </div>
                                                 
                                                 <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6">
-                                                    <a href="../singleListGeolocation.jsp" style="font-size: 2.5rem; width: -webkit-fill-available;"><i class="fas fa-map-marked-alt"><br>Map</i></a> 
+                                                    <a href="singleListGeolocation.jsp" style="font-size: 2.5rem; width: -webkit-fill-available;"><i class="fas fa-map-marked-alt"><br>Map</i></a> 
                                                 </div>
                                             </div>
                                         </c:when>
@@ -424,7 +424,7 @@
                                 <div class="panel-body">
                                     <div class="table-container">
                                         <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#save-modal">Salva la lista</button>
-                                        <button type="button" class="btn btn-dark btn-block" data-toggle="modal" data-target="#DeleteListModal">Elimina la lista</button>
+                                        <button type="button" class="btn btn-dark btn-block" data-toggle="modal" data-target="#delete-modal">Elimina la lista</button>
                                     </div>
                                 </div>
                             </div>
