@@ -5,13 +5,11 @@
  */
 package Tools;
 
-import ShopList.AddProductToList;
 import database.daos.ListDAO;
 import database.daos.NotificationDAO;
 import database.daos.ProductDAO;
 import database.entities.ListProd;
 import database.entities.Product;
-import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
@@ -24,7 +22,6 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -60,14 +57,12 @@ public class ScheduledTask implements Runnable {
             ArrayList<ListProd> prods = productdao.getAllChoosenProducts();
             ArrayList<User> utenti;
             for (ListProd p : prods) {
-                utenti = notificationdao.getUsersWithWhoTheListIsShared(p.getLista());
-                System.out.println("DATAA::: " + p.getData_scadenza());
+                utenti = notificationdao.getUsersWithWhoTheListIsShared(p.getLista());                
                 if (!p.getStato().equals("acquistato")) {
                     int missingDays = dayDifference(p.getData_scadenza());
                     if (missingDays >= 0 && missingDays <= 2) {
 
                         for (User u : utenti) {
-                            //System.out.println("Nome: "+u.getNominativo() + "\nlista: " + lista);
                             Product p1 = productdao.getProductByID(Integer.parseInt(p.getProdotto()));
                             String messaggio = "Nella lista " + p.getLista() + " ci sono uno o piu' prodotti che devono essere comprati al piu' presto";
                             notificationdao.addNotification(u.getEmail(), "secondoReminder", p.getLista());
@@ -107,15 +102,13 @@ public class ScheduledTask implements Runnable {
                                     e.printStackTrace();
                                 }
                             }
-                        }
-                        System.out.println(p.getProdotto() + " nella lista " + p.getLista() + " deve essere comprato al più presto");
+                        }                       
                     } else if (missingDays > 2 && missingDays <= 4) {
                         for (User u : utenti) {
                             //System.out.println("Nome: "+u.getNominativo() + "\nlista: " + lista);
                             notificationdao.addNotification(u.getEmail(), "primoReminder", p.getLista());
 
-                        }
-                        System.out.println(p.getProdotto() + " nella lista " + p.getLista() + " `è vicino all`esauimento");
+                        }                        
                     }
                 }
             }

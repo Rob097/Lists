@@ -100,9 +100,9 @@ public class JDBCNotificationsDAO extends JDBCDAO implements NotificationDAO{
             } catch (SQLException ex) {
                 throw new DAOException("Impossible to get the list of users #1", ex);
             }
-            for(User u : userList){
+            /*for(User u : userList){
                 System.out.println("\nUtente: "+u.getEmail());
-            }
+            }*/
             return userList;
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of users #2", ex);
