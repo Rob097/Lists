@@ -60,7 +60,7 @@ public class ScheduledTask implements Runnable {
                 utenti = notificationdao.getUsersWithWhoTheListIsShared(p.getLista());                
                 if (!p.getStato().equals("acquistato")) {
                     int missingDays = dayDifference(p.getData_scadenza());
-                    if (missingDays >= 0 && missingDays <= 2) {
+                    if (missingDays > 0 && missingDays <= 2) {
 
                         for (User u : utenti) {
                             Product p1 = productdao.getProductByID(Integer.parseInt(p.getProdotto()));
@@ -112,7 +112,7 @@ public class ScheduledTask implements Runnable {
                     }
                 }else{
                     int missingDays = dayDifference(p.getData_scadenza());
-                    if (missingDays >= 0 && missingDays <= 2) {
+                    if (missingDays == 0) {
                         listdao.signProductAsBuyed(Integer.parseInt(p.getProdotto()), "daAcquistare", p.getLista());
                     }
                 }
