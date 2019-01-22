@@ -10,15 +10,10 @@ import database.daos.ProductDAO;
 import database.daos.UserDAO;
 import database.entities.ListProd;
 import database.entities.PeriodicProduct;
-import database.entities.Product;
-import database.entities.ShopList;
-import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCProductDAO;
 import database.jdbc.JDBCShopListDAO;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -27,8 +22,7 @@ import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+
 
 /**
  *
@@ -61,8 +55,6 @@ public class PeriodicTask extends HttpServlet implements Runnable {
                    if(!listdao.chckIfProductIsInTheList(p.getProdotto(), p.getLista())){
                        //inserisce il prodotto nella lista
                        listdao.insertProductToList(p.getProdotto(), p.getLista(), p.getData_scadenza().toString());                       
-                       System.out.println("");
-                       System.out.println("inserted: "+ p.getLista() + " " + p.getProdotto() + " " + p.getData_scadenza() );
                     //se è nella lista
                    } else if(listdao.chckIfProductIsInTheList(p.getProdotto(), p.getLista())){
                        //carica il prodotto
