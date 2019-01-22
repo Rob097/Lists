@@ -227,10 +227,11 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
           throw new DAOException("Parameters are mandatory fields", new NullPointerException("user, role or list is null"));
         }
 
-        try (PreparedStatement statement = CON.prepareStatement("UPDATE User_List SET role=? WHERE user=? AND list = ? ")) {
+        try (PreparedStatement statement = CON.prepareStatement("UPDATE User_List SET role=? WHERE user=? AND list =?")) {
             statement.setString(1, role);
             statement.setString(2, user);
             statement.setString(3, list);
+            System.out.println("User: " + user + "; Role: " + role + "; List: " + list);
             
             if (statement.executeUpdate() == 1) {
                 return;

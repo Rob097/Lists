@@ -496,7 +496,8 @@
                     }
                 }
             }
-            alert("password can't be empty and has to be equal to Conferma Password, 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter");
+            alert("La password non può essere vuota e la conferma della password deve essere uguale alla password scelta. La password deve contenere dai 6 ai 20 caratteri di cui almeno un numero, un carattere maiuscolo e uno minuscolo");
+            
             return false;
         }
     </script>

@@ -324,7 +324,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                     sL.setDescrizione(rs.getString("descrizione"));
                     sL.setImmagine(rs.getString("immagine"));
                     sL.setCreator(rs.getString("creator"));
-                    sL.setCategoria("categoria");
+                    sL.setCategoria(rs.getString("categoria"));
                     sL.setPromemoria(rs.getInt("reminder"));
                     sL.setSharedUsers(getUsersWithWhoTheListIsShared(sL));
                     

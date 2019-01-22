@@ -80,7 +80,7 @@
                     <!--============ End Page Title =====================================================================-->  
                     <div class="page-title">
                         <div class="container">
-                            <h1>Map for ${shopListName}</h1>                            
+                            <h1>Map for ${shopListName}</h1>
                         </div>
                         <!--end container-->
                     </div>
@@ -300,7 +300,7 @@
                 
         <script  type="text/javascript" charset="UTF-8" >
 
-            var keyWord = "farmacia";
+            var keyWord = "${lista.categoria}";
             //----------------------------------------------------------------------
 
 
@@ -420,9 +420,9 @@
                 // callback functions:
                 
                        
-                        nomeLista = "<c:out value="${shopListName}"/>";
+                        nomeLista = "${shopListName}";
                         
-                        nomeCategoria = "farmacia";
+                        nomeCategoria = "${lista.categoria}";
                         console.log("Sto cercando per cetegoria ["+nomeCategoria+"] nella lista ["+nomeLista+"]");
                         giveAllPlaces(nomeCategoria, nomeLista);
                         

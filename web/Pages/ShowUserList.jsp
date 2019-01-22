@@ -385,6 +385,7 @@
                                                         <c:out value="${u.nominativo}" /><br>
                                                     </td>
                                                     <td>
+                                                        
                                                         <c:choose>
                                                             <c:when test="${(ruolo eq 'creator')}">
                                                                 <div class="btn-group dropleft" style="width: -webkit-fill-available;">
@@ -393,12 +394,12 @@
                                                                     </a>
                                                                     <div class="dropdown-menu">
                                                                         <c:if test = "${shareUserRole eq 'Read'}">
-                                                                            <a class="dropdown-item actualRole" href="/Lists/changeRole?user=${u.email}&role=${shareUserRole}&new=Read&list=${shoplistName}">Read</a>
-                                                                            <a class="dropdown-item" href="/Lists/changeRole?user=${u.email}&role=${shareUserRole}&new=Write&list=${shoplistName}">Write</a>
+                                                                            <a class="dropdown-item actualRole" href="/Lists/changeRole?user=${u.email}&role=${shareUserRole}&new=Read&list=${shopListName}">Read</a>
+                                                                            <a class="dropdown-item" href="/Lists/changeRole?user=${u.email}&role=${shareUserRole}&new=Write&list=${shopListName}">Write</a>
                                                                         </c:if>
                                                                         <c:if test = "${shareUserRole eq 'Write'}">
-                                                                            <a class="dropdown-item" href="/Lists/changeRole?user=${u.email}&role=${shareUserRole}&new=Read&list=${shoplistName}">Read</a>
-                                                                            <a class="dropdown-item actualRole" href="/Lists/changeRole?user=${u.email}&role=${shareUserRole}&new=Write&list=${shoplistName}">Write</a>
+                                                                            <a class="dropdown-item" href="/Lists/changeRole?user=${u.email}&role=${shareUserRole}&new=Read&list=${shopListName}">Read</a>
+                                                                            <a class="dropdown-item actualRole" href="/Lists/changeRole?user=${u.email}&role=${shareUserRole}&new=Write&list=${shopListName}">Write</a>
                                                                         </c:if>
                                                                     </div>
                                                                 </div>

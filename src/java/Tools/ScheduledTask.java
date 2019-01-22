@@ -117,6 +117,11 @@ public class ScheduledTask implements Runnable {
                         }
                         System.out.println(p.getProdotto() + " nella lista " + p.getLista() + " `è vicino all`esauimento");
                     }
+                }else{
+                    int missingDays = dayDifference(p.getData_scadenza());
+                    if (missingDays >= 0 && missingDays <= 2) {
+                        listdao.signProductAsBuyed(Integer.parseInt(p.getProdotto()), "daAcquistare", p.getLista());
+                    }
                 }
             }
         } catch (ServletException ex) {

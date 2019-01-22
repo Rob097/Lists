@@ -49,7 +49,7 @@ public class changeRole extends HttpServlet {
         
         String user = request.getParameter("user");
         String roleOld = request.getParameter("role"); String roleNew = request.getParameter("new");;
-        String list = request.getParameter("list");
+        String list = request.getParameter("list"); System.out.println("LISTA::: " + list);
         Boolean check = false;
         
         try {
