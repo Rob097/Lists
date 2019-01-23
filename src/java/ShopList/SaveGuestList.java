@@ -80,7 +80,7 @@ public class SaveGuestList extends HttpServlet {
         if (check) {
             for (Product p : prodotti) {
                 try {
-                    productdao.GuestInsert(p.getPid(), creator, lista.getNome(), p.getStatus());
+                    productdao.GuestInsert(p.getPid(), creator, lista.getNome(), p.getStatus(), p.getQuantity());
                 } catch (DAOException ex) {
                     Logger.getLogger(SaveGuestList.class.getName()).log(Level.SEVERE, null, ex);
                 }

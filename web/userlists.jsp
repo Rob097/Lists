@@ -148,7 +148,7 @@
 
                                                             <!--end image-->                                                            
                                                             <div class="admin-controls">
-                                                                <a href="/Lists/ShowShopList?nome=${list.nome}">
+                                                                <a onclick="setList('${list.nome}');" href="#" data-toggle="modal" data-target="#alterListModal">
                                                                     <i class="fa fa-pencil"></i>Modifica
                                                                 </a>                                                                
                                                                 <a href="/Lists/DeleteShopList?shopListName=${list.nome}" class="ad-remove">
@@ -184,20 +184,17 @@
                                                             <a href="#" class="tag category"><c:out value="${guestList.categoria}" /></a>
                                                             <a href="/Lists/ShowShopList?nome=${guestList.nome}" class="title"><c:out value="${guestList.nome}" /></a>
                                                         </h3>
-                                                        <a href="single-listing-1.html" class="image-wrapper background-image">
+                                                        <a href="/Lists/restricted/ShowShopList?nome=${guestList.nome}" class="image-wrapper background-image">
                                                             <img src="${guestList.immagine}" alt="">
                                                         </a>
                                                     </div>
-                                                    <!--end image-->                                                    
+                                                    <!--end image-->
                                                     <div class="admin-controls">
-                                                        <a href="/Lists/restricted/ShowShopList?nome=${guestList.nome}">
-                                                            <i class="fa fa-pencil"></i>Edit
-                                                        </a>
-                                                        <a href="#" class="ad-hide">
-                                                            <i class="fa fa-eye-slash"></i>Hide
-                                                        </a>
+                                                        <a onclick="setList('${guestList.nome}');" href="#" data-toggle="modal" data-target="#alterListModal">
+                                                            <i class="fa fa-pencil"></i>Modifica
+                                                        </a>                                                                
                                                         <a href="/Lists/DeleteShopList?shopListName=${guestList.nome}" class="ad-remove">
-                                                            <i class="fa fa-trash"></i>Remove
+                                                            <i class="fa fa-trash"></i>Cancella
                                                         </a>
                                                     </div>
                                                     <!--end admin-controls-->
@@ -308,7 +305,23 @@
                     }
                 }
             </script>
-        </c:if>           
+        </c:if>         
+        <script>
+            function setList(lista) {
+            //set List
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/setList?lista="+lista,
+                    cache: false,
+                    success: function () {
+                        console.log("Lista settata " + lista);
+                    },
+                    error: function () {
+                        alert("Errore alterListTemplate");
+                    }
+                });
+            };
+        </script>
         
         
         <!-- Login Modal -->
@@ -327,6 +340,9 @@
 
 
         <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data"></div>
+        
+        <div class="modal fade" id="alterListModal" tabindex="-1" role="dialog" aria-labelledby="alterShopListform" aria-hidden="true" enctype="multipart/form-data"></div>
+        
         <div class="modal fade" id="import-list" tabindex="-1" role="dialog" aria-labelledby="import-list" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -431,8 +447,21 @@
                         alert("Errore createListTemplate");
                     }
                 });
-
-                //Footer
+                
+                //Alter List
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/alterListTemplate.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#alterListModal").html(response);
+                    },
+                    error: function () {
+                        alert("Errore alterListTemplate");
+                    }
+                });
+                
+                /*Footer
                 $.ajax({
                     type: "GET",
                     url: "/Lists/Pages/template/footerTemplate.jsp",
@@ -443,7 +472,7 @@
                     error: function () {
                         alert("Errore footerTemplate");
                     }
-                });
+                });*/
             
                  //Navbar
                 $.ajax({

@@ -258,6 +258,14 @@
         <servlet-name>callMap</servlet-name>
         <servlet-class>Tools.callMap</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>setList</servlet-name>
+        <servlet-class>ShopList.setList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>alterList</servlet-name>
+        <servlet-class>ShopList.alterList</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -437,6 +445,14 @@
     <servlet-mapping>
         <servlet-name>callMap</servlet-name>
         <url-pattern>/callMap</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>setList</servlet-name>
+        <url-pattern>/setList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>alterList</servlet-name>
+        <url-pattern>/alterList</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

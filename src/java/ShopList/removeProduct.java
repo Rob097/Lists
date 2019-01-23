@@ -10,6 +10,7 @@ import database.daos.ListDAO;
 import database.daos.NotificationDAO;
 import database.daos.ProductDAO;
 import database.entities.Product;
+import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
@@ -52,40 +53,43 @@ public class removeProduct extends HttpServlet {
         ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
         NotificationDAO notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
         HttpSession s = (HttpSession) request.getSession();
-        int prodotto = 0; String lista = ""; 
+        int prodotto = 0; String lista = ""; ShopList sl; ArrayList<Product> prod = null;
         
         if(request.getParameter("prodotto") != null) prodotto = Integer.parseInt(request.getParameter("prodotto"));
-        if(s.getAttribute("shopListName") != null) lista = (String) "" + s.getAttribute("shopListName");
-        
-        try {
-           listdao.removeProductToList(prodotto, lista);
-           Product product =  productdao.getProductByID(prodotto);
-            
-            if(!product.getCreator().equals("amministratore")){
-                productdao.Delete(product);
-                if(product.getImmagine() != null && !(product.getImmagine().equals(""))){  
-                    String listsFolder = "";
-                    listsFolder = getServletContext().getRealPath(listsFolder);
-                    listsFolder = listsFolder.replace("\\build", "");
-                    String imgfolder = product.getImmagine().replace("/Image/ProductImg", "");
-                    ImageDispatcher.DeleteImgFromDirectory(listsFolder + imgfolder); 
-                }
-            }
-            
-        } catch (DAOException ex) {
-            System.out.println("impossibile eliminare il prodotto "+prodotto+" dalla lista "+lista);
-            Logger.getLogger(removeProduct.class.getName()).log(Level.SEVERE, null, ex);
+        if(s.getAttribute("shopListName") != null && s.getAttribute("user") != null) 
+            lista = (String) "" + s.getAttribute("shopListName");
+        else{
+            sl = (ShopList) s.getAttribute("guestList");
+            prod = (ArrayList<Product>) s.getAttribute("prodottiGuest");
         }
-        
-        //utenti con cui la lista è condivisa
-        ArrayList<User> utenti = new ArrayList();
-        try {
-            utenti = notificationdao.getUsersWithWhoTheListIsShared(lista);             
-        } catch (DAOException ex) {
-            Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        
-        if(s.getAttribute("user") != null){
+        if(s.getAttribute("user") != null){ 
+            try {
+               listdao.removeProductToList(prodotto, lista);
+               Product product =  productdao.getProductByID(prodotto);
+
+                if(!product.getCreator().equals("amministratore")){
+                    productdao.Delete(product);
+                    if(product.getImmagine() != null && !(product.getImmagine().equals(""))){  
+                        String listsFolder = "";
+                        listsFolder = getServletContext().getRealPath(listsFolder);
+                        listsFolder = listsFolder.replace("\\build", "");
+                        String imgfolder = product.getImmagine().replace("/Image/ProductImg", "");
+                        ImageDispatcher.DeleteImgFromDirectory(listsFolder + imgfolder); 
+                    }
+                }
+
+            } catch (DAOException ex) {
+                System.out.println("impossibile eliminare il prodotto "+prodotto+" dalla lista "+lista);
+                Logger.getLogger(removeProduct.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            //utenti con cui la lista è condivisa
+            ArrayList<User> utenti = new ArrayList();
+            try {
+                utenti = notificationdao.getUsersWithWhoTheListIsShared(lista);             
+            } catch (DAOException ex) {
+                Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
+            } 
             User utente = (User) s.getAttribute("user");
             try {
                 for(User u : utenti){
@@ -96,6 +100,11 @@ public class removeProduct extends HttpServlet {
                 }
             } catch (DAOException ex) {
                 Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
+            }            
+        }else{
+            for(Product u : prod){
+                if(u.getPid() == prodotto)
+                    prod.remove(u);
             }            
         }
         

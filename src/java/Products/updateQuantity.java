@@ -6,17 +6,20 @@
 package Products;
 
 import database.daos.ProductDAO;
+import database.entities.Product;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -40,17 +43,26 @@ public class updateQuantity extends HttpServlet {
         if (daoFactory == null) {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
+        HttpSession s = request.getSession();
         ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
         
         String lista = request.getParameter("lista");
         int id = Integer.parseInt(request.getParameter("id"));
         int quantita = Integer.parseInt(request.getParameter("quantita"));
-        
-        try {
-            productdao.updateQuantity(quantita, id, lista);
-        } catch (DAOException ex) {
-            System.out.println("errore update quantity in servlet");
-            Logger.getLogger(updateQuantity.class.getName()).log(Level.SEVERE, null, ex);
+        ArrayList<Product> prod = null;
+        if(s.getAttribute("user") != null){
+            try {
+                productdao.updateQuantity(quantita, id, lista);
+            } catch (DAOException ex) {
+                System.out.println("errore update quantity in servlet");
+                Logger.getLogger(updateQuantity.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            prod = (ArrayList<Product>) s.getAttribute("prodottiGuest");
+            for(Product u : prod){
+                if(u.getPid() == id)
+                    u.setQuantity(quantita);
+            } 
         }
     }
 

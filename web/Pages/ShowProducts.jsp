@@ -603,7 +603,7 @@
                 }
             });
 
-            //Footer
+            /*Footer
             $.ajax({
                 type: "GET",
                 url: "/Lists/Pages/template/footerTemplate.jsp",
@@ -614,7 +614,7 @@
                 error: function () {
                     alert("Errore footerTemplate");
                 }
-            });
+            });*/
 
             //Navbar
             $.ajax({

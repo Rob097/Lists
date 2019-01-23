@@ -53,4 +53,6 @@ public interface ListDAO {
     public ListProd getbyListAndProd(String lista, int prod) throws DAOException;
     public void updateExpirationDate(PeriodicProduct pp,java.sql.Date newDate) throws DAOException;
     public void updateReminder(String lista, int valore) throws DAOException;
+    public void alterList(String oldName, String nome, String descrizione, String immagine, String creator, String categoria) throws DAOException;
+    
 }

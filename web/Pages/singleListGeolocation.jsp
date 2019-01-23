@@ -149,21 +149,7 @@
                 <!--end block-->
             </section>
             <!--end content-->
-            <!--*********************************************************************************************************-->
-            <!--************ FOOTER *************************************************************************************-->
-            <!--*********************************************************************************************************-->
-            <footer class="footer">
-                <div class="wrapper">                   
-                    <div class="background">
-                        <div class="background-image original-size">
-                            <img src="img/footer-background-icons.jpg" alt="">
-                        </div>
-                        <!--end background-image-->
-                    </div>
-                    <!--end background-->
-                </div>
-            </footer>
-            <!--end footer-->
+           
         </div>
         <!--end page-->
 

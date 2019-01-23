@@ -159,8 +159,8 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
     }
     
     @Override
-    public void GuestInsert(int Pid, String creator, String nomeLista, String status) throws DAOException {
-        try (PreparedStatement stm = CON.prepareStatement("insert into guestListProd(creator, prodotto, nomeLista, status) values(?,?,?,?)")){
+    public void GuestInsert(int Pid, String creator, String nomeLista, String status, int quantity) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement("insert into guestListProd(creator, prodotto, nomeLista, status,quantity) values(?,?,?,?,?)")){
             
             
             try{
@@ -168,6 +168,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
                 stm.setInt(2, Pid);
                 stm.setString(3, nomeLista);
                 stm.setString(4, status);
+                stm.setInt(5, quantity);
                 
                 if (stm.executeUpdate() == 1) {
                     System.out.println("INSERITO");
@@ -266,6 +267,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
                     p.setCategoria_prodotto(rs.getString("categoria_prod"));
                     p.setImmagine(rs.getString("immagine"));
                     p.setStatus(rs.getString("status"));
+                    p.setQuantity(rs.getInt("quantity"));
                     productLists.add(p);
                 }
 

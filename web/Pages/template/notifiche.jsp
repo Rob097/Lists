@@ -24,7 +24,7 @@
                 <c:choose>
 
                     <c:when test="${notifica.type == 'new_product'}">
-                        <a class="content" href="ShowShopList?nome=${notifica.listName}"> 
+                        <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
                                 <h4 class="item-title">Nuovi prodotti! <small> Sono stati aggiunti nuoi prodotti alla lista <c:out value="${notifica.listName}"/></small></h4>
@@ -34,7 +34,7 @@
                     </c:when>
 
                     <c:when test="${notifica.type == 'empty_list'}">
-                        <a class="content" href="ShowShopList?nome=${notifica.listName}"> 
+                        <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
                                 <h4 class="item-title">Lista svuotata! <small> E' stata svuotata la lista <c:out value="${notifica.listName}"/></small></h4>
@@ -44,7 +44,7 @@
                     </c:when>
 
                     <c:when test="${notifica.type == 'new_user'}">
-                        <a class="content" href="ShowShopList?nome=${notifica.listName}"> 
+                        <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
                                 <h4 class="item-title">Utenti aggiunti alla lista! <small> Nuovi utenti nella lista <c:out value="${notifica.listName}"/></small></h4>
@@ -54,7 +54,7 @@
                     </c:when>
 
                     <c:when test="${notifica.type == 'change_status_product'}">
-                        <a class="content" href="ShowShopList?nome=${notifica.listName}"> 
+                        <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
                                 <h4 class="item-title">Stato prodotti cambiato! <small> E' cambiato lo stato dei prodotti nella lista ${notifica.listName}</small></h4>
@@ -64,7 +64,7 @@
                     </c:when>
 
                     <c:when test="${notifica.type == 'new_message'}">
-                        <a class="content" href="ShowShopList?nome=${notifica.listName}"> 
+                        <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
                                 <h4 class="item-title">Nuovi Messaggi! <small> Ci sono dei nuovi messaggi nella lista ${notifica.listName}</small></h4>
@@ -74,7 +74,7 @@
                     </c:when>
 
                     <c:when test="${notifica.type == 'role_change'}">
-                        <a class="content" href="ShowShopList?nome=${notifica.listName}"> 
+                        <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
                                 <h4 class="item-title">Permessi aggiornati! <small> Sono cambiati i tuoi permessi nella lista ${notifica.listName}</small></h4>
@@ -84,7 +84,7 @@
                     </c:when>
 
                     <c:when test="${notifica.type == 'remove_product'}">
-                        <a class="content" href="ShowShopList?nome=${notifica.listName}"> 
+                        <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
                                 <h4 class="item-title">Sono stati rimossi dei prodotti!<small> Potrebbe essere che la lista <b>${notifica.listName}</b> ora sia vuota</small></h4>
@@ -94,7 +94,7 @@
                     </c:when>
 
                     <c:when test="${notifica.type == 'primoReminder'}">
-                        <a class="content" href="ShowShopList?nome=${notifica.listName}"> 
+                        <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
                                 <h4 class="item-title">Attenzione!<small> alcuni prodotti nella lista <b>${notifica.listName}</b> sono vicini all'esaurmineto</small></h4>
@@ -104,7 +104,7 @@
                     </c:when>
 
                     <c:when test="${notifica.type == 'secondoReminder'}">
-                        <a class="content" href="ShowShopList?nome=${notifica.listName}"> 
+                        <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
                                 <h4 class="item-title">Attenzione!<small> alcuni prodotti nella lista <b>${notifica.listName}</b> devono essere acquistati al più presto</small></h4>
@@ -114,7 +114,7 @@
                     </c:when>
                     
                     <c:when test="${notifica.type == 'proximityMail'}">
-                        <a class="content" href="ShowShopList?nome=${notifica.listName}"> 
+                        <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
                                 <h4 class="item-title">Attenzione!<small> Ci risulta che sei particolarmente vicino a negozi inerenti alla lista <b>${notifica.listName}</b></h4>

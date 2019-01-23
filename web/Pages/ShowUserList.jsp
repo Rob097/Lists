@@ -297,10 +297,20 @@
                                         </a>
                                     </div>
                                 </div>
-                                <div class="pb-5">                                    
-                                    <h4>Promemoria di default: <i class="pl-3 fa fa-info" data-toggle="tooltip" data-placement="right" title="Tutti i prodotti aggiunti a questa lista avranno un promemoria di default impostato a ${lista.promemoria} giorni. Questo valore è modificabile."></i></h4>
-                                    <input class="form-control" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" onchange="defaultChange();" value="${lista.promemoria}" id="defaultReminder">
-                                </div>
+                                <c:choose>
+                                    <c:when test="${(ruolo eq 'creator' || 'write')}">
+                                        <div class="pb-5">                                    
+                                            <h4>Promemoria di default: <i class="pl-3 fa fa-info" data-toggle="tooltip" data-placement="right" title="Tutti i prodotti aggiunti a questa lista avranno un promemoria di default impostato a ${lista.promemoria} giorni. Questo valore è modificabile."></i></h4>
+                                            <input class="form-control" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" onchange="defaultChange();" value="${lista.promemoria}" id="defaultReminder">
+                                        </div>
+                                    </c:when>
+                                    <c:when test="${(ruolo == 'Read')}">
+                                        <div class="pb-5">                                    
+                                            <h4>Promemoria di default: <i class="pl-3 fa fa-info" data-toggle="tooltip" data-placement="right" title="Non hai i permessi per modificare questo valore."></i></h4>
+                                            <input class="form-control" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0; cursor: not-allowed;" type="number" value="${lista.promemoria}" id="defaultReminder2" disabled>
+                                        </div>
+                                    </c:when>
+                                </c:choose>
                                 <!--============ Items ==========================================================================-->                               
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
                                     <c:if test="${listProducts != null}">
@@ -331,13 +341,20 @@
                                                                 <img src="../${prod.immagine}" alt="">                                                            
                                                             </a>
                                                         </div>
-                                                        <h4>                                                       
-                                                            <a>
-                                                                <i style="color: black;" class="fa fa-calendar" data-toggle="tooltip" data-placement="bottom" title="Promemoria di acquisto di ${prod.nome}"></i>
-                                                                <input style="background-color: transparent; cursor: pointer; width: fit-content;" type="date" onchange="changeReminder(${prod.pid}, '${shopListName}');" class="border border-primary rounded" value="${prod.data_scadenza}" id="Reminder-${prod.pid}-${shopListName}">
-                                                            </a>
-                                                        </h4>
-                                                            <input id="${prod.pid}Quantity" class="price" onchange="updateQuantity(${prod.pid});" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" name="quantity" min="1" max="99" value="${prod.quantity}"></input>
+                                                        <c:choose>
+                                                            <c:when test="${user != null}"> 
+                                                                <h4>                                                       
+                                                                    <a>
+                                                                        <i style="color: black;" class="fa fa-calendar" data-toggle="tooltip" data-placement="bottom" title="Promemoria di acquisto di ${prod.nome}"></i>
+                                                                        <input style="background-color: transparent; cursor: pointer; width: fit-content;" type="date" onchange="changeReminder(${prod.pid}, '${shopListName}');" class="border border-primary rounded" value="${prod.data_scadenza}" id="Reminder-${prod.pid}-${shopListName}">
+                                                                    </a>
+                                                                </h4>
+                                                                <input id="${prod.pid}Quantity" class="price" onchange="updateQuantity(${prod.pid});" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" name="quantity" min="1" max="99" value="${prod.quantity}"></input>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <input id="${prod.pid}Quantity" class="price" onchange="updateQuantity(${prod.pid}, 'guest');" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" name="quantity" min="1" max="99" value="${prod.quantity}"></input>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                         <div class="admin-controls">
                                                             <a style="cursor: pointer;" onclick="giaAcquistatoItem(${prod.pid})">
                                                                 <i class="fas fa-shopping-cart"></i>Acquistato
@@ -345,10 +362,16 @@
                                                             <a onclick="removeItem('${prod.pid}');" style="cursor: pointer;" class="ad-remove">
                                                                 <i class="fa fa-trash"></i>Cancella
                                                             </a>
-                                                            <a class="reminderInvisible">
-                                                                <i style="color: black;" class="fa fa-calendar" data-toggle="tooltip" data-placement="bottom" title="Promemoria di acquisto di ${prod.nome}"></i>
-                                                                <input style="background-color: transparent; cursor: pointer; width: fit-content;" type="date" onchange="changeReminder(${prod.pid}, '${shopListName}');" class="border border-primary rounded" value="${prod.data_scadenza}" id="Reminder-grid-${prod.pid}-${shopListName}">
-                                                            </a>
+                                                            <c:choose>
+                                                                <c:when test="${user != null}"> 
+                                                                <a class="reminderInvisible">
+                                                                    <i style="color: black;" class="fa fa-calendar" data-toggle="tooltip" data-placement="bottom" title="Promemoria di acquisto di ${prod.nome}"></i>
+                                                                    <input style="background-color: transparent; cursor: pointer; width: fit-content;" type="date" onchange="changeReminder(${prod.pid}, '${shopListName}');" class="border border-primary rounded" value="${prod.data_scadenza}" id="Reminder-grid-${prod.pid}-${shopListName}">
+                                                                </a>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                </c:otherwise>
+                                                            </c:choose>
                                                         </div>
                                                         <!--end admin-controls-->
                                                         <div class="description">
@@ -638,11 +661,11 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body">
-                            <h3>Sei sicuro di voler salvare questa lista?</h3>
-                            <h4>Iserisci un indirizzo email:</h4>
+                        <div class="modal-body">                            
                             <form action="/Lists/SaveGuestList" method="POST">
+                                <h4>Iserisci un indirizzo email:</h4>
                                 <input type="email" name="creator" required>
+                                <h4>Iserisci una password:</h4>
                                 <input type="password" name="password" required>
                                 <input type="hidden" name="nome" value="${shoplistName}">
                                 <input type="hidden" name="categoria" value="${guestList.categoria}">
@@ -745,13 +768,18 @@
         </script>
         
         <script>
-        function updateQuantity(id) {
-            var lista = '${shopListName}';
+        function updateQuantity(id, type) {
+            var lista = null;
+            if(type === "guest"){
+                lista = '${guestList}';
+            }else{
+                lista = '${shopListName}';
+            }
             var quantita = $('#'+id+'Quantity').val();
             $.ajax({
                 type: "POST",
                 url: "/Lists/updateQuantity",
-                data: jQuery.param({id: id, lista: lista, quantita: quantita}),
+                data: jQuery.param({id: id, lista: lista, quantita: quantita, tipo: type}),
                 async: false,
                 success: function () {
                     

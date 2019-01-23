@@ -157,7 +157,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
         }
 
         String qry = "insert into guestLists(nome,descrizione,immagine,creator,password,categoria) "
-                + "values(?,?,?,?,?,?,?)";
+                + "values(?,?,?,?,?,?)";
 
         try (PreparedStatement statement = CON.prepareStatement(qry)) {
             statement.setString(1, l.getNome());
@@ -166,7 +166,6 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             statement.setString(4, creator);
             statement.setString(5, password);
             statement.setString(6, l.getCategoria());
-            statement.setInt(7, l.getPromemoria());
 
             if (statement.executeUpdate() == 1) {
                 return l;
@@ -448,6 +447,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                     sL.setNote(rs.getString("note"));
                     sL.setImmagine(rs.getString("immagine"));
                     sL.setStatus(status);
+                    sL.setQuantity(1);
                     productLists.add(sL);
                     s.setAttribute("prodottiGuest", productLists);
                     
@@ -531,9 +531,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                     shoppingLists.setDescrizione(rs.getString("descrizione"));
                     shoppingLists.setImmagine(rs.getString("immagine"));
                     shoppingLists.setCreator(rs.getString("creator"));
-                    shoppingLists.setCategoria("categoria");
-                    shoppingLists.setPromemoria(rs.getInt("reminder"));
-                    
+                    shoppingLists.setCategoria("categoria");                    
                 }
                 return shoppingLists;
             }
@@ -564,7 +562,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             if(check){
                 try (PreparedStatement stm1 = CON.prepareStatement("DELETE FROM guestLists WHERE creator=? and password = ?")) {                    
                     stm1.setString(1, creator);
-                    stm.setString(2, password);
+                    stm1.setString(2, password);
                     
                     if (stm1.executeUpdate() == 1) {
                         
@@ -954,6 +952,38 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             }
         }   catch (SQLException ex) {
             Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Override
+    public void alterList(String oldName, String nome, String descrizione, String immagine, String creator, String categoria) throws DAOException{
+        if (nome == null || descrizione == null || immagine == null || creator == null || categoria == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed shoppinglist is null"));
+        }
+        
+        String qry = "UPDATE List SET "
+                + "nome =?,"
+                + "descrizione=?,"
+                + "immagine=?,"
+                + "creator=?,"
+                + "categoria=?"
+                + "where nome=?";
+
+        try (PreparedStatement statement = CON.prepareStatement(qry)) {
+            statement.setString(1, nome);
+            statement.setString(2, descrizione);
+            statement.setString(3, immagine);
+            statement.setString(4, creator);
+            statement.setString(5, categoria);
+            statement.setString(6, oldName);
+
+            if (statement.executeUpdate() == 1) {
+                
+            } else {
+                throw new DAOException("Impossible to insert the List");
+            }
+        } catch (SQLException ex) {
+            throw new DAOException(ex);
         }
     }
 
