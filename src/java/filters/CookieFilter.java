@@ -127,7 +127,10 @@ public class CookieFilter implements Filter {
                     session.setAttribute("userLists", li);
 
                     ArrayList<ShopList> sl = listdao.getListOfShopListsThatUserLookFor(user.getEmail());
-                    session.setAttribute("sharedLists", sl);                    
+                    session.setAttribute("sharedLists", sl);     
+                    
+                    ArrayList<ShopList> all = listdao.getAllObjectListsByCurentUser(user.getEmail());
+                    session.setAttribute("allLists", all);
                     
                     //### notifiche ###
                     ArrayList<Notification> allN = notificationdao.getAllNotifications(user.getEmail());

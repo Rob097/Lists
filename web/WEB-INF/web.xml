@@ -250,6 +250,14 @@
         <servlet-name>reminderEmail</servlet-name>
         <servlet-class>email.reminderEmail</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>sendProximityEmail</servlet-name>
+        <servlet-class>email.sendProximityEmail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>callMap</servlet-name>
+        <servlet-class>Tools.callMap</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -421,6 +429,14 @@
     <servlet-mapping>
         <servlet-name>reminderEmail</servlet-name>
         <url-pattern>/reminderEmail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>sendProximityEmail</servlet-name>
+        <url-pattern>/sendProximityEmail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>callMap</servlet-name>
+        <url-pattern>/callMap</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

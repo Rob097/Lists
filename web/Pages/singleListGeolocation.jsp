@@ -538,7 +538,7 @@
                    document.getElementById("contenitore").innerHTML += msg;
                    document.getElementById("contenitore").innerHTML += tableHeader;
                    
-                    var distanzaMassima = 10000;
+                    var distanzaMassima = 1000;
                     for (var i = 0, max = 5; i < max; i++) {
                         var l = searchResult.results.items[i].position[0];
                         var la = searchResult.results.items[i].position[1];
@@ -559,16 +559,18 @@
                             orari = "non ci sono gli orari";
                             console.log("non ci sono gli orari");
                         }
-                        console.log(openingHours);
-                        
-                            document.getElementById(nomeLista).innerHTML += "<tr><td>" + searchResult.results.items[i].title + "</td>" + "<td>" + category + "</td>" + "<td>" + distance + "</td>" + "<td>" + orari + "</td>" + "<td>" + vicinity + "</td>"+ "<td>" + nomeLista + "</td>"+"</tr>";
-                        
-                        console.log(searchResult.results.items[i].title);
-                        
-                        console.log("???????????????????????????????????????????? " + nomeLista);
+                        if(distance <= distanzaMassima){
+                            console.log(openingHours);
 
-                        // Add the marker to the map:
-                        map.addObject(marker);
+                            document.getElementById(nomeLista).innerHTML += "<tr><td>" + searchResult.results.items[i].title + "</td>" + "<td>" + category + "</td>" + "<td>" + distance + "</td>" + "<td>" + orari + "</td>" + "<td>" + vicinity + "</td>"+ "<td>" + nomeLista + "</td>"+"</tr>";
+
+                            console.log(searchResult.results.items[i].title);
+
+                            console.log("???????????????????????????????????????????? " + nomeLista);
+
+                            // Add the marker to the map:
+                            map.addObject(marker);
+                        }
                     }
                     document.getElementById("contenitore").innerHTML +=tableClose;
                    

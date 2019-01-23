@@ -112,6 +112,16 @@
                             </div>  
                         </a>
                     </c:when>
+                    
+                    <c:when test="${notifica.type == 'proximityMail'}">
+                        <a class="content" href="ShowShopList?nome=${notifica.listName}"> 
+                            <div class="notification-item" id="${notifica.type}ID">
+                                <img src="/Lists/${notifica.listimage}">
+                                <h4 class="item-title">Attenzione!<small> Ci risulta che sei particolarmente vicino a negozi inerenti alla lista <b>${notifica.listName}</b></h4>
+                                <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('${notifica.type}ID', '${notifica.type}')">elimina</a>
+                            </div>  
+                        </a>
+                    </c:when>
 
                 </c:choose>
             </c:forEach>

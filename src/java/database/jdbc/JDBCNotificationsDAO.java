@@ -15,6 +15,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
@@ -246,6 +247,40 @@ public class JDBCNotificationsDAO extends JDBCDAO implements NotificationDAO{
                 return true;
             } else {
                 throw new DAOException("Impossible to insert the email");
+            }
+        } catch (SQLException ex) {
+            throw new DAOException(ex);
+
+        }
+    }
+    
+    @Override
+    public boolean checkProximityMail(String email, String lista) throws DAOException {
+        try {
+            PreparedStatement stm = CON.prepareStatement("select * from proximityMail where email=? AND lista=?");
+            stm.setString(1, email);
+            stm.setString(2, lista);
+            ResultSet rs = stm.executeQuery();
+                while (rs.next()) {
+                    return false;
+                }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCNotificationsDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        String qry = "insert into proximityMail(email,lista,data) "
+                + "values(?,?,?)";
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        try (PreparedStatement stm = CON.prepareStatement(qry)) {
+            stm.setString(1, email);
+            stm.setString(2, lista);
+            stm.setTimestamp(3, timestamp);
+            
+            if (stm.executeUpdate() == 1) {
+                System.out.println("new email ok"); 
+                return true;
+            } else {
+                throw new DAOException("Impossible to insert the email in proximityMail");
             }
         } catch (SQLException ex) {
             throw new DAOException(ex);

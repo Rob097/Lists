@@ -57,7 +57,7 @@ public class ScheduledTask implements Runnable {
             ArrayList<ListProd> prods = productdao.getAllChoosenProducts();
             ArrayList<User> utenti;
             for (ListProd p : prods) {
-                utenti = notificationdao.getUsersWithWhoTheListIsShared(p.getLista());                
+                utenti = notificationdao.getUsersWithWhoTheListIsShared(p.getLista());
                 if (!p.getStato().equals("acquistato")) {
                     int missingDays = dayDifference(p.getData_scadenza());
                     if (missingDays > 0 && missingDays <= 2) {
@@ -66,7 +66,7 @@ public class ScheduledTask implements Runnable {
                             Product p1 = productdao.getProductByID(Integer.parseInt(p.getProdotto()));
                             String messaggio = "Nella lista " + p.getLista() + " ci sono uno o piu' prodotti che devono essere comprati al piu' presto";
                             notificationdao.addNotification(u.getEmail(), "secondoReminder", p.getLista());
-                            if(notificationdao.checkReminderMail(u.getEmail(), p.getLista())){
+                            if (notificationdao.checkReminderMail(u.getEmail(), p.getLista())) {
                                 try {
                                     URL url = new URL("http://localhost:8080/Lists/reminderEmail");
 
@@ -102,15 +102,15 @@ public class ScheduledTask implements Runnable {
                                     e.printStackTrace();
                                 }
                             }
-                        }                       
+                        }
                     } else if (missingDays > 2 && missingDays <= 4) {
                         for (User u : utenti) {
                             //System.out.println("Nome: "+u.getNominativo() + "\nlista: " + lista);
                             notificationdao.addNotification(u.getEmail(), "primoReminder", p.getLista());
 
-                        }                        
+                        }
                     }
-                }else{
+                } else {
                     int missingDays = dayDifference(p.getData_scadenza());
                     if (missingDays == 0) {
                         listdao.signProductAsBuyed(Integer.parseInt(p.getProdotto()), "daAcquistare", p.getLista());
@@ -122,7 +122,6 @@ public class ScheduledTask implements Runnable {
         } catch (DAOException ex) {
             Logger.getLogger(ScheduledTask.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     //gets the created daoFactory connection

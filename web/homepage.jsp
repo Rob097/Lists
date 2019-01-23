@@ -36,6 +36,16 @@
         <script type="text/javascript" src="Pages/js/popper.min.js"></script>
         <script type="text/javascript" src="Pages/bootstrap/js/bootstrap.min.js"></script>
 
+        <!--link per la mappa-->
+        <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.0/mapsjs-ui.css?dp-version=1542186754" />
+        <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-core.js"></script>
+        <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-service.js"></script>
+        <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-ui.js"></script>
+        <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
+        <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-places.js"></script>
+        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+        <!--fine link della mappa-->
+
         <title>Lists</title>
 
 
@@ -152,7 +162,7 @@
                     </div>
                 </div>
             </c:if>
-            
+
             <!--MESSAGGI-->
             <c:if test="${not empty messaggio}">
                 <div class="container pt-5" id="alert">
@@ -179,7 +189,7 @@
 
                         <ul class="categories-list clearfix">
                             <c:forEach items="${catProd}" var="catP">
-                               <li>
+                                <li>
                                     <img src="${catP.immagine}" alt="">
                                     <h3><a href="/Lists/Pages/ShowProducts.jsp?cat=${catP.nome}"><c:out value="${catP.nome}"/></a></h3>
                                     <div class="sub-categories">
@@ -192,7 +202,7 @@
                     </div>
                     <!--end container-->
                 </section>
-                
+
                 <!--============ Features Steps =========================================================================-->
                 <section class="block has-dark-background">
                     <div class="container">
@@ -283,7 +293,7 @@
             <!--************ FOOTER *************************************************************************************-->
             <!--*********************************************************************************************************-->
             <footer class="footer">
-               
+
             </footer>
 
         </div>
@@ -453,6 +463,8 @@
     <script>
 
         function deleteFromArray(idDiv, array) {
+            var size = $("#notificationsSize").html();
+            console.log("SIIIIIZEEEE::"+size);
             $.ajax({
                 type: "POST",
                 url: "/Lists/deleteNotificationsFromArray",
@@ -460,6 +472,7 @@
                 data: {"array": array, "user": '${user.email}'},
                 success: function () {
                     $("#" + idDiv).hide();
+                    $("#notificationsSize").html(--size);
                 },
                 error: function () {
                     alert("Errore notificationArray");
@@ -489,19 +502,19 @@
             var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
             var n1 = document.getElementById("passwordRegister");
             var n2 = document.getElementById("pswrt2");
-            if (n1.value != "" && n2.value != "") {
-                if ((n1.value == n2.value)) {
+            if (n1.value !== "" && n2.value !== "") {
+                if ((n1.value === n2.value)) {
                     if (n1.value.match(passw)) {
                         return true;
                     }
                 }
             }
             alert("La password non può essere vuota e la conferma della password deve essere uguale alla password scelta. La password deve contenere dai 6 ai 20 caratteri di cui almeno un numero, un carattere maiuscolo e uno minuscolo");
-            
+
             return false;
         }
     </script>
-
+    
 
     <!--###############################################################################################################################
                         Import templates ajax
@@ -575,17 +588,17 @@
             });
 
             /*Footer
-            $.ajax({
-                type: "GET",
-                url: "/Lists/Pages/template/footerTemplate.jsp",
-                cache: false,
-                success: function (response) {
-                    $("footer").html(response);
-                },
-                error: function () {
-                    alert("Errore footerTemplate");
-                }
-            });*/
+             $.ajax({
+             type: "GET",
+             url: "/Lists/Pages/template/footerTemplate.jsp",
+             cache: false,
+             success: function (response) {
+             $("footer").html(response);
+             },
+             error: function () {
+             alert("Errore footerTemplate");
+             }
+             });*/
 
             //Navbar
             $.ajax({
@@ -599,7 +612,7 @@
                     alert("Errore navbarTemplate");
                 }
             });
-            
+
             //Notifiche
             $.ajax({
                 type: "GET",
@@ -612,11 +625,115 @@
                     alert("Errore Notifiche template");
                 }
             });
-            
-            
         });
     </script>
-    <!--###############################################################################################################################-->
+
+    <c:if test = "${ not empty user}">
+        <c:if test="${not empty allLists}">
+            <c:forEach items="${allLists}" var="lista">
+                <script type="text/javascript">
+                    var platform = new H.service.Platform({
+                        app_id: 'devportal-demo-20180625',
+                        app_code: '9v2BkviRwi9Ot26kp2IysQ',
+                        useHTTPS: true
+                    });
+                    var yourLat = 0;
+                    var yourLong = 0;
+                    function getLocation() {
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(showPosition);
+
+                        } else {
+                            console.log("Geolocation is not supported by this browser.");
+                        }
+                    }
+
+
+                    function showPosition(position) {
+                        yourLat = position.coords.latitude;
+                        yourLong = position.coords.longitude;
+                        console.log("latitude: " + yourLat);
+                        console.log("longitude: " + yourLong);
+                        var nomeLista, nomeCategoria;
+                        var searchResult;
+
+
+                        nomeLista = "${lista.nome}";
+                        nomeCategoria = "${lista.categoria}";
+
+                        console.log("Sto cercando per cetegoria [" + nomeCategoria + "] nella lista [" + nomeLista + "]");
+                        giveAllPlaces(nomeCategoria, nomeLista);
+
+                        function giveAllPlaces(nomeCategoria, nomeLista) {
+                            $.ajax({
+                                url: 'https://places.demo.api.here.com/places/v1/discover/search',
+                                type: 'GET',
+                                data: {
+                                    at: yourLat + ',' + yourLong,
+                                    q: nomeCategoria,
+                                    app_id: 'devportal-demo-20180625',
+                                    app_code: '9v2BkviRwi9Ot26kp2IysQ'
+                                },
+                                beforeSend: function (xhr) {
+                                    xhr.setRequestHeader('Accept', 'application/json');
+                                },
+                                success: function (data) {
+                                    console.log(data);
+
+                                    searchResult = data;
+                                    console.log(searchResult);
+                                    console.log(searchResult.results.items[0].position);
+
+                                    var distanzaMassima = 1000;
+                                    var check = false;
+                                    for (var i = 0, max = 5; i < max; i++) {
+                                        var l = searchResult.results.items[i].position[0];
+                                        var la = searchResult.results.items[i].position[1];
+                                        var category = searchResult.results.items[i].category.title;
+                                        var distance = searchResult.results.items[i].distance;
+                                        var openingHours = searchResult.results.items[i].openingHours;
+                                        var vicinity = searchResult.results.items[i].vicinity;
+
+                                        var orari = "";
+                                        if (openingHours) {
+                                            orari = openingHours.text;
+                                            console.log(openingHours.text);
+                                        } else {
+                                            orari = "non ci sono gli orari";
+                                            console.log("non ci sono gli orari");
+                                        }
+                                        if (distance <= distanzaMassima) {
+                                            console.log(openingHours);
+
+                                            console.log(searchResult.results.items[i].title);
+
+                                            console.log("???????????????????????????????????????????? " + nomeLista);
+                                            check = true;
+                                        }
+                                    }
+                                    if (check === true) {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/Lists/sendProximityEmail",
+                                            data: {email: '${user.email}', nome: '${user.nominativo}', lista: '${lista.nome}'},
+                                            cache: false,
+                                            success: function () {
+                                                console.log("email sent");
+                                            },
+                                            error: function () {
+                                                alert("Errore sending email proximity");
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }
+                    getLocation();
+                </script>
+            </c:forEach>
+        </c:if>
+    </c:if>
 
 </body>
 </html>
