@@ -161,7 +161,7 @@
     <body>        
         <div class="page home-page">
             <header class="hero">
-                <div class="hero-wrapper">
+                <div class="hero-wrapper" style='background-image: linear-gradient(rgba(255,255,255,.4), rgba(255,255,255,.9)),url("/Lists/${lista.immagine}"); background-position-y: center;'>
                     <div id="navbar">
                         <!-- Qui viene inclusa la navbar -->
                     </div>
@@ -170,10 +170,10 @@
                     <!--============ Page Title =========================================================================-->
                     <div class="page-title">
                         <div class="container">
-                            <h1 class="opacity-60 center">
+                            <h1 class="center">
                                 <c:out value="${shopListName}"/>                                
                             </h1>                            
-                            <p class="text-center">
+                            <p class="text-center" style="opacity: 1;">
                                 <c:if test="${lista != null}">
                                     <c:out value="${lista.descrizione}"/>
                                 </c:if>
@@ -225,16 +225,16 @@
                                         <c:when test="${(ruolo eq 'creator')}">
                                             <div class="row">
                                                 <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6">
-                                                    <a href="AddProductToListPage.jsp" style="font-size: 2.5rem; width: -webkit-fill-available;"><i class="fas fa-plus"> <br>Add products</i></a> 
+                                                    <a href="AddProductToListPage.jsp" style="font-size: 2.5rem; width: -webkit-fill-available;"><i class="fas fa-plus"> <br>Aggiungi prodotto</i></a> 
                                                 </div>
                                                 <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6">
-                                                    <a href="ThirdChatroom.jsp" style="font-size: 2.5rem; width: -webkit-fill-available;"><i class="fas fa-users"><br>ChatRoom</i></a> 
+                                                    <a href="ThirdChatroom.jsp" style="font-size: 2.5rem; width: -webkit-fill-available;"><i class="fas fa-users"><br>Chat</i></a> 
                                                 </div>
                                                 <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6">
-                                                    <a style="cursor: pointer; font-size: 2.5rem; width: -webkit-fill-available;" data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Share</i></a>
+                                                    <a style="cursor: pointer; font-size: 2.5rem; width: -webkit-fill-available;" data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Condividi</i></a>
                                                 </div>
                                                 <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6">
-                                                    <a style="cursor: pointer; font-size: 2.5rem; width: -webkit-fill-available;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Delete</i></a>
+                                                    <a style="cursor: pointer; font-size: 2.5rem; width: -webkit-fill-available;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Elimina</i></a>
                                                 </div>                                                
                                                 <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6">
                                                     <a href="singleListGeolocation.jsp" style="font-size: 2.5rem; width: -webkit-fill-available;"><i class="fas fa-map-marked-alt"><br>Map</i></a> 
@@ -242,26 +242,26 @@
                                             </div>
                                         </c:when>
                                         <c:when test="${(ruolo eq 'Write')}">
-                                            <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
-                                            <a href="ThirdChatroom.jsp"><i class="fas fa-users"><br>ChatRoom</i></a> 
-                                            <a style="cursor: pointer;" data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Share</i></a>
-                                            <a style="cursor: pointer;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Delete</i></a>
+                                            <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Aggiungi prodotto</i></a> 
+                                            <a href="ThirdChatroom.jsp"><i class="fas fa-users"><br>Chat</i></a> 
+                                            <a style="cursor: pointer;" data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Condividi</i></a>
+                                            <a style="cursor: pointer;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Elimina</i></a>
                                              <a href="singleListGeolocation.jsp" style="font-size: 2.5rem; width: -webkit-fill-available;"><i class="fas fa-map-marked-alt"><br>Map</i></a> 
                                         </c:when>
                                         <c:when test="${(ruolo == 'Read')}">
-                                        <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
-                                        <a href="ThirdChatroom.jsp"><i class="fas fa-users"><br>ChatRoom</i></a>
-                                        <a data-toggle="tooltip" title="Non hai i permessi perr condividere la lista. Contatta ${user.nominativo}" class="disabled"><i class="fa fa-globe"><br>Share</i></a>
-                                        <a data-toggle="tooltip" title="Non hai i permessi perr cancellare la lista. Contatta ${user.nominativo}" class="disabled"><i class="fa fa-trash"><br>Delete</i></a>
+                                        <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Aggiungi prodotto</i></a> 
+                                        <a href="ThirdChatroom.jsp"><i class="fas fa-users"><br>Chat</i></a>
+                                        <a data-toggle="tooltip" title="Non hai i permessi perr condividere la lista. Contatta ${user.nominativo}" class="disabled"><i class="fa fa-globe"><br>Condividi</i></a>
+                                        <a data-toggle="tooltip" title="Non hai i permessi perr cancellare la lista. Contatta ${user.nominativo}" class="disabled"><i class="fa fa-trash"><br>Elimina</i></a>
                                          <a href="singleListGeolocation.jsp" style="font-size: 2.5rem; width: -webkit-fill-available;"><i class="fas fa-map-marked-alt"><br>Map</i></a> 
                                         </c:when>
                                     </c:choose>
                                 </c:when>
                                 <c:otherwise>
-                                    <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Add products</i></a> 
-                                    <a data-toggle="tooltip" title="Devi registrarti per usare questa funzione" class="disabled"><i class="fas fa-users"><br>ChatRoom</i></a> 
-                                    <a data-toggle="tooltip" title="Devi registrarti per usare questa funzione" class="disabled"><i class="fa fa-globe"><br>Share</i></a>
-                                    <a style="cursor: pointer;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Delete</i></a> 
+                                    <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Aggiungi prodotto</i></a> 
+                                    <a data-toggle="tooltip" title="Devi registrarti per usare questa funzione" class="disabled"><i class="fas fa-users"><br>Chat</i></a> 
+                                    <a data-toggle="tooltip" title="Devi registrarti per usare questa funzione" class="disabled"><i class="fa fa-globe"><br>Condividi</i></a>
+                                    <a style="cursor: pointer;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Elimina</i></a> 
                                 </c:otherwise>
                             </c:choose>                                    
                         </div>                    
@@ -295,7 +295,13 @@
                                     </div>
                                 </div>
                                 <c:choose>
-                                    <c:when test="${(ruolo eq 'creator' || 'write')}">
+                                    <c:when test="${(ruolo eq 'creator')}">
+                                        <div class="pb-5">                                    
+                                            <h4>Promemoria di default: <i class="pl-3 fa fa-info" data-toggle="tooltip" data-placement="right" title="Tutti i prodotti aggiunti a questa lista avranno un promemoria di default impostato a ${lista.promemoria} giorni. Questo valore è modificabile."></i></h4>
+                                            <input class="form-control" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" onchange="defaultChange();" value="${lista.promemoria}" id="defaultReminder">
+                                        </div>
+                                    </c:when>
+                                    <c:when test="${(ruolo eq 'Write')}">
                                         <div class="pb-5">                                    
                                             <h4>Promemoria di default: <i class="pl-3 fa fa-info" data-toggle="tooltip" data-placement="right" title="Tutti i prodotti aggiunti a questa lista avranno un promemoria di default impostato a ${lista.promemoria} giorni. Questo valore è modificabile."></i></h4>
                                             <input class="form-control" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" onchange="defaultChange();" value="${lista.promemoria}" id="defaultReminder">
@@ -330,9 +336,8 @@
                                             </c:if>
                                                         <div class="image">
                                                             <h3>
-                                                                <a href="#" class="tag category"><c:out value="${prod.categoria_prodotto}"/></a>
+                                                                <a href="/Lists/Pages/ShowProducts.jsp?cat=${prod.categoria_prodotto}" class="tag category"><c:out value="${prod.categoria_prodotto}"/></a>
                                                                 <a class="title"><c:out value="${prod.nome}"/></a>
-                                                                <span class="tag">Offer</span>
                                                             </h3>
                                                             <a class="image-wrapper background-image">
                                                                 <img src="../${prod.immagine}" alt="">                                                            
@@ -445,7 +450,7 @@
                                 <div class="panel-body">
                                     <div class="table-container">
                                         <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#save-modal">Salva la lista</button>
-                                        <button type="button" class="btn btn-dark btn-block" data-toggle="modal" data-target="#delete-modal">Elimina la lista</button>
+                                        <button type="button" class="btn btn-dark btn-block" data-toggle="modal" data-target="#delete-modal-DB">Elimina la lista dal database</button>
                                     </div>
                                 </div>
                             </div>
@@ -560,7 +565,33 @@
                     <div class="modal-header">
                         <div class="page-title">
                             <div class="container">
-                                <h1>Delete List</h1>
+                                <h1>Elimina ${shopListName}</h1>
+                            </div>
+                            <!--end container-->
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>Sei sicuro di voler eliminare questa lista?</h3>
+                        <form class="clearfix" action="/Lists/DeleteShopList" method="POST">
+                            <button type="submit" class="btn btn-dark" id="delete">Elimina</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-dark" id="delete-btn-no">Annulla</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Delete from database Modal -->
+        <div class="modal fade" id="delete-modal-DB" tabindex="-1" role="dialog" aria-labelledby="delete-modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1>Elimina ${shopListName}</h1>
                             </div>
                             <!--end container-->
                         </div>
@@ -574,8 +605,8 @@
                             <c:if test="${empty user and importGL != null}">                                
                                     <input type="email" name="creator" placeholder="Email" required><br><br>
                             </c:if>
-                            <button type="submit" class="btn btn-dark" id="delete">Delete</button>
-                            <button type="button" data-dismiss="modal" class="btn btn-dark" id="delete-btn-no">Cancel</button>
+                            <button type="submit" class="btn btn-dark" id="delete">Elimina</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-dark" id="delete-btn-no">Annulla</button>
                         </form>
 
                     </div>

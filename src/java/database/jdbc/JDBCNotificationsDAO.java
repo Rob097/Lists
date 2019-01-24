@@ -287,5 +287,25 @@ public class JDBCNotificationsDAO extends JDBCDAO implements NotificationDAO{
 
         }
     }
+
+    @Override
+    public boolean checkNotification(String email, String type, String lista) throws DAOException {
+        if (email == null || type == null || lista == null) {
+            throw new DAOException("parameter not valid", new IllegalArgumentException("parameters are null"));
+        }
+        try {
+            PreparedStatement stm = CON.prepareStatement("select * from Notifications where User=? AND Type=? AND ListName=?");
+            stm.setString(1, email);
+            stm.setString(2, type);
+            stm.setString(3, lista);
+            ResultSet rs = stm.executeQuery();
+                while (rs.next()) {
+                    return true;
+                }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCNotificationsDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
     
 }

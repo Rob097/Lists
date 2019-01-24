@@ -132,3 +132,37 @@
 
     </div> 
 </ul>
+<script>
+
+        function deleteFromArray(idDiv, array) {
+            var size = $("#notificationsSize").html();
+            console.log("SIIIIIZEEEE::"+size);
+            $.ajax({
+                type: "POST",
+                url: "/Lists/deleteNotificationsFromArray",
+                cache: false,
+                data: {"array": array, "user": '${user.email}'},
+                success: function () {
+                    $("#" + idDiv).hide();
+                    $("#notificationsSize").html(--size);
+                },
+                error: function () {
+                    alert("Errore notificationArray");
+                }
+            });
+        }
+        function deleteALLNotifications() {
+            $.ajax({
+                type: "POST",
+                url: "/Lists/Pages/template/deleteALLNotifications.jsp",
+                cache: false,
+                success: function (response) {
+                    $("#NotificationsWrapper").html(response);
+                    $("#notificationsSize").html(0);
+                },
+                error: function () {
+                    alert("Errore notificationALL");
+                }
+            });
+        }
+    </script>

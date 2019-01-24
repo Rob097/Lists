@@ -124,8 +124,12 @@ public class alterList extends HttpServlet {
                 try{
                     String listsFolder = ObtainRootFolderPath(relativeListFolderPath);
                     String extension = getImageExtension(filePart1);
-                    String imagineName = creator + "-" + nome + "." + extension;            
-                    ImageDispatcher.DeleteImgFromDirectory(listsFolder+"/"+imagineName);
+                    String imagineName = creator + "-" + nome + "." + extension;    
+                    try{
+                        ImageDispatcher.DeleteImgFromDirectory(listsFolder+"/"+imagineName);
+                    }catch(Exception e){
+                        System.out.println("Nessuna immagine da cancellare");
+                    }
                     ImageDispatcher.InsertImgIntoDirectory(listsFolder, imagineName, filePart1);            
                     immagine = ImageDispatcher.savePathImgInDatabsae(relativeListFolderPath, imagineName);
                 }catch(Exception e){

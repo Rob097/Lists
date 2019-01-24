@@ -65,8 +65,9 @@ public class ScheduledTask implements Runnable {
                         for (User u : utenti) {
                             Product p1 = productdao.getProductByID(Integer.parseInt(p.getProdotto()));
                             String messaggio = "Nella lista " + p.getLista() + " ci sono uno o piu' prodotti che devono essere comprati al piu' presto";
-                            notificationdao.addNotification(u.getEmail(), "secondoReminder", p.getLista());
+                            
                             if (notificationdao.checkReminderMail(u.getEmail(), p.getLista())) {
+                                notificationdao.addNotification(u.getEmail(), "secondoReminder", p.getLista());
                                 try {
                                     URL url = new URL("http://localhost:8080/Lists/reminderEmail");
 
@@ -107,7 +108,6 @@ public class ScheduledTask implements Runnable {
                         for (User u : utenti) {
                             //System.out.println("Nome: "+u.getNominativo() + "\nlista: " + lista);
                             notificationdao.addNotification(u.getEmail(), "primoReminder", p.getLista());
-
                         }
                     }
                 } else {

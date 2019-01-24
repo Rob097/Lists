@@ -85,19 +85,13 @@ public class sendProximityEmail extends HttpServlet {
                     
                     /* Transport class is used to deliver the message to the recipients */
                     Transport.send(message);
+                    notificationdao.addNotification(email, "proximityMail", lista);
             }
         } catch (DAOException ex) {
             System.out.println("#1 Errore nell'invio dell'email a " + email);
             Logger.getLogger(sendProximityEmail.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MessagingException ex) {
             System.out.println("#2 Errore nell'invio dell'email a " + email);
-            Logger.getLogger(sendProximityEmail.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        try {
-            //Aggiunta della notifica
-            notificationdao.addNotification(email, "proximityMail", lista);
-        } catch (DAOException ex) {
             Logger.getLogger(sendProximityEmail.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -231,7 +231,7 @@
                                         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name of product">
                                         <label style="display: none;" id="loadProducts1">Nessun prodotto trovato</label><br>
                                         <c:if test="${not empty user and user.tipo=='amministratore'}">                                            
-                                                <a style="display: none;" id="loadProducts2" data-toggle="modal" data-target="#CreateProductModal" class="btn btn-primary text-caps btn-rounded" >+ Crea un prodotto</a>                                            
+                                            <a style="display: none;" id="loadProducts2" data-toggle="modal" data-target="#CreateProductModal" class="btn btn-primary text-caps btn-rounded" >Crea un nuovo prodotto</a>                                            
                                         </c:if>
                                     </div>
                                     <div class="float-right d-xs-none thumbnail-toggle">
@@ -278,7 +278,7 @@
                                         <c:when test="${param.cat == null or param.cat eq 'all'}">
                                             <c:set scope="page" var="count" value="5"/>
                                             <c:forEach  items="${products}" var="p">
-                                                    <div class="item">
+                                                <div class="item">
                                                     <!--end ribbon-->
                                                     <div class="wrapper">
                                                         <div class="image">
@@ -335,7 +335,7 @@
         <script src="js/jquery.validate.min.js"></script>
         <script src="js/custom.js"></script>
         <script src="js/nav.js"></script>
-        
+
         <!--#########################################################
                                 MODAL
         ##########################################################-->
@@ -361,8 +361,8 @@
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
+                        <h4 class="modal-title">Scegli la lista</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>                        
                     </div>
                     <div class="modal-body">
                         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
@@ -387,249 +387,265 @@
 
             </div>
         </div>
-         <!--########################## moooddaaalllll ############################-->
-         <c:if test="${not empty user and user.tipo=='amministratore'}">
-          <div class="modal fade" id="CreateProductModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="page-title">
-                            <div class="container">
-                                <h1 style="text-align: center;">Crea un nuovo prodotto</h1>
+        <!--########################## moooddaaalllll ############################-->
+        <c:if test="${not empty user and user.tipo=='amministratore'}">
+            <div class="modal fade" id="CreateProductModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="page-title">
+                                <div class="container">
+                                    <h1 style="text-align: center;">Crea un nuovo prodotto</h1>
+                                </div>
+                                <!--end container-->
                             </div>
-                            <!--end container-->
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Form per il login -->
-                        <form class="form clearfix" id="CreateShopListform" action="/Lists/AddNewProductToDataBase"  method="post" role="form" enctype="multipart/form-data">
-                            <div class="form-group">
-                                <label for="Nome" class="col-form-label">Nome del prodotto</label>
-                                <input type="text" name="NomeProdotto" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="Descrizione" class="col-form-label">Note prodotto</label>
-                                <input type="text" name="NoteProdotto" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
-                            </div>
-                            <!--end form-group-->
-                            <div class="form-group">
-                                <label for="Categoria" class="col-form-label">Categoria</label>
-                                <select name="CategoriaProdotto" id="Categoria" tabindex="1" size="5" >
-                                    <c:forEach items="${catProd}" var="prodcat">
-                                        <option value="${prodcat.nome}"><c:out value="${prodcat.nome}"/></option> 
-                                    </c:forEach>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="Immagine" class="col-form-label required">Immagine</label>
-                                <input type="file" name="ImmagineProdotto" required>
-                            </div>
-                            
-                            <!--end form-group-->
-                            <div class="d-flex justify-content-between align-items-baseline">
-                                <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea Prodotto</button>
-                                <input type="hidden" name="showProduct" value="true">
-                            </div>
-                        </form>
-                        <hr>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <div class="modal-body">
+                            <!-- Form per il login -->
+                            <form class="form clearfix" id="CreateShopListform" action="/Lists/AddNewProductToDataBase"  method="post" role="form" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="Nome" class="col-form-label">Nome del prodotto</label>
+                                    <input type="text" name="NomeProdotto" id="NomeProduct" tabindex="1" class="form-control" placeholder="Nome" value="" required>
+                                </div>
+                                <!--end form-group-->
+                                <div class="form-group">
+                                    <label for="Descrizione" class="col-form-label">Note prodotto</label>
+                                    <input type="text" name="NoteProdotto" id="DescrizioneProduct" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
+                                </div>
+                                <!--end form-group-->
+                                <div class="form-group">
+                                    <label for="Categoria" class="col-form-label">Categoria</label>
+                                    <select name="CategoriaProdotto" id="CategoriaProduct" tabindex="1" size="5" >
+                                        <c:forEach items="${catProd}" var="prodcat">
+                                            <option value="${prodcat.nome}"><c:out value="${prodcat.nome}"/></option> 
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Immagine" class="col-form-label required">Immagine</label>
+                                    <input type="file" name="ImmagineProdotto" required>
+                                </div>
+
+                                <!--end form-group-->
+                                <div class="d-flex justify-content-between align-items-baseline">
+                                    <button type="submit" name="register-submit" id="create-Product-submit" tabindex="4" class="btn btn-primary">Crea Prodotto</button>
+                                    <input type="hidden" name="showProduct" value="true">
+                                </div>
+                            </form>
+                            <hr>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
-          </div>
-          </c:if>
+        </c:if>
+        
         <!--########################## moooddaaalllll ############################-->
 
         <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data"></div>
 
-            <script>
-                function myFunction() {
-                    var input, filter, ul, li, a, i;
-                    input = document.getElementById("myInput");
-                    filter = input.value.toUpperCase();
-                    ul = document.getElementById("myUL");
-                    li = ul.getElementsByTagName("li");
-                    for (i = 0; i < li.length; i++) {
-                        a = li[i].getElementsByTagName("a")[0];
-                        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                            li[i].style.display = "";
-                        } else {
-                            li[i].style.display = "none";
-                        }
-                    }
-                }
-            </script>  
-
-            <script>
-                function addProduct(id) {
-                    $.ajax({
-                        type: "GET",
-                        url: "/Lists/setPID?PID=" + id,
-                        async: true,
-                        success: function () {
-                            $('\\#myModal').modal('show');
-                        },
-                        error: function () {
-                            alert("Errore");
-                        }
-                    });
-                }
-            </script>
-
-            <script>
-                function myFunction() {
-                    var input, filter, items, li, a, i, check = true;
-                    input = document.getElementById("myInput");
-                    filter = input.value.toUpperCase();
-                    items = document.getElementsByClassName("item");
-                    console.log(items);
-                    
-                    var title = "";
-                    var i;
-                    $.ajax({
-                                type: "POST",
-                                url: "/Lists/Pages/nameContain.jsp?s="+filter,
-                                
-                                cache: false,
-                                success: function (response) {
-                                    $("#content-wrapper").html($("#content-wrapper").html() + response);
-                                },
-                                error: function () {
-                                   alert("Errore");
-                               }
-                            });
-                    for (i = 0; i<items.length;i++) {
-                        console.log(items[i]);
-                        console.log("inside cicle ");
-                        title = items[i].getElementsByClassName("title");
-                        if(title[0].innerHTML.toUpperCase().indexOf(filter)>-1){
-                            
-                            items = document.getElementsByClassName("item");
-                            title = items[i].getElementsByClassName("title");
-                            items[i].style.display = "";
-                            document.getElementById("loadProducts1").style.display = "none";
-                            document.getElementById("loadProducts2").style.display = "none";
-                            
-                        }else{
-                            items[i].style.display = "none";
-                            
-                        }
-                        if(items[i].style.display === "") check = false;
-                    }                    
-                    if(filter == null || filter == ""){
-                        for (i = 0; i<items.length;i++) {
-                            console.l
-                            items[i].style.display = "";
-                        }
-                    }
-                    if(check === true){
-                        document.getElementById("loadProducts1").style.display = "";
-                        document.getElementById("loadProducts2").style.display = "";
-                    }
-                }
-            </script>
-        
         <script>
-        $(document).ready(function () {
-
-            //LoginModal
-            $.ajax({
-                type: "GET",
-                url: "/Lists/Pages/template/loginTemplate.jsp",
-                cache: false,
-                success: function (response) {
-                    $("#LoginModal").html(response);
-                },
-                error: function () {
-                    alert("Errore LoginModalImport");
+            function myFunction() {
+                var input, filter, ul, li, a, i;
+                input = document.getElementById("myInput");
+                filter = input.value.toUpperCase();
+                ul = document.getElementById("myUL");
+                li = ul.getElementsByTagName("li");
+                for (i = 0; i < li.length; i++) {
+                    a = li[i].getElementsByTagName("a")[0];
+                    if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        li[i].style.display = "";
+                    } else {
+                        li[i].style.display = "none";
+                    }
+                }
+            }
+        </script>  
+        <script>
+            $(document).ready(function () {
+                items = document.getElementsByClassName("item");
+                var check1 = true;
+                for (i = 0; i < items.length; i++) {
+                    if (items[i].style.display !== "none") {
+                        check1 = false;
+                    }
+                }
+                if (check1 === true) {
+                    document.getElementById("loadProducts1").style.display = "";
+                    document.getElementById("loadProducts2").style.display = "";
                 }
             });
+        </script>
+        <script>
+            function addProduct(id) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/setPID?PID=" + id,
+                    async: true,
+                    success: function () {
+                        $('\\#myModal').modal('show');
+                    },
+                    error: function () {
+                        alert("Errore");
+                    }
+                });
+            }
+        </script>
 
-            //RegisterModal
-            $.ajax({
-                type: "GET",
-                url: "/Lists/Pages/template/registerTemplate.jsp",
-                cache: false,
-                success: function (response) {
-                    $("#RegisterModal").html(response);
-                },
-                error: function () {
-                    alert("Errore RegisterModalImport");
-                }
-            });
+        <script>
+            function myFunction() {
+                var input, filter, items, li, a, i, check = true;
+                input = document.getElementById("myInput");
+                filter = input.value.toUpperCase();
+                items = document.getElementsByClassName("item");
+                console.log(items);
 
-            //Restore password
-            $.ajax({
-                type: "GET",
-                url: "/Lists/Pages/template/restorePasswordTemplate.jsp",
-                cache: false,
-                success: function (response) {
-                    $("#restorePassword").html(response);
-                },
-                error: function () {
-                    alert("Errore restorePasswordTemplate");
-                }
-            });
+                var title = "";
+                var i;
+                $.ajax({
+                    type: "POST",
+                    url: "/Lists/Pages/nameContain.jsp?s=" + filter,
 
-            //New password
-            $.ajax({
-                type: "GET",
-                url: "/Lists/Pages/template/newPasswordTemplate.jsp",
-                cache: false,
-                success: function (response) {
-                    $("#newPassword").html(response);
-                },
-                error: function () {
-                    alert("Errore newPasswordTemplate");
-                }
-            });
+                    cache: false,
+                    success: function (response) {
+                        $("#content-wrapper").html($("#content-wrapper").html() + response);
+                    },
+                    error: function () {
+                        alert("Errore");
+                    }
+                });
+                for (i = 0; i < items.length; i++) {
+                    console.log(items[i]);
+                    console.log("inside cicle ");
+                    title = items[i].getElementsByClassName("title");
+                    if (title[0].innerHTML.toUpperCase().indexOf(filter) > -1) {
 
-            //Create List
-            $.ajax({
-                type: "GET",
-                url: "/Lists/Pages/template/createListTemplate.jsp",
-                cache: false,
-                success: function (response) {
-                    $("#CreateListModal").html(response);
-                },
-                error: function () {
-                    alert("Errore createListTemplate");
-                }
-            });
+                        items = document.getElementsByClassName("item");
+                        title = items[i].getElementsByClassName("title");
+                        items[i].style.display = "";
+                        document.getElementById("loadProducts1").style.display = "none";
+                        document.getElementById("loadProducts2").style.display = "none";
 
-            /*Footer
-            $.ajax({
-                type: "GET",
-                url: "/Lists/Pages/template/footerTemplate.jsp",
-                cache: false,
-                success: function (response) {
-                    $("footer").html(response);
-                },
-                error: function () {
-                    alert("Errore footerTemplate");
-                }
-            });*/
+                    } else {
+                        items[i].style.display = "none";
 
-            //Navbar
-            $.ajax({
-                type: "GET",
-                url: "/Lists/Pages/template/navbarTemplate.jsp",
-                cache: false,
-                success: function (response) {
-                    $("#navbar").html(response);
-                },
-                error: function () {
-                    alert("Errore navbarTemplate");
+                    }
+                    if (items[i].style.display === "")
+                        check = false;
                 }
-            });     
-            
-            //Notifiche
+                if (filter == null || filter == "") {
+                    for (i = 0; i < items.length; i++) {
+                        console.l
+                        items[i].style.display = "";
+                    }
+                }
+                if (check === true) {
+                    document.getElementById("loadProducts1").style.display = "";
+                    document.getElementById("loadProducts2").style.display = "";
+                }
+            }
+        </script>
+
+        <script>
+            $(document).ready(function () {
+
+                //LoginModal
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/loginTemplate.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#LoginModal").html(response);
+                    },
+                    error: function () {
+                        alert("Errore LoginModalImport");
+                    }
+                });
+
+                //RegisterModal
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/registerTemplate.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#RegisterModal").html(response);
+                    },
+                    error: function () {
+                        alert("Errore RegisterModalImport");
+                    }
+                });
+
+                //Restore password
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/restorePasswordTemplate.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#restorePassword").html(response);
+                    },
+                    error: function () {
+                        alert("Errore restorePasswordTemplate");
+                    }
+                });
+
+                //New password
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/newPasswordTemplate.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#newPassword").html(response);
+                    },
+                    error: function () {
+                        alert("Errore newPasswordTemplate");
+                    }
+                });
+
+                //Create List
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/createListTemplate.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#CreateListModal").html(response);
+                    },
+                    error: function () {
+                        alert("Errore createListTemplate");
+                    }
+                });
+
+                /*Footer
+                 $.ajax({
+                 type: "GET",
+                 url: "/Lists/Pages/template/footerTemplate.jsp",
+                 cache: false,
+                 success: function (response) {
+                 $("footer").html(response);
+                 },
+                 error: function () {
+                 alert("Errore footerTemplate");
+                 }
+                 });*/
+
+                //Navbar
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/navbarTemplate.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#navbar").html(response);
+                    },
+                    error: function () {
+                        alert("Errore navbarTemplate");
+                    }
+                });
+
+                //Notifiche
                 $.ajax({
                     type: "GET",
                     url: "/Lists/Pages/template/notifiche.jsp",
@@ -641,8 +657,8 @@
                         alert("Errore Notifiche template");
                     }
                 });
-            
-        });
-    </script>
+
+            });
+        </script>
     </body>
 </html>

@@ -85,7 +85,7 @@ public class DeleteShopList extends HttpServlet {
                 listdao.deleteGuestListFromDB(creator);
             } catch (DAOException ex) {
                 System.out.println("impossibile eliminare la guest list dal database");
-                Logger.getLogger(DeleteShopList.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(DeleteShopList.class.getName()).log(Level.SEVERE, null, ex);
             }
             response.sendRedirect("/Lists/homepage.jsp");
             

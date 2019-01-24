@@ -57,8 +57,8 @@
                 </div>
 
                 <div class="form-group">
-                    Per andare avanti accenta la nostra <a data-toggle="modal" href="#PrivacyModal" class="link">Privacy Policy</a><br>                
-                    <label for="privacy">Ho letto e acceto l'informativa sulla Privacy</label>         
+                    Per andare avanti accetta la nostra <a data-toggle="modal" href="#PrivacyModal" class="link">Privacy Policy</a><br>                
+                    <label for="privacy">Ho letto e accetto l'informativa sulla Privacy</label>         
                     <input required type="checkbox" tabindex="3" class="" name="privacy" id="privacy">
                 </div>
             </form>

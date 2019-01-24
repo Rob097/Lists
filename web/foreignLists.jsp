@@ -136,18 +136,12 @@
                                                         <img src="${list.immagine}" alt="">
                                                     </a>
                                                 </div>
-                                                <!--end image-->                                            
-                                                <div class="admin-controls">
-                                                    <a href="/Lists/ShowShopList?nome=${list.nome}">
-                                                        <i class="fa fa-pencil"></i>Edit
-                                                    </a>                                                    
-                                                </div>
+                                                <!--end image--> 
                                                 <!--end admin-controls-->
                                                 <div class="description">
                                                     <p><c:out value="${list.descrizione}"/></p>
                                                 </div>
                                                 <!--end description-->
-                                                <a href="/Lists/ShowShopList?nome=${list.nome}" class="detail text-caps underline">Detail</a>
                                             </div>
                                         </div>
                                     <!--end item-->

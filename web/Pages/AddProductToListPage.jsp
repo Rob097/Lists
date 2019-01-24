@@ -145,7 +145,7 @@
                                 <div class="col-4">
                                     <c:if test="${not empty user}">                                
                                         <button class="btn btn-primary" data-toggle="modal" data-target="#perPro">Prodotti permanenti <i class="fa fa-line-chart"></i></button> 
-                                    </c:if>                                   
+                                        </c:if>                                   
                                 </div>
                                 <div class="col-4">
                                     <h1 class="opacity-60">
@@ -155,10 +155,10 @@
                                 <div class="col-4">                                    
                                     <c:if test="${not empty user}">
                                         <button class="btn btn-dark" data-toggle="modal" data-target="#delPerPro">Cancella Prodotti permanenti <i class="fa fa-line-chart"></i></button>
-                                    </c:if>                                                                      
+                                        </c:if>                                                                      
                                 </div>
                             </div>                           
-                            
+
                         </div>
                         <!--end container-->
                     </div>
@@ -183,7 +183,7 @@
                                 <div class="list-group">
                                     <a href="/Lists/Pages/AddProductToListPage.jsp?cat=all" class="list-group-item">All</a>
                                     <c:forEach items="${prodCategories}" var="prodcat" >                                    
-                                            <a href="/Lists/Pages/AddProductToListPage.jsp?cat=${prodcat}" class="list-group-item"><c:out value="${prodcat}"/></a>
+                                        <a href="/Lists/Pages/AddProductToListPage.jsp?cat=${prodcat}" class="list-group-item"><c:out value="${prodcat}"/></a>
                                     </c:forEach>
                                 </div>
                             </div>
@@ -194,9 +194,9 @@
                                         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name of product">
                                         <label style="display: none;" id="loadProducts1">Nessun prodotto trovato</label><br>
                                         <c:if test="${not empty user and user.tipo=='amministratore'}">
-                                            
-                                                <a style="display: none;" id="loadProducts2" data-toggle="modal" data-target="#CreateProductModal" class="btn btn-primary text-caps btn-rounded" >+ Crea un prodotto</a>
-                                            
+
+                                            <a style="display: none;" id="loadProducts2" data-toggle="modal" data-target="#CreateProductModal" class="btn btn-primary text-caps btn-rounded" >Crea un nuovo prodotto</a>
+
                                         </c:if>
                                         <c:if test="${not empty user and user.tipo=='standard'}">
                                             <a style="display: none;" id="loadProducts2" data-toggle="modal" data-target="#CreateAddProductModal" class="btn btn-primary text-caps btn-rounded" >Crea e aggiungi prodotto</a>
@@ -214,9 +214,10 @@
                                 <!--============ Items ==========================================================================-->
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
                                     <c:choose>
-                                        <c:when test="${not empty param.cat and param.cat ne all}">
+                                        <c:when test="${not empty param.cat and param.cat ne 'all'}">
                                             <c:forEach items="${products}" var="product">
                                                 <c:if test="${param.cat eq product.categoria_prodotto}">
+
                                                     <div class="item">
                                                         <!--end ribbon-->
                                                         <div class="wrapper">
@@ -243,24 +244,24 @@
                                                                     </c:if>
                                                                     <c:if test="${product.inList != false}">                                                       
                                                                         <a class="detail"><img src="img/correct.png" id="addIco"></a>                                                            
-                                                                    </c:if>
-                                                                </c:when>
-                                                                <c:when test="${prodottiGuest != null && not empty prodottiGuest}">
-                                                                    <c:set var="check" scope="page" value="false"/>
-                                                                    <c:forEach items="${prodottiGuest}" var="gprod">
-                                                                        <c:if test="${gprod.pid == product.pid}">
-                                                                            <c:set var="check" scope="page" value="true"/>
                                                                         </c:if>
-                                                                    </c:forEach>           
-                                                                    <c:if test="${check == true}">
+                                                                    </c:when>
+                                                                    <c:when test="${prodottiGuest != null && not empty prodottiGuest}">
+                                                                        <c:set var="check" scope="page" value="false"/>
+                                                                        <c:forEach items="${prodottiGuest}" var="gprod">
+                                                                            <c:if test="${gprod.pid == product.pid}">
+                                                                                <c:set var="check" scope="page" value="true"/>
+                                                                            </c:if>
+                                                                        </c:forEach>           
+                                                                        <c:if test="${check == true}">
                                                                         <a class="detail"><img src="img/correct.png" id="addIco"></a>
-                                                                    </c:if>
-                                                                    <c:if test="${check != true}">                                                            
+                                                                        </c:if>
+                                                                        <c:if test="${check != true}">                                                            
                                                                         <a class="detail text-caps underline" style="cursor: pointer;" id="addButton${product.pid}" onclick="addProduct(${product.pid});">Add to your list</a>
                                                                     </c:if>
                                                                 </c:when>
                                                                 <c:otherwise>
-                                                                     <a class="detail text-caps underline" style="cursor: pointer;" id="addButton${product.pid}" onclick="addProduct(${product.pid});">Add to your list</a>
+                                                                    <a class="detail text-caps underline" style="cursor: pointer;" id="addButton${product.pid}" onclick="addProduct(${product.pid});">Add to your list</a>
                                                                 </c:otherwise> 
                                                             </c:choose>                                                        
                                                             <a class="detail"><img src="img/correct.png" id="addIco${product.pid}" class="dispNone"></a>
@@ -272,33 +273,32 @@
                                         <c:when test="${param.cat == null or param.cat eq 'all'}">
                                             <c:set var="count" value="5" scope="page"/>
                                             <c:forEach items="${products}" var="product">
-                                                    <div class="item">
-                                                        <!--end ribbon-->
-                                                        <div class="wrapper">
-                                                            <div class="image">
-                                                                <h3>
-                                                                    <a class="tag category"><c:out value="${product.categoria_prodotto}"/></a>
-                                                                    <a class="title"><c:out value="${product.nome}"/></a>
-                                                                    <span class="tag">Offer</span>
-                                                                </h3>
-                                                                <a class="image-wrapper background-image" style="background-image: url('../${product.immagine}')">
-                                                                    <img src="../${product.immagine}" alt="">
-                                                                </a>
-                                                            </div>
-                                                            <!--end image-->
-                                                            <div class="price"><c:out value="${product.pid}"/></div>
-                                                            <!--end admin-controls-->
-                                                            <div class="description">
-                                                                <p><c:out value="${product.note}"/></p>
-                                                            </div>
-                                                            <!--end description-->
-                                                            <c:choose>
-                                                                <c:when test="${not empty user}">
-                                                                    <c:if test="${product.inList == false}">
-                                                                        <a class="detail text-caps underline" style="cursor: pointer;" id="addButton${product.pid}" onclick="addProduct(${product.pid});">Add to your list</a>
-                                                                    </c:if>
-                                                                    <c:if test="${product.inList != false}">
-                                                                        <a class="detail"><img src="img/correct.png" id="addIco"></a> 
+                                                <div class="item">
+                                                    <!--end ribbon-->
+                                                    <div class="wrapper">
+                                                        <div class="image">
+                                                            <h3>
+                                                                <a class="tag category"><c:out value="${product.categoria_prodotto}"/></a>
+                                                                <a class="title"><c:out value="${product.nome}"/></a>
+                                                                <span class="tag">Offer</span>
+                                                            </h3>
+                                                            <a class="image-wrapper background-image" style="background-image: url('../${product.immagine}')">
+                                                                <img src="../${product.immagine}" alt="">
+                                                            </a>
+                                                        </div>
+                                                        <!--end image-->
+                                                        <!--end admin-controls-->
+                                                        <div class="description">
+                                                            <p><c:out value="${product.note}"/></p>
+                                                        </div>
+                                                        <!--end description-->
+                                                        <c:choose>
+                                                            <c:when test="${not empty user}">
+                                                                <c:if test="${product.inList == false}">
+                                                                    <a class="detail text-caps underline" style="cursor: pointer;" id="addButton${product.pid}" onclick="addProduct(${product.pid});">Add to your list</a>
+                                                                </c:if>
+                                                                <c:if test="${product.inList != false}">
+                                                                    <a class="detail"><img src="img/correct.png" id="addIco"></a> 
                                                                     </c:if>
                                                                 </c:when>
                                                                 <c:when test="${prodottiGuest != null && not empty prodottiGuest}">
@@ -309,20 +309,20 @@
                                                                         </c:if>
                                                                     </c:forEach> 
                                                                     <c:if test="${check == true}">
-                                                                        <a class="detail"><img src="img/correct.png" id="addIco"></a>
+                                                                    <a class="detail"><img src="img/correct.png" id="addIco"></a>
                                                                     </c:if>
                                                                     <c:if test="${check != true}">                                                            
-                                                                        <a class="detail text-caps underline" style="cursor: pointer;" id="addButton${product.pid}" onclick="addProduct(${product.pid});">Add to your list</a>
-                                                                    </c:if>
-                                                                </c:when>
-                                                                <c:otherwise>
                                                                     <a class="detail text-caps underline" style="cursor: pointer;" id="addButton${product.pid}" onclick="addProduct(${product.pid});">Add to your list</a>
-                                                                </c:otherwise> 
-                                                            </c:choose>
-                                                           <a class="detail"><img src="img/correct.png" id="addIco${product.pid}" class="dispNone"></a>
-                                                        </div>
+                                                                </c:if>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <a class="detail text-caps underline" style="cursor: pointer;" id="addButton${product.pid}" onclick="addProduct(${product.pid});">Add to your list</a>
+                                                            </c:otherwise> 
+                                                        </c:choose>
+                                                        <a class="detail"><img src="img/correct.png" id="addIco${product.pid}" class="dispNone"></a>
                                                     </div>
-                                                
+                                                </div>
+
                                                 <c:set var="count" value="${count + 1}" scope="page"/>
                                             </c:forEach>
                                         </c:when>
@@ -419,7 +419,7 @@
                                 <label for="Immagine" class="col-form-label required">Immagine</label>
                                 <input type="file" name="ImmagineProdotto" required>
                             </div>
-                            
+
                             <!--end form-group-->
                             <div class="d-flex justify-content-between align-items-baseline">
                                 <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea Prodotto</button>
@@ -433,8 +433,8 @@
                     </div>
                 </div>
             </div>
-          </div>
-                            
+        </div>
+
         <c:if test="${not empty user}">
             <!--modal per prodotti permanenti-->
             <div class="modal fade" id="perPro" tabindex="-1" role="dialog" aria-labelledby="CreateAddProductModal" aria-hidden="true" enctype="multipart/form-data">
@@ -467,11 +467,11 @@
                                     <div class="col-12">
                                         <div class="input-group-append">
                                             <span class="input-group-text"><strong>da comprare ogni</strong></span>
-                                                <input class="form-control" name="period" type="number" value="${lista.promemoria}" min="1" max="60" id="example-number-input">                                
+                                            <input class="form-control" name="period" type="number" value="${lista.promemoria}" min="1" max="60" id="example-number-input">                                
                                             <span class="input-group-text"><strong>giorni</strong></span>
                                         </div> 
                                     </div>
-                                  </div>  
+                                </div>  
                                 <div class="form-group">                                    
                                     <label for="Date" class="col-form-label required">Data partenza</label>
                                     <input type="date" class="" name="initday" >                            
@@ -513,38 +513,107 @@
                                         </c:forEach>
                                     </select>
                                 </div>                              
-                               
+
                                 <div class="d-flex justify-content-between align-items-baseline">
                                     <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-dark">Cancella prodotti periodici</button>                                
                                 </div>
                             </form>
                             <hr>
-                            <i>Cancella prodotti che si insericono automaticamente nella lista ogni x giorni</i>
+                            <i>Cancella prodotti che si insericono automaticamente nella lista ogni ${lista.promemoria} giorni</i>
                         </div> 
                     </div>
                 </div>
             </div>
         </c:if>
-        
-        <script>
-                                        function addProduct(id) {
-                                            //var d1 = new Date(prompt('Comprare entro: (yyyy-mm-dd)'));
-                                            $.ajax({
-                                                type: "GET",
-                                                url: "/Lists/AddProductToList?prodotto="+id,
-                                                async: false,
-                                                success: function () {
-                                                    $('#addButton' + id).addClass('dispNone');
-                                                    $('#addIco' + id).removeClass('dispNone');
-                                                    //$('#backToList').removeClass('dispNone');
-                                                },
-                                                error: function () {
-                                                    alert("Errore");
-                                                }
-                                            });
-                                        }
-        </script>
+        <!--Create Product Modal-->
+        <div class="modal fade" id="CreateProductModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1 style="text-align: center;">Crea un nuovo prodotto</h1>
+                            </div>
+                            <!--end container-->
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form per il login -->
+                        <form class="form clearfix" id="CreateShopListform" action="/Lists/AddNewProductToDataBase"  method="post" role="form" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="Nome" class="col-form-label">Nome del prodotto</label>
+                                <input type="text" name="NomeProdotto" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="Descrizione" class="col-form-label">Note prodotto</label>
+                                <input type="text" name="NoteProdotto" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="Categoria" class="col-form-label">Categoria</label>
+                                <select name="CategoriaProdotto" id="Categoria" tabindex="1" size="5" >
+                                    <c:forEach items="${catProd}" var="prodcat">
+                                        <option value="${prodcat.nome}"><c:out value="${prodcat.nome}"/></option> 
+                                    </c:forEach>
+                                </select>
 
+                            </div>
+                            <div class="form-group">
+                                <label for="Immagine" class="col-form-label required">Immagine</label>
+                                <input type="file" name="ImmagineProdotto" required>
+                            </div>
+
+                            <!--end form-group-->
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea Prodotto</button>
+                                <input type="hidden" name="showProduct" value="true">
+                            </div>
+                        </form>
+                        <hr>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+        function addProduct(id) {
+            //var d1 = new Date(prompt('Comprare entro: (yyyy-mm-dd)'));
+            $.ajax({
+                type: "GET",
+                url: "/Lists/AddProductToList?prodotto=" + id,
+                async: false,
+                success: function () {
+                    $('#addButton' + id).addClass('dispNone');
+                    $('#addIco' + id).removeClass('dispNone');
+                    //$('#backToList').removeClass('dispNone');
+                },
+                error: function () {
+                    alert("Errore");
+                }
+            });
+        }
+        </script>
+        <script>
+            $(document).ready(function () {
+                items = document.getElementsByClassName("item");
+                var check1 = true;
+                for (i = 0; i < items.length; i++) {
+                    if (items[i].style.display !== "none") {
+                        check1 = false;
+                    }
+                }
+                if (check1 === true) {
+                    document.getElementById("loadProducts1").style.display = "";
+                    document.getElementById("loadProducts2").style.display = "";
+                }
+            });
+        </script>        
         <script>
             function myFunction() {
                 var input, filter, items, li, a, i, check = true;
@@ -567,11 +636,11 @@
                         alert("Errore");
                     }
                 });
-                for (i = 0; i<items.length;i++) {
+                for (i = 0; i < items.length; i++) {
                     console.log(items[i]);
                     console.log("inside cicle ");
                     title = items[i].getElementsByClassName("title");
-                    if(title[0].innerHTML.toUpperCase().indexOf(filter)>-1){
+                    if (title[0].innerHTML.toUpperCase().indexOf(filter) > -1) {
 
                         items = document.getElementsByClassName("item");
                         title = items[i].getElementsByClassName("title");
@@ -579,13 +648,14 @@
                         document.getElementById("loadProducts1").style.display = "none";
                         document.getElementById("loadProducts2").style.display = "none";
 
-                    }else{
+                    } else {
                         items[i].style.display = "none";
 
                     }
-                    if(items[i].style.display === "") check = false;
+                    if (items[i].style.display === "")
+                        check = false;
                 }
-                if(check === true){
+                if (check === true) {
                     document.getElementById("loadProducts1").style.display = "";
                     document.getElementById("loadProducts2").style.display = "";
                 }
@@ -605,7 +675,7 @@
                         alert("Errore navbarTemplate");
                     }
                 });
-                
+
                 //Notifiche
                 $.ajax({
                     type: "GET",

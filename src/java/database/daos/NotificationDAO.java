@@ -26,4 +26,5 @@ public interface NotificationDAO {
     public void deleteALLNotification(String email) throws DAOException;
     public boolean checkReminderMail(String email, String lista) throws DAOException;
     public boolean checkProximityMail(String email, String lista) throws DAOException;
+    public boolean checkNotification(String email, String type, String lista) throws DAOException;
 }

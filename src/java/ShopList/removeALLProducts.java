@@ -82,7 +82,10 @@ public class removeALLProducts extends HttpServlet {
                 }            
             }
         }else{
+            System.out.println("Else");
             if(s.getAttribute("prodottiGuest") != null){
+                s.setAttribute("listProducts", null);
+                System.out.println("IF");
                 s.setAttribute("prodottiGuest", null);
             }
         }
