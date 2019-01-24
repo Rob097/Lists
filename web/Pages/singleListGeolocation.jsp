@@ -109,29 +109,21 @@
                             <!--end col-md-3-->
                             <div class="col-md-12">
                                 <div id="map" style="width: 100%; height: 400px; background: grey"></div>
+                                <br>
+                                <input type="range" name="points" min="0" max="5000" id="raggio" style="align-content: center;">
+                                
+                                
                                 <div class="container">
+                                    
+                                    <div class="items list compact grid-xl-3-items grid-lg-3-items grid-md-2-items" id="TuttiInegozzi">
+                                
+                                <!--end item-->
+
+                            </div>
                                     
                                     <div id = "contenitore"></div>
                                     
-                                    
-                                       
-                                    
-                                    
-                                    <table class="table">
-                                      <thead class="thead-dark">
-                                        <tr>
-                                          <th>Nome</th>
-                                          <th>Categoria</th>
-                                          <th>Distanza</th>
-                                          <th>orari</th>
-                                          <th>Indirizzo</th>
-                                          <th>nome lista</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody id="tabella">
-                                        
-                                      </tbody>
-                                    </table>
+
                                                   
                                   </div>
                                 <!--============ Section Title===================================================================-->
@@ -149,7 +141,21 @@
                 <!--end block-->
             </section>
             <!--end content-->
-           
+            <!--*********************************************************************************************************-->
+            <!--************ FOOTER *************************************************************************************-->
+            <!--*********************************************************************************************************-->
+            <footer class="footer">
+                <div class="wrapper">                   
+                    <div class="background">
+                        <div class="background-image original-size">
+                            <img src="img/footer-background-icons.jpg" alt="">
+                        </div>
+                        <!--end background-image-->
+                    </div>
+                    <!--end background-->
+                </div>
+            </footer>
+            <!--end footer-->
         </div>
         <!--end page-->
 
@@ -285,7 +291,7 @@
         <!--MAPPA=====================================================================================================-->
                 
         <script  type="text/javascript" charset="UTF-8" >
-
+            var raggio = 5000;
             var keyWord = "${lista.categoria}";
             //----------------------------------------------------------------------
 
@@ -340,7 +346,7 @@
                 console.log("longitude: " + yourLong);
                 var nomeLista, nomeCategoria;
                 map.setCenter({lat: yourLat, lng: yourLong});
-                map.setZoom(12);
+                map.setZoom(14);
                 addCircleToMap(yourLat, yourLong);
                 var parisMarker = new H.map.Marker({lat: yourLat, lng: yourLong});
                 map.addObject(parisMarker);
@@ -352,49 +358,7 @@
                 var search = new H.places.Search(platform.getPlacesService()), searchResult, error;
                 
                 
-                var z = 0;
-                function onResult(data) {
-                    z++; console.log("sto guardanado z: " + z);
-                    console.log("guardo il nome della lista: " + nomeLista);
-                    
-                    searchResult = data;
-                    console.log(searchResult);
-                    console.log(searchResult.results.items[0].position);
-                    
-                    
-                    var distanzaMassima = 1000;
-                    for (var i = 0, max = 5; i < max; i++) {
-                        var l = searchResult.results.items[i].position[0];
-                        var la = searchResult.results.items[i].position[1];
-                        var icon = new H.map.Icon(searchResult.results.items[i].icon);
-
-                        // Create a marker using the previously instantiated icon:
-                        var marker = new H.map.Marker({lat: l, lng: la}, {icon: icon});
-                        var category = searchResult.results.items[i].category.title;
-                        var distance = searchResult.results.items[i].distance;
-                        var openingHours = searchResult.results.items[i].openingHours;
-                        var vicinity = searchResult.results.items[i].vicinity;
-
-                        var orari = "";
-                        if (openingHours) {
-                            orari = openingHours.text;
-                            console.log(openingHours.text);
-                        } else {
-                            orari = "non ci sono gli orari";
-                            console.log("non ci sono gli orari");
-                        }
-                        console.log(openingHours);
-                        if(distance<distanzaMassima){
-                            document.getElementById("tabella").innerHTML += "<tr><td>" + searchResult.results.items[i].title + "</td>" + "<td>" + category + "</td>" + "<td>" + distance + "</td>" + "<td>" + orari + "</td>" + "<td>" + vicinity + "</td>"+"</tr>";
-                        }
-                        console.log(searchResult.results.items[i].title);
-                        
-                        console.log("???????????????????????????????????????????? " + nomeLista);
-
-                        // Add the marker to the map:
-                        map.addObject(marker);
-                    }
-                }
+                
 
                 //Define a callback function to handle errors:
                 function onError(data) {
@@ -520,11 +484,11 @@
                                         "</div>"+
                                         "</div>";
                                 
-                   var msg = "<div class=\"shadow-lg p-3 mb-5 bg-white rounded\">Hei sei nelle vicinanze di una "+nomeCategoria+", dai un occhiata alla lista "+nomeLista+" e completa la spesa</div>";
-                   document.getElementById("contenitore").innerHTML += msg;
-                   document.getElementById("contenitore").innerHTML += tableHeader;
+                   var msg = "<br><div><h1 class=\"center\">Hei sei nelle vicinanze di una <span style = \"color:red;\">"+nomeCategoria+"</span>, dai un occhiata alla lista <span style = \"color:red;\">"+nomeLista+"</span> e completa la spesa</h1></div><br>";
+                   document.getElementById("TuttiInegozzi").innerHTML+=msg;
+                   //document.getElementById("contenitore").innerHTML += tableHeader;
                    
-                    var distanzaMassima = 1000;
+                    var distanzaMassima = raggio;
                     for (var i = 0, max = 5; i < max; i++) {
                         var l = searchResult.results.items[i].position[0];
                         var la = searchResult.results.items[i].position[1];
@@ -545,11 +509,41 @@
                             orari = "non ci sono gli orari";
                             console.log("non ci sono gli orari");
                         }
-                        if(distance <= distanzaMassima){
-                            console.log(openingHours);
+                        console.log(openingHours);
+                        
+                        if(distance<distanzaMassima){
+                            //document.getElementById(nomeLista).innerHTML += "<tr><td>" + searchResult.results.items[i].title + "</td>" + "<td>" + category + "</td>" + "<td>" + distance + "</td>" + "<td>" + orari + "</td>" + "<td>" + vicinity + "</td>"+ "<td>" + nomeLista + "</td>"+"</tr>";
+                            
+                
+                document.getElementById("TuttiInegozzi").innerHTML+="<div class=\"item\">"+
 
-                            document.getElementById(nomeLista).innerHTML += "<tr><td>" + searchResult.results.items[i].title + "</td>" + "<td>" + category + "</td>" + "<td>" + distance + "</td>" + "<td>" + orari + "</td>" + "<td>" + vicinity + "</td>"+ "<td>" + nomeLista + "</td>"+"</tr>";
-
+                                    "<div class=\"wrapper\">"+
+                                        "<div class=\"image\">"+
+                                            "<h3>"+
+                                                "<a href=\"#\" class=\"tag category\">" + category + "</a>"+
+                                                "<a href=\"single-listing-1.html\" class=\"title\">"+searchResult.results.items[i].title+"</a>"+
+        
+                                            "</h3>"+
+                                            "<a href=\"single-listing-1.html\" class=\"image-wrapper background-image\">"+
+                                            "<img src=\"assets/img/image-01.jpg\">"+
+                                            "</a>"+
+                                        "</div>"+
+                                        "<h4 class=\"location\">"+
+                                            "<a href=\"#\">" + vicinity + "</a>"+
+                                        "</h4>"+
+                                       
+                                        "<div class=\"meta\">"+
+                                            "<figure>"+
+                                                "<i class=\"fa fa-calendar-o\"></i> orario: " + orari +
+                                            "</figure>"+
+                                           
+                                        "</div>"+
+                                        
+                                       
+                                        
+                                    "</div>"+
+                                "</div>";
+                            
                             console.log(searchResult.results.items[i].title);
 
                             console.log("???????????????????????????????????????????? " + nomeLista);
@@ -557,6 +551,7 @@
                             // Add the marker to the map:
                             map.addObject(marker);
                         }
+                        
                     }
                     document.getElementById("contenitore").innerHTML +=tableClose;
                    
@@ -577,7 +572,7 @@
                         // The central point of the circle
                                 {lat: lat, lng: lng},
                                 // The radius of the circle in meters
-                                4000,
+                                raggio,
                                 {
                                     style: {
                                         strokeColor: 'rgba(55, 85, 170, 0.6)', // Color of the perimeter
