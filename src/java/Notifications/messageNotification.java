@@ -39,24 +39,25 @@ public class messageNotification extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        System.out.println("MessageNotification");
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
-        User sender;
-        ShopList listname;
+        String sender;
+        String listname;
         NotificationDAO notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
         ArrayList <User> users = new ArrayList<>();
 
-        sender = (User) request.getSession().getAttribute("user");
-        listname = (ShopList) request.getSession().getAttribute("shoplist");
+        sender = (String) request.getParameter("user");
+        listname = (String) request.getParameter("lista");
+        System.out.println("sender: " + sender + "; lista: " + listname);
         try {
-            users = notificationdao.getUsersWithWhoTheListIsShared(listname.getNome());
+            users = notificationdao.getUsersWithWhoTheListIsShared(listname);
             if(!users.isEmpty() && users != null){
                 for(User u : users){
-                    if(!u.getEmail().equals(sender.getEmail())){
-                        notificationdao.addNotification(u.getEmail(), "new_message", listname.getNome());
+                    if(!u.getEmail().equals(sender)){
+                        notificationdao.addNotification(u.getEmail(), "new_message", listname);
                     }
                 }
             }

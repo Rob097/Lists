@@ -141,7 +141,7 @@
                                                                     <a href="#" class="tag category"><c:out value="${list.categoria}"/></a>
                                                                     <a href="/Lists/ShowShopList?nome=${list.nome}" class="title"><c:out value="${list.nome}"/></a>
                                                                 </h3>
-                                                                <a href="single-listing-1.html" class="image-wrapper background-image">
+                                                                <a href="/Lists/ShowShopList?nome=${list.nome}" class="image-wrapper background-image">
                                                                     <img src="${list.immagine}" alt="">
                                                                 </a>
                                                             </div>

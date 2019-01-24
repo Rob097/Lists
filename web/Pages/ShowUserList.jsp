@@ -155,13 +155,19 @@
                 height: 30em;
                 width: 100%;
             }
+            .hero-wrapper{
+                background-image: linear-gradient(rgba(255,255,255,.4), rgba(255,255,255,.9)),url("/Lists/${lista.immagine}");
+                background-position-y: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+            }
             /* Optional: Makes the sample page fill the window. */
         </style>
     </head>
     <body>        
         <div class="page home-page">
             <header class="hero">
-                <div class="hero-wrapper" style='background-image: linear-gradient(rgba(255,255,255,.4), rgba(255,255,255,.9)),url("/Lists/${lista.immagine}"); background-position-y: center;'>
+                <div class="hero-wrapper">
                     <div id="navbar">
                         <!-- Qui viene inclusa la navbar -->
                     </div>
@@ -224,44 +230,89 @@
                                     <c:choose>
                                         <c:when test="${(ruolo eq 'creator')}">
                                             <div class="row">
-                                                <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6">
-                                                    <a href="AddProductToListPage.jsp" style="font-size: 2.5rem; width: -webkit-fill-available;"><i class="fas fa-plus"> <br>Aggiungi prodotto</i></a> 
+                                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6">
+                                                    <a href="AddProductToListPage.jsp" style="cursor: pointer; width: 100%;"><i class="fas fa-plus"> <br>Aggiungi prodotto</i></a> 
                                                 </div>
-                                                <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6">
-                                                    <a href="ThirdChatroom.jsp" style="font-size: 2.5rem; width: -webkit-fill-available;"><i class="fas fa-users"><br>Chat</i></a> 
+                                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6">
+                                                    <a href="ThirdChatroom.jsp" style="cursor: pointer; width: 100%;"><i class="fas fa-users"><br>Chat</i></a> 
                                                 </div>
-                                                <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6">
-                                                    <a style="cursor: pointer; font-size: 2.5rem; width: -webkit-fill-available;" data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Condividi</i></a>
+                                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                                    <a href="singleListGeolocation.jsp" style="cursor: pointer; width: 100%;"><i class="fas fa-map-marked-alt"><br>Map</i></a> 
                                                 </div>
-                                                <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6">
-                                                    <a style="cursor: pointer; font-size: 2.5rem; width: -webkit-fill-available;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Elimina</i></a>
-                                                </div>                                                
-                                                <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6">
-                                                    <a href="singleListGeolocation.jsp" style="font-size: 2.5rem; width: -webkit-fill-available;"><i class="fas fa-map-marked-alt"><br>Map</i></a> 
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                                    <a style="cursor: pointer; width: 100%;" data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Condividi</i></a>
+                                                </div>
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                                    <a style="cursor: pointer; width: 100%;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Elimina</i></a>
                                                 </div>
                                             </div>
                                         </c:when>
                                         <c:when test="${(ruolo eq 'Write')}">
-                                            <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Aggiungi prodotto</i></a> 
-                                            <a href="ThirdChatroom.jsp"><i class="fas fa-users"><br>Chat</i></a> 
-                                            <a style="cursor: pointer;" data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Condividi</i></a>
-                                            <a style="cursor: pointer;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Elimina</i></a>
-                                             <a href="singleListGeolocation.jsp" style="font-size: 2.5rem; width: -webkit-fill-available;"><i class="fas fa-map-marked-alt"><br>Map</i></a> 
+                                            <div class="row">
+                                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6">
+                                                    <a href="AddProductToListPage.jsp" style="cursor: pointer; width: 100%;"><i class="fas fa-plus"> <br>Aggiungi prodotto</i></a> 
+                                                </div>
+                                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6">
+                                                    <a href="ThirdChatroom.jsp" style="cursor: pointer; width: 100%;"><i class="fas fa-users"><br>Chat</i></a> 
+                                                </div>
+                                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                                    <a href="singleListGeolocation.jsp" style="cursor: pointer; width: 100%;"><i class="fas fa-map-marked-alt"><br>Map</i></a> 
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                                    <a style="cursor: pointer; width: 100%;"data-toggle="modal" data-target="#ShareListModal"><i class="fa fa-globe"><br>Condividi</i></a>
+                                                </div>
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                                    <a style="cursor: pointer; width: 100%;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Elimina</i></a>
+                                                </div>
+                                            </div>
                                         </c:when>
                                         <c:when test="${(ruolo == 'Read')}">
-                                        <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Aggiungi prodotto</i></a> 
-                                        <a href="ThirdChatroom.jsp"><i class="fas fa-users"><br>Chat</i></a>
-                                        <a data-toggle="tooltip" title="Non hai i permessi perr condividere la lista. Contatta ${user.nominativo}" class="disabled"><i class="fa fa-globe"><br>Condividi</i></a>
-                                        <a data-toggle="tooltip" title="Non hai i permessi perr cancellare la lista. Contatta ${user.nominativo}" class="disabled"><i class="fa fa-trash"><br>Elimina</i></a>
-                                         <a href="singleListGeolocation.jsp" style="font-size: 2.5rem; width: -webkit-fill-available;"><i class="fas fa-map-marked-alt"><br>Map</i></a> 
+                                            <div class="row">
+                                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6">
+                                                    <a style="cursor: pointer; width: 100%;" href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Aggiungi prodotto</i></a> 
+                                                </div>
+                                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6">
+                                                    <a style="cursor: pointer; width: 100%;" href="ThirdChatroom.jsp"><i class="fas fa-users"><br>Chat</i></a>
+                                                </div>
+                                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                                    <a href="singleListGeolocation.jsp" style="cursor: pointer; width: 100%;"><i class="fas fa-map-marked-alt"><br>Map</i></a> 
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                                    <a style="cursor: not-allowed; width: 100%;" data-toggle="tooltip" title="Non hai i permessi perr condividere la lista. Contatta ${user.nominativo}" class="disabled"><i class="fa fa-globe"><br>Condividi</i></a>
+                                                </div>
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                                    <a style="cursor: not-allowed; width: 100%;" data-toggle="tooltip" title="Non hai i permessi perr cancellare la lista. Contatta ${user.nominativo}" class="disabled"><i class="fa fa-trash"><br>Elimina</i></a>
+                                                </div>
+                                            </div>
                                         </c:when>
                                     </c:choose>
                                 </c:when>
                                 <c:otherwise>
-                                    <a href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Aggiungi prodotto</i></a> 
-                                    <a data-toggle="tooltip" title="Devi registrarti per usare questa funzione" class="disabled"><i class="fas fa-users"><br>Chat</i></a> 
-                                    <a data-toggle="tooltip" title="Devi registrarti per usare questa funzione" class="disabled"><i class="fa fa-globe"><br>Condividi</i></a>
-                                    <a style="cursor: pointer;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Elimina</i></a> 
+                                    <div class="row">
+                                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6">
+                                            <a style="cursor: pointer; width: 100%;" href="AddProductToListPage.jsp"><i class="fas fa-plus"> <br>Aggiungi prodotto</i></a> 
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6">
+                                            <a style="cursor: not-allowed; width: 100%;" data-toggle="tooltip" title="Devi registrarti per usare questa funzione" class="disabled"><i class="fas fa-users"><br>Chat</i></a> 
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                            <a href="#" style="cursor: not-allowed; width: 100%;" data-toggle="tooltip" title="Devi registrarti per usare questa funzione"><i class="fas fa-map-marked-alt"><br>Map</i></a> 
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <a style="cursor: not-allowed; width: 100%;" data-toggle="tooltip" title="Devi registrarti per usare questa funzione" class="disabled"><i class="fa fa-globe"><br>Condividi</i></a>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <a style="cursor: pointer; width: 100%;" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"><br>Elimina</i></a> 
+                                        </div>
+                                    </div>
                                 </c:otherwise>
                             </c:choose>                                    
                         </div>                    

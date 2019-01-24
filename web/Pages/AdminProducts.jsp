@@ -19,21 +19,18 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="author" content="ThemeStarz">
+        
+        <!-- CSS personalizzati -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
-        <link rel="stylesheet" href="css/navbar.css"> 
-        <link rel="stylesheet" href="css/datatables.css" type="text/css"> 
-        <link rel="icon" href="img/favicon.png" sizes="16x16" type="image/png">
-        <script src="js/jquery-3.3.1.min.js"></script>
-        <script type="text/javascript" src="js/popper.min.js"></script>
-        <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>        
         <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css">
         <link rel="stylesheet" href="fonts/font-awesome.css" type="text/css">
         <link rel="stylesheet" href="css/selectize.css" type="text/css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/user.css">
+        <link rel="stylesheet" href="css/navbar.css">
+        <link rel="stylesheet" href="css/datepicker.css">
         <link rel="stylesheet" href="css/notificationCss.css" type="text/css"> 
-
+        <link rel="icon" href="img/favicon.png" sizes="16x16" type="image/png">
         <title>Adminpage Products</title>
 
         <style>
@@ -51,14 +48,12 @@
             }
 
             .items:not(.selectize-input).list.compact .item .image .background-image {
-                width: 10rem;
-                border-radius: 100%;
+                border-radius: .9rem;
+                width: 20rem;
             }
             .items:not(.selectize-input).list.compact .item {
                 min-height: 0rem;
             }
-        </style>
-        <style>
             .avatar {
                 vertical-align: middle;
                 width: 140px;
@@ -76,7 +71,7 @@
                         <!-- Qui viene inclusa la navbar -->
                     </div>
                     <!--============ Secondary Navigation ===============================================================-->
-   
+
                     <div class="page-title">
                         <div class="container text-center">
                             <h1>Tutti i prodotti</h1>
@@ -113,12 +108,22 @@
                             <!--end col-md-3-->
                             <div class="col-md-9">
                                 <!--============ Section Title===================================================================-->
-                                  <div class="section-title clearfix">                                    
-                                        <div class="float-left float-xs-none" style="width: 89%;">
-                                            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name of product">
-                                            <label style="display: none;" id="loadProducts1">Nessuna categoria corrispondente</label></br>
+                                <div class="section-title clearfix">                                    
+                                    <div class="float-left float-xs-none" style="width: 100%;">
+                                        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name of product">
+                                        <label style="display: none;" id="loadProducts1">Nessuna categoria corrispondente</label></br>
                                         <a style="display: none;" id="loadProducts2" data-toggle="modal" data-target="#CreateProductModal" class="btn btn-primary text-caps btn-rounded" >+ Crea un prodotto</a>
-                                        </div>                                                                       
+                                    </div> 
+                                </div>
+                                <div class="section-title clearfix">
+                                    <div class="float-left float-xs-none">
+                                        <label class="mr-3 align-text-bottom">Ordina per: </label>
+                                        <select name="sorting" id="sorting" class="small width-200px" data-placeholder="Default">
+                                            <option id="idBnt" value="0">Default</option>
+                                            <option id="alphBnt" value="1">Nome</option>
+                                            <option id="catBnt" value="2">Categoria</option>
+                                        </select>
+                                    </div>
                                     <div class="float-right d-xs-none thumbnail-toggle">
                                         <a class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
                                             <i class="fa fa-th"></i>
@@ -129,32 +134,33 @@
                                     </div>
                                 </div>
                                 <!--============ Items ==========================================================================-->
-                                <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
+                                <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items" id="prodottiCont">
 
                                     <c:forEach items="${products}" var="product">
-                                    <div class="item">
-                                        <div class="wrapper">
-                                            <div class="image">
-                                                <h3>
-                                                    <a class="tag category">${product.categoria_prodotto}</a>
-                                                    <a class="title">${product.nome}</a>                           
-                                                </h3>
-                                                <a >
-                                                    <img src="../${product.immagine}" alt="" class="avatar">
-                                                </a>
-                                            </div>
-                                            <h4 class="description">
-                                                <a >${product.note}</a>
-                                            </h4>
+                                        <div class="item">
+                                            <div class="wrapper">
+                                                <div class="image">
+                                                    <h3>
+                                                        <a class="tag category">${product.categoria_prodotto}</a>
+                                                        <a class="title nomeProdotto">${product.nome}</a>
+                                                        <input type="hidden" class="idProdotto" value="${product.pid}">
+                                                    </h3>
+                                                    <a class="image-wrapper background-image">
+                                                        <img src="../${product.immagine}" alt="">     
+                                                    </a>
+                                                </div>
+                                                    <h4 class="description" style="display: block; color: black; position: fixed;">
+                                                    <a >${product.note}</a>
+                                                </h4>
 
-                                            <div class="admin-controls">                                               
-                                                <a href="<%=request.getContextPath()%>/DeleteProduct?PID=<c:out value="${product.pid}"/>" class="ad-remove">
-                                                    <i class="fa fa-trash"></i>Cancella
-                                                </a>
-                                            </div>
+                                                <div class="admin-controls">                                               
+                                                    <a href="<%=request.getContextPath()%>/DeleteProduct?PID=<c:out value="${product.pid}"/>" class="ad-remove">
+                                                        <i class="fa fa-trash"></i>Cancella
+                                                    </a>
+                                                </div>
 
+                                            </div>
                                         </div>
-                                    </div>
                                     </c:forEach>
 
                                 </div>
@@ -165,16 +171,12 @@
                         <!--end items-->
                     </div>
                     <!--end col-md-9-->
-                    </div>
-                    <!--end row-->
-                    </div>
-                    <!--end container-->
                 </section>
                 <!--end block-->
             </section>
             <!--end content-->
         </div>
-        
+
         <!--Create Product Modal-->
         <div class="modal fade" id="CreateProductModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -216,7 +218,7 @@
                                 <label for="Immagine" class="col-form-label required">Immagine</label>
                                 <input type="file" name="ImmagineProdotto" required>
                             </div>
-                            
+
                             <!--end form-group-->
                             <div class="d-flex justify-content-between align-items-baseline">
                                 <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea Prodotto</button>
@@ -230,142 +232,86 @@
                     </div>
                 </div>
             </div>
-          </div>
+        </div>
 
 
         <script src="js/jquery-3.3.1.min.js"></script>
-        <script type="text/javascript" src="assets/js/popper.min.js"></script>
-        <script type="text/javascript" src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/popper.min.js"></script>
+        <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
+        <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
         <script src="js/selectize.min.js"></script>
         <script src="js/masonry.pkgd.min.js"></script>
         <script src="js/icheck.min.js"></script>
         <script src="js/jquery.validate.min.js"></script>
         <script src="js/custom.js"></script>
-            <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>-->
-            <script>
-                function myFunction() {
-                    var input, filter, ul, li, a, i;zz
-                    input = document.getElementById("myInput");
-                    filter = input.value.toUpperCase();
-                    ul = document.getElementById("myUL");
-                    li = ul.getElementsByTagName("li");
-                    for (i = 0; i < li.length; i++) {
-                        a = li[i].getElementsByTagName("a")[0];
-                        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                            li[i].style.display = "";
-                        } else {
-                            li[i].style.display = "none";
-                        }
-                    }
-                }
-            </script>
-            <script>
-                function myFunction() {
-                    var input, filter, items, li, a, i, check = true;
-                    input = document.getElementById("myInput");
-                    filter = input.value.toUpperCase();
-                    items = document.getElementsByClassName("item");
-                    console.log(items);
-                    
-                    var title = "";
-                    var i;
-                    $.ajax({
-                                type: "POST",
-                                url: "/Lists/Pages/nameContain.jsp?s="+filter,
-                                
-                                cache: false,
-                                success: function (response) {
-                                    $("#content-wrapper").html($("#content-wrapper").html() + response);
-                                },
-                                error: function () {
-                                   alert("Errore");
-                               }
-                            });
-                    for (i = 0; i<items.length;i++) {
-                        console.log(items[i]);
-                        console.log("inside cicle ");
-                        title = items[i].getElementsByClassName("title");
-                        if(title[0].innerHTML.toUpperCase().indexOf(filter)>-1){
-                            
-                            items = document.getElementsByClassName("item");
-                            title = items[i].getElementsByClassName("title");
-                            items[i].style.display = "";
-                            document.getElementById("loadProducts1").style.display = "none";
-                            document.getElementById("loadProducts2").style.display = "none";
-                            
-                        }else{
-                            items[i].style.display = "none";
-                            
-                        }
-                        if(items[i].style.display === "") check = false;
-                    }
-                    if(check === true){
-                        document.getElementById("loadProducts1").style.display = "";
-                        document.getElementById("loadProducts2").style.display = "";
-                    }
-                }
-            </script>
+        <script src="js/datepicker.js"></script>
+        <script type="text/javascript">
+            var divs = $(".item");
+            var sort = document.getElementById("sorting");
             
-            <script src="../js/vari.js"></script>
-            <script src="../js/nav.js"></script>
+            sort.onchange = function(){
+                if(sort.value === "1"){
+                    var alphabeticallyOrderedDivs = divs.sort(function (a, b) {
+                        return $(a).find($(".nomeProdotto")).text() === $(b).find($(".nomeProdotto")).text() ? 0 : $(a).find($(".nomeProdotto")).text() < $(b).find($(".nomeProdotto")).text() ? -1 : 1;
+
+                    });
+                    $("#prodottiCont").html(alphabeticallyOrderedDivs);            
+                }else
             
-            <script>
-                $(document).ready(function () {
-                    /*Footer
-                    $.ajax({
-                        type: "GET",
-                        url: "/Lists/Pages/template/footerTemplate.jsp",
-                        cache: false,
-                        success: function (response) {
-                            $("footer").html(response);
-                        },
-                        error: function () {
-                            alert("Errore footerTemplate");
-                        }
-                    });*/
+                if(sort.value === "2"){
+                    var alphabeticallyOrderedDivs = divs.sort(function (a, b) {
+                        return $(a).find($(".category")).text() === $(b).find($(".category")).text() ? 0 : $(a).find($(".category")).text() < $(b).find($(".category")).text() ? -1 : 1;
 
-                    //Navbar
-                    $.ajax({
-                        type: "GET",
-                        url: "/Lists/Pages/template/navbarTemplate.jsp",
-                        cache: false,
-                        success: function (response) {
-                            $("#navbar").html(response);
-                        },
-                        error: function () {
-                            alert("Errore navbarTemplate");
-                        }
                     });
-                    //Side-Navbar
-                    $.ajax({
-                        type: "GET",
-                        url: "/Lists/Pages/template/sideNavbar.jsp",
-                        cache: false,
-                        success: function (response) {
-                            $("#sideNavbar").html(response);
-                        },
-                        error: function () {
-                            alert("Errore sideNavbar Template");
-                        }
-                    });
-                    
-                    //Notifiche
-                    $.ajax({
-                        type: "GET",
-                        url: "/Lists/Pages/template/notifiche.jsp",
-                        cache: false,
-                        success: function (response) {
-                            $("#notificationsLI").html(response);
-                        },
-                        error: function () {
-                            alert("Errore Notifiche template");
-                        }
-                    });
-
+                    $("#prodottiCont").html(alphabeticallyOrderedDivs);
+                }else if(sort.value === "0"){
+                    var alphabeticallyOrderedDivs = divs.sort((a, b) => $(a).find($(".idProdotto")).val() - $(b).find($(".idProdotto")).val());
+                    $("#prodottiCont").html(alphabeticallyOrderedDivs);
+                };
+            };
+        </script>
+        <script>
+            $(document).ready(function () {
+                //Navbar
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/navbarTemplate.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#navbar").html(response);
+                    },
+                    error: function () {
+                        alert("Errore navbarTemplate");
+                    }
                 });
-            </script>
+                //Side-Navbar
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/sideNavbar.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#sideNavbar").html(response);
+                    },
+                    error: function () {
+                        alert("Errore sideNavbar Template");
+                    }
+                });
 
+                //Notifiche
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/notifiche.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#notificationsLI").html(response);
+                    },
+                    error: function () {
+                        alert("Errore Notifiche template");
+                    }
+                });
 
+            });
+        </script>
     </body>
 </html>

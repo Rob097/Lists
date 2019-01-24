@@ -120,19 +120,15 @@
                         <div class="row">
                             <c:if test="${not empty user}">
                                 <c:if test="${user.tipo == 'amministratore'}">
-                                    <div class="col-md-2">                                
+                                    <div class="col-md-4">
+                                        <a href="Pages/AdminProducts.jsp" class="btn btn-primary text-caps" style="border-radius: 1rem; color: #ff4242; background-color: #d4d7ff; border-color: #ffbfbf;">Lista prodotti</a>
                                     </div>
-                                    <div class="col-md-3">
-                                        <a href="Pages/AdminProducts.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">Lista prodotti</a>
+                                    <div class="col-md-4">
+                                        <a href="Pages/ShowProductCategories.jsp" class="btn btn-primary text-caps" style="border-radius: 1rem; color: #ff4242; background-color: #d4d7ff; border-color: #ffbfbf;">Categorie prodotti</a>                                
                                     </div>
-                                    <div class="col-md-2">
-                                        <a href="Pages/ShowProductCategories.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">Categorie prodotti</a>                                
-                                    </div>
-                                    <div class="col-md-3">
-                                        <a href="Pages/ShowListCategories.jsp" class="btn btn-primary text-caps btn-rounded" style="color: white;">Categorie lista</a>
-                                    </div>  
-                                    <div class="col-md-2">                                
-                                    </div>                             
+                                    <div class="col-md-4">
+                                        <a href="Pages/ShowListCategories.jsp" class="btn btn-primary text-caps" style="border-radius: 1rem; color: #ff4242; background-color: #d4d7ff; border-color: #ffbfbf;">Categorie lista</a>
+                                    </div>                          
                                 </c:if>
                             </c:if>
                         </div>
@@ -191,7 +187,7 @@
                             <c:forEach items="${catProd}" var="catP">
                                 <li>
                                     <img style="width: 8rem; height: 8rem; border-radius: 100%;" src="${catP.immagine}" alt="">
-                                    <h3><a href="/Lists/Pages/ShowProducts.jsp?cat=${catP.nome}"><c:out value="${catP.nome}"/></a></h3>
+                                    <h3 style="width: max-content;"><a href="/Lists/Pages/ShowProducts.jsp?cat=${catP.nome}"><c:out value="${catP.nome}"/></a></h3>
                                     <div class="sub-categories">
                                     </div>
                                 </li>

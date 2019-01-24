@@ -93,7 +93,6 @@
             }
 
             #myInput {
-                background-image: url('/css/searchicon.png');
                 background-position: 10px 12px;
                 background-repeat: no-repeat;
                 width: 100%;
@@ -131,7 +130,6 @@
             }
 
             #myInput {
-                background-image: url('/css/searchicon.png');
                 background-position: 10px 12px;
                 background-repeat: no-repeat;
                 width: 100%;
@@ -227,12 +225,22 @@
                             <div class="col-md-9">
                                 <!--============ Section Title===================================================================-->
                                 <div class="section-title clearfix">
-                                    <div class="float-left float-xs-none" style="width: 89%;">
+                                    <div class="float-left float-xs-none" style="width: 100%;">
                                         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name of product">
                                         <label style="display: none;" id="loadProducts1">Nessun prodotto trovato</label><br>
                                         <c:if test="${not empty user and user.tipo=='amministratore'}">                                            
                                             <a style="display: none;" id="loadProducts2" data-toggle="modal" data-target="#CreateProductModal" class="btn btn-primary text-caps btn-rounded" >Crea un nuovo prodotto</a>                                            
                                         </c:if>
+                                    </div>
+                                </div>
+                                <div class="section-title clearfix">
+                                    <div class="float-left float-xs-none">
+                                        <label class="mr-3 align-text-bottom">Ordina per: </label>
+                                        <select name="sorting" id="sorting" class="small width-200px" data-placeholder="Default">
+                                            <option id="idBnt" value="0">Default</option>
+                                            <option id="alphBnt" value="1">Nome</option>
+                                            <option id="catBnt" value="2">Categoria</option>
+                                        </select>
                                     </div>
                                     <div class="float-right d-xs-none thumbnail-toggle">
                                         <a class="change-class" data-change-from-class="list" data-change-to-class="grid" data-parent-class="items">
@@ -244,7 +252,7 @@
                                     </div>
                                 </div>
                                 <!--============ Items ==========================================================================-->
-                                <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
+                                <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items" id="prodottiCont">
                                     <c:choose>
                                         <c:when test="${param.cat != null && param.cat ne 'all'}">
                                             <c:forEach items="${products}" var="p">
@@ -255,8 +263,8 @@
                                                             <div class="image">
                                                                 <h3>
                                                                     <a class="tag category"><c:out value="${p.categoria_prodotto}"/></a>
-                                                                    <a class="title"><c:out value="${p.nome}"/></a>
-                                                                    <span class="tag">Offer</span>
+                                                                    <a class="title nomeProdotto"><c:out value="${p.nome}"/></a>
+                                                                    <input type="hidden" class="idProdotto" value="${p.pid}">
                                                                 </h3>
                                                                 <a class="image-wrapper background-image">
                                                                     <img src="../${p.immagine}" alt="">
@@ -284,8 +292,8 @@
                                                         <div class="image">
                                                             <h3>
                                                                 <a class="tag category"><c:out value="${p.categoria_prodotto}"/></a>
-                                                                <a class="title"><c:out value="${p.nome}"/></a>
-                                                                <span class="tag">Offer</span>
+                                                                <a class="title nomeProdotto"><c:out value="${p.nome}"/></a>
+                                                                <input type="hidden" class="idProdotto" value="${p.pid}">
                                                             </h3>
                                                             <a class="image-wrapper background-image" style="background-image: url('../${p.immagine}')">                                                                
                                                                 <img src="../${p.immagine}" alt="">
@@ -334,7 +342,6 @@
         <script src="js/icheck.min.js"></script>
         <script src="js/jquery.validate.min.js"></script>
         <script src="js/custom.js"></script>
-        <script src="js/nav.js"></script>
 
         <!--#########################################################
                                 MODAL
@@ -405,7 +412,7 @@
                         </div>
                         <div class="modal-body">
                             <!-- Form per il login -->
-                            <form class="form clearfix" id="CreateShopListform" action="/Lists/AddNewProductToDataBase"  method="post" role="form" enctype="multipart/form-data">
+                            <form class="form clearfix" id="CreateShopListform1" action="/Lists/AddNewProductToDataBase"  method="post" role="form" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <label for="Nome" class="col-form-label">Nome del prodotto</label>
                                     <input type="text" name="NomeProdotto" id="NomeProduct" tabindex="1" class="form-control" placeholder="Nome" value="" required>
@@ -448,7 +455,31 @@
         <!--########################## moooddaaalllll ############################-->
 
         <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data"></div>
+        <script type="text/javascript">
+            var divs = $(".item");
+            var sort = document.getElementById("sorting");
+            
+            sort.onchange = function(){
+                if(sort.value === "1"){
+                    var alphabeticallyOrderedDivs = divs.sort(function (a, b) {
+                        return $(a).find($(".nomeProdotto")).text() === $(b).find($(".nomeProdotto")).text() ? 0 : $(a).find($(".nomeProdotto")).text() < $(b).find($(".nomeProdotto")).text() ? -1 : 1;
 
+                    });
+                    $("#prodottiCont").html(alphabeticallyOrderedDivs);            
+                }else
+            
+                if(sort.value === "2"){
+                    var alphabeticallyOrderedDivs = divs.sort(function (a, b) {
+                        return $(a).find($(".category")).text() === $(b).find($(".category")).text() ? 0 : $(a).find($(".category")).text() < $(b).find($(".category")).text() ? -1 : 1;
+
+                    });
+                    $("#prodottiCont").html(alphabeticallyOrderedDivs);
+                }else if(sort.value === "0"){
+                    var alphabeticallyOrderedDivs = divs.sort((a, b) => $(a).find($(".idProdotto")).val() - $(b).find($(".idProdotto")).val());
+                    $("#prodottiCont").html(alphabeticallyOrderedDivs);
+                };
+            };
+        </script>
         <script>
             function myFunction() {
                 var input, filter, ul, li, a, i;

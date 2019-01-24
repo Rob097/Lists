@@ -67,6 +67,12 @@
                 max-height: 530px;
                 padding: 15px;
             }
+            .hero-wrapper{
+                background-image: linear-gradient(rgba(255,255,255,.4), rgba(255,255,255,.9)),url("/Lists/${lista.immagine}");
+                background-position-y: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+            }
         </style>
         
     </head>
@@ -83,12 +89,6 @@
                             <h1>Map for ${shopListName}</h1>
                         </div>
                         <!--end container-->
-                    </div>
-                    <div class="background">
-                        <div class="background-image">
-                            <img src="img/hero-background-image-02.jpg" alt="">
-                        </div>
-                        <!--end background-image-->
                     </div>
                     <!--end background-->
                 </div>

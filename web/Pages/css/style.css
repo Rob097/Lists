@@ -350,6 +350,9 @@ a.disabled {
     height: 3rem;
     opacity: .5;
 }
+.col-md-4{
+    padding-bottom: 15px;
+}
 .comments .comment {
     margin-bottom: 3rem;
 }
@@ -1145,7 +1148,7 @@ a.disabled {
 .items:not(.selectize-input).grid.compact .item h4 {
     display: none;
 }
-.items:not(.selectize-input).grid.compact .item reminderInvisible {
+.items:not(.selectize-input).grid.compact .item .reminderInvisible {
     display: inherit;
 }
 .items:not(.selectize-input).grid.compact .item .admin-controls {
@@ -3471,8 +3474,8 @@ textarea.form-control {
         width: 50%;
     }
     .hero .page-title {
-        padding-top: 4rem;
-        padding-bottom: 1rem;
+        padding-top: 10rem;
+        padding-bottom: 3rem;
     }
     .hero .main-navigation .navbar ul.navbar-nav {
         position: relative;
@@ -3777,7 +3780,7 @@ textarea.form-control {
         color: #fff !important;
     }
     .categories-list li {
-        width: 100%;
+        width: 50%;
     }
     .feature-box {
         text-align: center;
@@ -3867,10 +3870,10 @@ textarea.form-control {
 #messaging__chat-window .messaging__content {
     height: calc( 55rem - 9.2rem );
     overflow-y: scroll;
+    width: -webkit-fill-available;
 }
 
 .messaging__header, .messaging__footer {
-    padding: 20px;
     border-bottom: .1rem solid rgba(0,0,0,.1);
 }
 
@@ -4109,5 +4112,33 @@ textarea.form-control {
 @media (max-width: 768px){
     #welcomeGrid{
         display: grid;
+    }
+    .items:not(.selectize-input).list.compact .item .reminderInvisible {
+    display: table !important;
+}
+    .items:not(.selectize-input) .item h4 {
+        display: none;
+    }
+    .items:not(.selectize-input).list.compact .item .admin-controls {
+        position: initial;
+    }
+    .items:not(.selectize-input).list .item .description, .items:not(.selectize-input).list.compact .item .description {
+        position: relative;
+        left: 0;
+        padding: 4rem 2rem;
+        bottom: 0;
+    }
+    #usersChat{
+        display: none;
+    }
+}
+@media (max-width: 389px){
+    .messaging__header {
+        height: 120px;
+    }
+}
+@media (max-width: 336px){
+    .categories-list li {
+        width: 100%;
     }
 }

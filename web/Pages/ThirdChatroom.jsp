@@ -22,7 +22,6 @@
         <meta name="author" content="ThemeStarz">
 
         <link rel="icon" href="img/favicon.png" sizes="16x16" type="image/png">
-        <title>Products</title>
 
         <!-- CSS personalizzati -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
@@ -34,7 +33,7 @@
         <link rel="stylesheet" href="css/navbar.css">
         <link rel="stylesheet" href="css/notificationCss.css" type="text/css"> 
 
-        <title>Craigs - Easy Buy & Sell Listing HTML Template</title>
+        <title>Chat</title>
 
         <style>
             .username{
@@ -44,11 +43,17 @@
                 font-style: oblique;
                 font-weight: bold;
             }
+            .hero-wrapper{
+                background-image: linear-gradient(rgba(255,255,255,.4), rgba(255,255,255,.9)),url("/Lists/${lista.immagine}");
+                background-position-y: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+            }
         </style>
 
     </head>
     <body onload="loadChatFile()">
-        <div class="page sub-page">
+        <div class="page home-page">
             <!--*********************************************************************************************************-->
             <!--************ HERO ***************************************************************************************-->
             <!--*********************************************************************************************************-->
@@ -57,19 +62,20 @@
                     <div id="navbar">
                         <!-- Qui viene inclusa la navbar -->
                     </div>
-                </div>
-                <!--end collapse-->
-                <!--============ End Hero Form ======================================================================-->
-                <!--============ Page Title =========================================================================-->
-                <div class="page-title">
+                    <div class="page-title">
                     <div class="container">
-                        <h1>Messages</h1>
+                        <h1>Chat</h1>
                         <br>
                     </div>
                     <!--end container-->
                 </div>
+                </div>
+                <!--end collapse-->
+                <!--============ End Hero Form ======================================================================-->
+                <!--============ Page Title =========================================================================-->
+                
                 <!--============ End Page Title =====================================================================-->
-                <div class="background"></div>
+                <!--<div class="background"></div>-->
                 <!--end background-->
         </div>
         <!--end hero-wrapper-->
@@ -85,11 +91,8 @@
         <section class="block">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-5 col-lg-5 col-xl-4">
+                    <div class="col-md-5 col-lg-5 col-xl-4" id="usersChat">
                         <!--============ Section Title===========================================================-->
-                        <div class="section-title clearfix">
-                            <h3>People</h3>
-                        </div>
                         <div id="messaging__chat-list" class="messaging__box">
                             <div class="messaging__header">
                                 <h1>Users</h1>
@@ -97,6 +100,7 @@
                             <div class="messaging__content">
                                 <ul class="messaging__persons-list">
                                     <c:forEach items="${userList}" var="u">
+                                        <c:if test="${u.email ne user.email}">
                                         <li>
                                             <a class="messaging__person">
                                                 <figure class="messaging__image-item" data-background-image="../${u.image}"></figure>
@@ -107,6 +111,7 @@
                                             </a>
                                             <!--messaging__person-->
                                         </li>
+                                        </c:if>
                                     </c:forEach>
                                 </ul>
                                 <!--end messaging__persons-list-->
@@ -118,20 +123,16 @@
                     <!--end col-md-3-->
                     <div class="col-md-7 col-lg-7 col-xl-8">
                         <!--============ Section Title===========================================================-->
-                        <div class="section-title clearfix">
-                            <h3>Message Window</h3>
-                        </div>
-                        <!--end section-title-->
                         <div id="messaging__chat-window" class="messaging__box">
                             <div class="messaging__header">
-                                <div class="float-left flex-row-reverse messaging__person">
+                                <div class="float-left flex-row-reverse messaging__person" style="position: relative; top: 25%;">
                                     <h5 class="font-weight-bold" id="Sender"><c:out value="${user.nominativo}"/></h5>
                                     <input type = "hidden" name = "senderEmail" id = "senderEmail" value = "<c:out value="${user.email}"/>">
-                                    <figure class="mr-4 messaging__image-person" data-background-image="assets/img/author-02.jpg"></figure>
+                                    <figure class="mr-4 messaging__image-person" data-background-image="/Lists/${user.image}"></figure>
                                 </div>
-                                <div class="float-right messaging__person">
+                                <div class="float-right messaging__person" style="position: relative; top: 25%;">
                                     <h5 class="mr-4" id="shoplistName"><c:out value="${shopListName}"/></h5>
-                                    <figure id="messaging__user" class="messaging__image-person" data-background-image="assets/img/author-06.jpg"></figure>
+                                    <figure id="messaging__user" class="messaging__image-person" data-background-image="/Lists/${lista.immagine}"></figure>
                                 </div>
                             </div>
                             <div class="messaging__content" data-background-color="rgba(0,0,0,.05)" id="panellodeimessaggi">
@@ -287,8 +288,15 @@
         processMessage(message);
         $.ajax({
                 type: "GET",
-                url: "/Lists/messageNotification",
-                async: false
+                url: "/Lists/messageNotification?user=${user.email}&lista=${shopListName}",
+                //async: false,
+                cache: false,
+                success: function () {
+                    console.log("Notification send");
+                },
+                error: function () {
+                    alert("Errore Notifiche messaggio");
+                }
             });
         //window.location.href = "/Lists/messageNotification";
     };

@@ -75,7 +75,7 @@ public class DeleteProduct extends HttpServlet {
             System.out.println("delete product error");
         }
         
-        response.sendRedirect("/Lists/Pages/AdminPages/AdminProducts.jsp");
+        response.sendRedirect("/Lists/Pages/AdminProducts.jsp");
     }
 
     public void DeleteImgFromDirectory(String fileName) {
