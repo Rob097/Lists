@@ -47,11 +47,11 @@
                 </div>
                 <!--end form-group-->
                 <div class="d-flex justify-content-between align-items-baseline">
-                    <div class="form-group text-center">
+                    <div class="form-group text-center" style="display: inline-grid;">
                         <input type="checkbox" tabindex="3" class="" name="standard" id="standard">
-                        <label for="standard">Standard</label>
+                        <label for="standard" style="display: flex;">Standard</label>
                         <input type="checkbox" tabindex="3" class="" name="amministratore" id="amministratore">
-                        <label for="amministratore">Amministratore</label>
+                        <label for="amministratore" style="display: flex;">Amministratore</label>
                     </div>
                     <button type="submit" name="register-submit" id="register-submit" tabindex="4" class="btn btn-primary">Register Now</button>
                 </div>
