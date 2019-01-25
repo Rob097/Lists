@@ -137,7 +137,7 @@
                                 <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items" id="prodottiCont">
 
                                     <c:forEach items="${products}" var="product">
-                                        <div class="item">
+                                        <div class="item itemGiusto">
                                             <div class="wrapper">
                                                 <div class="image">
                                                     <h3>
@@ -247,7 +247,7 @@
         <script src="js/custom.js"></script>
         <script src="js/datepicker.js"></script>
         <script type="text/javascript">
-            var divs = $(".item");
+            var divs = $(".itemGiusto");
             var sort = document.getElementById("sorting");
             
             sort.onchange = function(){
@@ -271,6 +271,73 @@
                 };
             };
         </script>
+        
+        <script>
+            $(document).ready(function () {
+                var items = document.getElementsByClassName("itemGiusto");
+                var check1 = true;
+                for (i = 0; i < items.length; i++) {
+                    if (items[i].style.display !== "none") {
+                        check1 = false;
+                    }
+                }
+                if (check1 === true) {
+                    document.getElementById("loadProducts1").style.display = "";
+                    document.getElementById("loadProducts2").style.display = "";
+                }
+            });
+        </script>
+        
+        <script>
+            function myFunction() {
+                var input, filter, items, li, a, i, check = true;
+                input = document.getElementById("myInput");
+                filter = input.value.toUpperCase();
+                items = document.getElementsByClassName("itemGiusto");
+
+                var title = "";
+                var i;
+                $.ajax({
+                    type: "POST",
+                    url: "/Lists/Pages/nameContain.jsp?s=" + filter,
+
+                    cache: false,
+                    success: function (response) {
+                        $("#content-wrapper").html($("#content-wrapper").html() + response);
+                    },
+                    error: function () {
+                        alert("Errore");
+                    }
+                });
+                for (i = 0; i < items.length; i++) {
+                    title = items[i].getElementsByClassName("title");
+                    if (title[0].innerHTML.toUpperCase().indexOf(filter) > -1) {
+
+                        items = document.getElementsByClassName("itemGiusto");
+                        title = items[i].getElementsByClassName("title");
+                        items[i].style.display = "";
+                        document.getElementById("loadProducts1").style.display = "none";
+                        document.getElementById("loadProducts2").style.display = "none";
+
+                    } else {
+                        items[i].style.display = "none";
+
+                    }
+                    if (items[i].style.display === "")
+                        check = false;
+                }
+                if (filter == null || filter == "") {
+                    for (i = 0; i < items.length; i++) {
+                        items[i].style.display = "";
+                    }
+                }
+                if (check === true) {
+                    document.getElementById("loadProducts1").style.display = "";
+                    document.getElementById("loadProducts2").style.display = "";
+                }
+            }
+        </script>
+        
         <script>
             $(document).ready(function () {
                 //Navbar

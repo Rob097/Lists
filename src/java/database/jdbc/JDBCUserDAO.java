@@ -53,7 +53,7 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
                     user.setNominativo(rs.getString("nominativo"));
                     user.setTipo(rs.getString("tipo"));
                     user.setImage(rs.getString("immagine"));
-
+                    user.setSendEmail(rs.getBoolean("send"));
                     return user;
                 }
                 return null;
@@ -69,13 +69,13 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
         if (user == null) {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed user is null"));
         }
-       try (PreparedStatement statement = CON.prepareStatement("insert into User(email,password,nominativo,tipo,immagine) values(?,?,?,?,?)")) {
+       try (PreparedStatement statement = CON.prepareStatement("insert into User(email,password,nominativo,tipo,immagine) values(?,?,?,?,?,?)")) {
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getNominativo());
             statement.setString(4, user.getTipo());
             statement.setString(5, user.getImage());
-            
+            statement.setBoolean(6, user.isSendEmail());
             if (statement.executeUpdate() == 1) {
                 return user;
             } else {
@@ -108,7 +108,7 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
                     user.setNominativo(rs.getString("nominativo"));
                     user.setTipo(rs.getString("tipo"));
                     user.setImage(rs.getString("immagine"));
-
+                    user.setSendEmail(rs.getBoolean("send"));
                     return user;
                 }
                 return null;
@@ -182,10 +182,22 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
             statement.setString(1, newUser.getTipo());
             statement.setString(2, oldUser.getEmail());
             statement.executeUpdate();
-            finalUser.setEmail(newUser.getTipo());
+            finalUser.setTipo(newUser.getTipo());
             } catch (SQLException ex) {
              Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
              System.out.println("errore update usertype");
+            }   
+        }
+        
+        if(newUser.isSendEmail() != oldUser.isSendEmail()){
+            try (PreparedStatement statement = CON.prepareStatement("UPDATE User SET send=? WHERE email=? ")){
+            statement.setBoolean(1, newUser.isSendEmail());
+            statement.setString(2, oldUser.getEmail());
+            statement.executeUpdate();
+            finalUser.setSendEmail(newUser.isSendEmail());
+            } catch (SQLException ex) {
+             Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
+             System.out.println("errore update usersend");
             }   
         }
                 
@@ -210,7 +222,7 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
                     user.setNominativo(rs.getString("nominativo"));
                     user.setTipo(rs.getString("tipo"));
                     user.setImage(rs.getString("immagine"));
-
+                    user.setSendEmail(rs.getBoolean("send"));
                     listOfAllUsers.add(user);                    
                 }
                 
@@ -258,6 +270,26 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
                 return;
             }else{
                 throw new DAOException("Impossible to change password");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("errore chande password");
+        }
+    }
+    
+    @Override
+        public void changeType(String email, String tipo) throws DAOException {
+        if(email==null || tipo == null){
+          throw new DAOException("Parameters are mandatory fields", new NullPointerException("email or type is null"));
+        }
+        
+        try (PreparedStatement statement = CON.prepareStatement("update User set tipo = ? where email = ? ")) {
+            statement.setString(1, tipo);
+            statement.setString(2, email);
+            if(statement.executeUpdate()==1){
+                return;
+            }else{
+                throw new DAOException("Impossible to change tipo");
             }
         } catch (SQLException ex) {
             Logger.getLogger(JDBCUserDAO.class.getName()).log(Level.SEVERE, null, ex);

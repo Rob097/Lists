@@ -20,7 +20,17 @@ public class User {
     private String image;
     private ArrayList<List> list;
     private String ruolo;
+    private boolean sendEmail;
 
+    public boolean isSendEmail() {
+        return sendEmail;
+    }
+
+    public void setSendEmail(boolean sendEmail) {
+        this.sendEmail = sendEmail;
+    }   
+    
+    
     public String getRuolo() {
         return ruolo;
     }

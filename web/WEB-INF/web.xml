@@ -266,6 +266,10 @@
         <servlet-name>alterList</servlet-name>
         <servlet-class>ShopList.alterList</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>changeType</servlet-name>
+        <servlet-class>users.changeType</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutAction</servlet-name>
         <url-pattern>/restricted/LogoutAction</url-pattern>
@@ -453,6 +457,10 @@
     <servlet-mapping>
         <servlet-name>alterList</servlet-name>
         <url-pattern>/alterList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>changeType</servlet-name>
+        <url-pattern>/changeType</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

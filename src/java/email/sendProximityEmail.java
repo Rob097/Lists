@@ -6,6 +6,7 @@
 package email;
 
 import database.daos.NotificationDAO;
+import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCNotificationsDAO;
@@ -51,6 +52,7 @@ public class sendProximityEmail extends HttpServlet {
         }
         NotificationDAO notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
         //Raccolta dei dati dell'utente
+        User u = (User) request.getSession().getAttribute("user");
         String nome = request.getParameter("nome");
         String email = request.getParameter("email");
         String lista = request.getParameter("lista");
@@ -84,7 +86,9 @@ public class sendProximityEmail extends HttpServlet {
                     message.setText(messaggio);
                     
                     /* Transport class is used to deliver the message to the recipients */
-                    Transport.send(message);
+                    if(u.isSendEmail()){
+                        Transport.send(message);
+                    }
                     notificationdao.addNotification(email, "proximityMail", lista);
             }
         } catch (DAOException ex) {

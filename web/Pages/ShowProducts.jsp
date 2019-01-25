@@ -257,13 +257,13 @@
                                         <c:when test="${param.cat != null && param.cat ne 'all'}">
                                             <c:forEach items="${products}" var="p">
                                                 <c:if test="${param.cat eq p.categoria_prodotto}">
-                                                    <div class="item">
+                                                    <div class="item itemGiusto">
                                                         <!--end ribbon-->
                                                         <div class="wrapper">
                                                             <div class="image">
                                                                 <h3>
                                                                     <a class="tag category"><c:out value="${p.categoria_prodotto}"/></a>
-                                                                    <a class="title nomeProdotto"><c:out value="${p.nome}"/></a>
+                                                                    <a class="title"><c:out value="${p.nome}"/></a>
                                                                     <input type="hidden" class="idProdotto" value="${p.pid}">
                                                                 </h3>
                                                                 <a class="image-wrapper background-image">
@@ -286,13 +286,13 @@
                                         <c:when test="${param.cat == null or param.cat eq 'all'}">
                                             <c:set scope="page" var="count" value="5"/>
                                             <c:forEach  items="${products}" var="p">
-                                                <div class="item">
+                                                <div class="item itemGiusto">
                                                     <!--end ribbon-->
                                                     <div class="wrapper">
                                                         <div class="image">
                                                             <h3>
                                                                 <a class="tag category"><c:out value="${p.categoria_prodotto}"/></a>
-                                                                <a class="title nomeProdotto"><c:out value="${p.nome}"/></a>
+                                                                <a class="title"><c:out value="${p.nome}"/></a>
                                                                 <input type="hidden" class="idProdotto" value="${p.pid}">
                                                             </h3>
                                                             <a class="image-wrapper background-image" style="background-image: url('../${p.immagine}')">                                                                
@@ -456,13 +456,14 @@
 
         <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data"></div>
         <script type="text/javascript">
-            var divs = $(".item");
             var sort = document.getElementById("sorting");
             
             sort.onchange = function(){
+                var divs = $(".itemGiusto");
+            
                 if(sort.value === "1"){
                     var alphabeticallyOrderedDivs = divs.sort(function (a, b) {
-                        return $(a).find($(".nomeProdotto")).text() === $(b).find($(".nomeProdotto")).text() ? 0 : $(a).find($(".nomeProdotto")).text() < $(b).find($(".nomeProdotto")).text() ? -1 : 1;
+                        return $(a).find($(".title")).text() === $(b).find($(".title")).text() ? 0 : $(a).find($(".title")).text() < $(b).find($(".title")).text() ? -1 : 1;
 
                     });
                     $("#prodottiCont").html(alphabeticallyOrderedDivs);            
@@ -497,21 +498,7 @@
                 }
             }
         </script>  
-        <script>
-            $(document).ready(function () {
-                items = document.getElementsByClassName("item");
-                var check1 = true;
-                for (i = 0; i < items.length; i++) {
-                    if (items[i].style.display !== "none") {
-                        check1 = false;
-                    }
-                }
-                if (check1 === true) {
-                    document.getElementById("loadProducts1").style.display = "";
-                    document.getElementById("loadProducts2").style.display = "";
-                }
-            });
-        </script>
+        
         <script>
             function addProduct(id) {
                 $.ajax({
@@ -529,12 +516,27 @@
         </script>
 
         <script>
+            $(document).ready(function () {
+                var items = document.getElementsByClassName("itemGiusto");
+                var check1 = true;
+                for (i = 0; i < items.length; i++) {
+                    if (items[i].style.display !== "none") {
+                        check1 = false;
+                    }
+                }
+                if (check1 === true) {
+                    document.getElementById("loadProducts1").style.display = "";
+                    document.getElementById("loadProducts2").style.display = "";
+                }
+            });
+        </script>
+        
+        <script>
             function myFunction() {
                 var input, filter, items, li, a, i, check = true;
                 input = document.getElementById("myInput");
                 filter = input.value.toUpperCase();
-                items = document.getElementsByClassName("item");
-                console.log(items);
+                items = document.getElementsByClassName("itemGiusto");
 
                 var title = "";
                 var i;
@@ -551,12 +553,10 @@
                     }
                 });
                 for (i = 0; i < items.length; i++) {
-                    console.log(items[i]);
-                    console.log("inside cicle ");
                     title = items[i].getElementsByClassName("title");
                     if (title[0].innerHTML.toUpperCase().indexOf(filter) > -1) {
 
-                        items = document.getElementsByClassName("item");
+                        items = document.getElementsByClassName("itemGiusto");
                         title = items[i].getElementsByClassName("title");
                         items[i].style.display = "";
                         document.getElementById("loadProducts1").style.display = "none";
@@ -571,7 +571,6 @@
                 }
                 if (filter == null || filter == "") {
                     for (i = 0; i < items.length; i++) {
-                        console.l
                         items[i].style.display = "";
                     }
                 }

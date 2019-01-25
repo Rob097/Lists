@@ -68,14 +68,6 @@
                             <!-- Qui viene inclusa la navbar -->
                         </div>
 
-                        <c:if test="${updateResult==true}">
-                            <div class="alert alert-success" id="alert">
-                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                <strong>Successful Modification!</strong> Your account is actualized.
-                            </div>                        
-                            <c:set var="updateResult" value="false" /> 
-                        </c:if> 
-
                         <!--============ Page Title =========================================================================-->
                         <div class="page-title">
                             <div class="container" >
@@ -128,6 +120,15 @@
                                                         <label for="pswrt2" class="col-form-label">Conferma Password</label>
                                                         <input type="password" name="pswrt2" id="pswrt2" tabindex="2" class="form-control" placeholder="Password"  value="${user.password}">
                                                     </div>
+                                                    <div class="form-group" style="display: flex;">
+                                                        <c:if test="${user.sendEmail == true}">
+                                                            <input type="checkbox" tabindex="3" class="" name="send" id="send" checked="true">
+                                                        </c:if>
+                                                        <c:if test="${user.sendEmail == false}">
+                                                            <input type="checkbox" tabindex="3" class="" name="send" id="send">
+                                                        </c:if>
+                                                        <label for="standard">Inviami email per la prossimità a negozi e promemoria di acquisto</label>
+                                                    </div>
                                                     <div class="form-group">
                                                         <div class="input-group">
                                                             <div class="row">
@@ -166,7 +167,17 @@
                                                         <c:out value="${user.nominativo}"/>
                                                     </div>
                                                     <div class="text-center">
-                                                        Tipo utente: <c:out value="${user.tipo}"/>
+                                                        <label class="mr-3 align-text-bottom">Tipo utente:</label>
+                                                        <select name="type" id="type" class="small width-200px" data-placeholder="${user.tipo}">
+                                                        <c:if test="${user.tipo == 'standard'}">
+                                                            <option id="mioTipo" value="standard">Standard</option>
+                                                            <option id="altroTipo" value="amministratore">Amministratore</option>
+                                                        </c:if>
+                                                        <c:if test="${user.tipo == 'amministratore'}">
+                                                            <option id="mioTipo" value="amministratore">Amministratore</option>
+                                                            <option id="altroTipo" value="standard">Standard</option>
+                                                        </c:if>
+                                                        </select>
                                                     </div>
                                                 </div>                                                                                  
                                             </div>
@@ -240,6 +251,41 @@
             <script src="Pages/js/custom.js"></script>
             <script src="Pages/js/nav.js"></script>
             <!--<script src="Pages/js/userimage.js"></script>-->
+            <script type="text/javascript">
+            var type = document.getElementById("type");
+            
+            type.onchange = function(){
+                if(type.value === "standard"){
+                    $.ajax({
+                        type: "POST",
+                        url: "/Lists/changeType",
+                        data: {email: '${user.email}', tipo: 'standard'},
+                        cache: false,
+                        success: function () {
+                            document.location.href = "/Lists/homepage.jsp";
+                        },
+                        error: function () {
+                            alert("Errore change type ajax");
+                        }
+                    });          
+                }else            
+                if(type.value === "amministratore"){
+                    
+                    $.ajax({
+                        type: "POST",
+                        url: "/Lists/changeType",
+                        data: {email: '${user.email}', tipo: 'amministratore'},
+                        cache: false,
+                        success: function () {
+                            document.location.href = "/Lists/homepage.jsp";
+                        },
+                        error: function () {
+                            alert("Errore change type ajax");
+                        }
+                    });          
+                }
+            };
+            </script>
             <script>
             $(document).ready(function () {
                 $(document).on('change', '.btn-file :file', function () {

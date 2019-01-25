@@ -5,6 +5,7 @@
  */
 package email;
 
+import database.entities.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Properties;
@@ -41,6 +42,7 @@ public class reminderEmail extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //Raccolta dei dati dell'utente
+        User u = (User) request.getSession().getAttribute("user");
         String nome = request.getParameter("name");
         String email = request.getParameter("email") + "\n\n";
         String messaggio1 = request.getParameter("messaggio");
@@ -73,7 +75,9 @@ public class reminderEmail extends HttpServlet {
             message.setText(messaggio);
 
             /* Transport class is used to deliver the message to the recipients */
-            Transport.send(message);
+            if (u.isSendEmail()) {
+                Transport.send(message);
+            }
         }catch (SendFailedException se){
             System.out.println("Errore nell'invio dell'email a " + email);
         } catch (MessagingException ex) {

@@ -68,6 +68,11 @@ public class updateUser extends HttpServlet {
         String email = user.getEmail();
         String nominativo = request.getParameter("nominativo");
         String password = request.getParameter("password");
+        Boolean send;
+        if(request.getParameter("send") != null)
+            send = true;
+        else
+            send = false;
         String url = null;
         
         //IMMAGINE  ################################################################################
@@ -112,7 +117,8 @@ public class updateUser extends HttpServlet {
         cgeUser.setEmail(email);
         cgeUser.setNominativo(nominativo);
         cgeUser.setPassword(password);
-            
+        cgeUser.setSendEmail(send);
+        
         try {
            User finaluser = userdao.changeUser(cgeUser, user);
            if (finaluser != null) {

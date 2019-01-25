@@ -227,7 +227,7 @@
                                             <c:forEach items="${products}" var="product">
                                                 <c:if test="${param.cat eq product.categoria_prodotto}">
 
-                                                    <div class="item">
+                                                    <div class="item itemGiusto">
                                                         <!--end ribbon-->
                                                         <div class="wrapper">
                                                             <div class="image">
@@ -282,7 +282,7 @@
                                         <c:when test="${param.cat == null or param.cat eq 'all'}">
                                             <c:set var="count" value="5" scope="page"/>
                                             <c:forEach items="${products}" var="product">
-                                                <div class="item">
+                                                <div class="item itemGiusto">
                                                     <!--end ribbon-->
                                                     <div class="wrapper">
                                                         <div class="image">
@@ -591,7 +591,7 @@
             </div>
         </div>
         <script type="text/javascript">
-            var divs = $(".item");
+            var divs = $(".itemGiusto");
             var sort = document.getElementById("sorting");
             
             sort.onchange = function(){
@@ -635,7 +635,7 @@
         </script>
         <script>
             $(document).ready(function () {
-                items = document.getElementsByClassName("item");
+                items = document.getElementsByClassName("itemGiusto");
                 var check1 = true;
                 for (i = 0; i < items.length; i++) {
                     if (items[i].style.display !== "none") {
@@ -653,8 +653,7 @@
                 var input, filter, items, li, a, i, check = true;
                 input = document.getElementById("myInput");
                 filter = input.value.toUpperCase();
-                items = document.getElementsByClassName("item");
-                console.log(items);
+                items = document.getElementsByClassName("itemGiusto");
 
                 var title = "";
                 var i;
@@ -671,12 +670,10 @@
                     }
                 });
                 for (i = 0; i < items.length; i++) {
-                    console.log(items[i]);
-                    console.log("inside cicle ");
                     title = items[i].getElementsByClassName("title");
                     if (title[0].innerHTML.toUpperCase().indexOf(filter) > -1) {
 
-                        items = document.getElementsByClassName("item");
+                        items = document.getElementsByClassName("itemGiusto");
                         title = items[i].getElementsByClassName("title");
                         items[i].style.display = "";
                         document.getElementById("loadProducts1").style.display = "none";

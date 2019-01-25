@@ -2721,6 +2721,7 @@ input[type="text"].small, input[type="email"].small, input[type="date"].small, i
     top: -.1rem;
     margin-bottom: 1.5rem;
     vertical-align: top;
+    min-width: 2rem;
 }
 .icheckbox:after, .iradio:after {
     font-family: 'fontawesome';

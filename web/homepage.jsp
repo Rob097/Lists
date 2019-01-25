@@ -163,10 +163,11 @@
             <c:if test="${not empty messaggio}">
                 <div class="container pt-5" id="alert">
                     <div class="alert alert-success text-center" role="alert">
-                        <strong><c:out value="${messaggio}"/></strong>
+                        <strong>${messaggio}</strong>
                     </div>
                 </div>
-            </c:if>            
+            </c:if>
+            
 
             <!-- FINE DELLE NOTIFICHE -->
 
