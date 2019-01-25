@@ -14,7 +14,6 @@ import database.factories.DAOFactory;
 import database.jdbc.JDBCNotificationsDAO;
 import database.jdbc.JDBCShopListDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +28,7 @@ import javax.servlet.http.HttpSession;
  * @author della
  */
 public class statusALLProducts extends HttpServlet {
-
+    private static final long serialVersionUID = 6106269076155338045L;
     /**
      * Handles the HTTP <code>GET</code> method.
      *

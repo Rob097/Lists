@@ -14,7 +14,6 @@ import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCShopListDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -32,7 +31,8 @@ import log.RegisterAction;
  */
 @MultipartConfig(maxFileSize = 16177215)
 public class alterList extends HttpServlet {
-    ListDAO listdao = null;
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient ListDAO listdao = null;
 
     @Override
     public void init() throws ServletException {
@@ -70,33 +70,35 @@ public class alterList extends HttpServlet {
         }else{
             Lista = (ShopList) s.getAttribute("guestList");
         }
-        Boolean regResult = false;
-        String nome = Lista.getNome();
-        String descrizione;
+        Boolean regResult;
+        String nome = null;
+        if(Lista != null)
+            nome = Lista.getNome();
+        String descrizione = null;
         String immagine = "Image/ListsImg/guestsList.jpg";
         String creator;
-        String categoria;
+        String categoria = null;
         Part filePart1 = null;
         String url = "/Lists/userlists.jsp";
         String relativeListFolderPath = "/Image/ListsImg";
 
         //richiesa dei parametri
-        if(request.getParameter("Nome") != null && request.getParameter("Nome") != "" && !request.getParameter("Nome").isEmpty()){
+        if(request.getParameter("Nome") != null && !"".equals(request.getParameter("Nome")) && !request.getParameter("Nome").isEmpty()){
             nome = request.getParameter("Nome");
         }
-        if(request.getParameter("Descrizione") != null && request.getParameter("Descrizione") != "" && !request.getParameter("Descrizione").isEmpty())
+        if(request.getParameter("Descrizione") != null && !"".equals(request.getParameter("Descrizione")) && !request.getParameter("Descrizione").isEmpty())
             descrizione = request.getParameter("Descrizione");
-        else
+        else if(Lista != null)
             descrizione = Lista.getDescrizione();
-        if(request.getParameter("Categoria") != null && request.getParameter("Categoria") != "" && !request.getParameter("Categoria").isEmpty())
+        if(request.getParameter("Categoria") != null && !"".equals(request.getParameter("Categoria")) && !request.getParameter("Categoria").isEmpty())
             categoria = request.getParameter("Categoria");
-        else
+        else if(Lista != null)
             categoria = Lista.getCategoria();
         if(request.getPart("file1") != null)
             filePart1 = request.getPart("file1");
         
             
-        User temp = new User();
+        User temp;
         
         if (s.getAttribute("user") != null) {
             temp = (User) s.getAttribute("user");
@@ -119,26 +121,29 @@ public class alterList extends HttpServlet {
         
 
         if (!creator.equals("ospite@lists.it")) {
-
-            if(filePart1.getContentType().contains("image/")){
-                try{
-                    String listsFolder = ObtainRootFolderPath(relativeListFolderPath);
-                    String extension = getImageExtension(filePart1);
-                    String imagineName = creator + "-" + nome + "." + extension;    
+            
+            if(filePart1 != null){
+                if(filePart1.getContentType().contains("image/")){
                     try{
-                        ImageDispatcher.DeleteImgFromDirectory(listsFolder+"/"+imagineName);
+                        String listsFolder = obtainRootFolderPath(relativeListFolderPath);
+                        String extension = getImageExtension(filePart1);
+                        String imagineName = creator + "-" + nome + "." + extension;    
+                        try{
+                            ImageDispatcher.DeleteImgFromDirectory(listsFolder+"/"+imagineName);
+                        }catch(Exception e){
+                            System.out.println("Nessuna immagine da cancellare");
+                        }
+                        ImageDispatcher.InsertImgIntoDirectory(listsFolder, imagineName, filePart1);            
+                        immagine = ImageDispatcher.savePathImgInDatabsae(relativeListFolderPath, imagineName);
                     }catch(Exception e){
-                        System.out.println("Nessuna immagine da cancellare");
+                        if(Lista != null)
+                            immagine = Lista.getImmagine();
+                        System.out.println("Errore cambio immagine");
                     }
-                    ImageDispatcher.InsertImgIntoDirectory(listsFolder, imagineName, filePart1);            
-                    immagine = ImageDispatcher.savePathImgInDatabsae(relativeListFolderPath, imagineName);
-                }catch(Exception e){
-                    e.printStackTrace();
-                    immagine = Lista.getImmagine();
-                    System.out.println("Errore cambio immagine");
+                }else{
+                    if(Lista != null)
+                        immagine = Lista.getImmagine();
                 }
-            }else{
-                immagine = Lista.getImmagine();
             }
         }else{
             Lista.setNome(nome);
@@ -159,23 +164,12 @@ public class alterList extends HttpServlet {
         } catch (DAOException ex) {
             Logger.getLogger(RegisterAction.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (Lista != null && s.getAttribute("user") != null) {
+        if (Lista != null) {
             regResult = true;
             s.setAttribute("regResult", regResult);         
         }
         s.setAttribute("regResult", false);
         response.sendRedirect(url);
-    }
-    
-    public String SetImgName(String name, String extension) {
-
-        String s;
-        s = name;
-        s = s.trim();
-        s = s.replace("@", "");
-        s = s.replace(".", "");
-
-        return s + "." + extension;
     }
     
     /**
@@ -197,8 +191,8 @@ public class alterList extends HttpServlet {
      * "Image/AvatarImg"
      * @return web/Image/AvatarImg
      */
-    public String ObtainRootFolderPath(String relativePath) {
-        String folder = "";
+    public String obtainRootFolderPath(String relativePath) {
+        String folder;
         folder = relativePath;
         folder = getServletContext().getRealPath(folder);
         folder = folder.replace("\\build", "");

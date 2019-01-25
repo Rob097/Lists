@@ -7,13 +7,11 @@ package Notifications;
 
 import ShopList.chat;
 import database.daos.NotificationDAO;
-import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCNotificationsDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author della
  */
 public class messageNotification extends HttpServlet {
-
+    private static final long serialVersionUID = 6106269076155338045L;
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -47,14 +45,14 @@ public class messageNotification extends HttpServlet {
         String sender;
         String listname;
         NotificationDAO notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
-        ArrayList <User> users = new ArrayList<>();
+        ArrayList <User> users;
 
         sender = (String) request.getParameter("user");
         listname = (String) request.getParameter("lista");
         System.out.println("sender: " + sender + "; lista: " + listname);
         try {
             users = notificationdao.getUsersWithWhoTheListIsShared(listname);
-            if(!users.isEmpty() && users != null){
+            if(!users.isEmpty()){ 
                 for(User u : users){
                     if(!u.getEmail().equals(sender)){
                         notificationdao.addNotification(u.getEmail(), "new_message", listname);

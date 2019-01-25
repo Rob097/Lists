@@ -18,15 +18,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Martin
  */
 public class DeleteProductCategory extends HttpServlet {
-
-    Category_ProductDAO catproddao;
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient Category_ProductDAO catproddao;
     
     @Override
     public void init() throws ServletException {
@@ -41,7 +40,6 @@ public class DeleteProductCategory extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        HttpSession session = (HttpSession) request.getSession(false);
         String listname =(String) request.getParameter("listname");
         Category_Product catProd = null;
         
@@ -51,13 +49,15 @@ public class DeleteProductCategory extends HttpServlet {
             Logger.getLogger(DeleteProductCategory.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        if(catProd.getImmagine() != null){
-            String listsFolder = "";
-            String rp = "/Image/CategoryIco";
-            listsFolder = getServletContext().getRealPath(listsFolder);
-            listsFolder = listsFolder.replace("\\build", "");
-            String imgfolder = catProd.getImmagine().replace("/Image/CategoryIco", "");
-            ImageDispatcher.DeleteImgFromDirectory(listsFolder + imgfolder);            
+        if(catProd != null){
+            if(catProd.getImmagine() != null){
+                String listsFolder = "";
+                String rp = "/Image/CategoryIco";
+                listsFolder = getServletContext().getRealPath(listsFolder);
+                listsFolder = listsFolder.replace("\\build", "");
+                String imgfolder = catProd.getImmagine().replace("/Image/CategoryIco", "");
+                ImageDispatcher.DeleteImgFromDirectory(listsFolder + imgfolder);            
+            }
         }
         
         try {

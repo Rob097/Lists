@@ -7,13 +7,11 @@ package ShopList;
 
 import database.daos.ListDAO;
 import database.entities.ShopList;
-import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCShopListDAO;
 import java.io.File;
 import java.io.IOException;
-import static java.lang.System.out;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -27,8 +25,8 @@ import javax.servlet.http.HttpSession;
  * @author Martin
  */
 public class DeleteShopList extends HttpServlet {
-
-    ListDAO listdao;
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient ListDAO listdao;
 
     @Override
     public void init() throws ServletException {
@@ -49,9 +47,7 @@ public class DeleteShopList extends HttpServlet {
             creator = request.getParameter("creator");
         }
         if(session.getAttribute("user") != null){
-            String listname = (String) session.getAttribute("shopListName");
-            User user = null;
-            user = (User) session.getAttribute("user");           
+            String listname = (String) session.getAttribute("shopListName"); 
 
             try {
                 ShopList list = listdao.getbyName(listname);
@@ -62,7 +58,7 @@ public class DeleteShopList extends HttpServlet {
                     listsFolder = getServletContext().getRealPath(listsFolder);
                     listsFolder = listsFolder.replace("\\build", "");
                     String imgfolder = list.getImmagine().replace("/Image/ListsImg", "");
-                    DeleteImgFromDirectory(listsFolder + imgfolder);
+                    deleteImgFromDirectory(listsFolder + imgfolder);
                 }
                 
                 
@@ -72,12 +68,8 @@ public class DeleteShopList extends HttpServlet {
                 System.out.println("ERRORE MOME LISTA");
             }
             String url  = "/Lists/userlists.jsp";
-                           
-            if (url != null) {
-                response.sendRedirect(url);
-            } else {
-                out.print("Errore Imprevisto");
-            }
+            response.sendRedirect(url);
+            
         }else{
             session.setAttribute("guestList", null);
             session.setAttribute("prodottiGuest", null);
@@ -113,8 +105,6 @@ public class DeleteShopList extends HttpServlet {
         
         if(session.getAttribute("user") != null){
             String listname = (String) request.getParameter("shopListName");
-            User user = null;
-            user = (User) session.getAttribute("user");           
 
             try {
                 ShopList list = listdao.getbyName(listname);
@@ -125,7 +115,7 @@ public class DeleteShopList extends HttpServlet {
                     listsFolder = getServletContext().getRealPath(listsFolder);
                     listsFolder = listsFolder.replace("\\build", "");
                     String imgfolder = list.getImmagine().replace("/Image/ListsImg", "");
-                    DeleteImgFromDirectory(listsFolder + imgfolder);
+                    deleteImgFromDirectory(listsFolder + imgfolder);
                 }
                 
                 
@@ -135,12 +125,8 @@ public class DeleteShopList extends HttpServlet {
                 System.out.println("ERRORE MOME LISTA");
             }
             String url  = "/Lists/userlists.jsp";
-                           
-            if (url != null) {
-                response.sendRedirect(url);
-            } else {
-                out.print("Errore Imprevisto");
-            }
+            response.sendRedirect(url);
+            
         }else{
             session.setAttribute("guestList", null);
             session.setAttribute("prodottiGuest", null);
@@ -165,7 +151,7 @@ public class DeleteShopList extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    public void DeleteImgFromDirectory(String fileName) {
+    public void deleteImgFromDirectory(String fileName) {
         // Creo un oggetto file
         File f = new File(fileName);
 

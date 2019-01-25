@@ -33,7 +33,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "AddProductToList", urlPatterns = {"/AddProductToList"})
 public class AddProductToList extends HttpServlet {
-
+    private static final long serialVersionUID = 6106269076155338045L;
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -55,16 +55,16 @@ public class AddProductToList extends HttpServlet {
         ListDAO listdao = new JDBCShopListDAO(daoFactory.getConnection());
         NotificationDAO notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
         HttpSession s = (HttpSession) request.getSession(false);
-        String prodotto = ""; String lista = "";
+        String prodotto; String lista = "";
         String data = null;
-        Date currentDate = null;
-        Calendar c = null;
+        Date currentDate;
+        Calendar c;
         
         if(request.getParameter("shopListName") != null){
             lista = (String) request.getParameter("shopListName");
         }else if(s.getAttribute("shopListName") != null){
             lista = (String) "" + s.getAttribute("shopListName");
-        }else prodotto = "niente";
+        };
 
         //richieste dei parametri lista e prodotto
         if(request.getParameter("prodotto") != null){
@@ -82,9 +82,7 @@ public class AddProductToList extends HttpServlet {
             c.setTime(currentDate);
             c.add(Calendar.DAY_OF_MONTH, listdao.getbyName(lista).getPromemoria());
             data = sdf.format(c.getTime());
-        } catch (ParseException ex) {
-            Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (DAOException ex) {
+        } catch (ParseException | DAOException ex) {
             Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
         }
         

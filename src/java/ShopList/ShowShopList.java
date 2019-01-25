@@ -5,11 +5,10 @@
  */
 package ShopList;
 
-import Notifications.Notification;
+
 import database.daos.ListDAO;
 import database.daos.NotificationDAO;
 import database.daos.UserDAO;
-import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
@@ -17,10 +16,6 @@ import database.jdbc.JDBCNotificationsDAO;
 import database.jdbc.JDBCShopListDAO;
 import database.jdbc.JDBCUserDAO;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,9 +27,10 @@ import javax.servlet.http.HttpSession;
  * @author Dmytr
  */
 public class ShowShopList extends HttpServlet {
-    UserDAO userdao;
-    ListDAO listdao;
-    NotificationDAO notificationdao;
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient UserDAO userdao;
+    transient ListDAO listdao;
+    transient NotificationDAO notificationdao;
 
     @Override
     public void init() throws ServletException {
@@ -67,7 +63,7 @@ public class ShowShopList extends HttpServlet {
             User user = (User) session.getAttribute("user");
              try{
                 notificationdao.deleteNotification(user.getEmail(), shopListName);
-            } catch (Exception ex) {
+            } catch (DAOException ex) {
                 System.out.println("Non ci sono notifiche da eliminare\n");
             }
         }

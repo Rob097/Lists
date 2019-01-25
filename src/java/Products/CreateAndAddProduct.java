@@ -37,10 +37,10 @@ import javax.servlet.http.Part;
  */
 @MultipartConfig(maxFileSize = 16177215)
 public class CreateAndAddProduct extends HttpServlet {
-
-    ListDAO listdao = null;
-    ProductDAO productdao = null;
-    NotificationDAO notificationdao = null;
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient ListDAO listdao = null;
+    transient ProductDAO productdao = null;
+    transient NotificationDAO notificationdao = null;
     
     @Override
     public void init() throws ServletException {
@@ -113,8 +113,10 @@ public class CreateAndAddProduct extends HttpServlet {
             pid = productdao.LastPIDforInsert(newProduct);
             listdao.insertProductToList(pid, list.getNome(),data);
             for(User u : utenti){
-                if(!u.getEmail().equals(user.getEmail())){
-                    notificationdao.addNotification(u.getEmail(), "new_product", list.getNome());
+                if(user != null){
+                    if(!u.getEmail().equals(user.getEmail())){
+                        notificationdao.addNotification(u.getEmail(), "new_product", list.getNome());
+                    }
                 }
             }
             

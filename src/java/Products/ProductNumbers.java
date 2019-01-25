@@ -6,7 +6,6 @@
 package Products;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +17,7 @@ import javax.servlet.http.HttpSession;
  * @author Roberto97
  */
 public class ProductNumbers extends HttpServlet {
-
+    private static final long serialVersionUID = 6106269076155338045L;
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -31,7 +30,7 @@ public class ProductNumbers extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession s = (HttpSession) request.getSession();
-        int numbers = 0;
+        int numbers;
         if(s.getAttribute("numbers") != null){
             numbers = (int) s.getAttribute("numbers");
             numbers += 10;

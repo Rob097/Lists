@@ -6,7 +6,6 @@
 package ShopList;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +17,7 @@ import javax.servlet.http.HttpSession;
  * @author Roberto97
  */
 public class setPID extends HttpServlet {
-
+    private static final long serialVersionUID = 6106269076155338045L;
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -34,8 +33,8 @@ public class setPID extends HttpServlet {
         HttpSession session = request.getSession();
         String id = request.getParameter("PID");
         session.setAttribute("prodotto", id);
-        
-        response.sendRedirect("/Lists/Pages/ShowProducts.jsp?PID="+id);
+        String url = "/Lists/Pages/ShowProducts.jsp?PID="+id;
+        response.sendRedirect(url);
     }
 
     /**

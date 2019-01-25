@@ -6,13 +6,10 @@
 package ShopList;
 
 import database.daos.ListDAO;
-import database.daos.ProductDAO;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
-import database.jdbc.JDBCProductDAO;
 import database.jdbc.JDBCShopListDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -25,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Roberto97
  */
 public class updateDefaultReminder extends HttpServlet {
-
+    private static final long serialVersionUID = 6106269076155338045L;
     /**
      * Handles the HTTP <code>POST</code> method.
      *

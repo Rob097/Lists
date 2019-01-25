@@ -30,8 +30,8 @@ import javax.servlet.http.Part;
  */
 @MultipartConfig(maxFileSize = 16177215)
 public class CreateProductCategory extends HttpServlet {
-
-    Category_ProductDAO catproddao = null;
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient Category_ProductDAO catproddao = null;
     @Override
     public void init() throws ServletException {
         //carica la Connessione inizializzata in JDBCDAOFactory, quindi ritorna il Class.for() e la connessione
@@ -60,7 +60,7 @@ public class CreateProductCategory extends HttpServlet {
         //immagine
         if(filePart1!=null){
              String relativeListFolderPath = "/Image/CategoryIco";
-            String listsFolder = ObtainRootFolderPath(relativeListFolderPath);
+            String listsFolder = obtainRootFolderPath(relativeListFolderPath);
             String extension = getImageExtension(filePart1);
             String imagineName =  catProduct.getNome() + "." + extension;
             ImageDispatcher.InsertImgIntoDirectory(listsFolder, imagineName, filePart1);
@@ -89,8 +89,8 @@ public class CreateProductCategory extends HttpServlet {
         return "Short description";
     }// </editor-fold>
     
-    public String ObtainRootFolderPath(String relativePath) {
-        String folder = "";
+    public String obtainRootFolderPath(String relativePath) {
+        String folder;
         folder = relativePath;
         folder = getServletContext().getRealPath(folder);
         folder = folder.replace("\\build", "");

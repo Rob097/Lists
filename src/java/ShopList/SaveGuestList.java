@@ -14,13 +14,10 @@ import database.factories.DAOFactory;
 import database.jdbc.JDBCProductDAO;
 import database.jdbc.JDBCShopListDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,8 +28,8 @@ import javax.servlet.http.HttpSession;
  * @author Roberto97
  */
 public class SaveGuestList extends HttpServlet {
-
-    /**
+    private static final long serialVersionUID = 6106269076155338045L;
+    /** 
      * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
@@ -66,14 +63,13 @@ public class SaveGuestList extends HttpServlet {
         if (s.getAttribute("prodottiGuest") != null) {
             prodotti = (ArrayList<Product>) s.getAttribute("prodottiGuest"); //Prendi l'attributo di sessione contenente i prodotti se non è nullo
         }
-        boolean check = false;
+        boolean check;
         try {
             listdao.checkIfGuestListExistInDatabase(creator, password);
             listdao.GuestSave(lista, creator, password);
             check = true;
         } catch (DAOException ex) {
             check = false;
-            ex.printStackTrace();
             Logger.getLogger(SaveGuestList.class.getName()).log(Level.SEVERE, null, ex);
         }
 

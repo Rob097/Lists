@@ -69,14 +69,14 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
         if (user == null) {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed user is null"));
         }
-       try (PreparedStatement statement = CON.prepareStatement("insert into User(email,password,nominativo,tipo,immagine) values(?,?,?,?,?,?)")) {
+       try (PreparedStatement statement = CON.prepareStatement("insert into User(email,password,nominativo,tipo,immagine,send) values(?,?,?,?,?,?)")) {
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getNominativo());
             statement.setString(4, user.getTipo());
             statement.setString(5, user.getImage());
             statement.setBoolean(6, user.isSendEmail());
-            if (statement.executeUpdate() == 1) {
+            if (statement.executeUpdate() > 0) {
                 return user;
             } else {
                 throw new DAOException("Impossible to insert the user");

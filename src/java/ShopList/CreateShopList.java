@@ -12,7 +12,6 @@ import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCShopListDAO;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -32,8 +31,8 @@ import static Tools.ImageDispatcher.getImageExtension;
  */
 @MultipartConfig(maxFileSize = 16177215)
 public class CreateShopList extends HttpServlet {
-
-    ListDAO listdao = null;
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient ListDAO listdao = null;
 
     @Override
     public void init() throws ServletException {
@@ -47,12 +46,13 @@ public class CreateShopList extends HttpServlet {
 
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         System.out.println("CREATEEEE");
         HttpSession s = request.getSession();
         ShopList nuovaLista = new ShopList();
-        Boolean regResult = false;
+        Boolean regResult;
         String nome;
         String descrizione;
         String immagine = "Image/ListsImg/guestsList.jpg";
@@ -66,7 +66,7 @@ public class CreateShopList extends HttpServlet {
         descrizione = request.getParameter("Descrizione");
         categoria = request.getParameter("Categoria");
         Part filePart1 = request.getPart("file1");
-        User temp = new User();
+        User temp;
         
         if (s.getAttribute("user") != null) {
             temp = (User) s.getAttribute("user");
@@ -90,7 +90,7 @@ public class CreateShopList extends HttpServlet {
 
         if (!creator.equals("ospite@lists.it")) {
 
-            String listsFolder = ObtainRootFolderPath(relativeListFolderPath);
+            String listsFolder = obtainRootFolderPath(relativeListFolderPath);
             String extension = getImageExtension(filePart1);
             String imagineName = creator + "-" + nome + "." + extension;
             ImageDispatcher.InsertImgIntoDirectory(listsFolder, imagineName, filePart1);
@@ -109,7 +109,7 @@ public class CreateShopList extends HttpServlet {
 
             //manda i dati del user, il metodo upate fa la parte statement 
             if (s.getAttribute("user") != null) {
-                nuovaLista = listdao.Insert(nuovaLista);
+                listdao.Insert(nuovaLista);
             } else {
                 s.setAttribute("guestList", nuovaLista);
             }
@@ -117,25 +117,13 @@ public class CreateShopList extends HttpServlet {
         } catch (DAOException ex) {
             Logger.getLogger(RegisterAction.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (nuovaLista != null && s.getAttribute("user") != null) {
-            regResult = true;
-            s.setAttribute("regResult", regResult);         
-        }
+        regResult = true;
+        s.setAttribute("regResult", regResult);         
+        
         s.setAttribute("regResult", false);
         System.out.println(url);
         response.sendRedirect(url);
 
-    }
-
-    public String SetImgName(String name, String extension) {
-
-        String s;
-        s = name;
-        s = s.trim();
-        s = s.replace("@", "");
-        s = s.replace(".", "");
-
-        return s + "." + extension;
     }
 
     /**
@@ -157,8 +145,8 @@ public class CreateShopList extends HttpServlet {
      * "Image/AvatarImg"
      * @return web/Image/AvatarImg
      */
-    public String ObtainRootFolderPath(String relativePath) {
-        String folder = "";
+    public String obtainRootFolderPath(String relativePath) {
+        String folder;
         folder = relativePath;
         folder = getServletContext().getRealPath(folder);
         folder = folder.replace("\\build", "");

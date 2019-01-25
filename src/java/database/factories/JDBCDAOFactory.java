@@ -67,7 +67,6 @@ public class JDBCDAOFactory implements DAOFactory{
                     CON = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
                     System.out.println("CONNESSIONE");
                 } catch (SQLException | ClassNotFoundException e) {
-                    e.printStackTrace();
                 }
             }
         }catch (SQLException ex) {
@@ -76,7 +75,6 @@ public class JDBCDAOFactory implements DAOFactory{
                 CON = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
                 System.out.println("CONNESSIONE IN CATCH");
             } catch (SQLException | ClassNotFoundException e) {
-                e.printStackTrace();
             }
         }
         return CON;

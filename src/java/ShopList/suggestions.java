@@ -7,14 +7,13 @@ package ShopList;
 
 import database.daos.ListDAO;
 import database.entities.ListProd;
+import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCShopListDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import javax.servlet.ServletException;
@@ -27,8 +26,8 @@ import javax.servlet.http.HttpServletResponse;
  * @author Dmytr
  */
 public class suggestions extends HttpServlet {
-
-    ListDAO listdao = null;
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient ListDAO listdao = null;
 
     @Override
     public void init() throws ServletException {
@@ -46,10 +45,10 @@ public class suggestions extends HttpServlet {
             throws ServletException, IOException {
 
         String listname = (String) request.getSession().getAttribute("shoplist");
-        ArrayList<ListProd> listprod = new ArrayList<ListProd>();
+        ArrayList<ListProd> listprod = new ArrayList<>();
         try {
             listprod = listdao.getProdList(listname);
-        } catch (Exception e) {
+        } catch (DAOException e) {
             System.out.println("ERRORE: non è stato possibile estatre i dati dalla tabella List_Prod, controllare da DAO delle liste");
         }
 
@@ -63,16 +62,16 @@ public class suggestions extends HttpServlet {
             Date currentDate = (Date) Calendar.getInstance().getTime();
             long difFrequence = differenceBetweenDates(insertDate, acquistoDate);
             long difLate = differenceBetweenDates(insertDate, acquistoDate);*/
-            
-            Date currentDate = (Date) Calendar.getInstance().getTime();
-            Date d1 = dataDiProva("2007/04/15 12:35:05");
+            Calendar calendario = Calendar.getInstance();
+            Date currentDate;
+            currentDate = (Date) calendario.getTime();
             Date acquistoDate = elem.getDataAcquisto();
             Date insertDate = elem.getData_inserimento();
             long difFrequence = differenceInMinutesBetweenDates(insertDate, acquistoDate);
             long difLate = differenceInMinutesBetweenDates(acquistoDate, currentDate);
             
             
-            if ((elem.getStato() == "Acquistato") && ((difFrequence - difLate) < 3)) {
+            if (("Acquistato".equals(elem.getStato())) && ((difFrequence - difLate) < 3)) {
                 System.out.println("Di solito in questo periodo acquisto questo prodotto, lo vuoi acquistare?" + elem.getProdotto());
             }
 
@@ -169,10 +168,9 @@ public class suggestions extends HttpServlet {
             fmt.setLenient(false);
 
             // Parses the two strings.
-            Date d1 = (Date) fmt.parse(strDate1);
-            Date d2 = (Date) fmt.parse(strDate2);
-            return d1;
-        } catch (Exception e) {
+            java.util.Date d1 = fmt.parse(strDate1);
+            return (Date) d1;
+        } catch (ParseException e) {
             System.out.println("sbagliata conversione data");
             return null;
         }

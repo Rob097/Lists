@@ -10,7 +10,6 @@ import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCProductDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -24,8 +23,8 @@ import javax.servlet.http.HttpSession;
  * @author Martin
  */
 public class DeletePeriodicProducts extends HttpServlet {
-    
-    ProductDAO productdao;
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient ProductDAO productdao;
     
     @Override
     public void init() throws ServletException {       
@@ -47,13 +46,11 @@ public class DeletePeriodicProducts extends HttpServlet {
         String shopListName = (String) session.getAttribute("shopListName");
         
         //new parsed var
-        int[] pids = new int[choosenProducts.length];
-        if(choosenProducts != null){
-            int i = 0;            
-           for (String p : choosenProducts) {               
-                pids[i] = Integer.parseInt(p);
-                i++;
-            } 
+       int[] pids = new int[choosenProducts.length];
+       int i = 0;            
+       for (String p : choosenProducts) {               
+            pids[i] = Integer.parseInt(p);
+            i++;
         }
         
         try {

@@ -9,6 +9,7 @@ import database.daos.ListDAO;
 import database.daos.ProductDAO;
 import database.entities.Product;
 import database.entities.User;
+import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCProductDAO;
 import database.jdbc.JDBCShopListDAO;
@@ -32,9 +33,9 @@ import javax.servlet.http.Part;
  */
 @MultipartConfig(maxFileSize = 16177215)
 public class AddNewProductToDataBase extends HttpServlet {
-
-    ListDAO listdao = null;
-    ProductDAO productdao = null;
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient ListDAO listdao = null;
+    transient ProductDAO productdao = null;
 
     @Override
     public void init() throws ServletException {
@@ -68,7 +69,7 @@ public class AddNewProductToDataBase extends HttpServlet {
         String nome = "";
         String note= "";
         String categoria_prodotto= "";
-        String immagine= "";
+        String immagine;
         String creator= "";
 
         try {
@@ -80,7 +81,7 @@ public class AddNewProductToDataBase extends HttpServlet {
             
             pid = productdao.LastPIDOfProducts();
             
-        } catch (Exception e) {
+        } catch (DAOException e) {
             System.out.println("ERRROREEEEE CATCH");
         }
 
@@ -126,7 +127,7 @@ public class AddNewProductToDataBase extends HttpServlet {
 
         try {
             productdao.Insert(nuovoProdotto);
-        } catch (Exception e) {
+        } catch (DAOException e) {
             System.out.println("EEEEEEEERRRRRRRROOEEEEEEEEEEEEEEEE");
         }
 
@@ -134,7 +135,7 @@ public class AddNewProductToDataBase extends HttpServlet {
 
     }
 
-    public String SetImgName(String name, String extension) {
+    /*public String setImgName(String name, String extension) {
 
         String s;
         s = name;
@@ -143,7 +144,7 @@ public class AddNewProductToDataBase extends HttpServlet {
         s = s.replace(".", "");
 
         return s + "." + extension;
-    }
+    }*/
 
     /**
      * Returns a short description of the servlet.

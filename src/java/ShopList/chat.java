@@ -7,28 +7,25 @@ package ShopList;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.ParseException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.catalina.connector.CoyoteWriter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  *
  * @author Dmytr
  */
 public class chat extends HttpServlet {
-
+    private static final long serialVersionUID = 6106269076155338045L;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -36,7 +33,7 @@ public class chat extends HttpServlet {
         String sender;
         String msg;
         String listaname;
-        ArrayList<String> m = new ArrayList<String>();
+        ArrayList<String> m = new ArrayList<>();
 
         msg = (String) request.getParameter("messaggio");
         sender = (String) request.getParameter("Sender");
@@ -48,22 +45,22 @@ public class chat extends HttpServlet {
         chatFolder = chatFolder.replace("\\build", "");
         chatFolder = chatFolder + "/" + listaname + ".json";
 
-        SaveMessage(m, chatFolder);
+        saveMessage(m, chatFolder);
         
     }
 
-    public void SaveMessage(ArrayList<String> m, String listname) throws IOException {
-        for (String s : m) {
+    public void saveMessage(ArrayList<String> m, String listname) throws IOException {
+        m.forEach((String s) -> {
             try {
-                JsonFileAppend(listname, s.split(":")[0], s.split(":")[1]);
-            } catch (Exception e) {
+                jsonFileAppend(listname, s.split(":")[0], s.split(":")[1]);
+            } catch (ParseException e) {
 
             }
-        }
+        });
 
     }
 
-    public void WriteOnTheFile(String fname, String content) throws IOException {
+    /*public void writeOnTheFile(String fname, String content) throws IOException {
         BufferedWriter bw = null;
         FileWriter fw = null;
 
@@ -99,15 +96,16 @@ public class chat extends HttpServlet {
                 ex.printStackTrace();
             }
         }
-    }
+    }*/
 
     public void appendToCheckbook(String fname, String name, String message, boolean last) {
 
         BufferedWriter bw = null;
-
+        
         try {
             // APPEND MODE SET HERE
-            bw = new BufferedWriter(new FileWriter(fname, true));
+            FileWriter fw = new FileWriter(fname, true);
+            bw = new BufferedWriter(fw);
             bw.write("[");
             bw.newLine();
             bw.write("{");
@@ -123,7 +121,6 @@ public class chat extends HttpServlet {
             }
             bw.flush();
         } catch (IOException ioe) {
-            ioe.printStackTrace();
         } finally {                       // always close the file
             if (bw != null) {
                 try {
@@ -136,7 +133,7 @@ public class chat extends HttpServlet {
 
     } // end test()
 
-    public void CreateJSONfile(String fname, String message, String name) {
+    /*public void createJSONfile(String fname, String message, String name) {
         JSONObject obj = new JSONObject();
         obj.put("name", name);
         obj.put("message", message);
@@ -151,9 +148,9 @@ public class chat extends HttpServlet {
         }
 
         System.out.print(obj);
-    }
+    }*/
 
-    public void JsonFileAppend(String fname, String name, String message) throws org.json.simple.parser.ParseException {
+    public void jsonFileAppend(String fname, String name, String message) throws org.json.simple.parser.ParseException {
 
         JSONParser js = new JSONParser();
         try {
@@ -162,17 +159,18 @@ public class chat extends HttpServlet {
 
             // if file doesnt exists, then create it
             if (!file.exists()) {
-                file.createNewFile();
-                FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
-                BufferedWriter bw = new BufferedWriter(fw);
-
-                bw.write("[{\"nome\":\"user\", \"message\":\"init\"}]");
+                File f = file.getAbsoluteFile();
+                FileWriter fw = new FileWriter(f, true);
+                try (BufferedWriter bw = new BufferedWriter(fw)) {
+                    bw.write("[{\"nome\":\"user\", \"message\":\"init\"}]");
+                }
             }
 
             Object obj;
-            obj = js.parse(new FileReader(fname));
+            FileReader fr = new FileReader(fname);
+            obj = js.parse(fr);
             JSONArray jsonArray = (JSONArray) obj;
-
+            
             System.out.println(jsonArray);
 
             JSONObject student1 = new JSONObject();
@@ -182,14 +180,18 @@ public class chat extends HttpServlet {
             jsonArray.add(student1);
 
             System.out.println(jsonArray);
-
-            FileWriter fw = new FileWriter(fname);
-            fw.write(jsonArray.toJSONString());
-            fw.flush();
-            fw.close();
+            FileWriter fw = null;
+            try{
+                fw = new FileWriter(fname);
+                fw.write(jsonArray.toJSONString());
+                fw.flush();
+            }catch(IOException e){
+                if(fw != null){
+                    fw.close();
+                }
+            }
 
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

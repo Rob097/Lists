@@ -27,7 +27,7 @@ import javax.servlet.http.HttpSession;
  * @author della
  */
 public class signProductAsBuyed extends HttpServlet {
-
+    private static final long serialVersionUID = 6106269076155338045L;
     /**
      * Handles the HTTP <code>GET</code> method.
      *

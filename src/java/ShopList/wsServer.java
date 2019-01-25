@@ -5,7 +5,6 @@
  */
 package ShopList;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -13,7 +12,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Set;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -23,25 +21,26 @@ import javax.websocket.server.ServerEndpoint;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 @ServerEndpoint("/wsServer")
 public class wsServer {
 
-    private static ArrayList<Session> allSessions = new ArrayList<Session>();
-    private static ArrayList<String> liste = new ArrayList<String>();
+    private static final ArrayList<Session> ALLSESSION = new ArrayList<Session>();
+    private static final ArrayList<String> LISTE = new ArrayList<String>();
     
     
     @OnOpen
     public void handleOpen(Session session) {
         System.out.println("client is now connecteddddddddddddddddddddddddddddddddddddd...");
         System.out.println("sessioneeeeeeee" + session.getId());
-        allSessions.add(session);
+        ALLSESSION.add(session);
     }
 
     @OnClose
     public void handleClose(Session session) throws UnsupportedEncodingException, IOException {
         System.out.println("client is now disconnected...");
-        MessagesFromListToFile();
+        messagesFromListToFile();
     }
 
     @OnMessage
@@ -49,26 +48,23 @@ public class wsServer {
 
         System.out.println("receive from client: " + message);
         String replyMessage = message;
-        liste.add(replyMessage);
+        LISTE.add(replyMessage);
         System.out.println("send to client: " + replyMessage);
 
-        for (Session sess : allSessions) {
-
-            if (sess.isOpen()) {
-                System.out.println("SONO UNA SESSIONEEEEE");
-
-                try {
-                    sess.getAsyncRemote().sendText(replyMessage);
-                } catch (Exception ioe) {
-                    System.out.println(ioe.getMessage());
-                }
+        ALLSESSION.stream().filter((sess) -> (sess.isOpen())).map((sess) -> {
+            System.out.println("SONO UNA SESSIONEEEEE");
+            return sess;
+        }).forEachOrdered((sess) -> {
+            try {
+                sess.getAsyncRemote().sendText(replyMessage);
+            } catch (Exception ioe) {
+                System.out.println(ioe.getMessage());
             }
-        }
+        });
     }
 
     @OnError
     public void handleError(Throwable t) {
-        t.printStackTrace();
     }
 
     //ritorna il path della directory WEB
@@ -81,7 +77,7 @@ public class wsServer {
         return fullPath.replaceFirst("/", "");
     }
 
-    public void JsonCreateFile(String fname, String sender, String message) throws org.json.simple.parser.ParseException {
+    public void jsonCreateFile(String fname, String sender, String message) throws org.json.simple.parser.ParseException {
 
         System.out.println("Write an JSON Object");
         /* Create simple object */
@@ -102,32 +98,33 @@ public class wsServer {
 
         /* write the complex object to a file */
         try {
-            FileWriter file = new FileWriter(fname);
-            file.write(array.toString());
-            file.flush();
-            file.close();
+            try (FileWriter file = new FileWriter(fname)) {
+                file.write(array.toString());
+                file.flush();
+            }
 
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
     public static JSONArray readJSONObject(String p) {
         JSONParser parser = new JSONParser();
         try {
-            /* Get the file content into the JSONObject */
-            Object obj = parser.parse(new FileReader(p));
+
+            Object obj;
+            try ( /* Get the file content into the JSONObject */ FileReader fr = new FileReader(p)) {
+                obj = parser.parse(fr);
+            }
             JSONArray jsonObject = (JSONArray) obj;
 
             System.out.println("Object from file:" + jsonObject);
             return jsonObject;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException | ParseException e) {
         }
         return null;
     }
 
-    public void Append(String listname, String sender, String message) throws UnsupportedEncodingException {
+    public void append(String listname, String sender, String message) throws UnsupportedEncodingException, IOException {
         String folderWithChat = getPath() + "Pages/chat/" + listname + ".json";
         //String folderWithChat = getPath() + listname + ".json";
         System.out.println(folderWithChat);
@@ -141,34 +138,36 @@ public class wsServer {
 
             arrayJson.add(newObj);
 
+            FileWriter file = null;
             try {
-                FileWriter file = new FileWriter(folderWithChat);
+                file = new FileWriter(folderWithChat);
                 file.write(arrayJson.toString());
                 file.flush();
-                file.close();
 
             } catch (IOException e) {
-                e.printStackTrace();
+                if(file != null){
+                    file.close();
+                }
             }
         } else {
 
             try {
-                JsonCreateFile(folderWithChat, sender, message);
-            } catch (Exception e) {
+                jsonCreateFile(folderWithChat, sender, message);
+            } catch (ParseException e) {
             }
 
         }
     }
 
     //@list lista che si è disconessa
-    public void MessagesFromListToFile() throws UnsupportedEncodingException {
-        if (!liste.isEmpty()) {
-            for (String s : liste) {
+    public void messagesFromListToFile() throws UnsupportedEncodingException, IOException {
+        if (!LISTE.isEmpty()) {
+            for (String s : LISTE) {
                 System.out.println(s);
-                Append(s.split(":")[0], s.split(":")[1], s.split(":")[2]);
+                append(s.split(":")[0], s.split(":")[1], s.split(":")[2]);
 
             }
-            liste.clear();
+            LISTE.clear();
         }
     }
 

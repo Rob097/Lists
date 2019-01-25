@@ -10,7 +10,6 @@ import database.daos.ListDAO;
 import database.daos.NotificationDAO;
 import database.daos.ProductDAO;
 import database.entities.Product;
-import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
@@ -32,7 +31,7 @@ import javax.servlet.http.HttpSession;
  * @author della
  */
 public class removeProduct extends HttpServlet {
-
+    private static final long serialVersionUID = 6106269076155338045L;
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -53,13 +52,12 @@ public class removeProduct extends HttpServlet {
         ProductDAO productdao = new JDBCProductDAO(daoFactory.getConnection());
         NotificationDAO notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
         HttpSession s = (HttpSession) request.getSession();
-        int prodotto = 0; String lista = ""; ShopList sl; ArrayList<Product> prod = null;
+        int prodotto = 0; String lista = ""; ArrayList<Product> prod = null;
         
         if(request.getParameter("prodotto") != null) prodotto = Integer.parseInt(request.getParameter("prodotto"));
         if(s.getAttribute("shopListName") != null && s.getAttribute("user") != null) 
             lista = (String) "" + s.getAttribute("shopListName");
         else{
-            sl = (ShopList) s.getAttribute("guestList");
             prod = (ArrayList<Product>) s.getAttribute("prodottiGuest");
         }
         if(s.getAttribute("user") != null){ 
@@ -102,10 +100,12 @@ public class removeProduct extends HttpServlet {
                 Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
             }            
         }else{
-            for(Product u : prod){
-                if(u.getPid() == prodotto)
-                    prod.remove(u);
-            }            
+            if(prod != null){
+                for(Product u : prod){
+                    if(u.getPid() == prodotto)
+                        prod.remove(u);
+                }     
+            }
         }
         
         response.sendRedirect("/Lists/Pages/ShowUserList.jsp");

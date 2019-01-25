@@ -49,6 +49,5 @@ public class WebAppListener implements ServletContextListener {
        if(daoFactory != null){
            daoFactory.shutdown();
        }
-       daoFactory = null;
     }
 }

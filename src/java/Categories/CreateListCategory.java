@@ -5,8 +5,6 @@
  */
 package Categories;
 
-import Tools.ImageDispatcher;
-import static Tools.ImageDispatcher.getImageExtension;
 import database.daos.CategoryDAO;
 import database.entities.Category;
 import database.entities.User;
@@ -22,7 +20,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 
 /**
  *
@@ -30,8 +27,8 @@ import javax.servlet.http.Part;
  */
 @MultipartConfig(maxFileSize = 16177215)
 public class CreateListCategory extends HttpServlet {
-
-    CategoryDAO categorydao;
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient CategoryDAO categorydao;
     @Override
     public void init() throws ServletException {
         //carica la Connessione inizializzata in JDBCDAOFactory, quindi ritorna il Class.for() e la connessione
@@ -79,8 +76,8 @@ public class CreateListCategory extends HttpServlet {
         return "Short description";
     }// </editor-fold>
     
-    public String ObtainRootFolderPath(String relativePath) {
-        String folder = "";
+    public String obtainRootFolderPath(String relativePath) {
+        String folder;
         folder = relativePath;
         folder = getServletContext().getRealPath(folder);
         folder = folder.replace("\\build", "");

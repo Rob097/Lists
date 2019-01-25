@@ -7,15 +7,11 @@ package ShopList;
 
 import database.daos.ListDAO;
 import database.daos.UserDAO;
-import database.entities.ShopList;
-import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCShopListDAO;
 import database.jdbc.JDBCUserDAO;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -29,9 +25,9 @@ import javax.servlet.http.HttpSession;
  * @author Martin
  */
 public class DeleteSharedUsers extends HttpServlet {
-
-    ListDAO listdao;
-    UserDAO userdao;
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient ListDAO listdao;
+    transient UserDAO userdao;
     @Override
     public void init() throws ServletException {
         //carica la Connessione inizializzata in JDBCDAOFactory, quindi ritorna il Class.for() e la connessione

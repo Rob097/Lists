@@ -8,6 +8,7 @@ package Products;
 import database.daos.ProductDAO;
 import database.daos.UserDAO;
 import database.entities.Product;
+import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCProductDAO;
 import database.jdbc.JDBCUserDAO;
@@ -23,9 +24,9 @@ import javax.servlet.http.HttpServletResponse;
  * @author Cody
  */
 public class DeleteProduct extends HttpServlet {
-
-    UserDAO userdao;
-    ProductDAO productdao;
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient UserDAO userdao;
+    transient ProductDAO productdao;
 
     @Override
     public void init() throws ServletException {
@@ -52,10 +53,10 @@ public class DeleteProduct extends HttpServlet {
 
         String PID = request.getParameter("PID");
         
-        Product p  =null;
+        Product p = new Product();
         try {
             p = productdao.getProductByID(Integer.parseInt(PID));
-        } catch (Exception e) {
+        } catch (DAOException | NumberFormatException e) {
             System.out.println("error get product");
         }
         
@@ -64,13 +65,13 @@ public class DeleteProduct extends HttpServlet {
             listsFolder = getServletContext().getRealPath(listsFolder);
             listsFolder = listsFolder.replace("\\build", "");
             String imgfolder = p.getImmagine().replace("/Image/ProductImg", "");
-            DeleteImgFromDirectory(listsFolder + imgfolder); 
+            deleteImgFromDirectory1(listsFolder + imgfolder); 
         }
         
         
         try {
             productdao.Delete(p);
-        } catch (Exception e) {
+        } catch (DAOException e) {
             System.out.println(e);
             System.out.println("delete product error");
         }
@@ -78,7 +79,7 @@ public class DeleteProduct extends HttpServlet {
         response.sendRedirect("/Lists/Pages/AdminProducts.jsp");
     }
 
-    public void DeleteImgFromDirectory(String fileName) {
+    public void deleteImgFromDirectory1(String fileName) {
         // Creo un oggetto file
         File f = new File(fileName);
 

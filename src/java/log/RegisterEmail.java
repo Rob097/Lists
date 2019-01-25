@@ -90,7 +90,7 @@ public class RegisterEmail extends HttpServlet {
         utente.setEmail(email);
         utente.setNominativo(nominativo);
         utente.setImage(photo);
-        
+        utente.setSendEmail(true);
         try {
             //manda i dati del user, il metodo upate fa la parte statement 
             utente = userdao.update(utente);

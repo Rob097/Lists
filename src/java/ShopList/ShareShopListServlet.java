@@ -7,7 +7,6 @@ package ShopList;
 
 import database.daos.ListDAO;
 import database.daos.NotificationDAO;
-import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
@@ -28,9 +27,9 @@ import javax.servlet.http.HttpSession;
  * @author Dmytr
  */
 public class ShareShopListServlet extends HttpServlet {
-
-    ListDAO listdao;
-    NotificationDAO notificationdao;
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient ListDAO listdao;
+    transient NotificationDAO notificationdao;
     @Override
     public void init() throws ServletException {
         //carica la Connessione inizializzata in JDBCDAOFactory, quindi ritorna il Class.for() e la connessione

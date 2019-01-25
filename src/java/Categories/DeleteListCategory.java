@@ -11,16 +11,13 @@ import database.entities.Category;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCCategoryDAO;
-import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -28,8 +25,8 @@ import javax.servlet.http.HttpSession;
  */
 public class DeleteListCategory extends HttpServlet {
 
-
-    CategoryDAO categorydao;
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient CategoryDAO categorydao;
     
     @Override
     public void init() throws ServletException {
@@ -43,7 +40,7 @@ public class DeleteListCategory extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = (HttpSession) request.getSession(false);
+        
         String listname =(String) request.getParameter("listname");
         Category category = null;
         
@@ -51,20 +48,21 @@ public class DeleteListCategory extends HttpServlet {
             category = categorydao.getByName(listname);
         } catch (DAOException ex) {
             Logger.getLogger(DeleteListCategory.class.getName()).log(Level.SEVERE, null, ex);
-        }        
-            
-        if(category.getImmagini() != null){
-            String listsFolder = "";
-            listsFolder = getServletContext().getRealPath(listsFolder);
-            listsFolder = listsFolder.replace("\\build", "");
-            Iterator i = category.getImmagini().iterator();
-            while(i.hasNext()){
-                String img = (String) i.next();
-                String imgfolder = img.replace("/Image/CategoryIco", "");
-                try{
-                    ImageDispatcher.DeleteImgFromDirectory(listsFolder + imgfolder);
-                }catch(Exception e){
-                    System.out.println("immagini non esiste");
+        }  
+        if(category != null){
+            if(category.getImmagini() == null){
+                System.out.println("immagine null");
+            }else{
+                String listsFolder = "";
+                listsFolder = getServletContext().getRealPath(listsFolder);
+                listsFolder = listsFolder.replace("\\build", "");
+                for (String img : category.getImmagini()) {
+                    String imgfolder = img.replace("/Image/CategoryIco", "");
+                    try{
+                        ImageDispatcher.DeleteImgFromDirectory(listsFolder + imgfolder);
+                    }catch(Exception e){
+                        System.out.println("immagini non esiste");
+                    }
                 }
             }
         }

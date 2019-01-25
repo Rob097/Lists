@@ -11,7 +11,6 @@ import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCProductDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +25,7 @@ import javax.servlet.http.HttpSession;
  * @author della
  */
 public class updateQuantity extends HttpServlet {
-
+    private static final long serialVersionUID = 6106269076155338045L;
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -49,7 +48,7 @@ public class updateQuantity extends HttpServlet {
         String lista = request.getParameter("lista");
         int id = Integer.parseInt(request.getParameter("id"));
         int quantita = Integer.parseInt(request.getParameter("quantita"));
-        ArrayList<Product> prod = null;
+        ArrayList<Product> prod;
         if(s.getAttribute("user") != null){
             try {
                 productdao.updateQuantity(quantita, id, lista);
@@ -59,10 +58,9 @@ public class updateQuantity extends HttpServlet {
             }
         }else{
             prod = (ArrayList<Product>) s.getAttribute("prodottiGuest");
-            for(Product u : prod){
-                if(u.getPid() == id)
-                    u.setQuantity(quantita);
-            } 
+            prod.stream().filter((u) -> (u.getPid() == id)).forEachOrdered((u) -> {
+                u.setQuantity(quantita);
+            }); 
         }
     }
 

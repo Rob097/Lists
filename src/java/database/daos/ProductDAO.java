@@ -9,12 +9,9 @@ import database.entities.ListProd;
 import database.entities.PeriodicProduct;
 import database.entities.Product;
 import database.exceptions.DAOException;
-import database.factories.DAOFactory;
 import java.util.ArrayList;
 import java.util.Date;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 
 /**

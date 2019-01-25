@@ -27,8 +27,8 @@ import javax.servlet.http.HttpSession;
  */
 public class AddPeriodicProducts extends HttpServlet {
 
-    
-    ProductDAO productdao;
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient ProductDAO productdao;
     @Override
     public void init() throws ServletException {       
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
@@ -56,13 +56,12 @@ public class AddPeriodicProducts extends HttpServlet {
         Date initdate = null;
         
         //parsing
-        if(choosenProducts != null){
-            int i = 0;            
-           for (String p : choosenProducts) {               
-                pids[i] = Integer.parseInt(p);
-                i++;
-            } 
-        }
+       int i = 0;            
+       for (String p : choosenProducts) {               
+            pids[i] = Integer.parseInt(p);
+            i++;
+        } 
+        
         
         if(period != null){
             periodtimer = Integer.parseInt(period);

@@ -17,15 +17,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Martin
  */
 public class DeleteCategoryImage extends HttpServlet {
-
-    CategoryDAO categorydao;
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient CategoryDAO categorydao;
     @Override
     public void init() throws ServletException {
         //carica la Connessione inizializzata in JDBCDAOFactory, quindi ritorna il Class.for() e la connessione
@@ -40,11 +39,11 @@ public class DeleteCategoryImage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = (HttpSession) request.getSession(false);
+        
         String image = request.getParameter("image");
         if(image!=null){
             try {
-                String listsFolder = "";
+                String listsFolder;
                 listsFolder = getServletContext().getRealPath(image);
                 listsFolder = listsFolder.replace("\\build", "");
                 ImageDispatcher.DeleteImgFromDirectory(listsFolder);
