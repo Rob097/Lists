@@ -67,7 +67,13 @@ public class PeriodicTask extends HttpServlet implements Runnable {
                             productdao.updatePeriodicDate(p, addPeriod(p.getData_scadenza(),p.getPeriodo())); 
                             //somma la data scadenza al periodo e la atualizza nella tabella List_Prod
                             listdao.updateExpirationDate(p, addPeriod(p.getData_scadenza(),p.getPeriodo()));
-                        }
+                        //se nessuno ha acquistato il prodotto fino alla scadenza
+                        }else if(dayDifference(p.getData_scadenza())<0){
+                            //somma la data scadenza al periodo e la atualizza nella tabella Periodic_Products
+                            productdao.updatePeriodicDate(p, addPeriod(p.getData_scadenza(),p.getPeriodo()));
+                            //somma la data scadenza al periodo e la atualizza nella tabella List_Prod
+                            listdao.updateExpirationDate(p, addPeriod(p.getData_scadenza(),p.getPeriodo()));
+                        }                          
                    }
                }
            }

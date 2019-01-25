@@ -53,7 +53,7 @@
 
 
     </head>
-    <body>
+    <body onload="loginControl(${loginResult})">
         <!--###############################################################################################################################-->
         <div class="page home-page">
             <header class="hero">
@@ -456,7 +456,7 @@
     ###############################################################################################################################-->            
     <script>
         $(document).ready(function () {
-
+            
             //LoginModal
             $.ajax({
                 type: "GET",
@@ -561,6 +561,14 @@
                 }
             });
         });
+    </script>
+    <script>
+        //reloads login modal in case of wrong username or password
+        function loginControl(loginResult){
+            if(loginResult === false){
+                $('#LoginModal').modal('show');
+            }
+        }
     </script>
 
     <c:if test = "${ not empty user}">
