@@ -86,7 +86,7 @@
                     <!--============ End Page Title =====================================================================-->  
                     <div class="page-title">
                         <div class="container">
-                            <h1>Map for ${shopListName}</h1>
+                            <h1>Mappa per ${shopListName}</h1>
                         </div>
                         <!--end container-->
                     </div>
@@ -110,7 +110,7 @@
                             <div class="col-md-12">
                                 <div id="map" style="width: 100%; height: 400px; background: grey"></div>
                                 <br>
-                                <input type="range" name="points" min="0" max="5000" id="raggio" style="align-content: center;">
+                                <!--<input type="range" name="points" min="0" max="5000" id="raggio" style="align-content: center;">-->
                                 
                                 
                                 <div class="container">
@@ -346,7 +346,7 @@
                 console.log("longitude: " + yourLong);
                 var nomeLista, nomeCategoria;
                 map.setCenter({lat: yourLat, lng: yourLong});
-                map.setZoom(14);
+                map.setZoom(12);
                 addCircleToMap(yourLat, yourLong);
                 var parisMarker = new H.map.Marker({lat: yourLat, lng: yourLong});
                 map.addObject(parisMarker);
@@ -484,7 +484,7 @@
                                         "</div>"+
                                         "</div>";
                                 
-                   var msg = "<br><div><h1 class=\"center\">Hei sei nelle vicinanze di una <span style = \"color:red;\">"+nomeCategoria+"</span>, dai un occhiata alla lista <span style = \"color:red;\">"+nomeLista+"</span> e completa la spesa</h1></div><br>";
+                   var msg = "<br><div><h1 class=\"center\">Hei sei nelle vicinanze di un negozio simile a <span style = \"color:red;\">"+nomeCategoria+"</span>, dai un occhiata alla lista <span><a style = \"color:red;\" href='/Lists/ShowShopList?nome="+nomeLista+"'>"+nomeLista+"</a></span> e completa la spesa</h1></div><br>";
                    document.getElementById("TuttiInegozzi").innerHTML+=msg;
                    //document.getElementById("contenitore").innerHTML += tableHeader;
                    
@@ -513,7 +513,6 @@
                         
                         if(distance<distanzaMassima){
                             //document.getElementById(nomeLista).innerHTML += "<tr><td>" + searchResult.results.items[i].title + "</td>" + "<td>" + category + "</td>" + "<td>" + distance + "</td>" + "<td>" + orari + "</td>" + "<td>" + vicinity + "</td>"+ "<td>" + nomeLista + "</td>"+"</tr>";
-                            
                 
                 document.getElementById("TuttiInegozzi").innerHTML+="<div class=\"item\">"+
 
@@ -521,11 +520,11 @@
                                         "<div class=\"image\">"+
                                             "<h3>"+
                                                 "<a href=\"#\" class=\"tag category\">" + category + "</a>"+
-                                                "<a href=\"single-listing-1.html\" class=\"title\">"+searchResult.results.items[i].title+"</a>"+
+                                                "<a href=\"#\" class=\"title\">"+searchResult.results.items[i].title+"</a>"+
         
                                             "</h3>"+
-                                            "<a href=\"single-listing-1.html\" class=\"image-wrapper background-image\">"+
-                                            "<img src=\"assets/img/image-01.jpg\">"+
+                                            "<a href=\"#\" class=\"image-wrapper background-image\">"+
+                                            '<img style="width: inherit; display:unset;" src=/Lists/${lista.immagine}>'+
                                             "</a>"+
                                         "</div>"+
                                         "<h4 class=\"location\">"+

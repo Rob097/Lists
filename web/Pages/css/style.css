@@ -3649,7 +3649,9 @@ textarea.form-control {
     .items:not(.selectize-input).list .item h4 a:before, .items:not(.selectize-input).list.compact .item h4 a:before {
         color: #fff;
     }
-    .items:not(.selectize-input).list .item h4.location, .items:not(.selectize-input).list.compact .item h4.location {}
+    .items:not(.selectize-input).list .item h4.location, .items:not(.selectize-input).list.compact .item h4.location {
+        display: flex !important;
+    }
     .items:not(.selectize-input).list .item h4.location:before, .items:not(.selectize-input).list.compact .item h4.location:before {
         color: #fff;
     }

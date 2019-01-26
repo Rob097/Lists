@@ -52,7 +52,7 @@ public class ChatroomFilter implements Filter {
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (DEBUG) {
-            log("ChatroomFilter:DoBeforeProcessing");
+            log("ChatroomFilter:doBeforeProcessing");
         }
         
         if(request instanceof HttpServletRequest){
@@ -163,7 +163,7 @@ public class ChatroomFilter implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (DEBUG) {                
-                log("ChatroomFilter:Initializing filter");
+                log("ChatroomFilter:init");
             }
             conInit(filterConfig);
         }

@@ -248,22 +248,21 @@
         var actualMessage = '<div class="messaging__main-chat__bubble user">';
         actualMessage += '<p>';
         actualMessage += textOfMessage;
-        actualMessage += '<small>24 hour ago</small>';
         actualMessage += '</p>';
         actualMessage += '</div>';
 
         allMessages.innerHTML = allMessages.innerHTML + actualMessage;
     }
 
-    function replierMessage(textOfMessage, name) {
+    function replierMessage(textOfMessage, name, img) {
         var allMessages = document.getElementById("TuttiImessaggi");
 
-        var actualMessage = '<div class="messaging__main-chat__bubble">';
-        actualMessage += '<p>';
+        var actualMessage = '<div class="messaging__main-chat__bubble" style="display: flex;">';
+        actualMessage += '<img style="border-radius: 50%;margin-bottom: 0;width: 3rem;height: 3rem;" src="/Lists/'+img+'"/>';
+        actualMessage += '<p style="margin-left: 10px;">';
         actualMessage += '<span class="username">' + name;
         actualMessage += '</span>';
         actualMessage += textOfMessage;
-        actualMessage += '<small>24 hour ago</small>';
         actualMessage += '</p>';
         actualMessage += '</div>';
 
@@ -324,7 +323,13 @@
             console.log(message.data.split(":")[1]);
             var m = message.data.split(":")[2];
             var usr = message.data.split(":")[1];
-            replierMessage(m, usr);
+            var img;
+            <c:forEach items="${userList}" var="u">
+                if('${u.nominativo}' === usr){
+                    img = '${u.image}';
+                }
+            </c:forEach>
+            replierMessage(m, usr, img);
             scrollDown();
 
         }
@@ -357,13 +362,19 @@
                 var items = JSON.parse(req.responseText);
                 console.log(items);
                 var user = document.getElementById("Sender").textContent;
+                var img; 
                 var output = '<ul>';
                 for (var key in items) {
+                    <c:forEach items="${userList}" var="u">
+                        if('${u.nominativo}' === items[key].name){
+                            img = '${u.image}';
+                        }
+                    </c:forEach>
                     console.log(items[key].message);
-                    if (items[key].name == user) {
+                    if (items[key].name === user) {
                         myMessage(items[key].message);
                     } else {
-                        replierMessage(items[key].message,items[key].name);
+                        replierMessage(items[key].message,items[key].name, img);
                     }
                     scrollDown();
                 }
