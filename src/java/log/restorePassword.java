@@ -34,8 +34,8 @@ import javax.servlet.http.HttpSession;
  * @author Roberto97
  */
 public class restorePassword extends HttpServlet {
-
-    UserDAO userdao = null;
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient UserDAO userdao = null;
 
     @Override
     public void init() throws ServletException {
@@ -231,6 +231,7 @@ public class restorePassword extends HttpServlet {
                 props.put("mail.smtp.starttls.enable", "true");
                 Session session2;
                 session2 = Session.getInstance(props, new javax.mail.Authenticator() {
+                    @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(User1, pass1);
                     }
@@ -251,7 +252,6 @@ public class restorePassword extends HttpServlet {
                     /* Transport class is used to deliver the message to the recipients */
                     Transport.send(message);
                 } catch (MessagingException mex) {
-                    mex.printStackTrace();
                 }
 
 

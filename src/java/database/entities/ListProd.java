@@ -20,6 +20,19 @@ public class ListProd {
     private Date dataAcquisto;
     private String quantita;
 
+    public ListProd(String lista, String prodotto, Date data_scadenza, Date data_inserimento, String stato, Date dataAcquisto, String quantita) {
+        this.lista = lista;
+        this.prodotto = prodotto;
+        this.data_scadenza = new Date(data_scadenza.getTime());
+        this.data_inserimento = new Date(data_inserimento.getTime());
+        this.stato = stato;
+        this.dataAcquisto = new Date(dataAcquisto.getTime());
+        this.quantita = quantita;
+    }
+
+    public ListProd() {
+    }    
+    
     public String getLista() {
         return lista;
     }
@@ -37,19 +50,19 @@ public class ListProd {
     }
 
     public Date getData_scadenza() {
-        return data_scadenza;
+        return new Date(data_scadenza.getTime()); //Date is mutable. Using that setter, someone can modify the date instance from outside unintentionally
     }
 
     public void setData_scadenza(Date data_scadenza) {
-        this.data_scadenza = data_scadenza;
+        this.data_scadenza = new Date(data_scadenza.getTime());
     }
 
     public Date getData_inserimento() {
-        return data_inserimento;
+        return new Date(data_inserimento.getTime());
     }
 
     public void setData_inserimento(Date data_inserimento) {
-        this.data_inserimento = data_inserimento;
+        this.data_inserimento = new Date(data_inserimento.getTime());
     }
 
     public String getStato() {
@@ -61,11 +74,11 @@ public class ListProd {
     }
 
     public Date getDataAcquisto() {
-        return dataAcquisto;
+        return new Date(dataAcquisto.getTime());
     }
 
     public void setDataAcquisto(Date dataAcquisto) {
-        this.dataAcquisto = dataAcquisto;
+        this.dataAcquisto = new Date(dataAcquisto.getTime());
     }
 
     public String getQuantita() {

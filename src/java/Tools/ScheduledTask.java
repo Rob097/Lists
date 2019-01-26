@@ -9,7 +9,6 @@ import database.daos.ListDAO;
 import database.daos.NotificationDAO;
 import database.daos.ProductDAO;
 import database.entities.ListProd;
-import database.entities.Product;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
@@ -17,6 +16,7 @@ import database.jdbc.JDBCNotificationsDAO;
 import database.jdbc.JDBCProductDAO;
 import database.jdbc.JDBCShopListDAO;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.HttpURLConnection;
@@ -63,7 +63,7 @@ public class ScheduledTask implements Runnable {
                     if (missingDays > 0 && missingDays <= 2) {
 
                         for (User u : utenti) {
-                            Product p1 = productdao.getProductByID(Integer.parseInt(p.getProdotto()));
+                            //Product p1 = productdao.getProductByID(Integer.parseInt(p.getProdotto()));
                             String messaggio = "Nella lista " + p.getLista() + " ci sono uno o piu' prodotti che devono essere comprati al piu' presto";
                             
                             if (notificationdao.checkReminderMail(u.getEmail(), p.getLista())) {
@@ -94,13 +94,13 @@ public class ScheduledTask implements Runnable {
                                     conn.setDoOutput(true);
                                     conn.getOutputStream().write(postDataBytes);
 
-                                    Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-
-                                    for (int c; (c = in.read()) >= 0;) {
-                                        System.out.print((char) c);
+                                    try(Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"))){
+                                        for (int c; (c = in.read()) >= 0;) {
+                                            System.out.print((char) c);
+                                        }
+                                        in.close();
                                     }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                } catch (IOException e) {
                                 }
                             }
                         }
@@ -117,9 +117,7 @@ public class ScheduledTask implements Runnable {
                     }
                 }
             }
-        } catch (ServletException ex) {
-            Logger.getLogger(ScheduledTask.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (DAOException ex) {
+        } catch (ServletException | DAOException ex) {
             Logger.getLogger(ScheduledTask.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

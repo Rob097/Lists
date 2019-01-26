@@ -36,7 +36,7 @@ import javax.servlet.http.HttpSession;
  */
 public class SingleGeolocationFilter implements Filter {
     
-    private static final boolean debug = true;
+    private static final boolean DEBUG = true;
     private FilterConfig filterConfig = null;
     private CategoryDAO categorydao = null;
     private ListDAO listdao = null;
@@ -56,7 +56,7 @@ public class SingleGeolocationFilter implements Filter {
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
-        if (debug) {
+        if (DEBUG) {
             log("SingleGeolocationFilter:DoBeforeProcessing");
         }
         
@@ -85,12 +85,10 @@ public class SingleGeolocationFilter implements Filter {
                     
                 }else {
                     ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "userlists.jsp"));
-                    return;
                 }         
                  
             }else{
                 ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "homepage.jsp"));
-                return;
             }
         }
 
@@ -106,11 +104,12 @@ public class SingleGeolocationFilter implements Filter {
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
         
-        if (debug) {
+        if (DEBUG) {
             log("SingleGeolocationFilter:doFilter()");
         }
         
@@ -119,12 +118,11 @@ public class SingleGeolocationFilter implements Filter {
         Throwable problem = null;
         try {
             chain.doFilter(request, response);
-        } catch (Throwable t) {
+        } catch (IOException | ServletException t) {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
             // rethrow the problem after that.
             problem = t;
-            t.printStackTrace();
         }
 
 
@@ -143,6 +141,7 @@ public class SingleGeolocationFilter implements Filter {
 
     /**
      * Return the filter configuration object for this filter.
+     * @return 
      */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
@@ -160,31 +159,36 @@ public class SingleGeolocationFilter implements Filter {
     /**
      * Destroy method for this filter
      */
+    @Override
     public void destroy() {        
     }
 
     /**
      * Init method for this filter
+     * @param filterConfig
+     * @throws javax.servlet.ServletException
      */
+    @Override
     public void init(FilterConfig filterConfig) throws ServletException {        
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
-            if (debug) {                
+            if (DEBUG) {                
                 log("SingleGeolocationFilter:Initializing filter");
             }
+            conInit(filterConfig);
         }
-        conInit(filterConfig);
     }
 
     /**
-     * Return a String representation of this object.
+     * Return a String represen
+     * @return tation of this object.
      */
     @Override
     public String toString() {
         if (filterConfig == null) {
             return ("SingleGeolocationFilter()");
         }
-        StringBuffer sb = new StringBuffer("SingleGeolocationFilter(");
+        StringBuilder sb = new StringBuilder("SingleGeolocationFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
@@ -196,26 +200,24 @@ public class SingleGeolocationFilter implements Filter {
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
-                PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);                
-                pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
-
-                // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
-                pw.print(stackTrace);                
-                pw.print("</pre></body>\n</html>"); //NOI18N
-                pw.close();
-                ps.close();
+                try (PrintStream ps = new PrintStream(response.getOutputStream()); PrintWriter pw = new PrintWriter(ps)) {
+                    pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
+                    
+                    // PENDING! Localize this for next official release
+                    pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
+                    pw.print(stackTrace);
+                    pw.print("</pre></body>\n</html>"); //NOI18N
+                }
                 response.getOutputStream().close();
-            } catch (Exception ex) {
+            } catch (IOException ex) {
             }
         } else {
             try {
-                PrintStream ps = new PrintStream(response.getOutputStream());
-                t.printStackTrace(ps);
-                ps.close();
+                try (PrintStream ps = new PrintStream(response.getOutputStream())) {
+                    t.printStackTrace(ps);
+                }
                 response.getOutputStream().close();
-            } catch (Exception ex) {
+            } catch (IOException ex) {
             }
         }
     }
@@ -229,7 +231,7 @@ public class SingleGeolocationFilter implements Filter {
             pw.close();
             sw.close();
             stackTrace = sw.getBuffer().toString();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
         }
         return stackTrace;
     }

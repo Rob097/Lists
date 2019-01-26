@@ -63,8 +63,11 @@ public class suggestions extends HttpServlet {
             long difFrequence = differenceBetweenDates(insertDate, acquistoDate);
             long difLate = differenceBetweenDates(insertDate, acquistoDate);*/
             Calendar calendario = Calendar.getInstance();
-            Date currentDate;
-            currentDate = (Date) calendario.getTime();
+            Date currentDate = null;
+            try{
+                currentDate = (Date) calendario.getTime();
+            }catch(ClassCastException cce){                
+            }
             Date acquistoDate = elem.getDataAcquisto();
             Date insertDate = elem.getData_inserimento();
             long difFrequence = differenceInMinutesBetweenDates(insertDate, acquistoDate);
@@ -168,8 +171,11 @@ public class suggestions extends HttpServlet {
             fmt.setLenient(false);
 
             // Parses the two strings.
-            java.util.Date d1 = fmt.parse(strDate1);
-            return (Date) d1;
+            Date d1 = null;
+            try{
+                d1  = (Date) fmt.parse(strDate1);
+            }catch(ClassCastException cce){}
+            return d1;
         } catch (ParseException e) {
             System.out.println("sbagliata conversione data");
             return null;

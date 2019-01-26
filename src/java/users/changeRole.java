@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
  * @author della
  */
 public class changeRole extends HttpServlet {
-
+    private static final long serialVersionUID = 6106269076155338045L;
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -48,7 +48,7 @@ public class changeRole extends HttpServlet {
         NotificationDAO notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
         
         String user = request.getParameter("user");
-        String roleOld = request.getParameter("role"); String roleNew = request.getParameter("new");;
+        String roleNew = request.getParameter("new");;
         String list = request.getParameter("list"); System.out.println("LISTA::: " + list);
         Boolean check = false;
         

@@ -46,7 +46,7 @@ public class DeleteCategoryImage extends HttpServlet {
                 String listsFolder;
                 listsFolder = getServletContext().getRealPath(image);
                 listsFolder = listsFolder.replace("\\build", "");
-                ImageDispatcher.DeleteImgFromDirectory(listsFolder);
+                ImageDispatcher.deleteImgFromDirectory(listsFolder);
         
                 categorydao.deleteImage(image);
             } catch (DAOException ex) {

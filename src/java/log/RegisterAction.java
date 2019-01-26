@@ -5,9 +5,6 @@
  */
 package log;
 
-import java.io.File;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.regex.Pattern;
 import javax.servlet.annotation.MultipartConfig;
@@ -17,7 +14,6 @@ import database.daos.UserDAO;
 import database.exceptions.DAOException;
 import database.jdbc.JDBCUserDAO;
 import java.io.IOException;
-import static java.lang.System.out;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,9 +40,9 @@ import javax.servlet.http.HttpSession;
  */
 @MultipartConfig(maxFileSize = 16177215)	// upload file's size up to 16MB
 public class RegisterAction extends HttpServlet {
-
-    UserDAO userdao = null;
-
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient UserDAO userdao = null;
+    
     @Override
     public void init() throws ServletException {
         //carica la Connessione inizializzata in JDBCDAOFactory, quindi ritorna il Class.for() e la connessione
@@ -58,6 +54,7 @@ public class RegisterAction extends HttpServlet {
         userdao = new JDBCUserDAO(daoFactory.getConnection());
     }
 
+    @Override
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         HttpSession session =(HttpSession) request.getSession(false);
@@ -75,17 +72,17 @@ public class RegisterAction extends HttpServlet {
         Part filePart1 = request.getPart("file1");
         InputStream file = filePart1.getInputStream();
          String extension = "";
-        if ((filePart1 != null) && (filePart1.getSize() > 0)) {
+        if (filePart1.getSize() > 0) {
             extension = Paths.get(filePart1.getSubmittedFileName()).getFileName().toString().split(Pattern.quote("."))[1];;
         }
         session.setAttribute("RegisterImageInputStrem", file);
         session.setAttribute("RegisterImageExtension", extension);
 
         if (Tipostandard != null) {
-            Tipostandard = "standard";
+            //Tipostandard = "standard";
             tipo = "standard";
         } else if (TipoAmministratore != null) {
-            TipoAmministratore = "amministratore";
+            //TipoAmministratore = "amministratore";
             tipo = "amministratore";
         }
         
@@ -328,6 +325,7 @@ public class RegisterAction extends HttpServlet {
         props.put("mail.smtp.starttls.enable", "true");
         Session session2;
         session2 = Session.getInstance(props, new javax.mail.Authenticator() {
+            @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(User1, pass1);
             }
@@ -348,7 +346,6 @@ public class RegisterAction extends HttpServlet {
             /* Transport class is used to deliver the message to the recipients */
             Transport.send(message);
         } catch (MessagingException mex) {
-            mex.printStackTrace();
         }
 
 

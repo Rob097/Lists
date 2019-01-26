@@ -29,11 +29,11 @@ import javax.servlet.http.HttpServlet;
  * @author Martin
  */
 public class PeriodicTask extends HttpServlet implements Runnable {
-    
+    private static final long serialVersionUID = 6106269076155338045L;
     ServletContextEvent sce;
-    ProductDAO productdao;
-    ListDAO listdao;
-    UserDAO userdao;
+    transient static ProductDAO productdao;
+    transient static ListDAO listdao;
+    transient static UserDAO userdao;
     
     public PeriodicTask(ServletContextEvent sce) {
         this.sce = sce;
@@ -78,9 +78,7 @@ public class PeriodicTask extends HttpServlet implements Runnable {
                }
            }
            
-        } catch (ServletException ex) {
-            Logger.getLogger(PeriodicTask.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (DAOException ex) {
+        } catch (ServletException | DAOException ex) {
             Logger.getLogger(PeriodicTask.class.getName()).log(Level.SEVERE, null, ex);
         }
                 

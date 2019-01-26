@@ -93,7 +93,7 @@ public class CreateShopList extends HttpServlet {
             String listsFolder = obtainRootFolderPath(relativeListFolderPath);
             String extension = getImageExtension(filePart1);
             String imagineName = creator + "-" + nome + "." + extension;
-            ImageDispatcher.InsertImgIntoDirectory(listsFolder, imagineName, filePart1);
+            ImageDispatcher.insertImgIntoDirectory(listsFolder, imagineName, filePart1);
             
             immagine = ImageDispatcher.savePathImgInDatabsae(relativeListFolderPath, imagineName);
 
@@ -109,7 +109,7 @@ public class CreateShopList extends HttpServlet {
 
             //manda i dati del user, il metodo upate fa la parte statement 
             if (s.getAttribute("user") != null) {
-                listdao.Insert(nuovaLista);
+                listdao.insert(nuovaLista);
             } else {
                 s.setAttribute("guestList", nuovaLista);
             }

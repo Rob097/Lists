@@ -23,8 +23,8 @@ import javax.servlet.http.HttpSession;
  * @author Roberto97
  */
 public class changeType extends HttpServlet {
-    
-    UserDAO userdao = null;
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient UserDAO userdao = null;
 
     @Override
     public void init() throws ServletException {

@@ -24,7 +24,7 @@ public class ImageDispatcher {
      * @param fileName questo è il percorso completo dell'immagine dal
      * cancellare
      */
-    public static void DeleteImgFromDirectory(String fileName) {
+    public static void deleteImgFromDirectory(String fileName) {
         // Creo un oggetto file
         File f = new File(fileName);
 
@@ -55,7 +55,7 @@ public class ImageDispatcher {
         }
     }
 
-    public static void InsertImgIntoDirectory(String Directory, String imgName, Part filePart1) {
+    public static void insertImgIntoDirectory(String Directory, String imgName, Part filePart1) {
 
         //nome dell'immagine con estensione 
         String CompleteImgName;
@@ -68,6 +68,8 @@ public class ImageDispatcher {
             
             try (InputStream fileContent = filePart1.getInputStream()) {
                 Files.copy(fileContent, file1.toPath());
+            } catch (RuntimeException e) {
+                throw e;
             } catch (Exception imgexception) {
                 System.out.println("exception image #1");
 
@@ -98,14 +100,14 @@ public class ImageDispatcher {
      * @return [reative path] + imgName.jpg
      */
     public static String savePathImgInDatabsae(String relativePath, String imgName){
-        String immagine = "";
+        String immagine;
         immagine = relativePath + "/" + imgName;
         immagine = immagine.replaceFirst("/", "");
         immagine = immagine.replaceAll("\\s+", "");
         return immagine;
     }
     
-    public static String SetImgName(String name, String extension){
+    public static String setImgName(String name, String extension){
         
         String s;
         s = name;

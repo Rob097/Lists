@@ -138,16 +138,11 @@ public class wsServer {
 
             arrayJson.add(newObj);
 
-            FileWriter file = null;
-            try {
-                file = new FileWriter(folderWithChat);
+            
+            try(FileWriter file = new FileWriter(folderWithChat)){
                 file.write(arrayJson.toString());
                 file.flush();
-
-            } catch (IOException e) {
-                if(file != null){
-                    file.close();
-                }
+                file.close();
             }
         } else {
 
