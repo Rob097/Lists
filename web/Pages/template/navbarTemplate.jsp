@@ -61,7 +61,7 @@
                 <img width= "50" src="/Lists/Pages/img/favicon.png" alt="Logo">
             </a>
             <a class="navbar-brand js-scroll-trigger" href="/Lists/homepage.jsp">LISTS</a>
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" id="navbarMenuButton">
                 Menu
                 <i class="fa fa-bars"></i>
             </button>
@@ -79,7 +79,7 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#LoginModal" style="cursor: pointer;">
+                        <a class="nav-link js-scroll-trigger" id="loginButton1" data-toggle="modal" data-target="#LoginModal" style="cursor: pointer;">
                             <i class="fa fa-sign-in"></i><b>Login</b>
                         </a>
                     </li>

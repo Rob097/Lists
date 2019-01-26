@@ -53,7 +53,7 @@
 
 
     </head>
-    <body onload="loginControl(${loginResult})">
+    <body>
         <!--###############################################################################################################################-->
         <div class="page home-page">
             <header class="hero">
@@ -161,7 +161,6 @@
                     </div>
                 </div>
             </c:if>
-
             <!--MESSAGGI-->
             <c:if test="${not empty messaggio}">
                 <div class="container pt-5" id="alert">
@@ -284,7 +283,10 @@
         ##########################################################-->
 
         <!-- Login Modal -->
-        <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModal" aria-hidden="true"></div>
+        <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            </div>
+        </div>
         <!--######################################################-->
 
         <!-- Register Modal -->
@@ -567,13 +569,13 @@
             });
         });
     </script>
-    <script>
-        //reloads login modal in case of wrong username or password
-        function loginControl(loginResult){
-            if(loginResult === false){
-                $('#LoginModal').modal('show');                 
+    <script>  
+    //reloads login modal in case of wrong username or password
+        $(document).ready(function () {
+            if(${loginResult} === false){
+                $('#LoginModal').modal('show'); 
             }            
-        }
+        });
     </script>
 
     <c:if test = "${ not empty user}">

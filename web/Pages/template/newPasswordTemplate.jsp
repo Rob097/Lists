@@ -22,7 +22,7 @@
 
         </div>
         <div class="modal-body">
-            <h5>Nuova passworrd per <%=request.getParameter("restorePasswordOf")%></h5>
+            <h5>Inserisci una nuova password per <%=request.getParameter("restorePasswordOf")%></h5>
             <!-- Form per il login -->
             <form class="form clearfix" id="restore-form" action="/Lists/changePassword" method="post" role="form">
                 <div class="form-group">
@@ -32,7 +32,7 @@
                 </div>
                 <!--end form-group-->
                 <div class="d-flex justify-content-between align-items-baseline">
-                    <button style="float: left;" type="submit" class="btn btn-primary">Recupera password</button>
+                    <button style="float: left;" type="submit" class="btn btn-primary">Cambia password</button>
                     <button style="float: right;" type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
                 </div>
             </form>
