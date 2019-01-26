@@ -184,7 +184,7 @@
                                                             <a href="#" class="tag category"><c:out value="${guestList.categoria}" /></a>
                                                             <a href="/Lists/ShowShopList?nome=${guestList.nome}" class="title"><c:out value="${guestList.nome}" /></a>
                                                         </h3>
-                                                        <a href="/Lists/restricted/ShowShopList?nome=${guestList.nome}" class="image-wrapper background-image">
+                                                        <a href="/Lists/ShowShopList?nome=${guestList.nome}" class="image-wrapper background-image">
                                                             <img src="${guestList.immagine}" alt="">
                                                         </a>
                                                     </div>
@@ -202,7 +202,7 @@
                                                         <p><c:out value="${guestList.descrizione}" /></p>
                                                     </div>
                                                     <!--end description-->
-                                                    <a href="/Lists/restricted/ShowShopList?nome=${guestList.nome}" class="detail text-caps underline">Detail</a>
+                                                    <a href="/Lists/ShowShopList?nome=${guestList.nome}" class="detail text-caps underline">Detail</a>
                                                 </div>
                                             </div>
                                             </c:if>

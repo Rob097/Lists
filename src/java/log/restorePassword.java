@@ -10,7 +10,6 @@ import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCUserDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,7 +60,7 @@ public class restorePassword extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String email = request.getParameter("email");
+        String email = request.getParameter("emailrestore"); System.out.println("EMAILLLLL: " + email);
         HttpSession session = (HttpSession) request.getSession(false);
         try {
             if (userdao.getByEmail(email) != null) {
@@ -173,12 +172,12 @@ public class restorePassword extends HttpServlet {
                         + "                                                                                </tr>\n"
                         + "                                                                                <tr>\n"
                         + "                                                                                    <td class=\"esd-block-text es-p15b\" align=\"center\">\n"
-                        + "                                                                                        <h2 style=\"color: #333333;\">Premi sul pulsante&nbsp; recuperare la tua password</h2>\n"
+                        + "                                                                                        <h2 style=\"color: #333333;\">Premi sul pulsante per recuperare la tua password</h2>\n"
                         + "                                                                                    </td>\n"
                         + "                                                                                </tr>\n"
                         + "                                                                                <tr>\n"
                         + "                                                                                    <td class=\"esd-block-text es-p15t es-p10b\" align=\"left\">\n"
-                        + "                                                                                        <p style=\"font-size: 16px; color: #777777;\">Per recuperare la password di email premi \"Recupera password\"&nbsp;</p>\n"
+                        + "                                                                                        <p style=\"font-size: 16px; color: #777777;\">Per recuperare la password di "+ email +" premi \"Recupera password\"&nbsp;</p>\n"
                         + "                                                                                    </td>\n"
                         + "                                                                                </tr>\n"
                         + "                                                                                <tr>\n"

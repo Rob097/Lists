@@ -26,7 +26,7 @@
             <form class="form clearfix" id="restore-form-temp" action="/Lists/restorePassword" method="post" role="form">
                 <div class="form-group">
                     <label for="email" class="col-form-label required">Email</label>
-                    <input type="text" name="email" id="emailrestore" tabindex="1" class="form-control" placeholder="Email" value="" required>
+                    <input type="text" name="emailrestore" id="emailrestore" tabindex="1" class="form-control" placeholder="Email" required>
                 </div>
                 <!--end form-group-->
                 <div class="d-flex justify-content-between align-items-baseline">

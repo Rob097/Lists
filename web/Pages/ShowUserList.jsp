@@ -205,16 +205,16 @@
 
             <li class="dropdown" id="notificationsLI"></li>
             
-                                <c:if test="${role != null}">
-                                    <div class="container pt-5" id="alert">
-                                        <c:if test="${role ne 'same'}">
-                                            <div class="alert alert-success text-center" role="alert">
-                                                <strong>Permessi</strong> di <c:out value="${role}"/> aggiornati correttamente.</a>.
-                                            </div> 
-                                                <c:set var="role" value="same"/>
-                                        </c:if> 
-                                    </div>
-                                </c:if>
+            <c:if test="${role != null}">
+                <div class="container pt-5" id="alert">
+                    <c:if test="${role ne 'same'}">
+                        <div class="alert alert-success text-center" role="alert">
+                            <strong>Permessi</strong> di <c:out value="${role}"/> aggiornati correttamente.</a>.
+                        </div> 
+                            <c:set var="role" value="same"/>
+                    </c:if> 
+                </div>
+            </c:if>
                                
             <!--*********************************************************************************************************-->
             <!--************ CONTENT ************************************************************************************-->

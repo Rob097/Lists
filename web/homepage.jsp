@@ -155,6 +155,9 @@
                 <div class="container pt-5" id="alert">
                     <div class="alert alert-danger text-center" role="alert">
                         <strong><c:out value="${errore}"/></strong>
+                        <a class="pl-5" onclick="${errore = null}; $('#alert').hide();">
+                            X
+                        </a>
                     </div>
                 </div>
             </c:if>
@@ -164,10 +167,12 @@
                 <div class="container pt-5" id="alert">
                     <div class="alert alert-success text-center" role="alert">
                         <strong>${messaggio}</strong>
+                        <a class="pl-5" onclick="${messaggio = null}; $('#alert').hide();">
+                            X
+                        </a>
                     </div>
                 </div>
             </c:if>
-            
 
             <!-- FINE DELLE NOTIFICHE -->
 
@@ -419,9 +424,9 @@
             $("#alert").hide();
 
             $("#alert").fadeTo(10000, 500).slideUp(500, function () {
-                $("#alert").slideUp(500);
+                $("#alert").slideUp(500);                
             });
-
+            
         });
     </script>
 
@@ -499,7 +504,7 @@
             //New password
             $.ajax({
                 type: "GET",
-                url: "/Lists/Pages/template/newPasswordTemplate.jsp",
+                url: "/Lists/Pages/template/newPasswordTemplate.jsp?restorePasswordOf=<%=request.getParameter("restorePasswordOf")%>",
                 cache: false,
                 success: function (response) {
                     $("#newPassword").html(response);
