@@ -566,8 +566,8 @@
         //reloads login modal in case of wrong username or password
         function loginControl(loginResult){
             if(loginResult === false){
-                $('#LoginModal').modal('show');
-            }
+                $('#LoginModal').modal('show');                 
+            }            
         }
     </script>
 
