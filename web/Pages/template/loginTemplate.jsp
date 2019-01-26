@@ -49,7 +49,7 @@ and open the template in the editor.
                 <div class="d-flex justify-content-between align-items-baseline">
                     <div class="form-group text-center">
                         <label>
-                            <input type="checkbox" name="remember" value="1">
+                            <input type="checkbox" name="remember" value="1" checked>
                             Remember Me
                         </label>
                     </div>
