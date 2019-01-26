@@ -5,11 +5,20 @@
  */
 package filters;
 
-import database.entities.User;
+import database.daos.CategoryDAO;
+import database.daos.ListDAO;
+import database.entities.Category;
+import database.entities.ShopList;
+import database.exceptions.DAOException;
+import database.factories.DAOFactory;
+import database.jdbc.JDBCCategoryDAO;
+import database.jdbc.JDBCShopListDAO;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -28,14 +37,22 @@ import javax.servlet.http.HttpSession;
 public class SingleGeolocationFilter implements Filter {
     
     private static final boolean debug = true;
-
-    // The filter configuration object we are associated with.  If
-    // this value is null, this filter instance is not currently
-    // configured. 
     private FilterConfig filterConfig = null;
+    private CategoryDAO categorydao = null;
+    private ListDAO listdao = null;
     
     public SingleGeolocationFilter() {
     }    
+    
+    private void conInit(FilterConfig filterConfig) throws ServletException{
+        DAOFactory daoFactory = (DAOFactory) filterConfig.getServletContext().getAttribute("daoFactory");
+        if (daoFactory == null) {
+            throw new ServletException("Impossible to get dao factory for user storage system");
+        }        
+   
+          categorydao = new JDBCCategoryDAO(daoFactory.getConnection());
+          listdao = new JDBCShopListDAO(daoFactory.getConnection());
+    }
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
@@ -51,12 +68,25 @@ public class SingleGeolocationFilter implements Filter {
             }
             HttpSession session = ((HttpServletRequest)request).getSession(false);
             if(session != null){               
-                String shopListName = (String) session.getAttribute("shopListName");    
-                User user = (User) session.getAttribute("user");
-                if(shopListName == null || user == null){
+                String shopListName = (String) session.getAttribute("shopListName");                
+                
+                if(shopListName != null){
+                    
+                    try {
+                        //get all elements form current list
+                        ShopList lista = listdao.getbyName(shopListName);
+                        session.setAttribute("lista", lista);
+                        //get all elements from list-category
+                        Category categoria = categorydao.getByName(lista.getCategoria());
+                        session.setAttribute("listCategory", categoria);                        
+                    } catch (DAOException ex) {
+                        Logger.getLogger(SingleGeolocationFilter.class.getName()).log(Level.SEVERE, null, ex);
+                    }                    
+                    
+                }else {
                     ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "userlists.jsp"));
                     return;
-                }             
+                }         
                  
             }else{
                 ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "homepage.jsp"));
@@ -136,13 +166,14 @@ public class SingleGeolocationFilter implements Filter {
     /**
      * Init method for this filter
      */
-    public void init(FilterConfig filterConfig) {        
+    public void init(FilterConfig filterConfig) throws ServletException {        
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {                
                 log("SingleGeolocationFilter:Initializing filter");
             }
         }
+        conInit(filterConfig);
     }
 
     /**
