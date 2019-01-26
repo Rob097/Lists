@@ -35,7 +35,7 @@ import javax.servlet.http.HttpSession;
  */
 public class ListCategoryFilter implements Filter {
     
-    private static final boolean DEBUG = true;
+    private static final boolean debug = true;
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
@@ -48,7 +48,7 @@ public class ListCategoryFilter implements Filter {
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
-        if (DEBUG) {
+        if (debug) {
             log("ListCategoryFilter:DoBeforeProcessing");
         }
         if(request instanceof HttpServletRequest){
@@ -76,6 +76,7 @@ public class ListCategoryFilter implements Filter {
                             contextPath += "/";
                         }
                         ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "homepage.jsp"));
+                          return;
                     }
                 }else{
                     String contextPath = servletContext.getContextPath();
@@ -83,6 +84,7 @@ public class ListCategoryFilter implements Filter {
                         contextPath += "/";
                     }
                     ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "homepage.jsp"));
+                          return;
                 }
             }else{
                 String contextPath = servletContext.getContextPath();
@@ -90,6 +92,7 @@ public class ListCategoryFilter implements Filter {
                     contextPath += "/";
                 }
                 ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "homepage.jsp"));
+                          return;
             }
         }
     }    
@@ -103,12 +106,11 @@ public class ListCategoryFilter implements Filter {
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
-    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
         
-        if (DEBUG) {
+        if (debug) {
             log("ListCategoryFilter:doFilter()");
         }
         
@@ -117,11 +119,12 @@ public class ListCategoryFilter implements Filter {
         Throwable problem = null;
         try {
             chain.doFilter(request, response);
-        } catch (IOException | ServletException t) {
+        } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
             // rethrow the problem after that.
             problem = t;
+            t.printStackTrace();
         }
         
         // If there was a problem, we want to rethrow it if it is
@@ -139,7 +142,6 @@ public class ListCategoryFilter implements Filter {
 
     /**
      * Return the filter configuration object for this filter.
-     * @return 
      */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
@@ -157,25 +159,20 @@ public class ListCategoryFilter implements Filter {
     /**
      * Destroy method for this filter
      */
-    @Override
     public void destroy() {        
     }
 
     /**
      * Init method for this filter
-     * @param filterConfig
-     * @throws javax.servlet.ServletException
      */
-    @Override
     public void init(FilterConfig filterConfig) throws ServletException {        
         this.filterConfig = filterConfig;
-        DAOFactory daoFactory = null;
         if (filterConfig != null) {
-            if (DEBUG) {                
+            if (debug) {                
                 log("ListCategoryFilter:Initializing filter");
             }
-            daoFactory = (DAOFactory) filterConfig.getServletContext().getAttribute("daoFactory");
         }
+        DAOFactory daoFactory = (DAOFactory) filterConfig.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
@@ -185,14 +182,13 @@ public class ListCategoryFilter implements Filter {
 
     /**
      * Return a String representation of this object.
-     * @return 
      */
     @Override
     public String toString() {
         if (filterConfig == null) {
             return ("ListCategoryFilter()");
         }
-        StringBuilder sb = new StringBuilder("ListCategoryFilter(");
+        StringBuffer sb = new StringBuffer("ListCategoryFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
@@ -204,24 +200,26 @@ public class ListCategoryFilter implements Filter {
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
-                try (PrintStream ps = new PrintStream(response.getOutputStream()); PrintWriter pw = new PrintWriter(ps)) {
-                    pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
-                    
-                    // PENDING! Localize this for next official release
-                    pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
-                    pw.print(stackTrace);
-                    pw.print("</pre></body>\n</html>"); //NOI18N
-                }
+                PrintStream ps = new PrintStream(response.getOutputStream());
+                PrintWriter pw = new PrintWriter(ps);                
+                pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
+
+                // PENDING! Localize this for next official release
+                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
+                pw.print(stackTrace);                
+                pw.print("</pre></body>\n</html>"); //NOI18N
+                pw.close();
+                ps.close();
                 response.getOutputStream().close();
-            } catch (IOException ex) {
+            } catch (Exception ex) {
             }
         } else {
             try {
-                try (PrintStream ps = new PrintStream(response.getOutputStream())) {
-                    t.printStackTrace(ps);
-                }
+                PrintStream ps = new PrintStream(response.getOutputStream());
+                t.printStackTrace(ps);
+                ps.close();
                 response.getOutputStream().close();
-            } catch (IOException ex) {
+            } catch (Exception ex) {
             }
         }
     }
@@ -235,7 +233,7 @@ public class ListCategoryFilter implements Filter {
             pw.close();
             sw.close();
             stackTrace = sw.getBuffer().toString();
-        } catch (IOException ex) {
+        } catch (Exception ex) {
         }
         return stackTrace;
     }

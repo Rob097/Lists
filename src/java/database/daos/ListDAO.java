@@ -24,8 +24,8 @@ public interface ListDAO {
 
     public ArrayList<ShopList> getByEmail(String email) throws DAOException;
     public ArrayList<User> getUsersWithWhoTheListIsShared(ShopList l) throws DAOException;
-    public ShopList insert(ShopList l) throws DAOException;
-    public ShopList guestSave(ShopList l, String creator, String password) throws DAOException;
+    public ShopList Insert(ShopList l) throws DAOException;
+    public ShopList GuestSave(ShopList l, String creator, String password) throws DAOException;
     public void deleteGuestListFromDB(String creator) throws DAOException;
     public void checkIfGuestListExistInDatabase(String creator, String password) throws DAOException;
     public ShopList getGuestList(String email, String password) throws DAOException;

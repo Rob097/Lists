@@ -14,20 +14,23 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 /**
  *
  * @author Roberto97
  */
 public class RegisterEmail extends HttpServlet {
-    private static final long serialVersionUID = 6106269076155338045L;
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -37,7 +40,7 @@ public class RegisterEmail extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     
-    transient UserDAO userdao = null;
+    UserDAO userdao = null;
 
     @Override
     public void init() throws ServletException {
@@ -54,9 +57,9 @@ public class RegisterEmail extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session =(HttpSession) request.getSession(false);
-        String email = request.getParameter("email"), nominativo = request.getParameter("nominativo"), password = request.getParameter("password"), tipo = request.getParameter("tipo"), photo;
+        String email = request.getParameter("email"), nominativo = request.getParameter("nominativo"), password = request.getParameter("password"), tipo = request.getParameter("tipo"), photo = "";
         User utente = new User();
-        Boolean regResult;
+        Boolean regResult = false;
         
         String avatarsFolder = "/Image/AvatarImg";
         String rp = "/Image/AvatarImg";
@@ -74,7 +77,7 @@ public class RegisterEmail extends HttpServlet {
             System.out.println("ci sono");
             String email1 = email;
 
-            filename1 = setImgName(email1, extension);
+            filename1 = SetImgName(email1, extension);
             File file1 = new File(uploadDirFile, filename1);
             try (InputStream fileContent = filePart1) {
                 Files.copy(fileContent, file1.toPath());
@@ -95,9 +98,10 @@ public class RegisterEmail extends HttpServlet {
         } catch (DAOException ex) {
             Logger.getLogger(RegisterAction.class.getName()).log(Level.SEVERE, null, ex);
         }
-        regResult = true;
-        session.setAttribute("regResult", regResult);
-        
+        if(utente != null){
+            regResult = true;
+            session.setAttribute("regResult", regResult);
+        }
         
         response.sendRedirect("/Lists/homepage.jsp");
     }
@@ -112,7 +116,7 @@ public class RegisterEmail extends HttpServlet {
         return "Short description";
     }// </editor-fold>
     
-    public String setImgName(String name, String extension) {
+    public String SetImgName(String name, String extension) {
 
         String s;
         s = name;
@@ -123,7 +127,7 @@ public class RegisterEmail extends HttpServlet {
         return s + "." + extension;
     }
 
-    public String getImgFolderPath() {
+    public String GetImgFolderPath() {
         return "";
     }
 }

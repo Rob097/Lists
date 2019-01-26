@@ -66,13 +66,13 @@ public class removeProduct extends HttpServlet {
                Product product =  productdao.getProductByID(prodotto);
 
                 if(!product.getCreator().equals("amministratore")){
-                    productdao.delete(product);
+                    productdao.Delete(product);
                     if(product.getImmagine() != null && !(product.getImmagine().equals(""))){  
                         String listsFolder = "";
                         listsFolder = getServletContext().getRealPath(listsFolder);
                         listsFolder = listsFolder.replace("\\build", "");
                         String imgfolder = product.getImmagine().replace("/Image/ProductImg", "");
-                        ImageDispatcher.deleteImgFromDirectory(listsFolder + imgfolder); 
+                        ImageDispatcher.DeleteImgFromDirectory(listsFolder + imgfolder); 
                     }
                 }
 

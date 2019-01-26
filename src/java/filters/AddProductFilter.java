@@ -5,18 +5,25 @@
  */
 package filters;
 
+import ShopList.ShowShopList;
+import database.daos.CategoryDAO;
 import database.daos.Category_ProductDAO;
 import database.daos.ListDAO;
+import database.daos.NotificationDAO;
 import database.daos.ProductDAO;
+import database.daos.UserDAO;
 import database.entities.Category_Product;
 import database.entities.Product;
 import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
+import database.jdbc.JDBCCategoryDAO;
 import database.jdbc.JDBCCategory_ProductDAO;
+import database.jdbc.JDBCNotificationsDAO;
 import database.jdbc.JDBCProductDAO;
 import database.jdbc.JDBCShopListDAO;
+import database.jdbc.JDBCUserDAO;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -43,7 +50,7 @@ import javax.servlet.http.HttpSession;
 @WebFilter(filterName = "AddProductFilter", urlPatterns = {"/Pages/AddProductToListPage.jsp"})
 public class AddProductFilter implements Filter {
     
-    private static final boolean DEBUG = true;
+    private static final boolean debug = true;
     private FilterConfig filterConfig = null;
     private ListDAO listdao = null;
     private Category_ProductDAO category_productdao = null;
@@ -64,7 +71,7 @@ public class AddProductFilter implements Filter {
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
-        if (DEBUG) {
+        if (debug) {
             log("AddProductFilter:DoBeforeProcessing");
         }
         
@@ -100,9 +107,9 @@ public class AddProductFilter implements Filter {
                         session.setAttribute("periodicProducts", pli);
                         
                         if((request.getParameter("cat") == null || request.getParameter("cat").equals("all"))){
-                            li.forEach((p) -> {
+                            for(Product p : li){
                                 session.setAttribute(p.getNome(), p.getNome());
-                            });                        
+                            }                        
                         }
                         
                     } catch (DAOException ex) {
@@ -111,9 +118,11 @@ public class AddProductFilter implements Filter {
                     }
                 }else {
                   ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "userlists.jsp"));
+                return;  
                 }                     
             }else{
                 ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "homepage.jsp"));
+                return;
             }
         }
 
@@ -128,12 +137,11 @@ public class AddProductFilter implements Filter {
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
-    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
         
-        if (DEBUG) {
+        if (debug) {
             log("AddProductFilter:doFilter()");
         }
         
@@ -142,11 +150,12 @@ public class AddProductFilter implements Filter {
         Throwable problem = null;
         try {
             chain.doFilter(request, response);
-        } catch (IOException | ServletException t) {
+        } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
             // rethrow the problem after that.
             problem = t;
+            t.printStackTrace();
         }
       
         // If there was a problem, we want to rethrow it if it is
@@ -164,7 +173,6 @@ public class AddProductFilter implements Filter {
 
     /**
      * Return the filter configuration object for this filter.
-     * @return 
      */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
@@ -182,36 +190,32 @@ public class AddProductFilter implements Filter {
     /**
      * Destroy method for this filter
      */
-    @Override
     public void destroy() {        
     }
 
     /**
      * Init method for this filter
-     * @param filterConfig
-     * @throws javax.servlet.ServletException
      */
-    @Override
     public void init(FilterConfig filterConfig) throws ServletException {        
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
-            if (DEBUG) {                
+            if (debug) {                
                 log("AddProductFilter:Initializing filter");
             }
-            conInit(filterConfig);
         }
+        
+        conInit(filterConfig);
     }
 
     /**
      * Return a String representation of this object.
-     * @return 
      */
     @Override
     public String toString() {
         if (filterConfig == null) {
             return ("AddProductFilter()");
         }
-        StringBuilder sb = new StringBuilder("AddProductFilter(");
+        StringBuffer sb = new StringBuffer("AddProductFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
@@ -223,26 +227,26 @@ public class AddProductFilter implements Filter {
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
-                try (PrintStream ps = new PrintStream(response.getOutputStream()); PrintWriter pw = new PrintWriter(ps)) {
-                    pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
+                PrintStream ps = new PrintStream(response.getOutputStream());
+                PrintWriter pw = new PrintWriter(ps);                
+                pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
 
-                    // PENDING! Localize this for next official release
-                    pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
-                    pw.print(stackTrace);
-                    pw.print("</pre></body>\n</html>"); //NOI18N
-                }
+                // PENDING! Localize this for next official release
+                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
+                pw.print(stackTrace);                
+                pw.print("</pre></body>\n</html>"); //NOI18N
+                pw.close();
+                ps.close();
                 response.getOutputStream().close();
-            } catch (RuntimeException e) {
-                throw e;
-            } catch (IOException ex) {
+            } catch (Exception ex) {
             }
         } else {
             try {
-                try (PrintStream ps = new PrintStream(response.getOutputStream())) {
-                    t.printStackTrace(ps);
-                }
+                PrintStream ps = new PrintStream(response.getOutputStream());
+                t.printStackTrace(ps);
+                ps.close();
                 response.getOutputStream().close();
-            } catch (IOException ex) {
+            } catch (Exception ex) {
             }
         }
     }
@@ -256,7 +260,7 @@ public class AddProductFilter implements Filter {
             pw.close();
             sw.close();
             stackTrace = sw.getBuffer().toString();
-        } catch (IOException ex) {
+        } catch (Exception ex) {
         }
         return stackTrace;
     }

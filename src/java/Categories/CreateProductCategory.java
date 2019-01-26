@@ -63,7 +63,7 @@ public class CreateProductCategory extends HttpServlet {
             String listsFolder = obtainRootFolderPath(relativeListFolderPath);
             String extension = getImageExtension(filePart1);
             String imagineName =  catProduct.getNome() + "." + extension;
-            ImageDispatcher.insertImgIntoDirectory(listsFolder, imagineName, filePart1);
+            ImageDispatcher.InsertImgIntoDirectory(listsFolder, imagineName, filePart1);
             
             String immagine = ImageDispatcher.savePathImgInDatabsae(relativeListFolderPath, imagineName);
             catProduct.setImmagine(immagine);

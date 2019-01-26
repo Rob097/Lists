@@ -38,7 +38,7 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM Category WHERE nome = ?")) {
             ArrayList<Category> categorie = new ArrayList<>();
 
-            stm.setString(1, nome);
+            stm.setString(1, nome.toString());
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     Category p = new Category();
@@ -93,6 +93,7 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
            statement.setString(3, category.getAdmin());
            
            if(statement.executeUpdate() == 1){
+               return;
            }else{
                throw new DAOException("Impossible to insert the category");
            }
@@ -109,7 +110,7 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
         }
         
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM Category WHERE nome = ?")) {
-            stm.setString(1, nome);
+            stm.setString(1, nome.toString());
             
             Category categoria = new Category();
             try (ResultSet rs = stm.executeQuery()) {
@@ -138,6 +139,7 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
             statement.setString(1, category.getNome());
 
             if (statement.executeUpdate() > 0) {
+                return;
             } else {
                 throw new DAOException("Impossible to delete Category");
             }
@@ -158,6 +160,7 @@ public class JDBCCategoryDAO extends JDBCDAO implements CategoryDAO{
            statement.setString(2, categoria.getImmagine());
            
            if(statement.executeUpdate() == 1){
+               return;
            }else{
                throw new DAOException("impossible to insert category-immage");
            }

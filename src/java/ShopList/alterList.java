@@ -129,14 +129,12 @@ public class alterList extends HttpServlet {
                         String extension = getImageExtension(filePart1);
                         String imagineName = creator + "-" + nome + "." + extension;    
                         try{
-                            ImageDispatcher.deleteImgFromDirectory(listsFolder+"/"+imagineName);
+                            ImageDispatcher.DeleteImgFromDirectory(listsFolder+"/"+imagineName);
                         }catch(Exception e){
                             System.out.println("Nessuna immagine da cancellare");
                         }
-                        ImageDispatcher.insertImgIntoDirectory(listsFolder, imagineName, filePart1);            
+                        ImageDispatcher.InsertImgIntoDirectory(listsFolder, imagineName, filePart1);            
                         immagine = ImageDispatcher.savePathImgInDatabsae(relativeListFolderPath, imagineName);
-                    } catch (RuntimeException e) {
-                        throw e;
                     }catch(Exception e){
                         if(Lista != null)
                             immagine = Lista.getImmagine();

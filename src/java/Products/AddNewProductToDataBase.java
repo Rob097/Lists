@@ -79,7 +79,7 @@ public class AddNewProductToDataBase extends HttpServlet {
 
             categoria_prodotto = request.getParameter("CategoriaProdotto");
             
-            pid = productdao.lastPIDOfProducts();
+            pid = productdao.LastPIDOfProducts();
             
         } catch (DAOException e) {
             System.out.println("ERRROREEEEE CATCH");
@@ -126,7 +126,7 @@ public class AddNewProductToDataBase extends HttpServlet {
         nuovoProdotto.setNote(note);
 
         try {
-            productdao.insert(nuovoProdotto);
+            productdao.Insert(nuovoProdotto);
         } catch (DAOException e) {
             System.out.println("EEEEEEEERRRRRRRROOEEEEEEEEEEEEEEEE");
         }

@@ -19,7 +19,7 @@ import database.entities.User;
  * @author Roberto97
  */
 public class LogoutAction extends HttpServlet {
-    private static final long serialVersionUID = 6106269076155338045L;
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

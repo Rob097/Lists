@@ -34,8 +34,8 @@ import javax.servlet.http.Part;
  */
 @MultipartConfig(maxFileSize = 16177215)
 public class updateUser extends HttpServlet {
-    private static final long serialVersionUID = 6106269076155338045L;
-    transient UserDAO userdao = null;
+
+    UserDAO userdao = null;
 
     @Override
     public void init() throws ServletException {
@@ -61,7 +61,7 @@ public class updateUser extends HttpServlet {
         String FOLDER = "/Image/AvatarImg";
         HttpSession session = (HttpSession) request.getSession(false);
         User user = (User) session.getAttribute("user");
-        Boolean updateResult;
+        Boolean updateResult = false;
         User cgeUser = new User();
         
         //Creazione variabili 
@@ -69,8 +69,11 @@ public class updateUser extends HttpServlet {
         String nominativo = request.getParameter("nominativo");
         String password = request.getParameter("password");
         Boolean send;
-        send = request.getParameter("send") != null;
-        String url;
+        if(request.getParameter("send") != null)
+            send = true;
+        else
+            send = false;
+        String url = null;
         
         //IMMAGINE  ################################################################################
         Part filePart = request.getPart("file1");
@@ -82,7 +85,7 @@ public class updateUser extends HttpServlet {
                 File currentFile = new File(imageFolder); //carica il file nel ogetto 
                 if(currentFile.exists()){       //controlla se esiste il file
                     try{
-                        ImageDispatcher.deleteImgFromDirectory(imageFolder);
+                        ImageDispatcher.DeleteImgFromDirectory(imageFolder);
                         cgeUser.setImage(null);
                     }catch(Exception e){
                         System.out.println("Cancella immagine errata");
@@ -95,18 +98,16 @@ public class updateUser extends HttpServlet {
             String foldername = getServletContext().getRealPath(FOLDER);
             foldername = foldername.replace("\\build", "");
             String filename;
-            if(email.equals("")){
-                filename = ImageDispatcher.setImgName(user.getEmail(), extension);
+            if(email.equals("") || email == null){
+                filename = ImageDispatcher.SetImgName(user.getEmail(), extension);
             }else{
-                filename = ImageDispatcher.setImgName(email, extension);
+                filename = ImageDispatcher.SetImgName(email, extension);
             }
             File file1 = new File(foldername,filename);
             try (InputStream fileContent = filePart.getInputStream()) {
                 Files.copy(fileContent, file1.toPath());
                 cgeUser.setImage("Image/AvatarImg/" + filename);
-            } catch (RuntimeException e) {
-                throw e;
-            } catch (Exception e) {
+            }catch(Exception e){
                 System.out.println(e);
             }
         }

@@ -11,12 +11,14 @@ import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCNotificationsDAO;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
+import javax.mail.SendFailedException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -31,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Roberto97
  */
 public class sendProximityEmail extends HttpServlet {
-    private static final long serialVersionUID = 6106269076155338045L;
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -73,7 +75,6 @@ public class sendProximityEmail extends HttpServlet {
                     props1.put("mail.smtp.starttls.enable", "true");
                     Session session2;
                     session2 = Session.getInstance(props1, new javax.mail.Authenticator() {
-                        @Override
                         protected PasswordAuthentication getPasswordAuthentication() {
                             return new PasswordAuthentication(user1, pass1);
                         }

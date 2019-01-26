@@ -22,20 +22,6 @@ public class User {
     private String ruolo;
     private boolean sendEmail;
 
-    public User(String email, String password, String nominativo, String tipo, String image, ArrayList<List> list, String ruolo, boolean sendEmail) {
-        this.email = email;
-        this.password = password;
-        this.nominativo = nominativo;
-        this.tipo = tipo;
-        this.image = image;
-        this.list = list;
-        this.ruolo = ruolo;
-        this.sendEmail = sendEmail;
-    }   
-
-    public User() {
-    }
-    
     public boolean isSendEmail() {
         return sendEmail;
     }
@@ -103,7 +89,7 @@ public class User {
         this.password = password;
     }
     
-    public void addItemToUserList(List x){
+    public void AddItemToUserList(List x){
         this.list.add(x);
     }
 

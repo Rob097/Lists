@@ -5,7 +5,6 @@
  */
 package ShopList;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
@@ -105,8 +104,8 @@ public class chat extends HttpServlet {
         
         try {
             // APPEND MODE SET HERE
-            //FileWriter fw = new FileWriter(fname, true);
-            bw = new BufferedWriter(new FileWriter(fname));
+            FileWriter fw = new FileWriter(fname, true);
+            bw = new BufferedWriter(fw);
             bw.write("[");
             bw.newLine();
             bw.write("{");
@@ -161,35 +160,15 @@ public class chat extends HttpServlet {
             // if file doesnt exists, then create it
             if (!file.exists()) {
                 File f = file.getAbsoluteFile();
-                //FileWriter fw = new FileWriter(f, true);
-                BufferedWriter bw = null;
-                try{
-                    bw = new BufferedWriter(new FileWriter(f) );
+                FileWriter fw = new FileWriter(f, true);
+                try (BufferedWriter bw = new BufferedWriter(fw)) {
                     bw.write("[{\"nome\":\"user\", \"message\":\"init\"}]");
-                } finally {                       // always close the file
-                    if (bw != null) {
-                        try {
-                            bw.close();
-                        } catch (IOException ioe2) {
-                            // just ignore it
-                        }
-                    }
                 }
             }
 
-            BufferedReader br = null;
             Object obj;
-            //FileReader fr = new FileReader(fname);
-            //obj = js.parse(fr);
-            try {
-                br = new BufferedReader(new FileReader(fname));
-                obj = js.parse(br.readLine());
-            } finally {
-                System.out.println("Gets Called");
-                if (br != null) {
-                    br.close();
-                }
-            }
+            FileReader fr = new FileReader(fname);
+            obj = js.parse(fr);
             JSONArray jsonArray = (JSONArray) obj;
             
             System.out.println(jsonArray);
@@ -201,10 +180,15 @@ public class chat extends HttpServlet {
             jsonArray.add(student1);
 
             System.out.println(jsonArray);
-            try(FileWriter fw = new FileWriter(fname)) {
+            FileWriter fw = null;
+            try{
+                fw = new FileWriter(fname);
                 fw.write(jsonArray.toJSONString());
                 fw.flush();
-                fw.close();                
+            }catch(IOException e){
+                if(fw != null){
+                    fw.close();
+                }
             }
 
         } catch (IOException e) {

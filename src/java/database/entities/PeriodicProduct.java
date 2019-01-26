@@ -20,16 +20,6 @@ public class PeriodicProduct {
     private Date data_scadenza;
     private int periodo;
 
-    public PeriodicProduct(String lista, int prodotto, Date data_scadenza, int periodo) {
-        this.lista = lista;
-        this.prodotto = prodotto;
-        this.data_scadenza = new Date(data_scadenza.getTime());
-        this.periodo = periodo;
-    }
-
-    public PeriodicProduct() {
-    }
-    
     public String getLista() {
         return lista;
     }
@@ -47,11 +37,11 @@ public class PeriodicProduct {
     }
 
     public Date getData_scadenza() {
-        return new Date(data_scadenza.getTime());
+        return data_scadenza;
     }
 
     public void setData_scadenza(Date data_scadenza) {
-        this.data_scadenza = new Date(data_scadenza.getTime());
+        this.data_scadenza = data_scadenza;
     }
 
     public int getPeriodo() {

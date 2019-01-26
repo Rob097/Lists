@@ -7,6 +7,7 @@ package database.jdbc;
 
 import Notifications.Notification;
 import database.daos.NotificationDAO;
+import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
@@ -38,18 +39,15 @@ public class JDBCNotificationsDAO extends JDBCDAO implements NotificationDAO{
         if (userName == null || type == null || listName == null) {
             throw new DAOException("parameter not valid", new IllegalArgumentException("parameters are null"));
         }
-        try(PreparedStatement stm = CON.prepareStatement("select * from Notifications where User=? AND Type=? AND ListName=?")){
-            
+        try {
+            PreparedStatement stm = CON.prepareStatement("select * from Notifications where User=? AND Type=? AND ListName=?");
             stm.setString(1, userName);
             stm.setString(2, type);
             stm.setString(3, listName);
-            try(ResultSet rs = stm.executeQuery()){
+            ResultSet rs = stm.executeQuery();
                 while (rs.next()) {
                     return;
                 }
-                rs.close();
-            }
-            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(JDBCNotificationsDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -75,42 +73,38 @@ public class JDBCNotificationsDAO extends JDBCDAO implements NotificationDAO{
     
     @Override
     public ArrayList<User> getUsersWithWhoTheListIsShared(String listname) throws DAOException {
-        ArrayList<User> userList = new ArrayList<>();
-        try (PreparedStatement stm = CON.prepareStatement("select * from User where email in (select user from User_List where list = ?)")) {
-            try (PreparedStatement stm2 = CON.prepareStatement("select * from User where email in (select creator from List where nome = ?)")) {
-                stm.setString(1, listname);
-                stm2.setString(1, listname);
-                try (ResultSet rs = stm.executeQuery()) {
-                    try (ResultSet rs2 = stm2.executeQuery()) {
-                        while (rs.next()) {
-                            User u = new User();
-                            u.setEmail(rs.getString("email"));
-                            u.setNominativo(rs.getString("nominativo"));
-                            u.setImage(rs.getString("immagine"));
-                            userList.add(u);
-                        }
-                        while (rs2.next()) {
-                            User u = new User();
-                            u.setEmail(rs2.getString("email"));
-                            u.setNominativo(rs2.getString("nominativo"));
-                            u.setImage(rs2.getString("immagine"));
-                            userList.add(u);
-                        }
-                        rs2.close();
-                    } catch (SQLException ex) {
-                        throw new DAOException("Impossible to get the list of users #1", ex);
-                    }
-                    rs.close();
-                } catch (SQLException ex) {
-                    throw new DAOException("Impossible to get the list of users #1", ex);
+        try{
+            PreparedStatement stm = CON.prepareStatement("select * from User where email in (select user from User_List where list = ?)");
+            PreparedStatement stm2 = CON.prepareStatement("select * from User where email in (select creator from List where nome = ?)");
+            ArrayList<User> userList = new ArrayList<>();
+
+            stm.setString(1, listname);
+            stm2.setString(1, listname);
+            try{
+                ResultSet rs = stm.executeQuery();
+                ResultSet rs2 = stm2.executeQuery();
+                while (rs.next()) {
+                    User u = new User();
+                    u.setEmail(rs.getString("email"));
+                    u.setNominativo(rs.getString("nominativo"));
+                    u.setImage(rs.getString("immagine"));
+                    userList.add(u);
                 }
-                stm2.close();
+                while(rs2.next()){
+                    User u = new User();
+                    u.setEmail(rs2.getString("email"));
+                    u.setNominativo(rs2.getString("nominativo"));
+                    u.setImage(rs2.getString("immagine"));
+                    userList.add(u);
+                }
+                    
             } catch (SQLException ex) {
-                throw new DAOException("Impossible to get the list of users #2", ex);
+                throw new DAOException("Impossible to get the list of users #1", ex);
             }
-            stm.close();
+            /*for(User u : userList){
+                System.out.println("\nUtente: "+u.getEmail());
+            }*/
             return userList;
-            
         } catch (SQLException ex) {
             throw new DAOException("Impossible to get the list of users #2", ex);
         }
@@ -189,21 +183,18 @@ public class JDBCNotificationsDAO extends JDBCDAO implements NotificationDAO{
 
     @Override
     public void deleteNotificationFromArray(String tipo, String email, DAOFactory daoFactory, HttpServletRequest request) throws DAOException {
-        ArrayList<Notification> notifiche = null;
+        ArrayList<Notification> notifiche = new ArrayList<>();
         HttpSession s = (HttpSession) request.getSession(false);
-        NotificationDAO notificationdao = null ;
         if (daoFactory == null) {
             System.out.println("Impossible to get dao factory for user storage system");
-        }else{
-            notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
         }
+        NotificationDAO notificationdao = new JDBCNotificationsDAO(daoFactory.getConnection());
         try (PreparedStatement stm = CON.prepareStatement("DELETE FROM Notifications WHERE Type = ? AND User = ?")) {
             stm.setString(1, tipo);
             stm.setString(2, email);
             System.out.println("FUNZIONE: array: " + tipo + " user: " + email);
             stm.executeUpdate();
-            if(notificationdao != null)
-                notifiche = notificationdao.getAllNotifications(email);
+            notifiche = notificationdao.getAllNotifications(email);
             s.setAttribute("notifiche", notifiche);
         } catch (SQLException ex) {
             Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -230,16 +221,14 @@ public class JDBCNotificationsDAO extends JDBCDAO implements NotificationDAO{
 
     @Override
     public boolean checkReminderMail(String email, String lista) throws DAOException {
-        try(PreparedStatement stm = CON.prepareStatement("select * from reminderMail where email=? AND lista=?")){            
+        try {
+            PreparedStatement stm = CON.prepareStatement("select * from reminderMail where email=? AND lista=?");
             stm.setString(1, email);
             stm.setString(2, lista);
-            try(ResultSet rs = stm.executeQuery()){
+            ResultSet rs = stm.executeQuery();
                 while (rs.next()) {
                     return false;
                 }
-                rs.close();
-            }
-            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(JDBCNotificationsDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -267,16 +256,14 @@ public class JDBCNotificationsDAO extends JDBCDAO implements NotificationDAO{
     
     @Override
     public boolean checkProximityMail(String email, String lista) throws DAOException {
-        try(PreparedStatement stm = CON.prepareStatement("select * from proximityMail where email=? AND lista=?")){            
+        try {
+            PreparedStatement stm = CON.prepareStatement("select * from proximityMail where email=? AND lista=?");
             stm.setString(1, email);
             stm.setString(2, lista);
-            try(ResultSet rs = stm.executeQuery()){
+            ResultSet rs = stm.executeQuery();
                 while (rs.next()) {
                     return false;
                 }
-                rs.close();
-            }
-            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(JDBCNotificationsDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -306,17 +293,15 @@ public class JDBCNotificationsDAO extends JDBCDAO implements NotificationDAO{
         if (email == null || type == null || lista == null) {
             throw new DAOException("parameter not valid", new IllegalArgumentException("parameters are null"));
         }
-        try(PreparedStatement stm = CON.prepareStatement("select * from Notifications where User=? AND Type=? AND ListName=?")){            
+        try {
+            PreparedStatement stm = CON.prepareStatement("select * from Notifications where User=? AND Type=? AND ListName=?");
             stm.setString(1, email);
             stm.setString(2, type);
             stm.setString(3, lista);
-            try(ResultSet rs = stm.executeQuery()){
+            ResultSet rs = stm.executeQuery();
                 while (rs.next()) {
                     return true;
                 }
-                rs.close();
-            }
-            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(JDBCNotificationsDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

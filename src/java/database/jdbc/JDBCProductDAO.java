@@ -5,11 +5,13 @@
  */
 package database.jdbc;
 
+import database.daos.ListDAO;
 import database.daos.ProductDAO;
 import database.entities.ListProd;
 import database.entities.PeriodicProduct;
 import database.entities.Product;
 import database.exceptions.DAOException;
+import database.factories.DAOFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -112,7 +116,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
     public ArrayList<String> getAllProductCategories() throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement("SELECT nome FROM Category_Product")) {
 
-            ArrayList<String> prd = new ArrayList<>();
+            ArrayList<String> prd = new ArrayList<String>();
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
@@ -126,8 +130,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
         }
     }
 
-    @Override
-    public void insert(Product l) throws DAOException {
+    public void Insert(Product l) throws DAOException {
         if (l == null) {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed user is null"));
         }
@@ -156,7 +159,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
     }
     
     @Override
-    public void guestInsert(int Pid, String creator, String nomeLista, String status, int quantity) throws DAOException {
+    public void GuestInsert(int Pid, String creator, String nomeLista, String status, int quantity) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement("insert into guestListProd(creator, prodotto, nomeLista, status,quantity) values(?,?,?,?,?)")){
             
             
@@ -184,7 +187,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
     }
 
     @Override
-    public int lastPIDOfProducts() throws DAOException {
+    public int LastPIDOfProducts() throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement("SELECT PID FROM Product ORDER BY PID DESC LIMIT 1")) {
 
             int pid = 0;
@@ -202,7 +205,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
     }
     
     @Override
-    public void delete(Product l) throws DAOException {
+    public void Delete(Product l) throws DAOException {
         if (l == null) {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed product is null"));
         }
@@ -283,12 +286,12 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
         ArrayList<Product> a = getallAdminProducts();
         ArrayList<Product> b = new ArrayList();
         boolean check = false;
-        a.stream().filter((p) -> (p.getNome().toLowerCase().contains(s.toLowerCase()) && session.getAttribute(p.getNome()) == null)).map((p) -> {
-            b.add(p);
-            return p;
-        }).forEachOrdered((p) -> {
-            session.setAttribute(p.getNome(), p.getNome());
-        });
+        for(Product p : a){
+            if(p.getNome().toLowerCase().contains(s.toLowerCase()) && session.getAttribute(p.getNome()) == null){
+                b.add(p);
+                session.setAttribute(p.getNome(), p.getNome());
+            }
+        }
         return b;
     }
 
@@ -318,7 +321,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
     }
 
     @Override
-    public int lastPIDforInsert(Product p) throws DAOException {
+    public int LastPIDforInsert(Product p) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement("SELECT PID FROM Product WHERE nome = ? AND creator = ? ORDER BY PID DESC LIMIT 1")) {
             stm.setString(1, p.getNome());
             stm.setString(2, p.getCreator());
@@ -381,7 +384,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
         
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM List_Prod")) {           
             
-            ArrayList<ListProd> listProdlink = new ArrayList<>();
+            ArrayList<ListProd> listProdlink = new ArrayList<ListProd>();
             
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
@@ -509,6 +512,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
             stm.setString(2, pp.getLista());
             stm.setInt(3, pp.getProdotto());
             if(stm.executeUpdate() == 1){
+                return;
             }else{
                 throw new DAOException("impossible update date");
             }
@@ -520,7 +524,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
     @Override
     public String getReminderDate(Product p, String lista)throws DAOException{
         
-        Date dateReminder;
+        Date dateReminder = null;
         String dataStr = "";
         try (PreparedStatement statement = CON.prepareStatement("Select * from List_Prod where prodotto=? AND lista=?")){
             statement.setInt(1, p.getPid());
@@ -551,7 +555,9 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
             }else{
                 throw new DAOException("impossible update date");
             }
-        } catch (SQLException | ParseException ex) {
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
             Logger.getLogger(JDBCProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

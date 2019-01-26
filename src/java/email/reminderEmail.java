@@ -7,6 +7,7 @@ package email;
 
 import database.entities.User;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Roberto97
  */
 public class reminderEmail extends HttpServlet {
-    private static final long serialVersionUID = 6106269076155338045L;
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -63,7 +64,6 @@ public class reminderEmail extends HttpServlet {
             props1.put("mail.smtp.starttls.enable", "true");
             Session session2;
             session2 = Session.getInstance(props1, new javax.mail.Authenticator() {
-                @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(user1, pass1);
                 }

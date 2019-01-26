@@ -19,7 +19,9 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -121,7 +123,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
     }
 
     @Override
-    public ShopList insert(ShopList list) throws DAOException {
+    public ShopList Insert(ShopList list) throws DAOException {
         if (list == null) {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed shoppinglist is null"));
         }
@@ -149,7 +151,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
     }
     
     @Override
-    public ShopList guestSave(ShopList l, String creator, String password) throws DAOException{
+    public ShopList GuestSave(ShopList l, String creator, String password) throws DAOException{
         if (l == null || creator == null || password == null) {
             throw new DAOException("parameters not valid", new IllegalArgumentException("The passed list or creator or password is null"));
         }
@@ -250,6 +252,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             stm.setString(2, nomeLista);
 
             if (stm.executeUpdate() == 1) {
+                return;
             } else {
                 throw new DAOException("Impossible to insert the user");
             }
@@ -395,11 +398,9 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
                 } catch (ParseException ex) {
                 Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            java.sql.Date sqlExpireDate = null, sqlInsertDate = null;
-            if(date1 != null)
-                sqlExpireDate = new java.sql.Date(date1.getTime());
-            if(date2 != null)
-            sqlInsertDate = new java.sql.Date(date2.getTime());
+            
+            java.sql.Date sqlExpireDate = new java.sql.Date(date1.getTime());
+            java.sql.Date sqlInsertDate = new java.sql.Date(date2.getTime());
             
             
             
@@ -410,6 +411,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             stm.setDate(4, sqlInsertDate);
             
             if (stm.executeUpdate() == 1) {
+            return;
             } else {
             throw new DAOException("Impossible to insert the product");
             }
@@ -500,6 +502,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             statement.setString(2, listname);
             
             if(statement.executeUpdate() > 0){
+                return;
             }else{
                 throw new DAOException("Impossible to delete the user");
             }
@@ -585,6 +588,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             stm.setString(1, creator);
             
             if(stm.executeUpdate() >0){
+                return;
             }else{
                 throw new DAOException("impossible to delete guest list");
             }
@@ -625,6 +629,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             stm.setString(1, lista);
 
             if (stm.executeUpdate() == 1) {
+                return;
             } else {
                 throw new DAOException("Impossible to remove all products");
             }
@@ -705,6 +710,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             statement.setInt(3, id);
             
             if(statement.executeUpdate() >0){
+                return;
             }else{
                 throw new DAOException("impossible to sign product as buyed");
             }
@@ -807,7 +813,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM List_Prod WHERE lista = ?")) {
             stm.setString(1, listaname);
             
-            ArrayList<ListProd> listProdlink = new ArrayList<>();
+            ArrayList<ListProd> listProdlink = new ArrayList<ListProd>();
             
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
@@ -859,7 +865,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
 
         ArrayList<ShopList> liste = new ArrayList<>();
 
-        all.forEach((s) -> {
+        for (String s : all) {
             try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM List where nome=?")) {
                 stm.setString(1, s);
 
@@ -881,7 +887,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             } catch (SQLException ex) {
                 Logger.getLogger(JDBCShopListDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
-        });
+        }
 
         return liste;
     }
@@ -924,6 +930,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             stm.setInt(3, pp.getProdotto());
             
             if(stm.executeUpdate() == 1){
+                return;
             }else{
                 throw new DAOException("impossible update date");
             }
@@ -939,6 +946,7 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             stm.setString(2, lista);
             
             if(stm.executeUpdate() == 1){
+                return;
             }else{
                 throw new DAOException("impossible update reminder");
             }

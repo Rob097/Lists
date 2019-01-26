@@ -77,7 +77,7 @@ public class CreateAndAddProduct extends HttpServlet {
         
         int pid = 0;
         try {
-            pid = productdao.lastPIDOfProducts();
+            pid = productdao.LastPIDOfProducts();
         } catch (DAOException ex) {
             Logger.getLogger(CreateAndAddProduct.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -91,7 +91,7 @@ public class CreateAndAddProduct extends HttpServlet {
             String extension = Paths.get(filePart1.getSubmittedFileName()).getFileName().toString().split(Pattern.quote("."))[1];
             String nomeIMG = Integer.toString(pid);
             String filename1 = nomeIMG + "." + extension;
-            ImageDispatcher.insertImgIntoDirectory(listsFolder, filename1, filePart1);
+            ImageDispatcher.InsertImgIntoDirectory(listsFolder, filename1, filePart1);
             
             String immagine = "Image/ProductImg/" + filename1;
             immagine = immagine.replaceAll("\\s+", "");
@@ -100,7 +100,7 @@ public class CreateAndAddProduct extends HttpServlet {
          //##fineImmagine##
          //inserimetno prodotto 
         try {
-            productdao.insert(newProduct);
+            productdao.Insert(newProduct);
             System.out.println("entra in insert product");
         } catch (DAOException ex) {
             Logger.getLogger(CreateAndAddProduct.class.getName()).log(Level.SEVERE, null, ex);
@@ -110,7 +110,7 @@ public class CreateAndAddProduct extends HttpServlet {
         ArrayList<User> utenti;
         try { 
             utenti = notificationdao.getUsersWithWhoTheListIsShared(list.getNome());
-            pid = productdao.lastPIDforInsert(newProduct);
+            pid = productdao.LastPIDforInsert(newProduct);
             listdao.insertProductToList(pid, list.getNome(),data);
             for(User u : utenti){
                 if(user != null){

@@ -66,7 +66,7 @@ public class SaveGuestList extends HttpServlet {
         boolean check;
         try {
             listdao.checkIfGuestListExistInDatabase(creator, password);
-            listdao.guestSave(lista, creator, password);
+            listdao.GuestSave(lista, creator, password);
             check = true;
         } catch (DAOException ex) {
             check = false;
@@ -76,7 +76,7 @@ public class SaveGuestList extends HttpServlet {
         if (check) {
             for (Product p : prodotti) {
                 try {
-                    productdao.guestInsert(p.getPid(), creator, lista.getNome(), p.getStatus(), p.getQuantity());
+                    productdao.GuestInsert(p.getPid(), creator, lista.getNome(), p.getStatus(), p.getQuantity());
                 } catch (DAOException ex) {
                     Logger.getLogger(SaveGuestList.class.getName()).log(Level.SEVERE, null, ex);
                 }
