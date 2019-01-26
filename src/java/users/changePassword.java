@@ -10,7 +10,6 @@ import database.exceptions.DAOException;
 import database.factories.DAOFactory;
 import database.jdbc.JDBCUserDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -24,8 +23,8 @@ import javax.servlet.http.HttpSession;
  * @author Roberto97
  */
 public class changePassword extends HttpServlet {
-    
-    UserDAO userdao = null;
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient UserDAO userdao = null;
 
     @Override
     public void init() throws ServletException {

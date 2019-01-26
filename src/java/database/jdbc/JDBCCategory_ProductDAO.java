@@ -35,7 +35,7 @@ public class JDBCCategory_ProductDAO extends JDBCDAO implements Category_Product
        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM Category_Product WHERE nome = ?")) {
             ArrayList<Category_Product> categorie_prodotti = new ArrayList<>();
 
-            stm.setString(1, nome.toString());
+            stm.setString(1, nome);
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     Category_Product p = new Category_Product();
@@ -89,7 +89,6 @@ public class JDBCCategory_ProductDAO extends JDBCDAO implements Category_Product
            statement.setString(4, catProd.getImmagine());
            
            if(statement.executeUpdate() == 1){
-               return;               
            }else{
                throw new DAOException("Impossible to insert product-category");
            }
@@ -107,7 +106,7 @@ public class JDBCCategory_ProductDAO extends JDBCDAO implements Category_Product
         }
         
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM Category_Product WHERE nome = ?")) {
-            stm.setString(1, nome.toString());
+            stm.setString(1, nome);
             
             Category_Product categoria = new Category_Product();
             try (ResultSet rs = stm.executeQuery()) {
@@ -137,7 +136,6 @@ public class JDBCCategory_ProductDAO extends JDBCDAO implements Category_Product
             statement.setString(1, catProd.getNome());
 
             if (statement.executeUpdate() > 0) {
-                return;
             } else {
                 throw new DAOException("Impossible to delete CategoryProduct");
             }

@@ -5,20 +5,13 @@
  */
 package log;
 
-import Notifications.Notification;
 import database.daos.UserDAO;
-import database.daos.ListDAO;
-import database.daos.NotificationDAO;
 import database.entities.User;
-import database.entities.ShopList;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
-import database.jdbc.JDBCNotificationsDAO;
-import database.jdbc.JDBCShopListDAO;
 import database.jdbc.JDBCUserDAO;
 import java.io.IOException;
 import static java.lang.System.out;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -34,8 +27,8 @@ import org.apache.tomcat.util.codec.binary.Base64;
  * @author Roberto97
  */
 public class LoginAction extends HttpServlet {
-
-    String url = null;
+    private static final long serialVersionUID = 6106269076155338045L;
+    static String url = null;
     UserDAO userdao = null;
 
     @Override
@@ -61,10 +54,11 @@ public class LoginAction extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException { 
         int COOKIE_MAX_AGE = 60*60*24*4;
-        User user = null;       
+        User user;       
         Boolean loginResult = true;                
         
-        HttpSession session = (HttpSession) request.getSession(false);        
+        HttpSession session = (HttpSession) request.getSession(false); 
+        
         session.setAttribute("errore", null);
         session.setAttribute("errore", null);
         try {

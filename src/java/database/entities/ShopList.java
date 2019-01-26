@@ -85,7 +85,7 @@ public class ShopList {
         this.categoria = categoria;
     }
     
-    public void AddProductToList(Product x){
+    public void addProductToList(Product x){
         this.products.add(x);
     }
     

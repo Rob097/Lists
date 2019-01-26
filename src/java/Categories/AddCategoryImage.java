@@ -64,7 +64,7 @@ public class AddCategoryImage extends HttpServlet {
             Date date = new Date();
             String extension = getImageExtension(filePart1);
             String imagineName =  category.getNome()+ dateFormat.format(date) + "." + extension;
-            ImageDispatcher.InsertImgIntoDirectory(listsFolder, imagineName, filePart1);
+            ImageDispatcher.insertImgIntoDirectory(listsFolder, imagineName, filePart1);
             String immagine = ImageDispatcher.savePathImgInDatabsae(relativeListFolderPath, imagineName);
             category.setImmagine(immagine);
         

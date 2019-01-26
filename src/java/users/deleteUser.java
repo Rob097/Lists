@@ -26,8 +26,8 @@ import javax.servlet.http.HttpSession;
  * @author Roberto97
  */
 public class deleteUser extends HttpServlet {
-
-    UserDAO userdao;
+    private static final long serialVersionUID = 6106269076155338045L;
+    transient UserDAO userdao;
    
     @Override
     public void init() throws ServletException{
@@ -53,7 +53,7 @@ public class deleteUser extends HttpServlet {
         User user =(User) session.getAttribute("user");
         System.out.println("DeleteUser opening####################");
         
-        String Image = "";
+        String Image;
         Image = user.getImage();
         
         try {
@@ -81,9 +81,10 @@ public class deleteUser extends HttpServlet {
                 System.out.println(file.getAbsoluteFile() + "Delete operation is failed.");
             }
 
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception ex1) {
             System.out.println("Causa Errore: ");
-            ex1.printStackTrace();
         }
         
          // Get an array of Cookies associated with the this domain
@@ -93,10 +94,7 @@ public class deleteUser extends HttpServlet {
         cookie.setPath(request.getContextPath());
         cookie.setMaxAge(0);
         response.addCookie(cookie);
-        
-        if (session != null) {
-                session.invalidate();                
-        }
+        session.invalidate();
 
         response.setHeader("Refresh", "0; URL=/Lists/homepage.jsp");
     }

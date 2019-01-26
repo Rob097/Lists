@@ -70,7 +70,7 @@ public class DeleteProduct extends HttpServlet {
         
         
         try {
-            productdao.Delete(p);
+            productdao.delete(p);
         } catch (DAOException e) {
             System.out.println(e);
             System.out.println("delete product error");

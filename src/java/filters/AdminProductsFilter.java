@@ -35,7 +35,7 @@ import javax.servlet.http.HttpSession;
  */
 public class AdminProductsFilter implements Filter {
     
-    private static final boolean debug = true;
+    private static final boolean DEBUG = true;
     private FilterConfig filterConfig = null;
     private ProductDAO productdao;
     
@@ -44,7 +44,7 @@ public class AdminProductsFilter implements Filter {
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
-        if (debug) {
+        if (DEBUG) {
             log("AdminProductsFilter:DoBeforeProcessing");
         }
         if(request instanceof HttpServletRequest){
@@ -95,10 +95,11 @@ public class AdminProductsFilter implements Filter {
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {        
-        if (debug) {
+        if (DEBUG) {
             log("AdminProductsFilter:doFilter()");
         }
         
@@ -107,12 +108,11 @@ public class AdminProductsFilter implements Filter {
         Throwable problem = null;
         try {
             chain.doFilter(request, response);
-        } catch (Throwable t) {
+        } catch (IOException | ServletException t) {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
             // rethrow the problem after that.
             problem = t;
-            t.printStackTrace();
         }
 
         // If there was a problem, we want to rethrow it if it is
@@ -130,6 +130,7 @@ public class AdminProductsFilter implements Filter {
 
     /**
      * Return the filter configuration object for this filter.
+     * @return 
      */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
@@ -147,20 +148,25 @@ public class AdminProductsFilter implements Filter {
     /**
      * Destroy method for this filter
      */
+    @Override
     public void destroy() {        
     }
 
     /**
      * Init method for this filter
+     * @param filterConfig
+     * @throws javax.servlet.ServletException
      */
+    @Override
     public void init(FilterConfig filterConfig) throws ServletException {        
         this.filterConfig = filterConfig;
+        DAOFactory daoFactory = null;
         if (filterConfig != null) {
-            if (debug) {                
+            if (DEBUG) {                
                 log("AdminProductsFilter:Initializing filter");
             }
+            daoFactory = (DAOFactory) filterConfig.getServletContext().getAttribute("daoFactory");
         }
-        DAOFactory daoFactory = (DAOFactory) filterConfig.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
@@ -169,13 +175,14 @@ public class AdminProductsFilter implements Filter {
 
     /**
      * Return a String representation of this object.
+     * @return 
      */
     @Override
     public String toString() {
         if (filterConfig == null) {
             return ("AdminProductsFilter()");
         }
-        StringBuffer sb = new StringBuffer("AdminProductsFilter(");
+        StringBuilder sb = new StringBuilder("AdminProductsFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
@@ -187,26 +194,26 @@ public class AdminProductsFilter implements Filter {
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
-                PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);                
-                pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
+                try (PrintStream ps = new PrintStream(response.getOutputStream()); PrintWriter pw = new PrintWriter(ps)) {
+                    pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
 
-                // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
-                pw.print(stackTrace);                
-                pw.print("</pre></body>\n</html>"); //NOI18N
-                pw.close();
-                ps.close();
+                    // PENDING! Localize this for next official release
+                    pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
+                    pw.print(stackTrace);
+                    pw.print("</pre></body>\n</html>"); //NOI18N
+                }
                 response.getOutputStream().close();
-            } catch (Exception ex) {
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (IOException ex) {
             }
         } else {
             try {
-                PrintStream ps = new PrintStream(response.getOutputStream());
-                t.printStackTrace(ps);
-                ps.close();
+                try (PrintStream ps = new PrintStream(response.getOutputStream())) {
+                    t.printStackTrace(ps);
+                }
                 response.getOutputStream().close();
-            } catch (Exception ex) {
+            } catch (IOException ex) {
             }
         }
     }
@@ -220,7 +227,7 @@ public class AdminProductsFilter implements Filter {
             pw.close();
             sw.close();
             stackTrace = sw.getBuffer().toString();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
         }
         return stackTrace;
     }

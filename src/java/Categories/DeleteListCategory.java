@@ -59,7 +59,7 @@ public class DeleteListCategory extends HttpServlet {
                 for (String img : category.getImmagini()) {
                     String imgfolder = img.replace("/Image/CategoryIco", "");
                     try{
-                        ImageDispatcher.DeleteImgFromDirectory(listsFolder + imgfolder);
+                        ImageDispatcher.deleteImgFromDirectory(listsFolder + imgfolder);
                     }catch(Exception e){
                         System.out.println("immagini non esiste");
                     }

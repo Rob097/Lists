@@ -141,7 +141,7 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
         }
         User finalUser = oldUser; 
 
-        if(newUser.getPassword() != null && newUser.getPassword() != "" && newUser.getPassword() != oldUser.getPassword()){
+        if(newUser.getPassword() != null && !"".equals(newUser.getPassword()) && (newUser.getPassword() == null ? oldUser.getPassword() != null : !newUser.getPassword().equals(oldUser.getPassword()))){
             try (PreparedStatement statement = CON.prepareStatement("UPDATE User SET password=? WHERE email=? ")){
             statement.setString(1, newUser.getPassword());
             statement.setString(2, oldUser.getEmail());
@@ -153,7 +153,7 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
             }   
         }
         
-        if(newUser.getNominativo() != null && newUser.getNominativo()!= "" && newUser.getNominativo() != oldUser.getNominativo()){
+        if(newUser.getNominativo() != null && !"".equals(newUser.getNominativo()) && (newUser.getNominativo() == null ? oldUser.getNominativo() != null : !newUser.getNominativo().equals(oldUser.getNominativo()))){
             try (PreparedStatement statement = CON.prepareStatement("UPDATE User SET nominativo=? WHERE email=? ")){
             statement.setString(1, newUser.getNominativo());
             statement.setString(2, oldUser.getEmail());
@@ -165,7 +165,7 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
             }   
         }
         
-        if(newUser.getImage() != null && newUser.getImage()!= "" && newUser.getImage() != oldUser.getImage()){
+        if(newUser.getImage() != null && !"".equals(newUser.getImage()) && (newUser.getImage() == null ? oldUser.getImage() != null : !newUser.getImage().equals(oldUser.getImage()))){
             try (PreparedStatement statement = CON.prepareStatement("UPDATE User SET immagine=? WHERE email=? ")){
             statement.setString(1, newUser.getImage());
             statement.setString(2, oldUser.getEmail());
@@ -177,7 +177,7 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
             }   
         }
         
-        if(newUser.getTipo() != null && newUser.getTipo() != "" && newUser.getTipo() != oldUser.getTipo()){
+        if(newUser.getTipo() != null && !"".equals(newUser.getTipo()) && (newUser.getTipo() == null ? oldUser.getTipo() != null : !newUser.getTipo().equals(oldUser.getTipo()))){
             try (PreparedStatement statement = CON.prepareStatement("UPDATE User SET tipo=? WHERE email=? ")){
             statement.setString(1, newUser.getTipo());
             statement.setString(2, oldUser.getEmail());
@@ -246,7 +246,6 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
             System.out.println("User: " + user + "; Role: " + role + "; List: " + list);
             
             if (statement.executeUpdate() == 1) {
-                return;
             } else {
                 throw new DAOException("Impossible to change the role");
             }            
@@ -267,7 +266,6 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
             statement.setString(2, email);
             
             if(statement.executeUpdate()==1){
-                return;
             }else{
                 throw new DAOException("Impossible to change password");
             }
@@ -287,7 +285,6 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
             statement.setString(1, tipo);
             statement.setString(2, email);
             if(statement.executeUpdate()==1){
-                return;
             }else{
                 throw new DAOException("Impossible to change tipo");
             }

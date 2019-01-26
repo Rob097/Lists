@@ -25,7 +25,7 @@ public class JDBCDAOFactory implements DAOFactory{
     private static JDBCDAOFactory instance;
     
     //ritorna un istanza di questa Classe
-     public static JDBCDAOFactory getInstance() throws DAOFactoryException {
+     public static synchronized JDBCDAOFactory getInstance() throws DAOFactoryException {
         if (instance == null) {
             //crea un istanza di questa classe e la inizializza con il costruttore. 
             instance = new JDBCDAOFactory(DBURL);
