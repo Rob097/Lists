@@ -703,7 +703,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="Date" class="col-form-label required">Data di scadenza</label>
-                                <input type="date" class="" name="expiration" >
+                                <input type="text" class="datepicker" name="expiration" >
                             </div>
                             <div class="form-group">
                                 <label for="Immagine" class="col-form-label required">Immagine</label>

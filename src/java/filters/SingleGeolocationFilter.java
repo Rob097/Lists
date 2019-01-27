@@ -37,8 +37,7 @@ import javax.servlet.http.HttpSession;
 public class SingleGeolocationFilter implements Filter {
     
     private static final boolean DEBUG = true;
-    private FilterConfig filterConfig = null;
-    private CategoryDAO categorydao = null;
+    private FilterConfig filterConfig = null;    
     private ListDAO listdao = null;
     
     public SingleGeolocationFilter() {
@@ -50,7 +49,6 @@ public class SingleGeolocationFilter implements Filter {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }        
    
-          categorydao = new JDBCCategoryDAO(daoFactory.getConnection());
           listdao = new JDBCShopListDAO(daoFactory.getConnection());
     }
     
@@ -76,9 +74,7 @@ public class SingleGeolocationFilter implements Filter {
                         //get all elements form current list
                         ShopList lista = listdao.getbyName(shopListName);
                         session.setAttribute("lista", lista);
-                        //get all elements from list-category
-                        Category categoria = categorydao.getByName(lista.getCategoria());
-                        session.setAttribute("listCategory", categoria);                        
+                        
                     } catch (DAOException ex) {
                         Logger.getLogger(SingleGeolocationFilter.class.getName()).log(Level.SEVERE, null, ex);
                     }                    
