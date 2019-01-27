@@ -148,12 +148,12 @@
                                 </div>
                                 <div class="col-md-4 col-12 order-md-1">
                                     <c:if test="${not empty user}">                                
-                                        <button class="btn btn-primary" data-toggle="modal" data-target="#perPro">Prodotti permanenti <i class="fa fa-line-chart"></i></button> 
+                                        <button class="btn btn-primary" data-toggle="modal" data-target="#perPro">Prodotti periodici <i class="fa fa-line-chart"></i></button> 
                                         </c:if>                                   
                                 </div>
                                 <div class="col-md-4 col-12 order-md-3">                                    
                                     <c:if test="${not empty user}">
-                                        <button class="btn btn-dark" data-toggle="modal" data-target="#delPerPro">Cancella Prodotti permanenti <i class="fa fa-line-chart"></i></button>
+                                        <button class="btn btn-dark" data-toggle="modal" data-target="#delPerPro">Cancella Prodotti periodici <i class="fa fa-line-chart"></i></button>
                                         </c:if>                                                                      
                                 </div>
                             </div>                           
@@ -452,7 +452,7 @@
                         <div class="modal-header">
                             <div class="page-title">
                                 <div class="container">
-                                    <h1 style="text-align: center;">Crea prodotti permanenti</h1>
+                                    <h1 style="text-align: center;">Crea prodotti periodici</h1>
                                 </div>
                                 <!--end container-->
                             </div>
@@ -482,7 +482,7 @@
                                     </div>
                                 </div>  
                                 <div class="form-group">                                    
-                                    <label for="Date" class="col-form-label required">Data partenza</label>
+                                    <label for="Date" class="col-form-label required">Data prima scadenza</label>
                                     <input type="date" class="" name="initday" >                            
                                 </div>
                                 <!--end form-group-->
