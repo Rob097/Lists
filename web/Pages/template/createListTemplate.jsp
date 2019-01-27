@@ -47,7 +47,7 @@
                 <c:if test="${not empty user}">
                     <div class="form-group">
                         <label for="Immagine" class="col-form-label required">Immagine</label>
-                        <input type="file" name="file1" required>
+                        <input type="file" name="file1" accept=".jpg,.png, .jpeg, .JPG, .gif" required>
                     </div>
                 </c:if>
                 <!--end form-group-->

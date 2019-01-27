@@ -419,7 +419,7 @@
                                                                 <c:when test="${user != null}"> 
                                                                 <a class="reminderInvisible">
                                                                     <i style="color: black;" class="fa fa-calendar" data-toggle="tooltip" data-placement="bottom" title="Promemoria di acquisto di ${prod.nome}"></i>
-                                                                    <input style="background-color: transparent; cursor: pointer; width: fit-content;" type="date" onchange="changeReminder(${prod.pid}, '${shopListName}');" class="border border-primary rounded" value="${prod.data_scadenza}" id="Reminder-grid-${prod.pid}-${shopListName}">
+                                                                    <input style="background-color: transparent; cursor: pointer; width: fit-content;" type="date" onchange="changeReminder(${prod.pid}, '${shopListName}');" class="border border-primary rounded" value="${prod.data_scadenza}" id="Reminder-${prod.pid}-${shopListName}">
                                                                 </a>
                                                                 </c:when>
                                                                 <c:otherwise>
@@ -889,9 +889,9 @@
         
         function changeReminder(id, lista) {
             var data = $("#Reminder-"+id+"-"+lista).val();
-            if(data === undefined || data === null){
+            /*if(data === undefined || data === null){
                 data = $("#Reminder-grid-"+id+"-"+lista).val();
-            }
+            }*/
             console.log(data);
             $.ajax({
                 type: "POST",
