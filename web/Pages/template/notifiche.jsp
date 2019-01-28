@@ -19,11 +19,13 @@
     <div class="notification-heading"><h4 class="menu-title">Notifiche</h4><h4 class="menu-title pull-right"><a onclick="deleteALLNotifications();" style="cursor: pointer;">Cancella tutto</a><i class="glyphicon glyphicon-circle-arrow-right"></i></h4>
     </div> 
     <div class="notifications-wrapper" id="NotificationsWrapper"> 
+        <!--Tutti i sguenti tipi di notifiche vengono inviati a tutti gli utenti
+        della lista eccetto l'utente che effettua la modifica o il cambiamento.-->
         <c:if test="${not empty notifiche}">
             <c:forEach items="${notifiche}" var="notifica">
                 <c:choose>
-
-                    <c:when test="${notifica.type == 'new_product'}">
+                    
+                    <c:when test="${notifica.type == 'new_product'}"><!--Quando Qualcuno aggiunge un nuovo prodotto alla lista-->
                         <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
@@ -33,7 +35,7 @@
                         </a> 
                     </c:when>
 
-                    <c:when test="${notifica.type == 'empty_list'}">
+                    <c:when test="${notifica.type == 'empty_list'}"><!--Se la lista viene svuotata-->
                         <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
@@ -43,7 +45,7 @@
                         </a>
                     </c:when>
 
-                    <c:when test="${notifica.type == 'new_user'}">
+                    <c:when test="${notifica.type == 'new_user'}"><!--Se viene aggiunto un nuovo utente alla lista-->
                         <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
@@ -53,7 +55,7 @@
                         </a>
                     </c:when>
 
-                    <c:when test="${notifica.type == 'change_status_product'}">
+                    <c:when test="${notifica.type == 'change_status_product'}"><!--Se cambia lo stato di un prodotto della lista da 'da acquistare' a 'acquistato' o il contrario-->
                         <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
@@ -63,7 +65,7 @@
                         </a>
                     </c:when>
 
-                    <c:when test="${notifica.type == 'new_message'}">
+                    <c:when test="${notifica.type == 'new_message'}"><!--Se qualcuno scrive messaggi nella chat della lista-->
                         <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
@@ -73,7 +75,7 @@
                         </a>
                     </c:when>
 
-                    <c:when test="${notifica.type == 'role_change'}">
+                    <c:when test="${notifica.type == 'role_change'}"><!--Se il tuo ruolo all'interno della lista cambia tra in sola lettura e scrittura-->
                         <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
@@ -83,7 +85,7 @@
                         </a>
                     </c:when>
 
-                    <c:when test="${notifica.type == 'remove_product'}">
+                    <c:when test="${notifica.type == 'remove_product'}"><!--Se qualcuno rimuove un prodotto dalla lista-->
                         <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
@@ -93,7 +95,7 @@
                         </a>
                     </c:when>
 
-                    <c:when test="${notifica.type == 'primoReminder'}">
+                    <c:when test="${notifica.type == 'primoReminder'}"><!--se ci sono uno o più prodotti nella lista che devono essere comprati tra 2 e 4 giorni a partire da oggi-->
                         <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
@@ -103,7 +105,7 @@
                         </a>
                     </c:when>
 
-                    <c:when test="${notifica.type == 'secondoReminder'}">
+                    <c:when test="${notifica.type == 'secondoReminder'}"><!--se ci sono uno o più prodotti nella lista che devono essere comprati tra 0 e 2 giorni a partire da oggi-->
                         <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
@@ -113,7 +115,7 @@
                         </a>
                     </c:when>
                     
-                    <c:when test="${notifica.type == 'proximityMail'}">
+                    <c:when test="${notifica.type == 'proximityMail'}"><!--Se mi trovo in prossimità di un negozio inerente alla categoria della lista-->
                         <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
