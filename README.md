@@ -10,6 +10,12 @@ The main functions of the application are:
 
 If you want to use the application we recommend you register so you will be able to try all the features, otherwise you can try to make a list and register later.
 
+## Documentation
+If you want to better understand how the application works or see other documentation go to the doc folder or click on the following links:
+- [Documentation](doc/Documentazione.pdf)
+- [Use Case Diagram](doc/UseCaseDiagram.png)
+- [ER Diagram](doc/ERdiagram.jpg)
+
 ## Getting Started
 Follow these instructions to get a copy of the project on your local computer and to run it.
 
@@ -27,7 +33,7 @@ Download and install `NetBeansIDE 8.2`
 
 ## Development environment
 - OS Windows 10
-- Neatbeans IDE 8.2
+- Netbeans IDE 8.2
 - MySql WorkBench
 
 ## Authors
