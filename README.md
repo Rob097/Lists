@@ -13,8 +13,8 @@ If you want to use the application we recommend you register so you will be able
 ## Documentation
 If you want to better understand how the application works or see other documentation go to the doc folder or click on the following links:
 - [Documentation](doc/Documentazione.pdf)
-- [Use Case Diagram](doc/UseCaseDiagram.png)
-- [ER Diagram](doc/ERdiagram.jpg)
+- [Use Case Diagram](doc/UseCase.png)
+- [ER Diagram](doc/ER.jpg)
 
 ## Getting Started
 Follow these instructions to get a copy of the project on your local computer and to run it.
