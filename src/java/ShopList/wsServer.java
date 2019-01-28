@@ -57,6 +57,7 @@ public class wsServer {
         }).forEachOrdered((sess) -> {
             try {
                 sess.getAsyncRemote().sendText(replyMessage);
+                messagesFromListToFile();
             } catch (Exception ioe) {
                 System.out.println(ioe.getMessage());
             }
