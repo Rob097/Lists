@@ -33,11 +33,20 @@ public class LogoutAction extends HttpServlet {
             throws ServletException, IOException {
         
         //remove Remember Me cookie
-        Cookie cookie = new Cookie("User", "");
+        /*Cookie cookie = new Cookie("User", "");
         cookie.setDomain("localhost");
         cookie.setPath(request.getContextPath());
         cookie.setMaxAge(0);
-        response.addCookie(cookie);
+        response.addCookie(cookie);*/
+        
+        Cookie[] cs = request.getCookies();
+        for(Cookie cookie : cs){
+            cookie.setValue(null);
+            //cookie.setDomain("");
+            cookie.setPath(request.getContextPath());
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
+        }
         
         //remove sessions
         

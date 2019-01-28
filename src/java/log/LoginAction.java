@@ -80,6 +80,7 @@ public class LoginAction extends HttpServlet {
                 if(remember != null){
                     String encodedText = user.getEmail();
                     Cookie coouser = new Cookie("User",encodedText);
+                    coouser.setPath(request.getContextPath());
                     coouser.setMaxAge(COOKIE_MAX_AGE);
                     response.addCookie(coouser);                    
                 } 

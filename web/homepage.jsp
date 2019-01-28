@@ -190,9 +190,9 @@
 
                         <ul class="categories-list clearfix">
                             <c:forEach items="${catProd}" var="catP">
-                                <li>
+                                <li style="max-height: 140px; min-height: 140px; padding-left: 2rem;">
                                     <img style="width: 8rem; height: 8rem; border-radius: 100%;" src="${catP.immagine}" alt="">
-                                    <h3 style="width: max-content;"><a href="/Lists/Pages/ShowProducts.jsp?cat=${catP.nome}"><c:out value="${catP.nome}"/></a></h3>
+                                    <h3 style="width: fit-content;"><a href="/Lists/Pages/ShowProducts.jsp?cat=${catP.nome}"><c:out value="${catP.nome}"/></a></h3>
                                     <div class="sub-categories">
                                     </div>
                                 </li>

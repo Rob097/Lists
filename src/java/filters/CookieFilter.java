@@ -106,7 +106,8 @@ public class CookieFilter implements Filter {
                 for (Cookie ck : cookies) {
                     if (ck.getName().equals("User")) {    
                         try {             
-                            String value = new String(Base64.decodeBase64(ck.getValue().getBytes("UTF-8")));
+                            //String value = new String(Base64.decodeBase64(ck.getValue().getBytes("UTF-8")));
+                            String value = ck.getValue();
                             User dbuser = userdao.getByEmail(value);
                             if(dbuser != null){
                                 

@@ -29,7 +29,7 @@
                         <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
-                                <h4 class="item-title">Nuovi prodotti! <small> Sono stati aggiunti nuoi prodotti alla lista <c:out value="${notifica.listName}"/></small></h4>
+                                <h4 class="item-title">Nuovi prodotti! <small> Sono stati aggiunti nuoi prodotti alla lista <b>${notifica.listName}</b></small></h4>
                                 <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('${notifica.type}ID', '${notifica.type}')">elimina</a>
                             </div>  
                         </a> 
@@ -39,7 +39,7 @@
                         <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
-                                <h4 class="item-title">Lista svuotata! <small> E' stata svuotata la lista <c:out value="${notifica.listName}"/></small></h4>
+                                <h4 class="item-title">Lista svuotata! <small> E' stata svuotata la lista <b>${notifica.listName}</b></small></h4>
                                 <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('${notifica.type}ID', '${notifica.type}')">elimina</a>
                             </div>  
                         </a>
@@ -49,7 +49,7 @@
                         <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
-                                <h4 class="item-title">Utenti aggiunti alla lista! <small> Nuovi utenti nella lista <c:out value="${notifica.listName}"/></small></h4>
+                                <h4 class="item-title">Utenti aggiunti alla lista! <small> Nuovi utenti nella lista <b>${notifica.listName}</b></small></h4>
                                 <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('${notifica.type}ID', '${notifica.type}')">elimina</a>
                             </div>  
                         </a>
@@ -59,7 +59,7 @@
                         <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
-                                <h4 class="item-title">Stato prodotti cambiato! <small> E' cambiato lo stato dei prodotti nella lista ${notifica.listName}</small></h4>
+                                <h4 class="item-title">Stato prodotti cambiato! <small> E' cambiato lo stato dei prodotti nella lista <b>${notifica.listName}</b></small></h4>
                                 <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('${notifica.type}ID', '${notifica.type}')">elimina</a>
                             </div>  
                         </a>
@@ -69,7 +69,7 @@
                         <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
-                                <h4 class="item-title">Nuovi Messaggi! <small> Ci sono dei nuovi messaggi nella lista ${notifica.listName}</small></h4>
+                                <h4 class="item-title">Nuovi Messaggi! <small> Ci sono dei nuovi messaggi nella lista <b>${notifica.listName}</b></small></h4>
                                 <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('${notifica.type}ID', '${notifica.type}')">elimina</a>
                             </div>  
                         </a>
@@ -79,7 +79,7 @@
                         <a class="content" href="/Lists/ShowShopList?nome=${notifica.listName}"> 
                             <div class="notification-item" id="${notifica.type}ID">
                                 <img src="/Lists/${notifica.listimage}">
-                                <h4 class="item-title">Permessi aggiornati! <small> Sono cambiati i tuoi permessi nella lista ${notifica.listName}</small></h4>
+                                <h4 class="item-title">Permessi aggiornati! <small> Sono cambiati i tuoi permessi nella lista <b>${notifica.listName}</b></small></h4>
                                 <a class="item-info" style="color: red; cursor: pointer;" onclick="deleteFromArray('${notifica.type}ID', '${notifica.type}')">elimina</a>
                             </div>  
                         </a>

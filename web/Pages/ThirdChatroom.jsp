@@ -273,7 +273,7 @@
 </script>
 
 <script type="text/javascript">
-    var webSocket = new WebSocket("ws://localhost:8080/Lists/wsServer");
+    var webSocket = new WebSocket("ws://liste.ddns.net/Lists/wsServer");
     var slname = document.getElementById("shoplistName");
     var messaggioDaInviare = document.getElementById("messaggioDaInviare");
     var user = document.getElementById("Sender");
@@ -323,14 +323,14 @@
             console.log(message.data.split(":")[1]);
             var m = message.data.split(":")[2];
             var usr = message.data.split(":")[1];
-            var img, u = '${u.image}';
+            var img;
             <c:forEach items="${userList}" var="u">
                 if('${u.nominativo}' === usr){
-                    img = u;
+                    img = '${u.image}';
                 }
             </c:forEach>
             if(img === '')
-                img = ${user.image};
+                img = '${user.image}';
             replierMessage(m, usr, img);
             scrollDown();
 
@@ -373,7 +373,7 @@
                         }
                     </c:forEach>
                     if(img === '')
-                        img = ${user.image};
+                        img = '${user.image}';
                     console.log(items[key].message);
                     if (items[key].name === user) {
                         myMessage(items[key].message);
