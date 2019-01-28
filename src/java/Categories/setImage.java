@@ -31,7 +31,7 @@ public class setImage extends HttpServlet {
             throws ServletException, IOException {
         System.out.println("\nImage\n");
         HttpSession session = request.getSession();
-        String listname = request.getParameter("listname");
+        String listname = request.getParameter("listname");System.out.println("l: " + listname);
         if(listname != null){
             System.out.println(listname);
             session.setAttribute("listname", listname);

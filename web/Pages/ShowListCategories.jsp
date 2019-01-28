@@ -253,12 +253,12 @@
                                                         </div>
                                                       </div>                                                   
                                                 </div>
-                                                <h4 class="description">
+                                                <h4 class="description" id="descrizioneCatList" style="cursor: context-menu; height: initial;">
                                                     <c:if test="${categoria.inUse != 1}">
-                                                        <a><c:out value="${categoria.descrizione}"/><br><b><c:out value="Usata in ${categoria.inUse} Liste"/></b></a>
+                                                        <a style="color: black;"><c:out value="${categoria.descrizione}"/><br><b><c:out value="Usata in ${categoria.inUse} Liste"/></b></a>
                                                     </c:if>
                                                     <c:if test="${categoria.inUse == 1}">
-                                                        <a><c:out value="${categoria.descrizione}"/><br><b><c:out value="Usata in ${categoria.inUse} Lista"/></b></a>
+                                                        <a style="color: black;"><c:out value="${categoria.descrizione}"/><br><b><c:out value="Usata in ${categoria.inUse} Lista"/></b></a>
                                                     </c:if>                                                    
                                                 </h4>
                                                 <div class="admin-controls">
@@ -533,9 +533,10 @@
         <script>
             //Funzione ajax che setta in sessione il nome della categoria di liste e esegue diverse funzioni a seconda del valore della variabibile link
                 function setImage(listname, link) {
+                    var c = listname;
                     $.ajax({
                         type: "GET",
-                        url: "/Lists/setImage?listname=" + listname + "&link=" + link,
+                        url: "/Lists/setImage?listname=" + c + "&link=" + link,
                         async: true,
                         success: function () {
                             if(link === "add"){

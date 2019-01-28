@@ -541,7 +541,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
     
     @Override
     public void updateReminder(int id, String lista, String data)throws DAOException{
-        try(PreparedStatement stm = CON.prepareStatement("UPDATE List_Prod SET data_scadenza=? WHERE lista=? and prodotto=?")){
+        try(PreparedStatement stm = CON.prepareStatement("UPDATE List_Prod SET data_scadenza=? WHERE lista=? and prodotto=?")){ 
             Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(data);
             java.sql.Date sqlExpireDate = new java.sql.Date(date1.getTime());
             stm.setDate(1, sqlExpireDate);

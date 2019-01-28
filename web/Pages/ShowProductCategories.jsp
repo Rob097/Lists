@@ -208,27 +208,34 @@
                                             <div class="wrapper">
                                                 <div class="image">
                                                     <h3>
-                                                        <a class="title"><c:out value="${Pcategoria.nome}"/></a><br> 
-                                                        <a class="tag category"><c:out value="${Pcategoria.admin}"/></a>
+                                                        <a href="/Lists/Pages/ShowProducts.jsp?cat=${Pcategoria.nome}" class="title"><c:out value="${Pcategoria.nome}"/></a><br> 
+                                                        <a style="cursor: context-menu;" class="tag category"><c:out value="${Pcategoria.category}"/></a>
                                                     </h3>
                                                     <div class="text-caps">
-                                                        <a >
+                                                        <a href="/Lists/Pages/ShowProducts.jsp?cat=${Pcategoria.nome}">
                                                                <img src="../${Pcategoria.immagine}" alt="" class="image-wrapper background-image img-fluid"> 
                                                         </a>
                                                     </div>
                                                 </div>
-                                                <h4 class="description">                                                                                                 
+                                                <h4 class="description" id="descrizioneCatProd" style="cursor: context-menu; height: initial;">                                                                                                 
                                                     <c:if test="${Pcategoria.inUse != 1}">
-                                                        <a><c:out value="${Pcategoria.descrizione}"/><br><b><c:out value="Usata per ${Pcategoria.inUse} Prodotti"/></b></a>
+                                                        <a style="color: black;"><c:out value="${Pcategoria.descrizione}"/><br><b><c:out value="Usata per ${Pcategoria.inUse} Prodotti amministratore e ${Pcategoria.inUsePrivate} Prodotti privati"/></b></a>
                                                     </c:if>
                                                     <c:if test="${Pcategoria.inUse == 1}">
-                                                        <a><c:out value="${Pcategoria.descrizione}"/><br><b><c:out value="Usata per ${Pcategoria.inUse} Prodotto"/></b></a>
+                                                        <a style="color: black;"><c:out value="${Pcategoria.descrizione}"/><br><b><c:out value="Usata per ${Pcategoria.inUse} Prodotti amministratore e ${Pcategoria.inUsePrivate} Prodotti privati"/></b></a>
                                                     </c:if>                                                      
                                                 </h4>
                                                 <div class="admin-controls">
-                                                    <a href="<%=request.getContextPath()%>/restricted/DeleteProductCategory?listname=${Pcategoria.nome}" class="ad-remove <c:if test="${Pcategoria.inUse != 0}">disabled</c:if>" data-toggle="tooltip" <c:if test="${Pcategoria.inUse != 0}">title="In uso, non è possibile cancellarla"</c:if>>
+                                                    <c:if test="${Pcategoria.inUse != 0}">
+                                                    <a style="cursor: not-allowed;" class="ad-remove"  data-toggle="tooltip" title="In uso, non è possibile cancellarla">
                                                         <i class="fa fa-trash"></i>Cancella
                                                     </a>
+                                                    </c:if>
+                                                    <c:if test="${Pcategoria.inUse == 0}">
+                                                        <a href="<%=request.getContextPath()%>/restricted/DeleteProductCategory?listname=${Pcategoria.nome}" class="ad-remove" data-toggle="tooltip" title="In uso, non è possibile cancellarla">
+                                                            <i class="fa fa-trash"></i>Cancella
+                                                        </a>
+                                                    </c:if>
                                                 </div>                                            
                                             </div>
                                         </div>
@@ -344,6 +351,15 @@
                             <div class="form-group">
                                 <label for="Descrizione" class="col-form-label">Descrizione</label>
                                 <input type="text" name="Descrizione" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="Categoria" class="col-form-label">Categoria</label>
+                                <select name="Categoria" id="Categoria" tabindex="1" required>
+
+                                    <c:forEach items="${categorie}" var="categoria">
+                                        <option value="${categoria.nome}"><c:out value="${categoria.nome}"/></option> 
+                                    </c:forEach>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="Immagine" class="col-form-label">Immagine</label>

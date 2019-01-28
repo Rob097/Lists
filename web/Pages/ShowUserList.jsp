@@ -302,7 +302,7 @@
                                             <a style="cursor: not-allowed; width: 100%;" data-toggle="tooltip" title="Devi registrarti per usare questa funzione" class="disabled"><i class="fas fa-users"><br>Chat</i></a> 
                                         </div>
                                         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                                            <a href="#" style="cursor: not-allowed; width: 100%;" data-toggle="tooltip" title="Devi registrarti per usare questa funzione"><i class="fas fa-map-marked-alt"><br>Map</i></a> 
+                                            <a href="singleListGeolocation.jsp" style="width: 100%;"><i class="fas fa-map-marked-alt"><br>Map</i></a> 
                                         </div>
                                     </div>
                                     <div class="row">

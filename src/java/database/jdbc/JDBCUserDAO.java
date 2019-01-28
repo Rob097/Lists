@@ -293,4 +293,23 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
             System.out.println("errore chande password");
         }
     }
+
+    @Override
+    public boolean checkIsSending(String email) throws DAOException {
+        if(email==null){
+           throw new DAOException("Email is a mandatory fields", new NullPointerException("email is null"));
+        }
+        boolean check = true;
+        try(PreparedStatement statement = CON.prepareStatement("Select send from User where email=?")){
+           statement.setString(1, email);
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    check = rs.getBoolean("send");
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the user", ex);
+        }
+        return check;
+    }
 }

@@ -36,7 +36,7 @@
         <link rel="stylesheet" href="css/navbar.css">
         <link rel="stylesheet" href="css/datatables.css" type="text/css"> 
         <link rel="stylesheet" href="css/notificationCss.css" type="text/css"> 
-        
+
         <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.0/mapsjs-ui.css?dp-version=1542186754" />
         <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-core.js"></script>
         <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-service.js"></script>
@@ -44,9 +44,9 @@
         <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
         <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-places.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        
+
 
         <title>Lists</title>
 
@@ -74,7 +74,7 @@
                 background-repeat: no-repeat;
             }
         </style>
-        
+
     </head>
     <body>
         <div class="page home-page">
@@ -105,31 +105,31 @@
                 <section class="block">
                     <div class="container">
                         <div class="row">
-                            
+
                             <!--end col-md-3-->
                             <div class="col-md-12">
                                 <div id="map" style="width: 100%; height: 400px; background: grey"></div>
                                 <br>
                                 <!--<input type="range" name="points" min="0" max="5000" id="raggio" style="align-content: center;">-->
-                                
-                                
+
+
                                 <div class="container">
-                                    
+
                                     <div class="items list compact grid-xl-3-items grid-lg-3-items grid-md-2-items" id="TuttiInegozzi">
-                                
-                                <!--end item-->
 
-                            </div>
-                                    
+                                        <!--end item-->
+
+                                    </div>
+
                                     <div id = "contenitore"></div>
-                                    
 
-                                                  
-                                  </div>
+
+
+                                </div>
                                 <!--============ Section Title===================================================================-->
-                                
+
                                 <!--============ Items ==========================================================================-->
-                                                              
+
                                 <!--end items-->
                             </div>
                             <!--end col-md-9-->
@@ -197,33 +197,33 @@
                     filter = input.value.toUpperCase();
                     items = document.getElementsByClassName("item");
                     console.log(items);
-                    
+
                     var title = "";
                     var i;
                     $.ajax({
-                                type: "POST",
-                                url: "/Lists/Pages/nameContain.jsp?s="+filter,
-                                
-                                cache: false,
-                                success: function (response) {
-                                    $("#content-wrapper").html($("#content-wrapper").html() + response);
-                                },
-                                error: function () {
-                                   alert("Errore");
-                               }
-                            });
-                    for (i = 0; i<items.length;i++) {
+                        type: "POST",
+                        url: "/Lists/Pages/nameContain.jsp?s=" + filter,
+
+                        cache: false,
+                        success: function (response) {
+                            $("#content-wrapper").html($("#content-wrapper").html() + response);
+                        },
+                        error: function () {
+                            alert("Errore");
+                        }
+                    });
+                    for (i = 0; i < items.length; i++) {
                         console.log(items[i]);
                         console.log("inside cicle ");
                         title = items[i].getElementsByClassName("title");
-                        if(title[0].innerHTML.toUpperCase().indexOf(filter)>-1){
-                            
+                        if (title[0].innerHTML.toUpperCase().indexOf(filter) > -1) {
+
                             items = document.getElementsByClassName("item");
                             title = items[i].getElementsByClassName("title");
                             items[i].style.display = "";
                             document.getElementById("loadProducts").style.display = "none";
-                            
-                        }else{
+
+                        } else {
                             items[i].style.display = "none";
                             document.getElementById("loadProducts").style.display = "";
                         }
@@ -231,7 +231,7 @@
                 }
             </script>
         </c:if>           
-            
+
         <!-- Login Modal -->
         <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModal" aria-hidden="true"></div>
         <!--######################################################-->
@@ -245,7 +245,7 @@
 
         <!-- new password Modal -->
         <div class="modal fade" id="newPassword" tabindex="-1" role="dialog" aria-labelledby="newPassword" aria-hidden="true"></div>
-        
+
         <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data"></div>
         <!--##############################-->
         <div class="modal fade" id="import-list" tabindex="-1" role="dialog" aria-labelledby="import-list" aria-hidden="true">
@@ -286,367 +286,415 @@
         </div>
 
         <script src="js/nav.js"></script>
-        
+
 
         <!--MAPPA=====================================================================================================-->
-                
+
         <script  type="text/javascript" charset="UTF-8" >
-            var raggio = 5000;
-            var keyWord = "${lista.categoria}";
-            //----------------------------------------------------------------------
+                var raggio = 5000;
+                var keyWord = "${lista.categoria}";
+                //----------------------------------------------------------------------
 
 
-            //---------------------------------INIT MAP---------------------------------------
+                //---------------------------------INIT MAP---------------------------------------
 
-            //Step 1: initialize communication with the platform
-            var platform = new H.service.Platform({
-                app_id: 'devportal-demo-20180625',
-                app_code: '9v2BkviRwi9Ot26kp2IysQ',
-                useHTTPS: true
-            });
-            var pixelRatio = window.devicePixelRatio || 1;
-            var defaultLayers = platform.createDefaultLayers({
-                tileSize: pixelRatio === 1 ? 256 : 512,
-                ppi: pixelRatio === 1 ? undefined : 320
-            });
+                //Step 1: initialize communication with the platform
+                var platform = new H.service.Platform({
+                    app_id: 'devportal-demo-20180625',
+                    app_code: '9v2BkviRwi9Ot26kp2IysQ',
+                    useHTTPS: true
+                });
+                var pixelRatio = window.devicePixelRatio || 1;
+                var defaultLayers = platform.createDefaultLayers({
+                    tileSize: pixelRatio === 1 ? 256 : 512,
+                    ppi: pixelRatio === 1 ? undefined : 320
+                });
 
-            //Step 2: initialize a map  - not specificing a location will give a whole world view.
-            var map = new H.Map(document.getElementById('map'), defaultLayers.normal.map, {pixelRatio: pixelRatio});
+                //Step 2: initialize a map  - not specificing a location will give a whole world view.
+                var map = new H.Map(document.getElementById('map'), defaultLayers.normal.map, {pixelRatio: pixelRatio});
 
-            //Step 3: make the map interactive
-            // MapEvents enables the event system
-            // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
-            var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+                //Step 3: make the map interactive
+                // MapEvents enables the event system
+                // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
+                var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
 
-            // Create the default UI components
-            var ui = H.ui.UI.createDefault(map, defaultLayers);
+                // Create the default UI components
+                var ui = H.ui.UI.createDefault(map, defaultLayers);
 
-            //---------------------------------END OF INIT MAP------------------------------------
+                //---------------------------------END OF INIT MAP------------------------------------
 
-            var yourLat = 0;
-            var yourLong = 0;
+                var yourLat = 0;
+                var yourLong = 0;
 
-            /**
-             * prende la posizione, la ricava dal browser
-             * @returns {undefined}
-             */
-            function getLocation() {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(showPosition);
-                } else {
-                    x.innerHTML = "Geolocation is not supported by this browser.";
-                }
-            }
-
-
-            function showPosition(position) {
-                yourLat = position.coords.latitude;
-                yourLong = position.coords.longitude;
-                console.log("latitude: " + yourLat);
-                console.log("longitude: " + yourLong);
-                var nomeLista, nomeCategoria;
-                map.setCenter({lat: yourLat, lng: yourLong});
-                map.setZoom(12);
-                addCircleToMap(yourLat, yourLong);
-                var parisMarker = new H.map.Marker({lat: yourLat, lng: yourLong});
-                map.addObject(parisMarker);
-
-                var params = {
-                    'q': keyWord,
-                    'at': yourLat+','+yourLong
-                };
-                var search = new H.places.Search(platform.getPlacesService()), searchResult, error;
-                
-                
-                
-
-                //Define a callback function to handle errors:
-                function onError(data) {
-                    error = data;
-                    console.log(error);
+                /**
+                 * prende la posizione, la ricava dal browser
+                 * @returns {undefined}
+                 */
+                function getLocation() {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(showPosition);
+                    } else {
+                        x.innerHTML = "Geolocation is not supported by this browser.";
+                    }
                 }
 
-                // Run a search request with parameters, headers (empty), and
-                // callback functions:
-                
-                       
-                        nomeLista = "${shopListName}";
-                        
-                        nomeCategoria = "${lista.categoria}";
-                        console.log("Sto cercando per cetegoria ["+nomeCategoria+"] nella lista ["+nomeLista+"]");
-                        giveAllPlaces(nomeCategoria, nomeLista);
-                        
-               
-                    
-                    function buildDOMwithPlaces(nomeLista, nomeLocale, category, distance, orari, vicinity){
+
+                function showPosition(position) {
+                    yourLat = position.coords.latitude;
+                    yourLong = position.coords.longitude;
+                    console.log("latitude: " + yourLat);
+                    console.log("longitude: " + yourLong);
+                    var nomeLista, nomeCategoria;
+                    map.setCenter({lat: yourLat, lng: yourLong});
+                    map.setZoom(12);
+                    addCircleToMap(yourLat, yourLong);
+                    var parisMarker = new H.map.Marker({lat: yourLat, lng: yourLong});
+                    map.addObject(parisMarker);
+
+                    var params = {
+                        'q': keyWord,
+                        'at': yourLat + ',' + yourLong
+                    };
+                    var search = new H.places.Search(platform.getPlacesService()), searchResult, error;
+
+
+
+
+                    //Define a callback function to handle errors:
+                    function onError(data) {
+                        error = data;
+                        console.log(error);
+                    }
+
+                    // Run a search request with parameters, headers (empty), and
+                    // callback functions:
+
+                    var usi = '${user}';
+                    nomeLista = "${shopListName}";
+                    nomeCategoria = "${lista.categoria}";
+                    if (usi === "")
+                        nomeCategoria = "${guestList.categoria}";
+                    console.log("Sto cercando per cetegoria [" + nomeCategoria + "] nella lista [" + nomeLista + "]");
+                    giveAllPlaces(nomeCategoria, nomeLista);
+
+
+
+                    function buildDOMwithPlaces(nomeLista, nomeLocale, category, distance, orari, vicinity) {
                         var msg = "Hei sei nelle vicinanze di una farmacia, dai un occhiata alla lista {NOME LISTA} e completa la spesa";
-                        
-                        var cardHeader = "<div id=\"accordion\">"+
-                                        "<div class=\"card\">"+
-                                          "<div class=\"card-header\" id=\"headingOne\">"+
-                                            "<h5 class=\"mb-0\">"+
-                                              "<button class=\"btn collapsed\" data-toggle=\"collapse\" data-target=\"#collapseTwo\" aria-expanded=\"false\" aria-controls=\"collapseTwo\">"+
-                                                "Collapsible Group Item #1"+
-                                              "</button>"+
-                                            "</h5>"+
-                                          "</div>"+
-                                          "<div id=\"collapseTwo\" class=\"collapse\" aria-labelledby=\"headingTwo\" data-parent=\"#accordion\">"+
-                                           " <div class=\"card-body\">";
-                                   
-                        var table = "<tr>"+
-                                        "<td>" + searchResult.results.items[i].title + "</td>" + 
-                                        "<td>" + category + "</td>" + 
-                                        "<td>" + distance + "</td>" + 
-                                        "<td>" + orari + "</td>" + 
-                                        "<td>" + vicinity + "</td>"+ 
-                                        "<td>" + nomeLista + "</td>"+
-                                    "</tr>";
-                        
-                        var closeCard = "</table>"+
-                                        "</div>"+
-                                        "</div>"+
-                                        "</div>"+
-                                        "</div>";
-                                
-                                
-                        var tableHeader = " <table class=\"table\">"+
-                                      "<thead class=\"thead-dark\">"+
-                                        "<tr>"+
-                                          "<th>Nome</th>"+
-                                          "<th>Categoria</th>"+
-                                          "<th>Distanza</th>"+
-                                          "<th>orari</th>"+
-                                          "<th>Indirizzo</th>"+
-                                          "<th>nome lista</th>"+
-                                        "</tr>"+
-                                      "</thead>"+
-                                      "<tbody id=\"tabella\">";
-                                        
-                        var tableClose = "</tbody>"+
-                                         "</table>";
-                        
-                        document.getElementById("contenitore").innerHTML+="";
-                    }
-                    
-                    function giveAllPlaces(nomeCategoria, nomeLista){
-                        $.ajax({
-                        url: 'https://places.demo.api.here.com/places/v1/discover/search',
-                        type: 'GET',
-                        data: {
-                          at: yourLat+','+yourLong,
-                          q: nomeCategoria,
-                          app_id: 'devportal-demo-20180625',
-                          app_code: '9v2BkviRwi9Ot26kp2IysQ'
-                        },
-                        beforeSend: function(xhr){
-                          xhr.setRequestHeader('Accept', 'application/json');
-                        },
-                        success: function (data) {
-                          //alert(JSON.stringify(data));
-                          console.log(data);
-                          //alert(nomeLista);
-                          
-                          searchResult = data;
-                    console.log(searchResult);
-                    console.log(searchResult.results.items[0].position);
-                    
-                    var cardHeader = "<div id=\"accordion\">"+
-                                        "<div class=\"card\">"+
-                                          "<div class=\"card-header\" id=\"heading"+nomeLista+"\">"+
-                                            "<h5 class=\"mb-0\">"+
-                                              "<button class=\"btn collapsed\" data-toggle=\"collapse\" data-target=\"#collapse"+nomeLista+"\" aria-expanded=\"false\" aria-controls=\"collapse"+nomeLista+"\">"+
-                                                "Collapsible Group Item #1"+
-                                              "</button>"+
-                                            "</h5>"+
-                                          "</div>"+
-                                          "<div id=\"collapse"+nomeLista+"\" class=\"collapse\" aria-labelledby=\"heading"+nomeLista+"\" data-parent=\"#accordion\">"+
-                                           " <div class=\"card-body\">";
-                    
-                    var tableHeader = " <table class=\"table\">"+
-                                      "<thead class=\"thead-dark\">"+
-                                        "<tr>"+
-                                          "<th>Nome</th>"+
-                                          "<th>Categoria</th>"+
-                                          "<th>Distanza</th>"+
-                                          "<th>orari</th>"+
-                                          "<th>Indirizzo</th>"+
-                                          "<th>nome lista</th>"+
-                                        "</tr>"+
-                                      "</thead>"+
-                                      "<tbody id=\""+nomeLista+"\">";
-                              
-                    var tableClose = "</tbody>"+
-                                     "</table>";
-                             
-                    var closeCard = "</table>"+
-                                        "</div>"+
-                                        "</div>"+
-                                        "</div>"+
-                                        "</div>";
-                                
-                   var msg = "<br><div><h1 class=\"center\">Hei sei nelle vicinanze di un negozio simile a <span style = \"color:red;\">"+nomeCategoria+"</span>, dai un occhiata alla lista <span><a style = \"color:red;\" href='/Lists/ShowShopList?nome="+nomeLista+"'>"+nomeLista+"</a></span> e completa la spesa</h1></div><br>";
-                   document.getElementById("TuttiInegozzi").innerHTML+=msg;
-                   //document.getElementById("contenitore").innerHTML += tableHeader;
-                   
-                    var distanzaMassima = raggio;
-                    for (var i = 0, max = 5; i < max; i++) {
-                        var l = searchResult.results.items[i].position[0];
-                        var la = searchResult.results.items[i].position[1];
-                        var icon = new H.map.Icon(searchResult.results.items[i].icon);
 
-                        // Create a marker using the previously instantiated icon:
-                        var marker = new H.map.Marker({lat: l, lng: la}, {icon: icon});
-                        var category = searchResult.results.items[i].category.title;
-                        var distance = searchResult.results.items[i].distance;
-                        var openingHours = searchResult.results.items[i].openingHours;
-                        var vicinity = searchResult.results.items[i].vicinity;
+                        var cardHeader = "<div id=\"accordion\">" +
+                                "<div class=\"card\">" +
+                                "<div class=\"card-header\" id=\"headingOne\">" +
+                                "<h5 class=\"mb-0\">" +
+                                "<button class=\"btn collapsed\" data-toggle=\"collapse\" data-target=\"#collapseTwo\" aria-expanded=\"false\" aria-controls=\"collapseTwo\">" +
+                                "Collapsible Group Item #1" +
+                                "</button>" +
+                                "</h5>" +
+                                "</div>" +
+                                "<div id=\"collapseTwo\" class=\"collapse\" aria-labelledby=\"headingTwo\" data-parent=\"#accordion\">" +
+                                " <div class=\"card-body\">";
 
-                        var orari = "";
-                        if (openingHours) {
-                            orari = openingHours.text;
-                            console.log(openingHours.text);
-                        } else {
-                            orari = "non ci sono gli orari";
-                            console.log("non ci sono gli orari");
-                        }
-                        console.log(openingHours);
-                        
-                        if(distance<distanzaMassima){
-                            //document.getElementById(nomeLista).innerHTML += "<tr><td>" + searchResult.results.items[i].title + "</td>" + "<td>" + category + "</td>" + "<td>" + distance + "</td>" + "<td>" + orari + "</td>" + "<td>" + vicinity + "</td>"+ "<td>" + nomeLista + "</td>"+"</tr>";
-                
-                document.getElementById("TuttiInegozzi").innerHTML+="<div class=\"item\">"+
+                        var table = "<tr>" +
+                                "<td>" + searchResult.results.items[i].title + "</td>" +
+                                "<td>" + category + "</td>" +
+                                "<td>" + distance + "</td>" +
+                                "<td>" + orari + "</td>" +
+                                "<td>" + vicinity + "</td>" +
+                                "<td>" + nomeLista + "</td>" +
+                                "</tr>";
 
-                                    "<div class=\"wrapper\">"+
-                                        "<div class=\"image\">"+
-                                            "<h3>"+
-                                                "<a href=\"#\" class=\"tag category\">" + category + "</a>"+
-                                                "<a href=\"#\" class=\"title\">"+searchResult.results.items[i].title+"</a>"+
-        
-                                            "</h3>"+
-                                            "<a href=\"#\" class=\"image-wrapper background-image\">"+
-                                            '<img style="width: inherit; display:unset;" src=/Lists/${lista.immagine}>'+
-                                            "</a>"+
-                                        "</div>"+
-                                        "<h4 class=\"location\">"+
-                                            "<a href=\"#\">" + vicinity + "</a>"+
-                                        "</h4>"+
-                                       
-                                        "<div class=\"meta\">"+
-                                            "<figure>"+
-                                                "<i class=\"fa fa-calendar-o\"></i> orario: " + orari +
-                                            "</figure>"+
-                                           
-                                        "</div>"+
-                                        
-                                       
-                                        
-                                    "</div>"+
+                        var closeCard = "</table>" +
+                                "</div>" +
+                                "</div>" +
+                                "</div>" +
                                 "</div>";
-                            
-                            console.log(searchResult.results.items[i].title);
 
-                            console.log("???????????????????????????????????????????? " + nomeLista);
 
-                            // Add the marker to the map:
-                            map.addObject(marker);
-                        }
-                        
+                        var tableHeader = " <table class=\"table\">" +
+                                "<thead class=\"thead-dark\">" +
+                                "<tr>" +
+                                "<th>Nome</th>" +
+                                "<th>Categoria</th>" +
+                                "<th>Distanza</th>" +
+                                "<th>orari</th>" +
+                                "<th>Indirizzo</th>" +
+                                "<th>nome lista</th>" +
+                                "</tr>" +
+                                "</thead>" +
+                                "<tbody id=\"tabella\">";
+
+                        var tableClose = "</tbody>" +
+                                "</table>";
+
+                        document.getElementById("contenitore").innerHTML += "";
                     }
-                    document.getElementById("contenitore").innerHTML +=tableClose;
-                   
 
+                    function giveAllPlaces(nomeCategoria, nomeLista) {
+                        $.ajax({
+                            url: 'https://places.demo.api.here.com/places/v1/discover/search',
+                            type: 'GET',
+                            data: {
+                                at: yourLat + ',' + yourLong,
+                                q: nomeCategoria,
+                                app_id: 'devportal-demo-20180625',
+                                app_code: '9v2BkviRwi9Ot26kp2IysQ'
+                            },
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader('Accept', 'application/json');
+                            },
+                            success: function (data) {
+                                //alert(JSON.stringify(data));
+                                console.log(data);
+                                //alert(nomeLista);
+
+                                searchResult = data;
+                                console.log(searchResult);
+                                console.log(searchResult.results.items[0].position);
+
+                                var cardHeader = "<div id=\"accordion\">" +
+                                        "<div class=\"card\">" +
+                                        "<div class=\"card-header\" id=\"heading" + nomeLista + "\">" +
+                                        "<h5 class=\"mb-0\">" +
+                                        "<button class=\"btn collapsed\" data-toggle=\"collapse\" data-target=\"#collapse" + nomeLista + "\" aria-expanded=\"false\" aria-controls=\"collapse" + nomeLista + "\">" +
+                                        "Collapsible Group Item #1" +
+                                        "</button>" +
+                                        "</h5>" +
+                                        "</div>" +
+                                        "<div id=\"collapse" + nomeLista + "\" class=\"collapse\" aria-labelledby=\"heading" + nomeLista + "\" data-parent=\"#accordion\">" +
+                                        " <div class=\"card-body\">";
+
+                                var tableHeader = " <table class=\"table\">" +
+                                        "<thead class=\"thead-dark\">" +
+                                        "<tr>" +
+                                        "<th>Nome</th>" +
+                                        "<th>Categoria</th>" +
+                                        "<th>Distanza</th>" +
+                                        "<th>orari</th>" +
+                                        "<th>Indirizzo</th>" +
+                                        "<th>nome lista</th>" +
+                                        "</tr>" +
+                                        "</thead>" +
+                                        "<tbody id=\"" + nomeLista + "\">";
+
+                                var tableClose = "</tbody>" +
+                                        "</table>";
+
+                                var closeCard = "</table>" +
+                                        "</div>" +
+                                        "</div>" +
+                                        "</div>" +
+                                        "</div>";
+
+                                var msg = "<br><div><h1 class=\"center\">Hei sei nelle vicinanze di un negozio simile a <span style = \"color:red;\">" + nomeCategoria + "</span>, dai un occhiata alla lista <span><a style = \"color:red;\" href='/Lists/ShowShopList?nome=" + nomeLista + "'>" + nomeLista + "</a></span> e completa la spesa</h1></div><br>";
+                                document.getElementById("TuttiInegozzi").innerHTML += msg;
+                                //document.getElementById("contenitore").innerHTML += tableHeader;
+
+                                var distanzaMassima = raggio;
+                                for (var i = 0, max = 5; i < max; i++) {
+                                    var l = searchResult.results.items[i].position[0];
+                                    var la = searchResult.results.items[i].position[1];
+                                    var icon = new H.map.Icon(searchResult.results.items[i].icon);
+
+                                    // Create a marker using the previously instantiated icon:
+                                    var marker = new H.map.Marker({lat: l, lng: la}, {icon: icon});
+                                    var category = searchResult.results.items[i].category.title;
+                                    var distance = searchResult.results.items[i].distance;
+                                    var openingHours = searchResult.results.items[i].openingHours;
+                                    var vicinity = searchResult.results.items[i].vicinity;
+
+                                    var orari = "";
+                                    if (openingHours) {
+                                        orari = openingHours.text;
+                                        console.log(openingHours.text);
+                                    } else {
+                                        orari = "non ci sono gli orari";
+                                        console.log("non ci sono gli orari");
+                                    }
+                                    console.log(openingHours);
+
+                                    if (distance < distanzaMassima) {
+                                        //document.getElementById(nomeLista).innerHTML += "<tr><td>" + searchResult.results.items[i].title + "</td>" + "<td>" + category + "</td>" + "<td>" + distance + "</td>" + "<td>" + orari + "</td>" + "<td>" + vicinity + "</td>"+ "<td>" + nomeLista + "</td>"+"</tr>";
+                                        var im = '${lista.immagine}';
+                                        if (im === "")
+                                            im = '${guestList.immagine}';
+                                        document.getElementById("TuttiInegozzi").innerHTML += "<div class=\"item\">" +
+                                                "<div class=\"wrapper\">" +
+                                                "<div class=\"image\">" +
+                                                "<h3>" +
+                                                "<a href=\"#\" class=\"tag category\">" + category + "</a>" +
+                                                "<a href=\"#\" class=\"title\">" + searchResult.results.items[i].title + "</a>" +
+                                                "</h3>" +
+                                                "<a href=\"#\" class=\"image-wrapper background-image\">" +
+                                                '<img style="width: inherit; display:unset;" src=/Lists/' + im + '>' +
+                                                "</a>" +
+                                                "</div>" +
+                                                "<h4 class=\"location\">" +
+                                                "<a href=\"#\">" + vicinity + "</a>" +
+                                                "</h4>" +
+                                                "<div class=\"meta\">" +
+                                                "<figure>" +
+                                                "<i class=\"fa fa-calendar-o\"></i> orario: " + orari +
+                                                "</figure>" +
+                                                "</div>" +
+                                                "</div>" +
+                                                "</div>";
+
+                                        console.log(searchResult.results.items[i].title);
+
+                                        console.log("???????????????????????????????????????????? " + nomeLista);
+
+                                        // Add the marker to the map:
+                                        map.addObject(marker);
+                                    }
+
+                                }
+                                document.getElementById("contenitore").innerHTML += tableClose;
+
+
+                            }
+                        });
+                    }
+
+
+                }
+
+
+
+                getLocation();
+
+                function addCircleToMap(lat, lng) {
+                    map.addObject(new H.map.Circle(
+                            // The central point of the circle
+                                    {lat: lat, lng: lng},
+                                    // The radius of the circle in meters
+                                    raggio,
+                                    {
+                                        style: {
+                                            strokeColor: 'rgba(55, 85, 170, 0.6)', // Color of the perimeter
+                                            lineWidth: 2,
+                                            fillColor: 'rgba(0, 128, 0, 0.7)'  // Color of the circle
+                                        }
+                                    }
+                            ));
+                        }
+
+                function addDomMarker(map, lon, lat, text) {
+                    var outerElement = document.createElement('div'),
+                            innerElement = document.createElement('div');
+
+                    outerElement.style.userSelect = 'none';
+                    outerElement.style.webkitUserSelect = 'none';
+                    outerElement.style.msUserSelect = 'none';
+                    outerElement.style.mozUserSelect = 'none';
+                    outerElement.style.cursor = 'default';
+
+                    innerElement.style.color = 'red';
+                    innerElement.style.backgroundColor = 'white';
+                    innerElement.style.border = '2px solid black';
+                    innerElement.style.font = 'normal 12px arial';
+                    innerElement.style.lineHeight = '12px';
+
+                    innerElement.style.paddingTop = '2px';
+                    innerElement.style.paddingLeft = '4px';
+                    innerElement.style.width = '20px';
+                    innerElement.style.height = '20px';
+
+                    // add negative margin to inner element
+                    // to move the anchor to center of the div
+                    innerElement.style.marginTop = '-10px';
+                    innerElement.style.marginLeft = '-10px';
+
+                    outerElement.appendChild(innerElement);
+
+                    // Add text to the DOM element
+                    innerElement.innerHTML = text;
+
+                    function changeOpacity(evt) {
+                        evt.target.style.opacity = 0.6;
+                    }
+                    ;
+
+                    function changeOpacityToOne(evt) {
+                        evt.target.style.opacity = 1;
+                    }
+                    ;
+
+                    //create dom icon and add/remove opacity listeners
+                    var domIcon = new H.map.DomIcon(outerElement, {
+                        // the function is called every time marker enters the viewport
+                        onAttach: function (clonedElement, domIcon, domMarker) {
+                            clonedElement.addEventListener('mouseover', changeOpacity);
+                            clonedElement.addEventListener('mouseout', changeOpacityToOne);
+                        },
+                        // the function is called every time marker leaves the viewport
+                        onDetach: function (clonedElement, domIcon, domMarker) {
+                            clonedElement.removeEventListener('mouseover', changeOpacity);
+                            clonedElement.removeEventListener('mouseout', changeOpacityToOne);
                         }
                     });
-                    }
-                    
-                    
-            }
-            
-            
 
-            getLocation();
-
-            function addCircleToMap(lat, lng) {
-                map.addObject(new H.map.Circle(
-                        // The central point of the circle
-                                {lat: lat, lng: lng},
-                                // The radius of the circle in meters
-                                raggio,
-                                {
-                                    style: {
-                                        strokeColor: 'rgba(55, 85, 170, 0.6)', // Color of the perimeter
-                                        lineWidth: 2,
-                                        fillColor: 'rgba(0, 128, 0, 0.7)'  // Color of the circle
-                                    }
-                                }
-                        ));
-            }
-
-            function addDomMarker(map, lon, lat, text) {
-                var outerElement = document.createElement('div'),
-                innerElement = document.createElement('div');
-
-                outerElement.style.userSelect = 'none';
-                outerElement.style.webkitUserSelect = 'none';
-                outerElement.style.msUserSelect = 'none';
-                outerElement.style.mozUserSelect = 'none';
-                outerElement.style.cursor = 'default';
-
-                innerElement.style.color = 'red';
-                innerElement.style.backgroundColor = 'white';
-                innerElement.style.border = '2px solid black';
-                innerElement.style.font = 'normal 12px arial';
-                innerElement.style.lineHeight = '12px';
-
-                innerElement.style.paddingTop = '2px';
-                innerElement.style.paddingLeft = '4px';
-                innerElement.style.width = '20px';
-                innerElement.style.height = '20px';
-
-                // add negative margin to inner element
-                // to move the anchor to center of the div
-                innerElement.style.marginTop = '-10px';
-                innerElement.style.marginLeft = '-10px';
-
-                outerElement.appendChild(innerElement);
-
-                // Add text to the DOM element
-                innerElement.innerHTML = text;
-
-                function changeOpacity(evt) {
-                    evt.target.style.opacity = 0.6;
+                    // Marker for Chicago Bears home
+                    var bearsMarker = new H.map.DomMarker({lat: lat, lng: lon}, {
+                        icon: domIcon
+                    });
+                    map.addObject(bearsMarker);
                 }
-                ;
-
-                function changeOpacityToOne(evt) {
-                    evt.target.style.opacity = 1;
-                }
-                ;
-
-                //create dom icon and add/remove opacity listeners
-                var domIcon = new H.map.DomIcon(outerElement, {
-                    // the function is called every time marker enters the viewport
-                    onAttach: function (clonedElement, domIcon, domMarker) {
-                        clonedElement.addEventListener('mouseover', changeOpacity);
-                        clonedElement.addEventListener('mouseout', changeOpacityToOne);
-                    },
-                    // the function is called every time marker leaves the viewport
-                    onDetach: function (clonedElement, domIcon, domMarker) {
-                        clonedElement.removeEventListener('mouseover', changeOpacity);
-                        clonedElement.removeEventListener('mouseout', changeOpacityToOne);
-                    }
-                });
-
-                // Marker for Chicago Bears home
-                var bearsMarker = new H.map.DomMarker({lat: lat, lng: lon}, {
-                    icon: domIcon
-                });
-                map.addObject(bearsMarker);
-            }
         </script>
-        
+
         <script type="text/javascript">
             $(document).ready(function () {
+                //LoginModal
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/loginTemplate.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#LoginModal").html(response);
+                    },
+                    error: function () {
+                        alert("Errore LoginModalImport");
+                    }
+                });
+
+                //RegisterModal
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/registerTemplate.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#RegisterModal").html(response);
+                    },
+                    error: function () {
+                        alert("Errore RegisterModalImport");
+                    }
+                });
+
+                //Restore password
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/restorePasswordTemplate.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#restorePassword").html(response);
+                    },
+                    error: function () {
+                        alert("Errore restorePasswordTemplate");
+                    }
+                });
+
+                //New password
+                $.ajax({
+                    type: "GET",
+                    url: "/Lists/Pages/template/newPasswordTemplate.jsp",
+                    cache: false,
+                    success: function (response) {
+                        $("#newPassword").html(response);
+                    },
+                    error: function () {
+                        alert("Errore newPasswordTemplate");
+                    }
+                });
+
                 //Navbar
                 $.ajax({
                     type: "GET",
@@ -659,7 +707,7 @@
                         alert("Errore navbarTemplate");
                     }
                 });
-                
+
                 //Notifiche
                 $.ajax({
                     type: "GET",
@@ -674,6 +722,6 @@
                 });
             });
         </script>
-        
+
     </body>
 </html>

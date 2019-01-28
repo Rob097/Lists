@@ -36,4 +36,6 @@ public interface UserDAO{
     public void changePassword (String email, String password) throws DAOException;
     
     public void changeType (String email, String tipo) throws DAOException;
+    
+    public boolean checkIsSending (String email) throws DAOException;
 }

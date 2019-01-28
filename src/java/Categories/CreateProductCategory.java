@@ -56,6 +56,7 @@ public class CreateProductCategory extends HttpServlet {
         catProduct.setDescrizione(request.getParameter("Descrizione"));
         catProduct.setAdmin(user.getEmail());
         Part filePart1 = request.getPart("file1");
+        catProduct.setCategory(request.getParameter("Categoria"));
         
         //immagine
         if(filePart1!=null){

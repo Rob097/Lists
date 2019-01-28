@@ -4134,6 +4134,18 @@ textarea.form-control {
     #usersChat{
         display: none;
     }
+    .items:not(.selectize-input).list .item #descrizioneCatProd, .items:not(.selectize-input).list.compact .item #descrizioneCatProd{
+        cursor: context-menu;
+        color: black !important;
+        height: initial;
+        display: contents;
+    }
+    .items:not(.selectize-input).list .item #descrizioneCatList, .items:not(.selectize-input).list.compact .item #descrizioneCatList{
+        cursor: context-menu;
+        color: black !important;
+        height: initial;
+        display: contents;
+    }
 }
 @media (max-width: 389px){
     .messaging__header {

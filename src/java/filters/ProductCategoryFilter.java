@@ -66,6 +66,7 @@ public class ProductCategoryFilter implements Filter {
                         ArrayList<Category_Product> allPrcategories = catproddao.getAllCategories();
                         for (Category_Product pc : allPrcategories) {
                             pc.setInUse(catproddao.inUse(pc));
+                            pc.setInUsePrivate(catproddao.inUsePrivate(pc));
                         }
                         session.setAttribute("allPrcategories", allPrcategories);
                         

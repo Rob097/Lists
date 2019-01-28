@@ -5,7 +5,11 @@
  */
 package email;
 
+import database.daos.UserDAO;
 import database.entities.User;
+import database.exceptions.DAOException;
+import database.factories.DAOFactory;
+import database.jdbc.JDBCUserDAO;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -29,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class reminderEmail extends HttpServlet {
     private static final long serialVersionUID = 6106269076155338045L;
+    UserDAO userdao = null;
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -41,7 +46,7 @@ public class reminderEmail extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //Raccolta dei dati dell'utente
-        User u = (User) request.getSession().getAttribute("user");
+        getConn();
         String nome = request.getParameter("name");
         String email = request.getParameter("email") + "\n\n";
         String messaggio1 = request.getParameter("messaggio");
@@ -75,14 +80,23 @@ public class reminderEmail extends HttpServlet {
             message.setText(messaggio);
 
             /* Transport class is used to deliver the message to the recipients */
-            if (u.isSendEmail()) {
+            if (userdao.checkIsSending(email)) {
                 Transport.send(message);
             }
         }catch (SendFailedException se){
             System.out.println("Errore nell'invio dell'email a " + email);
-        } catch (MessagingException ex) {
+        } catch (MessagingException | DAOException ex) {
             Logger.getLogger(reminderEmail.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    //gets the created daoFactory connection
+    private void getConn() throws ServletException {
+        DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
+        if (daoFactory == null) {
+            throw new ServletException("Impossible to get dao factory for user storage system");
+        }
+        userdao = new JDBCUserDAO(daoFactory.getConnection());
     }
 
     /**

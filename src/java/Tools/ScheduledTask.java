@@ -5,6 +5,7 @@
  */
 package Tools;
 
+import ShopList.AddProductToList;
 import database.daos.ListDAO;
 import database.daos.NotificationDAO;
 import database.daos.ProductDAO;
@@ -22,7 +23,10 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -114,6 +118,23 @@ public class ScheduledTask implements Runnable {
                     int missingDays = dayDifference(p.getData_scadenza());
                     if (missingDays == 0) {
                         listdao.signProductAsBuyed(Integer.parseInt(p.getProdotto()), "daAcquistare", p.getLista());
+                        String data;
+                        Date currentDate;
+                        Calendar c;
+                        try {
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            String dataStr = sdf.format(new Date());
+                            currentDate = sdf.parse(dataStr);
+
+                            c = Calendar.getInstance();
+                            c.setTime(currentDate);
+                            c.add(Calendar.DAY_OF_MONTH, listdao.getbyName(p.getLista()).getPromemoria());
+                            data = sdf.format(c.getTime());
+                            productdao.updateReminder(Integer.parseInt(p.getProdotto()), p.getLista(), data);
+                        } catch (ParseException ex) {
+                            Logger.getLogger(AddProductToList.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        //listdao.
                     }
                 }
             }

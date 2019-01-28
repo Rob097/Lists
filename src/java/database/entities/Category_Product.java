@@ -14,8 +14,26 @@ public class Category_Product {
    private String descrizione;
    private String admin;
    private String immagine;
+   private String category;
    private int inUse;
+   private int inUsePrivate;
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public int getInUsePrivate() {
+        return inUsePrivate;
+    }
+
+    public void setInUsePrivate(int inUsePrivate) {
+        this.inUsePrivate = inUsePrivate;
+    }
+    
     public int getInUse() {
         return inUse;
     }

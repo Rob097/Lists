@@ -43,6 +43,7 @@ public class JDBCCategory_ProductDAO extends JDBCDAO implements Category_Product
                     p.setDescrizione(rs.getString("descrizione"));
                     p.setAdmin(rs.getString("admin"));
                     p.setImmagine(rs.getString("immagine"));
+                    p.setCategory(rs.getString("Category_name"));
                     
                     categorie_prodotti.add(p);
                 }
@@ -66,6 +67,7 @@ public class JDBCCategory_ProductDAO extends JDBCDAO implements Category_Product
                     p.setDescrizione(rs.getString("descrizione"));
                     p.setAdmin(rs.getString("admin"));
                     p.setImmagine(rs.getString("immagine"));
+                    p.setCategory(rs.getString("Category_name"));
                     categorie_prodotto.add(p);
                 }
 
@@ -82,11 +84,12 @@ public class JDBCCategory_ProductDAO extends JDBCDAO implements Category_Product
           throw new DAOException("catProd is a mandatory field", new NullPointerException("product-category is null"));
         }
         
-         try(PreparedStatement statement = CON.prepareStatement("insert into Category_Product (nome, descrizione, admin, immagine) values (?, ?, ?, ?)")){
+         try(PreparedStatement statement = CON.prepareStatement("insert into Category_Product (nome, descrizione, admin, immagine, Category_name) values (?, ?, ?, ?, ?)")){
            statement.setString(1, catProd.getNome());
            statement.setString(2, catProd.getDescrizione());
            statement.setString(3, catProd.getAdmin());
            statement.setString(4, catProd.getImmagine());
+           statement.setString(5, catProd.getCategory());
            
            if(statement.executeUpdate() == 1){
            }else{
@@ -116,6 +119,7 @@ public class JDBCCategory_ProductDAO extends JDBCDAO implements Category_Product
                     categoria.setDescrizione(rs.getString("descrizione"));
                     categoria.setAdmin(rs.getString("admin"));
                     categoria.setImmagine(rs.getString("immagine"));
+                    categoria.setCategory(rs.getString("Category_name"));
                     
                 }
 
@@ -151,7 +155,28 @@ public class JDBCCategory_ProductDAO extends JDBCDAO implements Category_Product
           throw new DAOException("category is a mandatory field", new NullPointerException("category is null"));
         }
         
-        try (PreparedStatement stm = CON.prepareStatement("SELECT COUNT(categoria_prod) FROM Product WHERE categoria_prod = ?")){
+        try (PreparedStatement stm = CON.prepareStatement("SELECT COUNT(categoria_prod) FROM Product WHERE categoria_prod = ? AND creator='amministratore'")){
+           stm.setString(1, catProd.getNome()); 
+           
+           try(ResultSet rs = stm.executeQuery()){             
+                while (rs.next()) {
+                    return rs.getInt(1);
+                }              
+           }          
+                      
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCCategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }      
+        
+        return 0;
+    }
+    @Override
+    public int inUsePrivate(Category_Product catProd) throws DAOException {
+        if(catProd == null ){
+          throw new DAOException("category is a mandatory field", new NullPointerException("category is null"));
+        }
+        
+        try (PreparedStatement stm = CON.prepareStatement("SELECT COUNT(categoria_prod) FROM Product WHERE categoria_prod = ? AND creator!='amministratore'")){
            stm.setString(1, catProd.getNome()); 
            
            try(ResultSet rs = stm.executeQuery()){             

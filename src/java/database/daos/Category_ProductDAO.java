@@ -21,5 +21,5 @@ public interface Category_ProductDAO {
     public Category_Product getByName(String nome) throws DAOException;
     public void deleteProductCategory(Category_Product catProd) throws DAOException;
     public int inUse(Category_Product catProd) throws DAOException;
-    
+    public int inUsePrivate(Category_Product catProd) throws DAOException;
 }
