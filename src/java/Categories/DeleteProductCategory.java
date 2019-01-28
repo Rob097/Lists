@@ -56,7 +56,11 @@ public class DeleteProductCategory extends HttpServlet {
                 listsFolder = getServletContext().getRealPath(listsFolder);
                 listsFolder = listsFolder.replace("\\build", "");
                 String imgfolder = catProd.getImmagine().replace("/Image/CategoryIco", "");
-                ImageDispatcher.deleteImgFromDirectory(listsFolder + imgfolder);            
+                try{
+                    ImageDispatcher.deleteImgFromDirectory(listsFolder + imgfolder);            
+                }catch(Exception e){
+                    System.out.println("immagine non esistente");
+                }
             }
         }
         

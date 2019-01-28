@@ -232,7 +232,7 @@
                                                     </a>
                                                     </c:if>
                                                     <c:if test="${Pcategoria.inUse == 0}">
-                                                        <a href="<%=request.getContextPath()%>/restricted/DeleteProductCategory?listname=${Pcategoria.nome}" class="ad-remove" data-toggle="tooltip" title="In uso, non è possibile cancellarla">
+                                                        <a href="<%=request.getContextPath()%>/restricted/DeleteProductCategory?listname=${Pcategoria.nome}" class="ad-remove">
                                                             <i class="fa fa-trash"></i>Cancella
                                                         </a>
                                                     </c:if>

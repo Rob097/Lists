@@ -31,7 +31,7 @@ public class wsServer {
     
     
     @OnOpen
-    public void handleOpen(Session session) {
+    public void handleOpen(Session session) throws IOException {
         System.out.println("client is now connecteddddddddddddddddddddddddddddddddddddd...");
         System.out.println("sessioneeeeeeee" + session.getId());
         ALLSESSION.add(session);
@@ -42,7 +42,7 @@ public class wsServer {
         System.out.println("client is now disconnected...");
         messagesFromListToFile();
     }
-
+    
     @OnMessage
     public void handleMessage(String message, Session session) throws UnsupportedEncodingException {
 

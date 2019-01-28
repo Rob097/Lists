@@ -268,9 +268,16 @@
                                                     <a onclick="setImage('${categoria.nome}', 'delete')" class="ad-remove">
                                                         <i class="fa fa-remove"></i>- immagine
                                                     </a>
-                                                    <a href="<%=request.getContextPath()%>/restricted/DeleteListCategory?listname=${categoria.nome}" class="ad-remove <c:if test="${categoria.inUse != 0}">disabled</c:if>" data-toggle="tooltip" <c:if test="${categoria.inUse != 0}">title="In uso, non è possibile cancellarla"</c:if> >
-                                                        <i class="fa fa-trash"></i>Cancella
-                                                    </a>
+                                                    <c:if test="${categoria.inUse != 0}">
+                                                        <a class="ad-remove disabled" data-toggle="tooltip" title="In uso, non è possibile cancellarla">
+                                                            <i class="fa fa-trash"></i>Cancella
+                                                        </a>
+                                                    </c:if>
+                                                    <c:if test="${categoria.inUse == 0}">
+                                                        <a href="<%=request.getContextPath()%>/restricted/DeleteListCategory?listname=${categoria.nome}" class="ad-remove">
+                                                            <i class="fa fa-trash"></i>Cancella
+                                                        </a>
+                                                    </c:if>
                                                 </div>                                            
                                             </div>
                                         </div>

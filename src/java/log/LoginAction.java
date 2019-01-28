@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.tomcat.util.codec.binary.Base64;
 
 /**
  *
@@ -29,7 +28,7 @@ import org.apache.tomcat.util.codec.binary.Base64;
 public class LoginAction extends HttpServlet {
     private static final long serialVersionUID = 6106269076155338045L;
     static String url = null;
-    UserDAO userdao = null;
+    transient UserDAO userdao = null;
 
     @Override
     public void init() throws ServletException {
@@ -79,7 +78,7 @@ public class LoginAction extends HttpServlet {
                 
                 //create remember me cookie
                 if(remember != null){
-                    String encodedText = new String(Base64.encodeBase64(user.getEmail().getBytes("UTF-8")));
+                    String encodedText = user.getEmail();
                     Cookie coouser = new Cookie("User",encodedText);
                     coouser.setMaxAge(COOKIE_MAX_AGE);
                     response.addCookie(coouser);                    

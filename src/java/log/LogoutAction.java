@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import database.entities.User;
-
 /**
  *
  * @author Roberto97
@@ -41,9 +40,11 @@ public class LogoutAction extends HttpServlet {
         response.addCookie(cookie);
         
         //remove sessions
+        
         HttpSession session = (HttpSession) request.getSession(false);
         if (session != null) {
-            User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute("user");
+            
             if (user != null) {
                 session.invalidate();                
             }

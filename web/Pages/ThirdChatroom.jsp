@@ -319,7 +319,7 @@
         //list:user:message
 
         console.log(message.data);
-        if ((message.data.split(":")[1] != user.textContent) && (message.data.split(":")[0] === slname.innerHTML)) {
+        if ((message.data.split(":")[1] !== user.textContent) && (message.data.split(":")[0] === slname.innerHTML)) {
             console.log(message.data.split(":")[1]);
             var m = message.data.split(":")[2];
             var usr = message.data.split(":")[1];
@@ -329,6 +329,8 @@
                     img = '${u.image}';
                 }
             </c:forEach>
+            if(img === '')
+                img = ${user.image};
             replierMessage(m, usr, img);
             scrollDown();
 
@@ -356,13 +358,13 @@
         req = new XMLHttpRequest();
         var slname = document.getElementById("shoplistName").innerHTML;
         console.log(slname);
-        req.open('GET', 'chat/' + slname + '.json');
+        req.open('GET', '/Lists/Pages/chat/' + slname + '.json');
         req.onreadystatechange = function () {
             if ((req.readyState === 4) && (req.status === 200)) {
                 var items = JSON.parse(req.responseText);
                 console.log(items);
                 var user = document.getElementById("Sender").textContent;
-                var img; 
+                var img = ''; 
                 var output = '<ul>';
                 for (var key in items) {
                     <c:forEach items="${userList}" var="u">
@@ -370,6 +372,8 @@
                             img = '${u.image}';
                         }
                     </c:forEach>
+                    if(img === '')
+                        img = ${user.image};
                     console.log(items[key].message);
                     if (items[key].name === user) {
                         myMessage(items[key].message);
@@ -380,12 +384,12 @@
                 }
 
             }
-        }
+        };
         req.send();
     }
 
     $(window).on('keydown', function (e) {
-        if (e.which == 13) {
+        if (e.which === 13) {
             sendMessage();
             return false;
         }
