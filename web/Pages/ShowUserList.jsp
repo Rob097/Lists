@@ -564,7 +564,7 @@
                         <form method="POST" action="/Lists/restricted/ShareShopListServlet">
                             <select name="sharedUsers" class="mdb-select colorful-select dropdown-primary" multiple>     
                                 <c:forEach items="${Users}" var="u">
-                                    <option value="${u.email}"><c:out value="${u.email}"/></option> 
+                                    <option value="${u.email}"><c:out value="${u.nominativo}"/></option> 
                                 </c:forEach>
                             </select>
                             <button type="submit" class="btn btn-primary" id="save">Save</button> 
@@ -596,7 +596,7 @@
                         <form method="POST" action="/Lists/restricted/DeleteSharedUsers">
                             <select name="sharedToDelete" class="mdb-select colorful-select dropdown-primary" multiple>     
                                 <c:forEach items="${sharedUsers}" var="susers">
-                                    <option value="${susers.email}"><c:out value="${susers.email}"/></option> 
+                                    <option value="${susers.email}"><c:out value="${susers.nominativo}"/></option> 
                                 </c:forEach>
                             </select>
                             <button type="submit" class="btn btn-dark" id="deleteShare">Remove</button> 
