@@ -53,13 +53,13 @@
                 <!--end form-group-->
                 <div class="d-flex justify-content-between align-items-baseline">
 
-                    <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea lista</button>
+                    <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Modifica lista</button>
                 </div>
             </form>
             <hr>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
         </div>
     </div>
 </div>

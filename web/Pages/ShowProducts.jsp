@@ -231,6 +231,9 @@
                                         <c:if test="${not empty user and user.tipo=='amministratore'}">                                            
                                             <a style="display: none;" id="loadProducts2" data-toggle="modal" data-target="#CreateProductModal" class="btn btn-primary text-caps btn-rounded" >Crea un nuovo prodotto</a>                                            
                                         </c:if>
+                                        <c:if test="${not empty user and user.tipo=='standard'}">                                            
+                                            <a style="display: none;" id="loadProducts2" data-toggle="modal" data-target="#CreateAddProductModal" class="btn btn-primary text-caps btn-rounded" >Crea e aggiungi un nuovo prodotto</a>                                            
+                                        </c:if>
                                     </div>
                                 </div>
                                 <div class="section-title clearfix">
@@ -362,6 +365,66 @@
         <div class="modal fade" id="newPassword" tabindex="-1" role="dialog" aria-labelledby="newPassword" aria-hidden="true"></div>
         <!--######################################################-->
 
+        <div class="modal fade" id="CreateAddProductModal" tabindex="-1" role="dialog" aria-labelledby="CreateAddProductModal" aria-hidden="true" enctype="multipart/form-data">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="page-title">
+                            <div class="container">
+                                <h1 style="text-align: center;">Crea un nuovo prodotto</h1>
+                            </div>
+                            <!--end container-->
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form per il login -->
+                        <form class="form clearfix" id="CreateShopListform" action="<%=request.getContextPath()%>/restricted/CreateAndAddProduct"  method="post" role="form" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="Nome" class="col-form-label">Nome del prodotto</label>
+                                <input type="text" name="NomeProdotto" id="Nome" tabindex="1" class="form-control" placeholder="Nome" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="Descrizione" class="col-form-label">Note prodotto</label>
+                                <input type="text" name="NoteProdotto" id="Descrizione" tabindex="1" class="form-control" placeholder="Descrizione" value="" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="Categoria" class="col-form-label">Categoria</label>
+                                <select name="CategoriaProdotto" id="Categoria" tabindex="1" size="5" >
+                                    <c:forEach items="${catProd}" var="prodcat">
+                                        <option value="${prodcat.nome}"><c:out value="${prodcat.nome}"/></option> 
+                                    </c:forEach>
+                                </select>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="Date" class="col-form-label required">Data di scadenza</label>
+                                <input type="date" class="" name="expiration" >
+                            </div>
+                            <div class="form-group">
+                                <label for="Immagine" class="col-form-label required">Immagine</label>
+                                <input type="file" name="ImmagineProdotto" required>
+                            </div>
+
+                            <!--end form-group-->
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <button type="submit" name="register-submit" id="create-list-submit" tabindex="4" class="btn btn-primary">Crea Prodotto</button>
+                                <input type="hidden" name="showProduct" value="true">
+                            </div>
+                        </form>
+                        <hr>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="modal fade" id="myModal" role="dialog">
             <div class="modal-dialog">
 
@@ -388,7 +451,7 @@
                     </div>
                     <div style="padding: 1rem;">
                         <a data-toggle="modal" data-target="#CreateListModal" class="btn btn-primary text-caps btn-rounded" >Crea una lista</a>
-                        <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
                     </div>
                 </div>
 
@@ -445,40 +508,41 @@
                             <hr>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
                         </div>
                     </div>
                 </div>
             </div>
         </c:if>
-        
+
         <!--########################## moooddaaalllll ############################-->
 
         <div class="modal fade" id="CreateListModal" tabindex="-1" role="dialog" aria-labelledby="CreateShopListform" aria-hidden="true" enctype="multipart/form-data"></div>
         <script type="text/javascript">
             var sort = document.getElementById("sorting");
-            
-            sort.onchange = function(){
+
+            sort.onchange = function () {
                 var divs = $(".itemGiusto");
-            
-                if(sort.value === "1"){
+
+                if (sort.value === "1") {
                     var alphabeticallyOrderedDivs = divs.sort(function (a, b) {
                         return $(a).find($(".title")).text() === $(b).find($(".title")).text() ? 0 : $(a).find($(".title")).text() < $(b).find($(".title")).text() ? -1 : 1;
 
                     });
-                    $("#prodottiCont").html(alphabeticallyOrderedDivs);            
-                }else
-            
-                if(sort.value === "2"){
+                    $("#prodottiCont").html(alphabeticallyOrderedDivs);
+                } else
+
+                if (sort.value === "2") {
                     var alphabeticallyOrderedDivs = divs.sort(function (a, b) {
                         return $(a).find($(".category")).text() === $(b).find($(".category")).text() ? 0 : $(a).find($(".category")).text() < $(b).find($(".category")).text() ? -1 : 1;
 
                     });
                     $("#prodottiCont").html(alphabeticallyOrderedDivs);
-                }else if(sort.value === "0"){
+                } else if (sort.value === "0") {
                     var alphabeticallyOrderedDivs = divs.sort((a, b) => $(a).find($(".idProdotto")).val() - $(b).find($(".idProdotto")).val());
                     $("#prodottiCont").html(alphabeticallyOrderedDivs);
-                };
+                }
+                ;
             };
         </script>
         <script>
@@ -498,7 +562,7 @@
                 }
             }
         </script>  
-        
+
         <script>
             function addProduct(id) {
                 $.ajax({
@@ -530,7 +594,7 @@
                 }
             });
         </script>
-        
+
         <script>
             function myFunction() {
                 var input, filter, items, li, a, i, check = true;
@@ -569,7 +633,7 @@
                     if (items[i].style.display === "")
                         check = false;
                 }
-                if (filter == null || filter == "") {
+                if (filter === null || filter === "") {
                     for (i = 0; i < items.length; i++) {
                         items[i].style.display = "";
                     }

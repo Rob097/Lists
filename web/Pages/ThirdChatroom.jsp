@@ -323,10 +323,10 @@
             console.log(message.data.split(":")[1]);
             var m = message.data.split(":")[2];
             var usr = message.data.split(":")[1];
-            var img;
+            var img, u = '${u.image}';
             <c:forEach items="${userList}" var="u">
                 if('${u.nominativo}' === usr){
-                    img = '${u.image}';
+                    img = u;
                 }
             </c:forEach>
             if(img === '')
@@ -339,7 +339,7 @@
 
 
     function sendMessage() {
-        if (messaggioDaInviare.value != "close") {
+        if (messaggioDaInviare.value !== "close") {
             webSocket.send(slname.innerHTML + ":" + user.textContent + ":" + messaggioDaInviare.value);
 
             myMessage(messaggioDaInviare.value);
