@@ -213,7 +213,7 @@
                                 <div class="col-md-3">
                                     <div class="feature-box">
                                         <figure>
-                                            <img src="Pages/img/add-user.png" alt="">
+                                            <img style="opacity: 1;" src="Pages/img/add-user.png" alt="">
                                             <span>1</span>
                                         </figure>
                                         <c:if test="${empty user}">
@@ -230,7 +230,7 @@
                                 <div class="col-md-3">
                                     <div class="feature-box">
                                         <figure>
-                                            <img src="Pages/img/add-list.png" alt="">
+                                            <img style="opacity: 1;" src="Pages/img/add-list.png" alt="">
                                             <span>2</span>
                                         </figure>                                        
                                         <a style="cursor: pointer;" data-toggle="modal" data-target="#CreateListModal"><h3>Crea una lista</h3></a>                                                                               
@@ -242,7 +242,7 @@
                                 <div class="col-md-3">
                                     <div class="feature-box">
                                         <figure>
-                                            <img src="Pages/img/add-product.png" alt="">
+                                            <img style="opacity: 1;" src="Pages/img/add-product.png" alt="">
                                             <span>3</span>
                                         </figure>
                                         <h3>Salva i prodotti</h3>
@@ -254,7 +254,7 @@
                                 <div class="col-md-3">
                                     <div class="feature-box">
                                         <figure>
-                                            <img src="Pages/img/collaboration.png" alt="">
+                                            <img style="opacity: 1;" src="Pages/img/collaboration.png" alt="">
                                             <span>4</span>
                                         </figure>
                                         <h3>Condividi la lista con altri utenti</h3>

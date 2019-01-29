@@ -23,8 +23,8 @@
             <!-- Form per il login -->
             <form class="form clearfix" id="register-form" action="/Lists/RegisterAction" method="post" enctype="multipart/form-data" onsubmit="return (checkCheckBoxes(this) && validate());">
                 <div class="form-group">
-                    <label for="email" class="col-form-label">Email</label><span data-toggle="tooltip" title="Usa lettere o numeri + @ + lettere o numeri + . + almeno 2 lettere">i</span>
-                    <input type="email" name="email" id="emailRegister" tabindex="1" class="form-control" placeholder="Email" value="" pattern="[A-Za-z0-9.]+@+[A-Za-z0-9.]+\.[a-z]{2,}$" required>
+                    <label for="email" class="col-form-label">Email</label>
+                    <input type="email" name="email" id="emailRegister" tabindex="1" class="form-control" placeholder="Email" value="" required>
                 </div>
                 <!--end form-group-->
                 <div class="form-group">
