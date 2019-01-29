@@ -161,6 +161,11 @@
                 background-size: cover;
                 background-repeat: no-repeat;
             }
+            @-moz-document url-prefix() {
+                .firefoxVisible{
+                    display: unset !important;
+                }
+            }
             /* Optional: Makes the sample page fill the window. */
         </style>
     </head>
@@ -349,19 +354,31 @@
                                     <c:when test="${(ruolo eq 'creator')}">
                                         <div class="pb-5">                                    
                                             <h4>Promemoria di default: <i class="pl-3 fa fa-info" data-toggle="tooltip" data-placement="right" title="Tutti i prodotti aggiunti a questa lista avranno un promemoria di default impostato a ${lista.promemoria} giorni. Questo valore è modificabile."></i></h4>
-                                            <input class="form-control" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" onchange="defaultChange();" value="${lista.promemoria}" id="defaultReminder">
+                                            <div style="display: flex;">
+                                                <input class="form-control" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" onchange="defaultChange();" value="${lista.promemoria}" id="defaultReminder">
+                                                <label class="firefoxVisible" style="margin-left: 10px; display:none;">${lista.promemoria} <c:if test="${lista.promemoria == 1}"> giorno</c:if><c:if test="${lista.promemoria > 1}"> giorni</c:if> </label>
+                                                <a style="display: none;" class="firefoxVisible" href="#" onclick="location.reload();"><i style="vertical-align: sub;" class="pl-3 fa fa-refresh"></i></a>
+                                            </div>
                                         </div>
                                     </c:when>
                                     <c:when test="${(ruolo eq 'Write')}">
                                         <div class="pb-5">                                    
                                             <h4>Promemoria di default: <i class="pl-3 fa fa-info" data-toggle="tooltip" data-placement="right" title="Tutti i prodotti aggiunti a questa lista avranno un promemoria di default impostato a ${lista.promemoria} giorni. Questo valore è modificabile."></i></h4>
-                                            <input class="form-control" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" onchange="defaultChange();" value="${lista.promemoria}" id="defaultReminder">
+                                            <div style="display: flex;">
+                                                <input class="form-control" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0;" type="number" onchange="defaultChange();" value="${lista.promemoria}" id="defaultReminder">
+                                                <label class="firefoxVisible" style="margin-left: 10px; display:none;">${lista.promemoria} <c:if test="${lista.promemoria == 1}"> giorno</c:if><c:if test="${lista.promemoria > 1}"> giorni</c:if> </label>
+                                                <a style="display: none;" class="firefoxVisible" href="#" onclick="location.reload();"><i style="vertical-align: sub;" class="pl-3 fa fa-refresh"></i></a>
+                                            </div>
                                         </div>
                                     </c:when>
                                     <c:when test="${(ruolo == 'Read')}">
                                         <div class="pb-5">                                    
                                             <h4>Promemoria di default: <i class="pl-3 fa fa-info" data-toggle="tooltip" data-placement="right" title="Non hai i permessi per modificare questo valore."></i></h4>
-                                            <input class="form-control" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0; cursor: not-allowed;" type="number" value="${lista.promemoria}" id="defaultReminder2" disabled>
+                                            <div style="display: flex;">
+                                                <input class="form-control" style="width: 4rem; height: 2rem; padding-left: 0; padding-right: 0; cursor: not-allowed;" type="number" value="${lista.promemoria}" id="defaultReminder2" disabled>
+                                                <label class="firefoxVisible" style="margin-left: 10px; display:none;">${lista.promemoria} <c:if test="${lista.promemoria == 1}"> giorno</c:if><c:if test="${lista.promemoria > 1}"> giorni</c:if> </label>
+                                                <a style="display: none;" class="firefoxVisible" href="#" onclick="location.reload();"><i style="vertical-align: sub;" class="pl-3 fa fa-refresh"></i></a>
+                                            </div>
                                         </div>
                                     </c:when>
                                 </c:choose>
