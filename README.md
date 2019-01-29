@@ -34,7 +34,7 @@ Download and install `NetBeansIDE 8.2`
 ## Development environment
 - OS Windows 10
 - Netbeans IDE 8.2
-- MySql WorkBench
+- MySql WorkBench using MariaDB
 
 ## Authors
 - Dellantonio Roberto
