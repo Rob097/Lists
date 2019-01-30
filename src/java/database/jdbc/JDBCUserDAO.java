@@ -299,6 +299,7 @@ public class JDBCUserDAO extends JDBCDAO implements UserDAO{
         if(email==null){
            throw new DAOException("Email is a mandatory fields", new NullPointerException("email is null"));
         }
+        email = email.replaceAll ("\r\n|\r|\n", "");
         boolean check = true;
         try(PreparedStatement statement = CON.prepareStatement("Select send from User where email=?")){
            statement.setString(1, email);
