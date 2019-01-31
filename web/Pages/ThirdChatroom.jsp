@@ -1,3 +1,4 @@
+<%@page import="java.net.InetAddress"%>
 <%@page import="database.jdbc.JDBCProductDAO"%>
 <%@page import="database.daos.ProductDAO"%>
 <%@page import="database.entities.Product"%>
@@ -273,8 +274,16 @@
 </script>
 
 <script type="text/javascript">
+    
+    <%
+        InetAddress ia = InetAddress.getLocalHost();
+        ia.getHostAddress();
+        String ip = ia.getHostAddress();
+    %>
+        
+    
     //var webSocket = new WebSocket("ws://liste.ddns.net/Lists/wsServer");
-    var webSocket = new WebSocket("ws://localhost:8080/Lists/wsServer");
+    var webSocket = new WebSocket("ws://<%=ip%>:8080/Lists/wsServer");
     var slname = document.getElementById("shoplistName");
     var messaggioDaInviare = document.getElementById("messaggioDaInviare");
     var user = document.getElementById("Sender");

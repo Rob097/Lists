@@ -978,5 +978,33 @@ public class JDBCShopListDAO extends JDBCDAO implements ListDAO {
             throw new DAOException(ex);
         }
     }
+    
+    @Override
+    public User getListCreator(String listname) throws DAOException {
+         if(listname==null){
+          throw new DAOException("listname is a mandatory fields", new NullPointerException("listname is null"));
+        }
+        try (PreparedStatement stm = CON.prepareStatement("select * from User where email IN (select creator from List where nome = ?)")) {
+            stm.setString(1, listname);
+            
+            
+            User u = new User();
+            
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    
+                    u.setEmail(rs.getString("email"));
+                    u.setNominativo(rs.getString("nominativo"));
+                    u.setImage(rs.getString("immagine"));
+                    u.setTipo(rs.getString("tipo"));
+                    
+                }
+
+                return u;
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Impossible to get the list of users", ex);
+        }
+    }
 
 }

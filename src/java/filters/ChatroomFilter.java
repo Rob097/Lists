@@ -6,6 +6,7 @@
 package filters;
 
 import database.daos.ListDAO;
+import database.entities.ShopList;
 import database.entities.User;
 import database.exceptions.DAOException;
 import database.factories.DAOFactory;
@@ -63,13 +64,21 @@ public class ChatroomFilter implements Filter {
             }
             HttpSession session = ((HttpServletRequest)request).getSession(false);
             if(session != null){                
-                String shopListName = (String) session.getAttribute("shopListName");    
+                String shopListName = (String) session.getAttribute("shopListName"); 
+                
                 User user = (User) session.getAttribute("user");
                                
                 if(user != null && shopListName != null){
                     try {
+                        ShopList spl = listdao.getbyName(shopListName);
                         //list of users
                         ArrayList<User> listautenti = listdao.getUsersWithWhoTheListIsShared(shopListName);
+                        User us = listdao.getListCreator(shopListName);
+                        
+                        if(user.getEmail() != us.getEmail()){
+                            listautenti.add(us);
+                        }
+
                         session.setAttribute("userList", listautenti);
                         
                     } catch (DAOException ex) {
