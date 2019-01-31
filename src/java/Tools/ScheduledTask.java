@@ -64,13 +64,14 @@ public class ScheduledTask implements Runnable {
                 utenti = notificationdao.getUsersWithWhoTheListIsShared(p.getLista());
                 if (!p.getStato().equals("acquistato")) {
                     int missingDays = dayDifference(p.getData_scadenza());
-                    if (missingDays > 0 && missingDays <= 2) {
+                    if (missingDays >= 0 && missingDays <= 2) {
 
                         for (User u : utenti) {
                             //Product p1 = productdao.getProductByID(Integer.parseInt(p.getProdotto()));
                             String messaggio = "Nella lista " + p.getLista() + " ci sono uno o piu' prodotti che devono essere comprati al piu' presto";
                             
                             if (notificationdao.checkReminderMail(u.getEmail(), p.getLista())) {
+                                System.out.println("ci sono: " + u.getNominativo() + " " + u.getEmail() + " " + messaggio);
                                 notificationdao.addNotification(u.getEmail(), "secondoReminder", p.getLista());
                                 try {
                                     URL url = new URL("http://localhost:8080/Lists/reminderEmail");

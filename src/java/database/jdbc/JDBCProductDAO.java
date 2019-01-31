@@ -541,6 +541,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
     
     @Override
     public void updateReminder(int id, String lista, String data)throws DAOException{
+        System.out.println("DATE: " + data);
         try(PreparedStatement stm = CON.prepareStatement("UPDATE List_Prod SET data_scadenza=? WHERE lista=? and prodotto=?")){ 
             try{
                 Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(data);
@@ -553,7 +554,7 @@ public class JDBCProductDAO extends JDBCDAO implements ProductDAO {
                     throw new DAOException("impossible update date");
                 }
             }catch(DAOException | SQLException | ParseException e){
-                System.out.println("Date not parsable");
+                System.out.println("Date not parsable: " + data);
             }
         } catch (SQLException ex) {
             Logger.getLogger(JDBCProductDAO.class.getName()).log(Level.SEVERE, null, ex);
