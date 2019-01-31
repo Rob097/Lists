@@ -139,48 +139,8 @@
                             <div class="messaging__content" data-background-color="rgba(0,0,0,.05)" id="panellodeimessaggi">
                                 <div class="messaging__main-chat" id="TuttiImessaggi">
                                     <div class="messaging__main-chat__bubble">
-                                        <p>
-                                            Curabitur vel venenatis sem. Fusce suscipit pharetra nisl, sit amet blandit sem sollicitudin ac.
-                                            <small>24 hour ago</small>
-                                        </p>
                                     </div>
-                                    <div class="messaging__main-chat__bubble">
-                                        <p>
-                                            Vivamus laoreet nisl a odio commodo varius. Donec arcu mauris, molestie a euismod at,
-                                            mattis eu arcu. Cras volutpat, velit sit amet cursus molestie, ex ipsum sagittis urna,
-                                            vitae auctor augue erat eget justo. Sed dignissim lacus risus, ut blandit nunc volutpat
-                                            quis. Fusce porta semper nisi, quis lobortis nulla ultricies ac.
-                                            <small>24 hour ago</small>
-                                        </p>
-                                    </div>
-                                    <div class="messaging__main-chat__bubble user">
-                                        <p>
-                                            Cras volutpat, velit sit amet cursus molestie, ex ipsum sagittis urna,
-                                            vitae auctor augue erat eget justo. Sed dignissim lacus risus, ut blandit nunc
-                                            <small>24 hour ago</small>
-                                        </p>
-                                    </div>
-                                    <div class="messaging__main-chat__bubble user">
-                                        <p>
-                                            Sed dignissim lacus risus, ut blandit nunc
-                                            <small>24 hour ago</small>
-                                        </p>
-                                    </div>
-                                    <div class="messaging__main-chat__bubble">
-                                        <p>
-                                            Donec consequat lobortis erat non tempus. Quisque id accumsan velit. Nullam mollis bibendum ex.
-                                            Integer egestas nisi nulla, ut tempus mi euismod in
-                                            <small>24 hour ago</small>
-                                        </p>
-                                    </div>
-                                    <div class="messaging__main-chat__bubble user">
-                                        <p>
-                                            <span style="float: right;">Nome utente</span>
-                                            Quisque id accumsan velit. Nullam mollis bibendum ex.
-                                            Integer egestas nisi nulla, ut tempus mi euismod in
-                                            <small>24 hour ago</small>
-                                        </p>
-                                    </div>
+                                    <div class="messaging__main-chat__bubble user"></div>
                                 </div>
                             </div>
                             <div class="messaging__footer">
@@ -259,7 +219,6 @@
         var allMessages = document.getElementById("TuttiImessaggi");
 
         var actualMessage = '<div class="messaging__main-chat__bubble" style="display: flex;">';
-        actualMessage += '<img style="border-radius: 50%;margin-bottom: 0;width: 3rem;height: 3rem;" src="/Lists/'+img+'"/>';
         actualMessage += '<p style="margin-left: 10px;">';
         actualMessage += '<span class="username">' + name;
         actualMessage += '</span>';
@@ -333,14 +292,6 @@
             console.log(message.data.split(":")[1]);
             var m = message.data.split(":")[2];
             var usr = message.data.split(":")[1];
-            var img;
-            <c:forEach items="${userList}" var="u">
-                if('${u.nominativo}' === usr){
-                    img = '${u.image}';
-                }
-            </c:forEach>
-            if(img === '')
-                img = '${user.image}';
             replierMessage(m, usr, img);
             scrollDown();
 
@@ -377,13 +328,6 @@
                 var img = ''; 
                 var output = '<ul>';
                 for (var key in items) {
-                    <c:forEach items="${userList}" var="u">
-                        if('${u.nominativo}' === items[key].name){
-                            img = '${u.image}';
-                        }
-                    </c:forEach>
-                    if(img === '')
-                        img = '${user.image}';
                     console.log(items[key].message);
                     if (items[key].name === user) {
                         myMessage(items[key].message);
