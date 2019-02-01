@@ -346,7 +346,7 @@
                     console.log("longitude: " + yourLong);
                     var nomeLista, nomeCategoria;
                     map.setCenter({lat: yourLat, lng: yourLong});
-                    map.setZoom(12);
+                    map.setZoom(14);
                     addCircleToMap(yourLat, yourLong);
                     var parisMarker = new H.map.Marker({lat: yourLat, lng: yourLong});
                     map.addObject(parisMarker);
